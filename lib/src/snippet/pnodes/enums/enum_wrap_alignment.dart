@@ -8,7 +8,7 @@ import 'package:flutter_content/src/snippet/pnodes/editors/property_button_enum.
 part 'enum_wrap_alignment.mapper.dart';
 
 @MappableEnum()
-enum WrapAlignmentEnum {
+enum WrapAlignmentEnumModel {
   start(WrapAlignment.start),
   end(WrapAlignment.end),
   center(WrapAlignment.center),
@@ -16,7 +16,7 @@ enum WrapAlignmentEnum {
   space_around(WrapAlignment.spaceAround),
   space_evenly(WrapAlignment.spaceEvenly);
 
-  const WrapAlignmentEnum(this.flutterValue);
+  const WrapAlignmentEnumModel(this.flutterValue);
 
   final WrapAlignment flutterValue;
 
@@ -85,7 +85,7 @@ enum WrapAlignmentEnum {
       );
 
   // static EnumPNode toEnumPNode(
-  //         WrapAlignmentEnum? value, Node snippetTreeNode, String label, ValueChanged<int?> onChange, bool isRow) =>
+  //         WrapAlignmentEnumModel? value, Node snippetTreeNode, String label, ValueChanged<int?> onChange, bool isRow) =>
   //     EnumPNode(
   //       snippetTreeNode: snippetTreeNode,
   //       label: label,
@@ -100,15 +100,15 @@ enum WrapAlignmentEnum {
   // Widget toPropertyButton(FlexNode node) =>
   //     NodePropertyButtonEnum(
   //       label: 'WrapAlignment',
-  //       menuItems: WrapAlignmentEnum.values.map((e) => e.toMenuItem(node is RowNode)).toList(),
+  //       menuItems: WrapAlignmentEnumModel.values.map((e) => e.toMenuItem(node is RowNode)).toList(),
   //       originalEnumIndex: node.WrapAlignment?.index,
   //       onChangeF: (newOption) {
-  //         node.WrapAlignment = WrapAlignmentEnum.values[newOption];
+  //         node.WrapAlignment = WrapAlignmentEnumModel.values[newOption];
   //         node.bloc.add(const CAPIEvent.forceRefresh());
   //       },
   //       wrap: node is! RowNode,
   //       calloutSize: calloutSize(isRow: node is RowNode),
   //     );
 
-  static WrapAlignmentEnum? of(int? index) => index != null ? WrapAlignmentEnum.values.elementAtOrNull(index) : null;
+  static WrapAlignmentEnumModel? of(int? index) => index != null ? WrapAlignmentEnumModel.values.elementAtOrNull(index) : null;
 }

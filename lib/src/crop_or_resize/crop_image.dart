@@ -35,13 +35,13 @@
 //       (fco.scrH - calloutSize.height) / 2,
 //     );
 //     fco.showOverlay(
-//       calloutConfig: CalloutConfigModel(
+//       calloutConfig: CalloutConfig(
 //         cId: 'cropper',
 //         initialCalloutPos: calloutPos,
 //         barrier: CalloutBarrierConfig(
 //           opacity: .75,
 //         ),
-//         arrowType: ArrowTypeEnum.NONE,
+//         arrowType: ArrowTypeEnumModel.NONE,
 //         // onBarrierTappedF: () => fco.logger.i('barrier tapped'),
 //         initialCalloutW: calloutSize.width,
 //         initialCalloutH: calloutSize.height,
@@ -266,19 +266,19 @@
 //                       : Offstage(),
 //                 ))),
 //             DraggableCorner2(
-//                 alignment: AlignmentEnum.topLeft,
+//                 alignment: AlignmentEnumModel.topLeft,
 //                 thickness: EDGE_THICKNESS,
 //                 parent: this),
 //             DraggableCorner2(
-//                 alignment: AlignmentEnum.topRight,
+//                 alignment: AlignmentEnumModel.topRight,
 //                 thickness: EDGE_THICKNESS,
 //                 parent: this),
 //             DraggableCorner2(
-//                 alignment: AlignmentEnum.bottomLeft,
+//                 alignment: AlignmentEnumModel.bottomLeft,
 //                 thickness: EDGE_THICKNESS,
 //                 parent: this),
 //             DraggableCorner2(
-//                 alignment: AlignmentEnum.bottomRight,
+//                 alignment: AlignmentEnumModel.bottomRight,
 //                 thickness: EDGE_THICKNESS,
 //                 parent: this),
 //             DraggableEdge2(

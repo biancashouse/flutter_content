@@ -6,7 +6,6 @@ import 'package:flutter_content/src/snippet/pnodes/fyi_pnodes.dart';
 import 'package:flutter_content/src/snippet/pnodes/groups/button_style_properties.dart';
 import 'package:flutter_content/src/snippet/pnodes/string_pnode.dart';
 import 'package:flutter_content/src/snippet/snodes/button_style_hook.dart';
-import 'package:go_router/go_router.dart';
 
 part 'button_node.mapper.dart';
 
@@ -28,7 +27,7 @@ abstract class ButtonNode extends SC with ButtonNodeMappable {
 
   // client supplied onTap (list of handlers supplied to FlutterContentApp)
 
-  CalloutConfigModel? calloutConfig;
+  // CalloutConfig? calloutConfig;
 
   ButtonNode({
     // this.destinationPanelOrPlaceholderName,
@@ -37,7 +36,7 @@ abstract class ButtonNode extends SC with ButtonNodeMappable {
     // this.template,
     required this.bsPropGroup,
     this.onTapHandlerName,
-    this.calloutConfig,
+    // this.calloutConfig,
     super.child,
   });
 
@@ -156,7 +155,7 @@ abstract class ButtonNode extends SC with ButtonNodeMappable {
     ];
   }
 
-  CalloutId? get cid => calloutConfig?.cId;
+  // CalloutId? get cid => calloutConfig?.cId;
 
   void onPressed(
     BuildContext context,
@@ -165,57 +164,58 @@ abstract class ButtonNode extends SC with ButtonNodeMappable {
   ) {
     if (onTapHandlerName != null) {
       fco.namedCallbacks[onTapHandlerName!]?.call(context, gk);
-    } else if (cid != null) {
-      // possible callout
-      // Widget contents = SnippetPanel.getWidget(calloutConfig!.contentSnippetName!, context);
-      Future.delayed(
-        const Duration(seconds: 1),
-        () => fco.showOverlay(
-          targetGkF: () => fco.getCalloutGk(cid),
-          calloutContent: SnippetBuilder.fromSnippet(
-            // panelName: calloutConfig!.cId,
-            snippetName: BODY_PLACEHOLDER,
-            // allowButtonCallouts: false,
-            scName: scName,
-          ),
-          calloutConfig: CalloutConfigModel(
-            cId: cid!,
-            initialTargetAlignment:
-                calloutConfig!.initialTargetAlignment ??
-                AlignmentEnum.bottomRight,
-            initialCalloutAlignment:
-                calloutConfig!.initialTargetAlignment != null
-                ? calloutConfig!.initialTargetAlignment!.oppositeEnum
-                : AlignmentEnum.topLeft,
-            initialCalloutW: 200,
-            initialCalloutH: 150,
-            arrowType: calloutConfig?.arrowType ?? ArrowTypeEnum.POINTY,
-            finalSeparation: 100,
-            barrier: CalloutBarrierConfig(
-              opacity: 0.1,
-              onTappedF: () async {
-                fco.dismiss(cid!);
-              },
-            ),
-            fillColor: calloutConfig?.fillColor,
-            scrollControllerName: scName,
-          ),
-        ),
-      );
-    } else if (destinationRoutePathSnippetName != null) {
-      fco.addSubRoute(newPath: destinationRoutePathSnippetName!);
-      fco.pageList.add(destinationRoutePathSnippetName!);
-      context.replace(destinationRoutePathSnippetName!);
-      // create a GoRoute and load or create snippet with pageName
-      // } else if (destinationPanelOrPlaceholderName != null &&
-      //     destinationSnippetName != null) {
-      //   destinationSnippetName ??=
-      //       '$destinationPanelOrPlaceholderName:default-snippet';
-      //   capiBloc.add(CAPIEvent.setPanelOrPlaceholderSnippet(
-      //     snippetName: destinationSnippetName!,
-      //     panelName: destinationPanelOrPlaceholderName!,
-      //   ));
     }
+    // else if (cid != null) {
+    //   // possible callout
+    //   // Widget contents = SnippetPanel.getWidget(calloutConfig!.contentSnippetName!, context);
+    //   Future.delayed(
+    //     const Duration(seconds: 1),
+    //     () => fco.showOverlay(
+    //       targetGkF: () => fco.getCalloutGk(cid),
+    //       calloutContent: SnippetBuilder.fromSnippet(
+    //         // panelName: calloutConfig!.cId,
+    //         snippetName: BODY_PLACEHOLDER,
+    //         // allowButtonCallouts: false,
+    //         scName: scName,
+    //       ),
+    //       calloutConfig: CalloutConfig(
+    //         cId: cid!,
+    //         initialTargetAlignment:
+    //             calloutConfig!.initialTargetAlignment ??
+    //             Alignment.bottomRight,
+    //         initialCalloutAlignment:
+    //             calloutConfig!.initialTargetAlignment != null
+    //             ? calloutConfig!.initialTargetAlignment!.oppositeAlignment
+    //             : Alignment.topLeft,
+    //         initialCalloutW: 200,
+    //         initialCalloutH: 150,
+    //         arrowType: calloutConfig?.arrowType ?? ArrowTypeEnum.POINTY,
+    //         finalSeparation: 100,
+    //         barrier: CalloutBarrierConfig(
+    //           opacity: 0.1,
+    //           onTappedF: () async {
+    //             fco.dismiss(cid!);
+    //           },
+    //         ),
+    //         fillColor: calloutConfig?.fillColor,
+    //         scrollControllerName: scName,
+    //       ),
+    //     ),
+    //   );
+    // } else if (destinationRoutePathSnippetName != null) {
+    //   fco.addSubRoute(newPath: destinationRoutePathSnippetName!);
+    //   fco.pageList.add(destinationRoutePathSnippetName!);
+    //   context.replace(destinationRoutePathSnippetName!);
+    //   // create a GoRoute and load or create snippet with pageName
+    //   // } else if (destinationPanelOrPlaceholderName != null &&
+    //   //     destinationSnippetName != null) {
+    //   //   destinationSnippetName ??=
+    //   //       '$destinationPanelOrPlaceholderName:default-snippet';
+    //   //   capiBloc.add(CAPIEvent.setPanelOrPlaceholderSnippet(
+    //   //     snippetName: destinationSnippetName!,
+    //   //     panelName: destinationPanelOrPlaceholderName!,
+    //   //   ));
+    // }
   }
 
   // @override

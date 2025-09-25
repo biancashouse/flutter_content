@@ -57,6 +57,9 @@ class UpTo6ColorsMapper extends ClassMapperBase<UpTo6Colors> {
   static double? _$color6Value(UpTo6Colors v) => v.color6Value;
   static const Field<UpTo6Colors, double> _f$color6Value =
       Field('color6Value', _$color6Value, opt: true);
+  static bool? _$isLinear(UpTo6Colors v) => v.isLinear;
+  static const Field<UpTo6Colors, bool> _f$isLinear =
+      Field('isLinear', _$isLinear, mode: FieldMode.member);
 
   @override
   final MappableFields<UpTo6Colors> fields = const {
@@ -72,6 +75,7 @@ class UpTo6ColorsMapper extends ClassMapperBase<UpTo6Colors> {
     #color4Value: _f$color4Value,
     #color5Value: _f$color5Value,
     #color6Value: _f$color6Value,
+    #isLinear: _f$isLinear,
   };
 
   static UpTo6Colors _instantiate(DecodingData data) {

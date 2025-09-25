@@ -6,65 +6,68 @@
 
 part of 'enum_main_axis_alignment.dart';
 
-class MainAxisAlignmentEnumMapper extends EnumMapper<MainAxisAlignmentEnum> {
-  MainAxisAlignmentEnumMapper._();
+class MainAxisAlignmentEnumModelMapper
+    extends EnumMapper<MainAxisAlignmentEnumModel> {
+  MainAxisAlignmentEnumModelMapper._();
 
-  static MainAxisAlignmentEnumMapper? _instance;
-  static MainAxisAlignmentEnumMapper ensureInitialized() {
+  static MainAxisAlignmentEnumModelMapper? _instance;
+  static MainAxisAlignmentEnumModelMapper ensureInitialized() {
     if (_instance == null) {
-      MapperContainer.globals.use(_instance = MainAxisAlignmentEnumMapper._());
+      MapperContainer.globals
+          .use(_instance = MainAxisAlignmentEnumModelMapper._());
     }
     return _instance!;
   }
 
-  static MainAxisAlignmentEnum fromValue(dynamic value) {
+  static MainAxisAlignmentEnumModel fromValue(dynamic value) {
     ensureInitialized();
     return MapperContainer.globals.fromValue(value);
   }
 
   @override
-  MainAxisAlignmentEnum decode(dynamic value) {
+  MainAxisAlignmentEnumModel decode(dynamic value) {
     switch (value) {
       case r'start':
-        return MainAxisAlignmentEnum.start;
+        return MainAxisAlignmentEnumModel.start;
       case r'end':
-        return MainAxisAlignmentEnum.end;
+        return MainAxisAlignmentEnumModel.end;
       case r'center':
-        return MainAxisAlignmentEnum.center;
+        return MainAxisAlignmentEnumModel.center;
       case r'space_between':
-        return MainAxisAlignmentEnum.space_between;
+        return MainAxisAlignmentEnumModel.space_between;
       case r'space_around':
-        return MainAxisAlignmentEnum.space_around;
+        return MainAxisAlignmentEnumModel.space_around;
       case r'space_evenly':
-        return MainAxisAlignmentEnum.space_evenly;
+        return MainAxisAlignmentEnumModel.space_evenly;
       default:
         throw MapperException.unknownEnumValue(value);
     }
   }
 
   @override
-  dynamic encode(MainAxisAlignmentEnum self) {
+  dynamic encode(MainAxisAlignmentEnumModel self) {
     switch (self) {
-      case MainAxisAlignmentEnum.start:
+      case MainAxisAlignmentEnumModel.start:
         return r'start';
-      case MainAxisAlignmentEnum.end:
+      case MainAxisAlignmentEnumModel.end:
         return r'end';
-      case MainAxisAlignmentEnum.center:
+      case MainAxisAlignmentEnumModel.center:
         return r'center';
-      case MainAxisAlignmentEnum.space_between:
+      case MainAxisAlignmentEnumModel.space_between:
         return r'space_between';
-      case MainAxisAlignmentEnum.space_around:
+      case MainAxisAlignmentEnumModel.space_around:
         return r'space_around';
-      case MainAxisAlignmentEnum.space_evenly:
+      case MainAxisAlignmentEnumModel.space_evenly:
         return r'space_evenly';
     }
   }
 }
 
-extension MainAxisAlignmentEnumMapperExtension on MainAxisAlignmentEnum {
+extension MainAxisAlignmentEnumModelMapperExtension
+    on MainAxisAlignmentEnumModel {
   String toValue() {
-    MainAxisAlignmentEnumMapper.ensureInitialized();
-    return MapperContainer.globals.toValue<MainAxisAlignmentEnum>(this)
+    MainAxisAlignmentEnumModelMapper.ensureInitialized();
+    return MapperContainer.globals.toValue<MainAxisAlignmentEnumModel>(this)
         as String;
   }
 }

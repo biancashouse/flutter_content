@@ -15,7 +15,6 @@ class FilledButtonNodeMapper extends SubClassMapperBase<FilledButtonNode> {
       MapperContainer.globals.use(_instance = FilledButtonNodeMapper._());
       ButtonNodeMapper.ensureInitialized().addSubMapper(_instance!);
       ButtonStylePropertiesMapper.ensureInitialized();
-      CalloutConfigModelMapper.ensureInitialized();
       SNodeMapper.ensureInitialized();
     }
     return _instance!;
@@ -37,10 +36,6 @@ class FilledButtonNodeMapper extends SubClassMapperBase<FilledButtonNode> {
   static String? _$onTapHandlerName(FilledButtonNode v) => v.onTapHandlerName;
   static const Field<FilledButtonNode, String> _f$onTapHandlerName =
       Field('onTapHandlerName', _$onTapHandlerName, opt: true);
-  static CalloutConfigModel? _$calloutConfig(FilledButtonNode v) =>
-      v.calloutConfig;
-  static const Field<FilledButtonNode, CalloutConfigModel> _f$calloutConfig =
-      Field('calloutConfig', _$calloutConfig, opt: true);
   static SNode? _$child(FilledButtonNode v) => v.child;
   static const Field<FilledButtonNode, SNode> _f$child =
       Field('child', _$child, opt: true);
@@ -65,7 +60,6 @@ class FilledButtonNodeMapper extends SubClassMapperBase<FilledButtonNode> {
     #destinationRoutePathSnippetName: _f$destinationRoutePathSnippetName,
     #bsPropGroup: _f$bsPropGroup,
     #onTapHandlerName: _f$onTapHandlerName,
-    #calloutConfig: _f$calloutConfig,
     #child: _f$child,
     #uid: _f$uid,
     #treeNodeGK: _f$treeNodeGK,
@@ -86,7 +80,6 @@ class FilledButtonNodeMapper extends SubClassMapperBase<FilledButtonNode> {
             data.dec(_f$destinationRoutePathSnippetName),
         bsPropGroup: data.dec(_f$bsPropGroup),
         onTapHandlerName: data.dec(_f$onTapHandlerName),
-        calloutConfig: data.dec(_f$calloutConfig),
         child: data.dec(_f$child));
   }
 
@@ -149,16 +142,12 @@ abstract class FilledButtonNodeCopyWith<$R, $In extends FilledButtonNode, $Out>
   ButtonStylePropertiesCopyWith<$R, ButtonStyleProperties,
       ButtonStyleProperties> get bsPropGroup;
   @override
-  CalloutConfigModelCopyWith<$R, CalloutConfigModel, CalloutConfigModel>?
-      get calloutConfig;
-  @override
   SNodeCopyWith<$R, SNode, SNode>? get child;
   @override
   $R call(
       {String? destinationRoutePathSnippetName,
       ButtonStyleProperties? bsPropGroup,
       String? onTapHandlerName,
-      CalloutConfigModel? calloutConfig,
       SNode? child});
   FilledButtonNodeCopyWith<$R2, $In, $Out2> $chain<$R2, $Out2>(
       Then<$Out2, $R2> t);
@@ -178,10 +167,6 @@ class _FilledButtonNodeCopyWithImpl<$R, $Out>
       get bsPropGroup =>
           $value.bsPropGroup.copyWith.$chain((v) => call(bsPropGroup: v));
   @override
-  CalloutConfigModelCopyWith<$R, CalloutConfigModel, CalloutConfigModel>?
-      get calloutConfig =>
-          $value.calloutConfig?.copyWith.$chain((v) => call(calloutConfig: v));
-  @override
   SNodeCopyWith<$R, SNode, SNode>? get child =>
       $value.child?.copyWith.$chain((v) => call(child: v));
   @override
@@ -189,14 +174,12 @@ class _FilledButtonNodeCopyWithImpl<$R, $Out>
           {Object? destinationRoutePathSnippetName = $none,
           ButtonStyleProperties? bsPropGroup,
           Object? onTapHandlerName = $none,
-          Object? calloutConfig = $none,
           Object? child = $none}) =>
       $apply(FieldCopyWithData({
         if (destinationRoutePathSnippetName != $none)
           #destinationRoutePathSnippetName: destinationRoutePathSnippetName,
         if (bsPropGroup != null) #bsPropGroup: bsPropGroup,
         if (onTapHandlerName != $none) #onTapHandlerName: onTapHandlerName,
-        if (calloutConfig != $none) #calloutConfig: calloutConfig,
         if (child != $none) #child: child
       }));
   @override
@@ -207,7 +190,6 @@ class _FilledButtonNodeCopyWithImpl<$R, $Out>
       bsPropGroup: data.get(#bsPropGroup, or: $value.bsPropGroup),
       onTapHandlerName:
           data.get(#onTapHandlerName, or: $value.onTapHandlerName),
-      calloutConfig: data.get(#calloutConfig, or: $value.calloutConfig),
       child: data.get(#child, or: $value.child));
 
   @override

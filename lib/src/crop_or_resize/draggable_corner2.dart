@@ -30,7 +30,7 @@
 //         ),
 //         onDragUpdate: (DragUpdateDetails dud) {
 //           Rect rect = parent.uncroppedRect;
-//           if (alignment == AlignmentEnum.topLeft) {
+//           if (alignment == AlignmentEnumModel.topLeft) {
 //             var deltaX = (rect.left + dud.delta.dx < thickness) ? 0 : dud.delta.dx;
 //             rect = Rect.fromLTWH(
 //               rect.left + deltaX,
@@ -45,7 +45,7 @@
 //               rect.width,
 //               rect.height - deltaY,
 //             );
-//           } else if (alignment == AlignmentEnum.topRight) {
+//           } else if (alignment == AlignmentEnumModel.topRight) {
 //             var deltaY = (rect.top + dud.delta.dy < thickness) ? 0 : dud.delta.dy;
 //             rect = Rect.fromLTWH(
 //               rect.left,
@@ -60,7 +60,7 @@
 //               rect.width + deltaX,
 //               rect.height,
 //             );
-//           } else if (alignment == AlignmentEnum.bottomLeft) {
+//           } else if (alignment == AlignmentEnumModel.bottomLeft) {
 //             var deltaX = (rect.left + dud.delta.dx < thickness) ? 0 : dud.delta.dx;
 //             rect = Rect.fromLTWH(
 //               rect.left + deltaX,
@@ -75,7 +75,7 @@
 //               rect.width,
 //               rect.height + deltaY,
 //             );
-//           } else if (alignment == AlignmentEnum.bottomRight) {
+//           } else if (alignment == AlignmentEnumModel.bottomRight) {
 //             var deltaX = (left + dud.delta.dx > parent.widget.calloutSize.width - thickness) ? 0 : dud.delta.dx;
 //             rect = Rect.fromLTWH(
 //               rect.left,
@@ -98,13 +98,13 @@
 //   }
 //
 //   Offset _pos() {
-//     if (alignment == AlignmentEnum.topLeft) {
+//     if (alignment == AlignmentEnumModel.topLeft) {
 //       return parent.uncroppedRect.topLeft.translate(-thickness, -thickness);
-//     } else if (alignment == AlignmentEnum.topRight) {
+//     } else if (alignment == AlignmentEnumModel.topRight) {
 //       return parent.uncroppedRect.topRight.translate(0, -thickness);
-//     } else if (alignment == AlignmentEnum.bottomLeft) {
+//     } else if (alignment == AlignmentEnumModel.bottomLeft) {
 //       return parent.uncroppedRect.bottomLeft.translate(-thickness, 0);
-//     } else if (alignment == AlignmentEnum.bottomRight) {
+//     } else if (alignment == AlignmentEnumModel.bottomRight) {
 //       return parent.uncroppedRect.bottomRight.translate(0, 0);
 //     } else {
 //       throw ('Corner _pos() unexpected alignment!');

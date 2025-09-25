@@ -119,10 +119,10 @@
 //       widget.onValidEmailF(_eaController.text);
 //     } else {
 //       fco.showToast(
-//         calloutConfig: CalloutConfigModel(
+//         calloutConfig: CalloutConfig(
 //           cId: 'not-a-valid-ea',
 //           fillColor: Colors.red,
-//           gravity: AlignmentEnum.topCenter,
+//           gravity: AlignmentEnumModel.topCenter,
 //           initialCalloutW: 450,
 //           initialCalloutH: 50,
 //         ),

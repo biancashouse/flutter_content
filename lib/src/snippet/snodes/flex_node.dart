@@ -12,9 +12,9 @@ part 'flex_node.mapper.dart';
 
 @MappableClass(discriminatorKey: 'flex', includeSubClasses: flexSubClasses)
 abstract class FlexNode extends MC with FlexNodeMappable {
-  MainAxisAlignmentEnum? mainAxisAlignment;
+  MainAxisAlignmentEnumModel? mainAxisAlignment;
   MainAxisSizeEnum? mainAxisSize;
-  CrossAxisAlignmentEnum? crossAxisAlignment;
+  CrossAxisAlignmentEnumModel? crossAxisAlignment;
 
   FlexNode({
     this.mainAxisAlignment,
@@ -31,12 +31,12 @@ abstract class FlexNode extends MC with FlexNodeMappable {
                 'https://api.flutter.dev/flutter/widgets/Flex-class.html',
             snode: this,
             name: 'fyi'),
-        EnumPNode<MainAxisAlignmentEnum?>(
+        EnumPNode<MainAxisAlignmentEnumModel?>(
           snode: this,
           name: 'mainAxisAlignment',
           valueIndex: mainAxisAlignment?.index,
           onIndexChange: (newValue) => refreshWithUpdate(context,
-              () => mainAxisAlignment = MainAxisAlignmentEnum.of(newValue)),
+              () => mainAxisAlignment = MainAxisAlignmentEnumModel.of(newValue)),
         ),
         EnumPNode<MainAxisSizeEnum?>(
           snode: this,
@@ -45,12 +45,12 @@ abstract class FlexNode extends MC with FlexNodeMappable {
           onIndexChange: (newValue) => refreshWithUpdate(
               context, () => mainAxisSize = MainAxisSizeEnum.of(newValue)),
         ),
-        EnumPNode<CrossAxisAlignmentEnum?>(
+        EnumPNode<CrossAxisAlignmentEnumModel?>(
           snode: this,
           name: 'crossAxisAlignment',
           valueIndex: crossAxisAlignment?.index,
           onIndexChange: (newValue) => refreshWithUpdate(context,
-              () => crossAxisAlignment = CrossAxisAlignmentEnum.of(newValue)),
+              () => crossAxisAlignment = CrossAxisAlignmentEnumModel.of(newValue)),
         ),
       ];
 
@@ -130,14 +130,14 @@ abstract class FlexNode extends MC with FlexNodeMappable {
 // List<Widget> nodePropertyEditors(BuildContext context, {bool allowButtonCallouts = false}) => [
 //       NodePropertyButtonEnum(
 //         label: 'mainAxisAlignment',
-//         menuItems: MainAxisAlignmentEnum.values.map((e) => e.toMenuItem(isRow)).toList(),
+//         menuItems: MainAxisAlignmentEnumModel.values.map((e) => e.toMenuItem(isRow)).toList(),
 //         originalEnumIndex: mainAxisAlignment?.index,
 //         onChangeF: (newOption) {
-//           mainAxisAlignment = MainAxisAlignmentEnum.values[newOption];
+//           mainAxisAlignment = MainAxisAlignmentEnumModel.values[newOption];
 //           bloc.add(const CAPIEvent.forceRefresh());
 //         },
 //         wrap: !isRow,
-//         calloutSize: MainAxisAlignmentEnum.calloutSize(isRow: isRow),
+//         calloutSize: MainAxisAlignmentEnumModel.calloutSize(isRow: isRow),
 //       ),
 //       const SizedBox(width: 10, height: 10),
 //       Container(
@@ -169,14 +169,14 @@ abstract class FlexNode extends MC with FlexNodeMappable {
 //       // ),
 //       NodePropertyButtonEnum(
 //         label: 'crossAxisAlignment',
-//         menuItems: CrossAxisAlignmentEnum.values.map((e) => e.toMenuItem(isRow)).toList(),
+//         menuItems: CrossAxisAlignmentEnumModel.values.map((e) => e.toMenuItem(isRow)).toList(),
 //         originalEnumIndex: crossAxisAlignment?.index,
 //         onChangeF: (newOption) {
-//           crossAxisAlignment = CrossAxisAlignmentEnum.values[newOption];
+//           crossAxisAlignment = CrossAxisAlignmentEnumModel.values[newOption];
 //           bloc.add(const CAPIEvent.forceRefresh());
 //         },
 //         wrap: !isRow,
-//         calloutSize: CrossAxisAlignmentEnum.calloutSize(isRow: isRow),
+//         calloutSize: CrossAxisAlignmentEnumModel.calloutSize(isRow: isRow),
 //       ),
 //     ];
 

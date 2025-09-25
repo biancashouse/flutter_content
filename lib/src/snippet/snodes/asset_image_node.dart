@@ -157,13 +157,13 @@ class AssetImageNode extends CL with AssetImageNodeMappable {
   //       ),
   //       NodePropertyButtonEnum(
   //         label: 'alignment',
-  //         menuItems: AlignmentEnum.values.map((e) => e.toMenuItem()).toList(),
+  //         menuItems: AlignmentEnumModel.values.map((e) => e.toMenuItem()).toList(),
   //         originalEnumIndex: alignment.index,
   //         onChangeF: (newOption) {
-  //           alignment = AlignmentEnum.values[newOption];
+  //           alignment = AlignmentEnumModel.values[newOption];
   //           bloc.add(const CAPIEvent.forceRefresh());
   //         },
-  //         calloutSize: AlignmentEnum.calloutSize,
+  //         calloutSize: AlignmentEnumModel.calloutSize,
   //       ),
   //     ];
 
@@ -197,7 +197,7 @@ class AssetImageNode extends CL with AssetImageNodeMappable {
                   name!,
                   // scale: scale,
                   fit: fit?.flutterValue,
-                  alignment: alignment?.flutterValue ?? Alignment.center,
+                  alignment: alignment?.alignment ?? Alignment.center,
                   // package: 'flutter_content',
                   errorBuilder: (context, o, stackTrace) {
                     return Error(

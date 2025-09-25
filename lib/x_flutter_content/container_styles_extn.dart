@@ -86,7 +86,7 @@ extension ContainerStylesExtension on FlutterContentMixins {
         break;
       }
 
-      if (namedCSProps.decoration != props.decoration) {
+      if (namedCSProps.decorationShapeEnum != props.decorationShapeEnum) {
         break;
       }
 

@@ -15,7 +15,6 @@ class ElevatedButtonNodeMapper extends SubClassMapperBase<ElevatedButtonNode> {
       MapperContainer.globals.use(_instance = ElevatedButtonNodeMapper._());
       ButtonNodeMapper.ensureInitialized().addSubMapper(_instance!);
       ButtonStylePropertiesMapper.ensureInitialized();
-      CalloutConfigModelMapper.ensureInitialized();
       SNodeMapper.ensureInitialized();
     }
     return _instance!;
@@ -37,10 +36,6 @@ class ElevatedButtonNodeMapper extends SubClassMapperBase<ElevatedButtonNode> {
   static String? _$onTapHandlerName(ElevatedButtonNode v) => v.onTapHandlerName;
   static const Field<ElevatedButtonNode, String> _f$onTapHandlerName =
       Field('onTapHandlerName', _$onTapHandlerName, opt: true);
-  static CalloutConfigModel? _$calloutConfig(ElevatedButtonNode v) =>
-      v.calloutConfig;
-  static const Field<ElevatedButtonNode, CalloutConfigModel> _f$calloutConfig =
-      Field('calloutConfig', _$calloutConfig, opt: true);
   static SNode? _$child(ElevatedButtonNode v) => v.child;
   static const Field<ElevatedButtonNode, SNode> _f$child =
       Field('child', _$child, opt: true);
@@ -65,7 +60,6 @@ class ElevatedButtonNodeMapper extends SubClassMapperBase<ElevatedButtonNode> {
     #destinationRoutePathSnippetName: _f$destinationRoutePathSnippetName,
     #bsPropGroup: _f$bsPropGroup,
     #onTapHandlerName: _f$onTapHandlerName,
-    #calloutConfig: _f$calloutConfig,
     #child: _f$child,
     #uid: _f$uid,
     #treeNodeGK: _f$treeNodeGK,
@@ -86,7 +80,6 @@ class ElevatedButtonNodeMapper extends SubClassMapperBase<ElevatedButtonNode> {
             data.dec(_f$destinationRoutePathSnippetName),
         bsPropGroup: data.dec(_f$bsPropGroup),
         onTapHandlerName: data.dec(_f$onTapHandlerName),
-        calloutConfig: data.dec(_f$calloutConfig),
         child: data.dec(_f$child));
   }
 
@@ -149,16 +142,12 @@ abstract class ElevatedButtonNodeCopyWith<$R, $In extends ElevatedButtonNode,
   ButtonStylePropertiesCopyWith<$R, ButtonStyleProperties,
       ButtonStyleProperties> get bsPropGroup;
   @override
-  CalloutConfigModelCopyWith<$R, CalloutConfigModel, CalloutConfigModel>?
-      get calloutConfig;
-  @override
   SNodeCopyWith<$R, SNode, SNode>? get child;
   @override
   $R call(
       {String? destinationRoutePathSnippetName,
       ButtonStyleProperties? bsPropGroup,
       String? onTapHandlerName,
-      CalloutConfigModel? calloutConfig,
       SNode? child});
   ElevatedButtonNodeCopyWith<$R2, $In, $Out2> $chain<$R2, $Out2>(
       Then<$Out2, $R2> t);
@@ -178,10 +167,6 @@ class _ElevatedButtonNodeCopyWithImpl<$R, $Out>
       get bsPropGroup =>
           $value.bsPropGroup.copyWith.$chain((v) => call(bsPropGroup: v));
   @override
-  CalloutConfigModelCopyWith<$R, CalloutConfigModel, CalloutConfigModel>?
-      get calloutConfig =>
-          $value.calloutConfig?.copyWith.$chain((v) => call(calloutConfig: v));
-  @override
   SNodeCopyWith<$R, SNode, SNode>? get child =>
       $value.child?.copyWith.$chain((v) => call(child: v));
   @override
@@ -189,14 +174,12 @@ class _ElevatedButtonNodeCopyWithImpl<$R, $Out>
           {Object? destinationRoutePathSnippetName = $none,
           ButtonStyleProperties? bsPropGroup,
           Object? onTapHandlerName = $none,
-          Object? calloutConfig = $none,
           Object? child = $none}) =>
       $apply(FieldCopyWithData({
         if (destinationRoutePathSnippetName != $none)
           #destinationRoutePathSnippetName: destinationRoutePathSnippetName,
         if (bsPropGroup != null) #bsPropGroup: bsPropGroup,
         if (onTapHandlerName != $none) #onTapHandlerName: onTapHandlerName,
-        if (calloutConfig != $none) #calloutConfig: calloutConfig,
         if (child != $none) #child: child
       }));
   @override
@@ -207,7 +190,6 @@ class _ElevatedButtonNodeCopyWithImpl<$R, $Out>
       bsPropGroup: data.get(#bsPropGroup, or: $value.bsPropGroup),
       onTapHandlerName:
           data.get(#onTapHandlerName, or: $value.onTapHandlerName),
-      calloutConfig: data.get(#calloutConfig, or: $value.calloutConfig),
       child: data.get(#child, or: $value.child));
 
   @override

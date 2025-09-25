@@ -15,7 +15,6 @@ class IconButtonNodeMapper extends SubClassMapperBase<IconButtonNode> {
       MapperContainer.globals.use(_instance = IconButtonNodeMapper._());
       ButtonNodeMapper.ensureInitialized().addSubMapper(_instance!);
       ButtonStylePropertiesMapper.ensureInitialized();
-      CalloutConfigModelMapper.ensureInitialized();
       SNodeMapper.ensureInitialized();
     }
     return _instance!;
@@ -51,10 +50,6 @@ class IconButtonNodeMapper extends SubClassMapperBase<IconButtonNode> {
   static String? _$onTapHandlerName(IconButtonNode v) => v.onTapHandlerName;
   static const Field<IconButtonNode, String> _f$onTapHandlerName =
       Field('onTapHandlerName', _$onTapHandlerName, opt: true);
-  static CalloutConfigModel? _$calloutConfig(IconButtonNode v) =>
-      v.calloutConfig;
-  static const Field<IconButtonNode, CalloutConfigModel> _f$calloutConfig =
-      Field('calloutConfig', _$calloutConfig, opt: true);
   static SNode? _$child(IconButtonNode v) => v.child;
   static const Field<IconButtonNode, SNode> _f$child =
       Field('child', _$child, opt: true);
@@ -84,7 +79,6 @@ class IconButtonNodeMapper extends SubClassMapperBase<IconButtonNode> {
     #destinationRoutePathSnippetName: _f$destinationRoutePathSnippetName,
     #bsPropGroup: _f$bsPropGroup,
     #onTapHandlerName: _f$onTapHandlerName,
-    #calloutConfig: _f$calloutConfig,
     #child: _f$child,
     #uid: _f$uid,
     #treeNodeGK: _f$treeNodeGK,
@@ -110,7 +104,6 @@ class IconButtonNodeMapper extends SubClassMapperBase<IconButtonNode> {
             data.dec(_f$destinationRoutePathSnippetName),
         bsPropGroup: data.dec(_f$bsPropGroup),
         onTapHandlerName: data.dec(_f$onTapHandlerName),
-        calloutConfig: data.dec(_f$calloutConfig),
         child: data.dec(_f$child));
   }
 
@@ -172,9 +165,6 @@ abstract class IconButtonNodeCopyWith<$R, $In extends IconButtonNode, $Out>
   ButtonStylePropertiesCopyWith<$R, ButtonStyleProperties,
       ButtonStyleProperties> get bsPropGroup;
   @override
-  CalloutConfigModelCopyWith<$R, CalloutConfigModel, CalloutConfigModel>?
-      get calloutConfig;
-  @override
   SNodeCopyWith<$R, SNode, SNode>? get child;
   @override
   $R call(
@@ -186,7 +176,6 @@ abstract class IconButtonNodeCopyWith<$R, $In extends IconButtonNode, $Out>
       String? destinationRoutePathSnippetName,
       ButtonStyleProperties? bsPropGroup,
       String? onTapHandlerName,
-      CalloutConfigModel? calloutConfig,
       SNode? child});
   IconButtonNodeCopyWith<$R2, $In, $Out2> $chain<$R2, $Out2>(
       Then<$Out2, $R2> t);
@@ -206,10 +195,6 @@ class _IconButtonNodeCopyWithImpl<$R, $Out>
       get bsPropGroup =>
           $value.bsPropGroup.copyWith.$chain((v) => call(bsPropGroup: v));
   @override
-  CalloutConfigModelCopyWith<$R, CalloutConfigModel, CalloutConfigModel>?
-      get calloutConfig =>
-          $value.calloutConfig?.copyWith.$chain((v) => call(calloutConfig: v));
-  @override
   SNodeCopyWith<$R, SNode, SNode>? get child =>
       $value.child?.copyWith.$chain((v) => call(child: v));
   @override
@@ -222,7 +207,6 @@ class _IconButtonNodeCopyWithImpl<$R, $Out>
           Object? destinationRoutePathSnippetName = $none,
           ButtonStyleProperties? bsPropGroup,
           Object? onTapHandlerName = $none,
-          Object? calloutConfig = $none,
           Object? child = $none}) =>
       $apply(FieldCopyWithData({
         if (iconCodePoint != $none) #iconCodePoint: iconCodePoint,
@@ -234,7 +218,6 @@ class _IconButtonNodeCopyWithImpl<$R, $Out>
           #destinationRoutePathSnippetName: destinationRoutePathSnippetName,
         if (bsPropGroup != null) #bsPropGroup: bsPropGroup,
         if (onTapHandlerName != $none) #onTapHandlerName: onTapHandlerName,
-        if (calloutConfig != $none) #calloutConfig: calloutConfig,
         if (child != $none) #child: child
       }));
   @override
@@ -250,7 +233,6 @@ class _IconButtonNodeCopyWithImpl<$R, $Out>
       bsPropGroup: data.get(#bsPropGroup, or: $value.bsPropGroup),
       onTapHandlerName:
           data.get(#onTapHandlerName, or: $value.onTapHandlerName),
-      calloutConfig: data.get(#calloutConfig, or: $value.calloutConfig),
       child: data.get(#child, or: $value.child));
 
   @override

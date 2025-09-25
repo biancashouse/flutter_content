@@ -1,17 +1,10 @@
 import 'package:dart_mappable/dart_mappable.dart';
-import 'package:flutter_callouts/flutter_callouts.dart'
-    show AlignmentEnum, AlignmentEnumMapper;
-
-// import 'package:flutter_content/flutter_content.dart';
+import 'package:flutter_content/flutter_content.dart';
 import 'package:flutter_content/src/snippet/pnodes/enums/enum_corner.dart';
-import 'package:flutter_content/src/snippet/pnodes/enums/mappable_enum_decoration.dart';
+import 'package:flutter_content/src/snippet/pnodes/enums/enum_decoration_shape.dart';
 import 'package:flutter_content/src/snippet/pnodes/groups/outlined_border_properties.dart';
 import 'package:flutter_content/src/snippet/pnodes/groups/up_to_6_colors_hook.dart';
-import 'package:flutter_content/src/snippet/snodes/upto6colors.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
-
-import '../../../typedefs.dart';
-import '../../snodes/edgeinsets_node_value.dart';
 
 part 'container_style_properties.mapper.dart';
 
@@ -30,7 +23,7 @@ class ContainerStyleProperties with ContainerStylePropertiesMappable {
   double? width;
   double? height;
   AlignmentEnum? alignment;
-  MappableDecorationShapeEnum decoration;
+  DecorationShapeEnum? decorationShapeEnum;
   double? borderThickness;
   UpTo6Colors? borderColors;
   @MappableField(hook: UpTo6ColorsHook())
@@ -65,7 +58,7 @@ class ContainerStyleProperties with ContainerStylePropertiesMappable {
     this.width,
     this.height,
     this.alignment,
-    this.decoration = MappableDecorationShapeEnum.rectangle,
+    this.decorationShapeEnum,
     this.borderThickness,
     this.borderColors,
     this.borderColorValues,
@@ -112,107 +105,108 @@ class ContainerStyleProperties with ContainerStylePropertiesMappable {
   // }
 
   ContainerStyleProperties clone() => ContainerStyleProperties(
-        fillColors: fillColors,
-        margin: margin,
-        padding: padding,
-        width: width,
-        height: height,
-        alignment: alignment,
-        decoration: decoration,
-        borderThickness: borderThickness,
-        borderColors: borderColors,
-        borderRadius: borderRadius,
-        starPoints: starPoints,
-        dash: dash,
-        gap: gap,
-        badgeCorner: badgeCorner,
-        badgeHeight: badgeHeight,
-        badgeText: badgeText,
-        badgeWidth: badgeWidth,
-        outlinedBorderGroup: outlinedBorderGroup,
-      );
+    fillColors: fillColors,
+    radialGradient: radialGradient,
+    margin: margin,
+    padding: padding,
+    width: width,
+    height: height,
+    alignment: alignment,
+    decorationShapeEnum: decorationShapeEnum,
+    borderThickness: borderThickness,
+    borderColors: borderColors,
+    borderRadius: borderRadius,
+    starPoints: starPoints,
+    dash: dash,
+    gap: gap,
+    badgeCorner: badgeCorner,
+    badgeHeight: badgeHeight,
+    badgeText: badgeText,
+    badgeWidth: badgeWidth,
+    outlinedBorderGroup: outlinedBorderGroup,
+  );
 
-  bool _allNull() =>
-      fillColors == null &&
-      margin == null &&
-      padding == null &&
-      width == null &&
-      height == null &&
-      alignment == null &&
-      decoration == MappableDecorationShapeEnum.rectangle &&
-      borderThickness == null &&
-      borderColors == null &&
-      borderRadius == null &&
-      starPoints == null &&
-      dash == null &&
-      gap == null &&
-      badgeCorner == null &&
-      badgeHeight == null &&
-      badgeText == null &&
-      badgeWidth == null &&
-      outlinedBorderGroup == null;
+  // bool _allNull() =>
+  //     fillColors == null &&
+  //     margin == null &&
+  //     padding == null &&
+  //     width == null &&
+  //     height == null &&
+  //     alignment == null &&
+  //     decorationShape == null &&
+  //     borderThickness == null &&
+  //     borderColors == null &&
+  //     borderRadius == null &&
+  //     starPoints == null &&
+  //     dash == null &&
+  //     gap == null &&
+  //     badgeCorner == null &&
+  //     badgeHeight == null &&
+  //     badgeText == null &&
+  //     badgeWidth == null &&
+  //     outlinedBorderGroup == null;
 
   @override
-  operator ==(o) =>
-      o is ContainerStyleProperties &&
-      fillColors == o.fillColors &&
-      margin == o.margin &&
-      padding == o.padding &&
-      width == o.width &&
-      height == o.height &&
-      alignment == o.alignment &&
-      decoration == o.decoration &&
-      borderThickness == o.borderThickness &&
-      borderColors == o.borderColors &&
-      borderRadius == o.borderRadius &&
-      starPoints == o.starPoints &&
-      dash == o.dash &&
-      gap == o.gap &&
-      badgeCorner == o.badgeCorner &&
-      badgeHeight == o.badgeHeight &&
-      badgeText == o.badgeText &&
-      badgeWidth == o.badgeWidth &&
-      outlinedBorderGroup == o.outlinedBorderGroup;
+  operator ==(other) =>
+      other is ContainerStyleProperties &&
+      fillColors == other.fillColors &&
+      margin == other.margin &&
+      padding == other.padding &&
+      width == other.width &&
+      height == other.height &&
+      alignment == other.alignment &&
+      decorationShapeEnum == other.decorationShapeEnum &&
+      borderThickness == other.borderThickness &&
+      borderColors == other.borderColors &&
+      borderRadius == other.borderRadius &&
+      starPoints == other.starPoints &&
+      dash == other.dash &&
+      gap == other.gap &&
+      badgeCorner == other.badgeCorner &&
+      badgeHeight == other.badgeHeight &&
+      badgeText == other.badgeText &&
+      badgeWidth == other.badgeWidth &&
+      outlinedBorderGroup == other.outlinedBorderGroup;
 
   @override
   int get hashCode => Object.hash(
-        fillColors,
-        margin,
-        padding,
-        width,
-        height,
-        alignment,
-        decoration,
-        borderThickness,
-        borderColors,
-        borderRadius,
-        starPoints,
-        dash,
-        gap,
-        badgeCorner,
-        badgeHeight,
-        badgeText,
-        badgeWidth,
-        outlinedBorderGroup,
-      );
-// bool same(ContainerStyleProperties o) =>
-//     ((fillColors != null && fillColors!.same(o.fillColors)) || o.fillColors == null) &&
-//         ((margin != null && margin!.same(o.margin)) || o.margin == null) &&
-//     margin == o.margin &&
-//     padding == o.padding &&
-//     width == o.width &&
-//     height == o.height &&
-//     alignment == o.alignment &&
-//     decoration == o.decoration &&
-//     borderThickness == o.borderThickness &&
-//     borderColors == o.borderColors &&
-//     borderRadius == o.borderRadius &&
-//     starPoints == o.starPoints &&
-//     dash == o.dash &&
-//     gap == o.gap &&
-//     badgeCorner == o.badgeCorner &&
-//     badgeHeight == o.badgeHeight &&
-//     badgeText == o.badgeText &&
-//     badgeWidth == o.badgeWidth &&
-//     outlinedBorderGroup == o.outlinedBorderGroup;
+    fillColors,
+    margin,
+    padding,
+    width,
+    height,
+    alignment,
+    decorationShapeEnum,
+    borderThickness,
+    borderColors,
+    borderRadius,
+    starPoints,
+    dash,
+    gap,
+    badgeCorner,
+    badgeHeight,
+    badgeText,
+    badgeWidth,
+    outlinedBorderGroup,
+  );
+  // bool same(ContainerStyleProperties o) =>
+  //     ((fillColors != null && fillColors!.same(o.fillColors)) || o.fillColors == null) &&
+  //         ((margin != null && margin!.same(o.margin)) || o.margin == null) &&
+  //     margin == o.margin &&
+  //     padding == o.padding &&
+  //     width == o.width &&
+  //     height == o.height &&
+  //     alignment == o.alignment &&
+  //     decoration == o.decoration &&
+  //     borderThickness == o.borderThickness &&
+  //     borderColors == o.borderColors &&
+  //     borderRadius == o.borderRadius &&
+  //     starPoints == o.starPoints &&
+  //     dash == o.dash &&
+  //     gap == o.gap &&
+  //     badgeCorner == o.badgeCorner &&
+  //     badgeHeight == o.badgeHeight &&
+  //     badgeText == o.badgeText &&
+  //     badgeWidth == o.badgeWidth &&
+  //     outlinedBorderGroup == o.outlinedBorderGroup;
 }

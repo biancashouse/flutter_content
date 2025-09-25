@@ -115,7 +115,7 @@ class TargetCover extends StatelessWidget {
                   tc,
                   num: index + 1,
                   bgColor:
-                      tc.calloutFillColor!.flutterValue.withValues(alpha: .5),
+                      tc.bgColor().withValues(alpha: .5),
                   radius: radius,
                   fontSize: 16,
                 ),

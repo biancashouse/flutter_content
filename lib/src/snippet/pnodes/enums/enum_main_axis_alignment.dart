@@ -8,7 +8,7 @@ import 'package:flutter_content/src/snippet/pnodes/editors/property_button_enum.
 part 'enum_main_axis_alignment.mapper.dart';
 
 @MappableEnum()
-enum MainAxisAlignmentEnum  {
+enum MainAxisAlignmentEnumModel  {
   start(MainAxisAlignment.start),
   end(MainAxisAlignment.end),
   center(MainAxisAlignment.center),
@@ -16,7 +16,7 @@ enum MainAxisAlignmentEnum  {
   space_around(MainAxisAlignment.spaceAround),
   space_evenly(MainAxisAlignment.spaceEvenly);
 
-  const MainAxisAlignmentEnum(this.flutterValue);
+  const MainAxisAlignmentEnumModel(this.flutterValue);
 
   final MainAxisAlignment flutterValue;
 
@@ -106,7 +106,7 @@ enum MainAxisAlignmentEnum  {
       );
 
   // static EnumPNode toEnumPNode(
-  //         MainAxisAlignmentEnum? value, Node snippetTreeNode, String label, ValueChanged<int?> onChange, bool isRow) =>
+  //         MainAxisAlignmentEnumModel? value, Node snippetTreeNode, String label, ValueChanged<int?> onChange, bool isRow) =>
   //     EnumPNode(
   //       snippetTreeNode: snippetTreeNode,
   //       label: label,
@@ -121,15 +121,15 @@ enum MainAxisAlignmentEnum  {
   // Widget toPropertyButton(FlexNode node) =>
   //     NodePropertyButtonEnum(
   //       label: 'MainAxisAlignment',
-  //       menuItems: MainAxisAlignmentEnum.values.map((e) => e.toMenuItem(node is RowNode)).toList(),
+  //       menuItems: MainAxisAlignmentEnumModel.values.map((e) => e.toMenuItem(node is RowNode)).toList(),
   //       originalEnumIndex: node.mainAxisAlignment?.index,
   //       onChangeF: (newOption) {
-  //         node.mainAxisAlignment = MainAxisAlignmentEnum.values[newOption];
+  //         node.mainAxisAlignment = MainAxisAlignmentEnumModel.values[newOption];
   //         node.bloc.add(const CAPIEvent.forceRefresh());
   //       },
   //       wrap: node is! RowNode,
   //       calloutSize: calloutSize(isRow: node is RowNode),
   //     );
 
-  static MainAxisAlignmentEnum? of(int? index) => index != null ? MainAxisAlignmentEnum.values.elementAtOrNull(index) : null;
+  static MainAxisAlignmentEnumModel? of(int? index) => index != null ? MainAxisAlignmentEnumModel.values.elementAtOrNull(index) : null;
 }

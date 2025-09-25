@@ -11,32 +11,33 @@ void showSaveAsCallout({
   required ScrollControllerName? scName,
 }) {
   fco.showOverlay(
-      // targetGkF: targetGKF,
-      calloutContent: InputSnippetName(
-        selectedNode: selectedNode,
-        selectionParentNode: selectionParentNode,
-        // targetGKF: targetGKF,
-        saveModelF: saveModelF,
+    // targetGkF: targetGKF,
+    calloutContent: InputSnippetName(
+      selectedNode: selectedNode,
+      selectionParentNode: selectionParentNode,
+      // targetGKF: targetGKF,
+      saveModelF: saveModelF,
+    ),
+    calloutConfig: CalloutConfig(
+      cId: "input-snippet-name",
+      initialCalloutW: 400,
+      initialCalloutH: 159,
+      initialTargetAlignment: Alignment.bottomCenter,
+      initialCalloutAlignment: Alignment.topCenter,
+      targetPointerType: TargetPointerType.thin_line(),
+      bubbleOrTargetPointerColor: Colors.blue[900]!,
+      finalSeparation: 60,
+      decorationFillColors: ColorOrGradient.color(Colors.purpleAccent),
+      barrier: CalloutBarrierConfig(
+        opacity: 0.25,
+        onTappedF: () async {
+          fco.dismiss("input-snippet-name");
+        },
       ),
-      calloutConfig: CalloutConfigModel(
-        cId: "input-snippet-name",
-        initialCalloutW: 400,
-        initialCalloutH: 159,
-        initialTargetAlignment: AlignmentEnum.bottomCenter,
-        initialCalloutAlignment: AlignmentEnum.topCenter,
-        arrowType: ArrowTypeEnum.THIN,
-        arrowColor: ColorModel.fromColor(Colors.blue[900]!),
-        finalSeparation: 60,
-        fillColor: ColorModel.purpleAccent(),
-        barrier: CalloutBarrierConfig(
-          opacity: 0.25,
-          onTappedF: () async {
-            fco.dismiss("input-snippet-name");
-          },
-        ),
-        notUsingHydratedStorage: true,
-        scrollControllerName: scName,
-      ));
+      notUsingHydratedStorage: true,
+      scrollControllerName: scName,
+    ),
+  );
 }
 
 class InputSnippetName extends StatefulWidget {
@@ -61,7 +62,7 @@ class InputSnippetName extends StatefulWidget {
 class InputSnippetNameState extends State<InputSnippetName> {
   FocusNode? _focusNode;
   late TextEditingController _txtController;
-  Color buttonColor = Colors.grey.withValues(alpha:.5);
+  Color buttonColor = Colors.grey.withValues(alpha: .5);
 
   @override
   void initState() {
@@ -94,69 +95,68 @@ class InputSnippetNameState extends State<InputSnippetName> {
       child: Column(
         mainAxisSize: MainAxisSize.min,
         mainAxisAlignment: MainAxisAlignment.start,
-        children: <Widget>[
-          _textField(),
-          _saveBtn(),
-        ],
+        children: <Widget>[_textField(), _saveBtn()],
       ),
     );
   }
 
   Widget _textField() => Container(
-        padding: const EdgeInsets.all(10.0),
-        color: Colors.white,
-        child: TextField(
-          enabled: true,
-          controller: _txtController,
-          onSubmitted: (s) {},
-          onChanged: (s) {
-            setState(() {
-              if (s.isNotEmpty) buttonColor = Colors.yellow;
-            });
-          },
-          decoration: const InputDecoration(
-            border: OutlineInputBorder(),
-            labelText: 'Snippet Name',
-          ),
-          autofocus: true,
-          focusNode: _focusNode,
-          maxLines: 1,
-          style: GoogleFonts.getFont(
-            'Roboto Mono',
-            fontSize: 18,
-            color: Colors.blue[900],
-            fontWeight: FontWeight.w400,
-            background: fco.whiteBgPaint,
-          ),
-        ),
-      );
+    padding: const EdgeInsets.all(10.0),
+    color: Colors.white,
+    child: TextField(
+      enabled: true,
+      controller: _txtController,
+      onSubmitted: (s) {},
+      onChanged: (s) {
+        setState(() {
+          if (s.isNotEmpty) buttonColor = Colors.yellow;
+        });
+      },
+      decoration: const InputDecoration(
+        border: OutlineInputBorder(),
+        labelText: 'Snippet Name',
+      ),
+      autofocus: true,
+      focusNode: _focusNode,
+      maxLines: 1,
+      style: GoogleFonts.getFont(
+        'Roboto Mono',
+        fontSize: 18,
+        color: Colors.blue[900],
+        fontWeight: FontWeight.w400,
+        background: fco.whiteBgPaint,
+      ),
+    ),
+  );
 
   Widget _saveBtn() => Padding(
-        padding: const EdgeInsets.all(16.0),
-        child: ElevatedButton(
-            style: ElevatedButton.styleFrom(
-              backgroundColor: buttonColor,
-              padding: const EdgeInsets.symmetric(horizontal: 20.0),
-              shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(24.0)),
-              elevation: 2,
-            ),
-            child: const Row(
-              mainAxisSize: MainAxisSize.min,
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                Text(
-                  'save',
-                  textAlign: TextAlign.center,
-                  style: TextStyle(fontSize: 14, color: Colors.green),
-                ),
-              ],
-            ),
-            onPressed: () {
-              if (_txtController.text.isNotEmpty) {
-                widget.saveModelF.call(_txtController.text);
-                fco.dismiss("input-snippet-name");
-              }
-            }),
-      );
+    padding: const EdgeInsets.all(16.0),
+    child: ElevatedButton(
+      style: ElevatedButton.styleFrom(
+        backgroundColor: buttonColor,
+        padding: const EdgeInsets.symmetric(horizontal: 20.0),
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(24.0),
+        ),
+        elevation: 2,
+      ),
+      child: const Row(
+        mainAxisSize: MainAxisSize.min,
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          Text(
+            'save',
+            textAlign: TextAlign.center,
+            style: TextStyle(fontSize: 14, color: Colors.green),
+          ),
+        ],
+      ),
+      onPressed: () {
+        if (_txtController.text.isNotEmpty) {
+          widget.saveModelF.call(_txtController.text);
+          fco.dismiss("input-snippet-name");
+        }
+      },
+    ),
+  );
 }

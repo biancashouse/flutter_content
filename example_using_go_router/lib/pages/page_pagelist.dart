@@ -54,7 +54,7 @@
 //             scaffold,
 //             if (showPencil)
 //               Align(
-//                   alignment: AlignmentEnum.topRight,
+//                   alignment: AlignmentEnumModel.topRight,
 //                   child: IconButton(
 //                     onPressed: () {
 //                       // ask user to sign in as editor

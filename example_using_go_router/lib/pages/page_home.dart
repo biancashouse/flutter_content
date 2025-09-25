@@ -25,15 +25,15 @@ class _Page_HomeState extends State<Page_Home> {
       // var pagePath = EditablePage.scName(context);
       // namedSC = NamedScrollController(pagePath, Axis.vertical);
 
-      final cc = CalloutConfigModel(
+      final cc = CalloutConfig(
         cId: 'basic',
-        initialTargetAlignment: AlignmentEnum.topLeft,
-        initialCalloutAlignment: AlignmentEnum.bottomRight,
+        initialTargetAlignment: Alignment.topLeft,
+        initialCalloutAlignment: Alignment.bottomRight,
         finalSeparation: 100,
-        borderThickness: 3,
-        fillColor: ColorModel.fromColor(Colors.yellow[700]!),
-        arrowType: ArrowTypeEnum.POINTY,
-        animate: true,
+        decorationBorderThickness: 3,
+        decorationFillColors: ColorOrGradient.color(Colors.yellow[700]!),
+        targetPointerType: TargetPointerType.bubble(),
+        animatePointer: true,
         scrollControllerName: null,
       );
 
@@ -152,17 +152,6 @@ class _Page_HomeState extends State<Page_Home> {
       ),
     );
 
-    return Stack(
-      children: [
-        scaffold,
-        Align(
-          alignment: Alignment.topRight,
-          child: Padding(
-            padding: const EdgeInsets.only(right: 8.0),
-            child: fco.NavigationDD(pencilIconColor: Colors.red),
-          ),
-        ),
-      ],
-    );
+    return scaffold;
   }
 }

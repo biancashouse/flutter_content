@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_content/flutter_content.dart';
 import 'package:flutter_content/src/snippet/pnodes/editors/axis_editor.dart';
 
-// const AlignmentEnum(this.flutterValue);
+// const AlignmentEnumModel(this.flutterValue);
 //
 // final Alignment flutterValue;
 

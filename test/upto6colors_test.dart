@@ -1,6 +1,4 @@
-import 'package:flutter_callouts/flutter_callouts.dart' show ColorModel;
-import 'package:flutter_content/src/snippet/snodes/upto6colors.dart'
-    show UpTo6Colors;
+import 'package:flutter_content/flutter_content.dart';
 import 'package:flutter_test/flutter_test.dart';
 
 void main() {

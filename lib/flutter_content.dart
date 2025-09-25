@@ -52,17 +52,9 @@ export 'package:firebase_core/firebase_core.dart';
 // re-export callout callout related s.t. apps using this package don't need to include the callouts pkg in pubspec
 export 'package:flutter_callouts/src/api/callouts/callout_config.dart';
 export 'package:flutter_callouts/src/api/callouts/callout_using_overlayportal.dart';
-export 'package:flutter_callouts/src/api/callouts/color_values.dart';
 export 'package:flutter_callouts/src/api/callouts/dotted_decoration.dart';
 export 'package:flutter_callouts/src/api/callouts/globalkey_extn.dart';
-export 'package:flutter_callouts/src/api/callouts/model/alignment_enum.dart';
-export 'package:flutter_callouts/src/api/callouts/model/arrow_type_enum.dart';
-export 'package:flutter_callouts/src/api/callouts/model/color_model.dart';
-export 'package:flutter_callouts/src/api/callouts/model/decoration_shape_enum.dart';
-export 'package:flutter_callouts/src/api/callouts/model/offset_model.dart';
 export 'package:flutter_callouts/src/api/callouts/named_sc.dart';
-// import 'src/nav/nav_mixin.dart';
-
 export 'package:flutter_callouts/src/canvas/canvas_mixin.dart';
 export 'package:flutter_callouts/src/debouncer/debouncer.dart';
 export 'package:flutter_callouts/src/feature_discovery/discovery_controller.dart';
@@ -76,9 +68,15 @@ export 'package:flutter_callouts/src/widget/blink.dart';
 export 'package:flutter_callouts/src/widget/constant_scroll_behavior.dart';
 export 'package:flutter_callouts/src/widget/error.dart';
 export 'package:flutter_callouts/src/widget/widget_helper_mixin.dart';
+export 'package:flutter_callouts/src/api/callouts/color_or_gradient.dart';
+export 'package:flutter_callouts/src/api/callouts/decoration_shape.dart';
+export 'package:flutter_callouts/src/api/callouts/target_pointer_type.dart';
+
 export 'package:flutter_content/src/model/firestore_model_repo.dart';
 export 'package:flutter_content/src/model/model_repo.dart';
 export 'package:flutter_content/src/snippet/pnodes/groups/container_style_properties.dart';
+
+export 'package:flutter_content/src/api/alignment_extn.dart';
 
 // export 'package:file_picker/src/file_picker.dart';
 // export 'package:file_picker/src/file_picker_result.dart';
@@ -198,6 +196,11 @@ export 'src/snippet/snodes/uml_image_node.dart';
 export 'src/snippet/snodes/widgetspan_node.dart';
 export 'src/snippet/snodes/wrap_node.dart';
 export 'src/snippet/snodes/yt_node.dart';
+export 'src/snippet/snodes/upto6colors.dart';
+
+export 'src/model/alignment_enum_model.dart';
+export 'src/model/color_model.dart';
+export 'src/model/offset_model.dart';
 
 // export 'src/snippet/snodes/fs_bucket_node.dart';
 // export 'src/snippet/snodes/fs_directory_node.dart';

@@ -238,14 +238,14 @@ class PkgStepWidget extends StatelessWidget {
             );
             if (jsonS != null) {
               fco.showOverlay(
-                calloutConfig: CalloutConfigModel(
+                calloutConfig: CalloutConfig(
                   cId: flowchart.id,
                   initialCalloutW: FlowchartM.PAGE_VISIBLE_OVERFLOW + flowchart.width,
                   initialCalloutH: FlowchartM.PAGE_VISIBLE_OVERFLOW*4 + flowchart.height,
-                  fillColor: ColorModel.fromColor(flowchart.color),
-                  borderThickness: 5,
-                  borderRadius: 16,
-                  borderColor: ColorModel.fromColor(Colors.grey),
+                  decorationFillColors: ColorOrGradient.color(flowchart.color),
+                  decorationBorderThickness: 5,
+                  decorationBorderRadius: 16,
+                  decorationBorderColors: ColorOrGradient.color(Colors.grey),
                   elevation: 10,
                   scrollControllerName: scName,
                   barrier: CalloutBarrierConfig(

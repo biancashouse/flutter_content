@@ -64,7 +64,7 @@ class PropertyButton<T> extends StatelessWidget {
                 originalText.isNotEmpty && maxLines < 2
                     ? '$label: $originalText'
                     : '$label...';
-            CalloutConfigModel teCC = CalloutConfigModel(
+            CalloutConfig teCC = CalloutConfig(
               cId: 'te',
               scrollControllerName: scName,
               // containsTextField: true,
@@ -75,14 +75,14 @@ class PropertyButton<T> extends StatelessWidget {
                     fco.dismiss('te');
                   }),
               // arrowThickness: ArrowThickness.THIN,
-              fillColor: ColorModel.white(),
+              decorationFillColors: ColorOrGradient.color(Colors.purpleAccent),
               // arrowColor: Colors.red,
-              arrowType: ArrowTypeEnum.THIN,
+              targetPointerType: TargetPointerType.thin_line()  ,
               finalSeparation: 90.0,
               toDelta: -20,
-              animate: true,
-              initialCalloutAlignment: AlignmentEnum.centerRight,
-              initialTargetAlignment: AlignmentEnum.centerLeft,
+              animatePointer: true,
+              initialCalloutAlignment: Alignment.centerRight,
+              initialTargetAlignment: Alignment.centerLeft,
               initialCalloutW: calloutSize.width,
               initialCalloutH: calloutSize.height,
               resizeableH: maxLines > 1,
@@ -159,7 +159,7 @@ class PropertyButton<T> extends StatelessWidget {
             }
           },
           child: Container(
-            // alignment: T != String ? Alignment.center : AlignmentEnum.centerLeft,
+            // alignment: T != String ? Alignment.center : AlignmentEnumModel.centerLeft,
             alignment: Alignment.centerLeft,
             key: propertyBtnGK,
             // margin: const EdgeInsets.only(top: 8),
@@ -190,15 +190,15 @@ class PropertyButton<T> extends StatelessWidget {
     //           )),
     //     )
     //     .toList();
-    var matchesMenuCC = CalloutConfigModel(
+    var matchesMenuCC = CalloutConfig(
       cId: 'matches',
       scrollControllerName: scName,
       initialCalloutW: 240,
       initialCalloutH: 160,
-      arrowType: ArrowTypeEnum.NONE,
-      fillColor: ColorModel.white(),
-      initialTargetAlignment: AlignmentEnum.topRight,
-      initialCalloutAlignment: AlignmentEnum.topLeft,
+      targetPointerType: TargetPointerType.none()  ,
+      decorationFillColors: ColorOrGradient.color(Colors.purpleAccent),
+      initialTargetAlignment: Alignment.topRight,
+      initialCalloutAlignment: Alignment.topLeft,
       draggable: false,
       // movedOrResizedNotifier: notifier,
     );

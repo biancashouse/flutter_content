@@ -136,7 +136,7 @@
 //                 backgroundColor: Colors.green,
 //                 textColor: Colors.yellow,
 //                 secs: 3,
-//                 gravity: AlignmentEnum.topCenter);
+//                 gravity: AlignmentEnumModel.topCenter);
 //           });
 //           await Future.delayed(Duration.zero, () async {
 //             if (comment != null) {

@@ -18,7 +18,7 @@ class OutlinedButtonNode extends ButtonNode with OutlinedButtonNodeMappable {
     // super.destinationSnippetName,
     required super.bsPropGroup,
     super.onTapHandlerName,
-    super.calloutConfig,
+    // super.calloutConfig,
     super.child,
   });
 
@@ -59,7 +59,7 @@ class OutlinedButtonNode extends ButtonNode with OutlinedButtonNodeMappable {
             key: gk,
             child: OutlinedButton(
               // if feature specified, must be a callout
-              key: cid != null ? fco.setCalloutGk(cid!, GlobalKey()) : null,
+              // key: cid != null ? fco.setCalloutGk(cid!, GlobalKey()) : null,
               onPressed: ()=>onPressed(context, gk, scName),
               onLongPress: f != null ? () => f.call(context) : null,
               style: btnStyle,

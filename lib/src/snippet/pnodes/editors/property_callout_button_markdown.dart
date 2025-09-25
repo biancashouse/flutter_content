@@ -49,7 +49,7 @@ class _PropertyButtonMarkdownState extends State<PropertyButtonMarkdown> {
           );
           return InkWell(
             onTap: () {
-              CalloutConfigModel teCC = CalloutConfigModel(
+              CalloutConfig teCC = CalloutConfig(
                 cId: 'markdown-te',
                 scrollControllerName: widget.scName,
                 // containsTextField: true,
@@ -58,8 +58,8 @@ class _PropertyButtonMarkdownState extends State<PropertyButtonMarkdown> {
                     onTappedF: () {
                       fco.dismiss('markdown-te');
                     }),
-                fillColor: ColorModel.white(),
-                arrowType: ArrowTypeEnum.NONE,
+                decorationFillColors: ColorOrGradient.color(Colors.purpleAccent),
+                targetPointerType: TargetPointerType.none()  ,
                 initialCalloutW: fco.scrW * .8,
                 initialCalloutH: fco.scrH * .8,
                 onDismissedF: () {},

@@ -225,7 +225,7 @@ abstract class SNode extends Node with SNodeMappable {
     if (borderRect != null) {
       String feature = '${nodeWidgetGK.hashCode}-pink-overlay';
 
-      CalloutConfigModel cc = _cc(
+      CalloutConfig cc = _cc(
         cId: feature,
         borderRect: borderRect,
         whiteBarrier: whiteBarrier,
@@ -289,7 +289,7 @@ abstract class SNode extends Node with SNodeMappable {
       cc?.rebuild(() {
         cc
           ..barrier = null
-          ..arrowType = ArrowTypeEnum.NONE;
+          ..targetPointerType = TargetPointerType.none();
       });
     }
 
@@ -313,7 +313,7 @@ abstract class SNode extends Node with SNodeMappable {
     // bool skipMeasure = false,
     ScrollControllerName? scName,
   }) {
-    CalloutConfigModel cc = _cc(
+    CalloutConfig cc = _cc(
       cId: '${nodeWidgetGK.hashCode}-pink-overlay',
       borderRect: borderRect,
       whiteBarrier: whiteBarrier,
@@ -369,13 +369,13 @@ abstract class SNode extends Node with SNodeMappable {
     return null;
   }
 
-  CalloutConfigModel _cc({
+  CalloutConfig _cc({
     required String cId,
     required Rect borderRect,
     bool whiteBarrier = false,
     ScrollControllerName? scName,
     bool? followScroll,
-  }) => CalloutConfigModel(
+  }) => CalloutConfig(
     cId: cId,
     initialCalloutW: borderRect.width.abs(),
     // + BORDER,
@@ -383,8 +383,8 @@ abstract class SNode extends Node with SNodeMappable {
     // + BORDER,
     initialCalloutPos: OffsetModel.fromOffset(borderRect.topLeft),
     //.translate(-BORDER, -BORDER),
-    fillColor: ColorModel.fromColor(Colors.transparent),
-    arrowType: ArrowTypeEnum.NONE,
+    decorationFillColors: ColorOrGradient.color(Colors.transparent),
+    targetPointerType: TargetPointerType.none(),
     barrier: whiteBarrier
         ? CalloutBarrierConfig(
             opacity: .5,
@@ -940,13 +940,13 @@ abstract class SNode extends Node with SNodeMappable {
   //       // fco.logger.i("Showing $SELECTED_NODE_BORDER_CALLOUT");
   //       fco.showOverlay(
   //         ensureLowestOverlay: true,
-  //         calloutConfig: CalloutConfigModel(
+  //         calloutConfig: CalloutConfig(
   //           cId: SELECTED_NODE_BORDER_CALLOUT,
   //           initialCalloutPos: r.topLeft.translate(translate.dx, translate.dy),
   //           initialCalloutW: w,
   //           initialCalloutH: h,
   //           fillColor: Colors.transparent,
-  //           arrowType: ArrowTypeEnum.NONE,
+  //           arrowType: ArrowTypeEnumModel.NONE,
   //           draggable: false,
   //           // transparentPointer: true,
   //           scrollControllerName: scName,
@@ -993,14 +993,14 @@ abstract class SNode extends Node with SNodeMappable {
   //             fco.logger.i("Showing $SELECTED_NODE_BORDER_CALLOUT");
   //             fco.showOverlay(
   //               ensureLowestOverlay: true,
-  //               calloutConfig: CalloutConfigModel(
+  //               calloutConfig: CalloutConfig(
   //                 cId: SELECTED_NODE_BORDER_CALLOUT,
   //                 initialCalloutPos:
   //                     r.topLeft.translate(translate.dx, translate.dy),
   //                 initialCalloutW: w,
   //                 initialCalloutH: h,
   //                 fillColor: Colors.transparent,
-  //                 arrowType: ArrowTypeEnum.NONE,
+  //                 arrowType: ArrowTypeEnumModel.NONE,
   //                 draggable: false,
   //                 transparentPointer: true,
   //               ),

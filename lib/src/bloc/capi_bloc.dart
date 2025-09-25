@@ -5,12 +5,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_content/flutter_content.dart';
 import 'package:flutter_content/src/bloc/snippet_being_edited.dart';
+import 'package:flutter_content/src/snippet/pnodes/enums/enum_decoration_shape.dart';
 import 'package:flutter_content/src/snippet/pnodes/enums/enum_main_axis_size.dart';
-import 'package:flutter_content/src/snippet/pnodes/enums/mappable_enum_decoration.dart';
 import 'package:flutter_content/src/snippet/pnodes/groups/button_style_properties.dart';
 import 'package:flutter_content/src/snippet/snodes/algc_node.dart';
 import 'package:flutter_content/src/snippet/snodes/fs_image_node.dart';
-import 'package:flutter_content/src/snippet/snodes/upto6colors.dart';
 
 class CAPIBloC extends Bloc<CAPIEvent, CAPIState> {
   // late SnippetUndoRedoStack _ur;
@@ -112,10 +111,10 @@ class CAPIBloC extends Bloc<CAPIEvent, CAPIState> {
 
     final stopwatch = Stopwatch()..start();
     fco.showToastOverlay(
-      calloutConfig: CalloutConfigModel(
+      calloutConfig: CalloutConfig(
         cId: "reverting-model",
-        gravity: AlignmentEnum.topCenter,
-        fillColor: ColorModel.yellow(),
+        gravity: Alignment.topCenter,
+        decorationFillColors: ColorOrGradient.color(Colors.yellow),
         initialCalloutW: fco.scrW * .8,
         initialCalloutH: 40,
         scrollControllerName: null,
@@ -220,10 +219,10 @@ class CAPIBloC extends Bloc<CAPIEvent, CAPIState> {
   Future<void> _publishSnippet(PublishSnippet event, emit) async {
     final stopwatch = Stopwatch()..start();
     fco.showToastOverlay(
-      calloutConfig: CalloutConfigModel(
+      calloutConfig: CalloutConfig(
         cId: "publishing-version",
-        gravity: AlignmentEnum.topCenter,
-        fillColor: ColorModel.yellow(),
+        gravity: Alignment.topCenter,
+        decorationFillColors: ColorOrGradient.color(Colors.yellow),
         initialCalloutW: fco.scrW * .8,
         initialCalloutH: 40,
         scrollControllerName: null,
@@ -273,18 +272,18 @@ class CAPIBloC extends Bloc<CAPIEvent, CAPIState> {
   }
 
   /// copy snippet json to clipboard
-  Future<void> _copySnippetJsonToClipboard(event, emit) async {
+  Future<void> _copySnippetJsonToClipboard(CopySnippetJsonToClipboard event, emit) async {
     await FlutterClipboard.copy(event.rootNode.toJson());
   }
 
   /// paste clipboard, or supplied json String to form a snippet
-  Future<void> _replaceSnippetFromJson(event, emit) async {
+  Future<void> _replaceSnippetFromJson(ReplaceSnippetFromJson event, emit) async {
     SnippetRootNode? rootNode;
     if (event.snippetJson == null) {
       var snippetJson = await FlutterClipboard.paste();
       rootNode = SnippetRootNodeMapper.fromJson(snippetJson);
     } else {
-      rootNode = SnippetRootNodeMapper.fromJson(event.snippetJson);
+      rootNode = SnippetRootNodeMapper.fromJson(event.snippetJson!);
     }
     fco.logger.i('_replaceSnippetFromJson: snippet name is "${rootNode.name}"');
     // save the clipboard snippet snippet
@@ -366,7 +365,7 @@ class CAPIBloC extends Bloc<CAPIEvent, CAPIState> {
     emit(state.copyWith(snippetNameShowingPinkOverlaysFor: event.snippetName));
   }
 
-  void _exitSelectWidgetMode(event, emit) {
+  void _exitSelectWidgetMode(ExitSelectWidgetMode event, emit) {
     fco.dismissAll();
     emit(state.copyWith(snippetNameShowingPinkOverlaysFor: null));
   }
@@ -381,7 +380,7 @@ class CAPIBloC extends Bloc<CAPIEvent, CAPIState> {
   //==========================================================================================
   //====  SNIPPET EDITING  ===================================================================
   //==========================================================================================
-  void _forceSnippetRefresh(event, emit) {
+  void _forceSnippetRefresh(ForceSnippetRefresh event, emit) {
     fco.logger.i("forceSnippetRefresh");
     emit(state.copyWith(force: state.force + 1));
   }
@@ -412,7 +411,7 @@ class CAPIBloC extends Bloc<CAPIEvent, CAPIState> {
     emit(state.copyWith(force: state.force + 1));
   }
 
-  void _clearNodeSelection(event, emit) {
+  void _clearNodeSelection(ClearNodeSelection event, emit) {
     if (!(state.snippetBeingEdited?.aNodeIsSelected ?? false)) return;
     state.snippetBeingEdited!.selectedNode = null;
     state.snippetBeingEdited!.showProperties = false;
@@ -804,14 +803,18 @@ class CAPIBloC extends Bloc<CAPIEvent, CAPIState> {
                 CenterNode(
                   child: ContainerNode(
                     csPropGroup: ContainerStyleProperties(
-                      fillColors: UpTo6Colors(color1: ColorModel.red()),
+                      fillColors: UpTo6Colors(
+                        color1: ColorModel.fromColor(Colors.red),
+                      ),
                     ),
                   ),
                 ),
                 CenterNode(
                   child: ContainerNode(
                     csPropGroup: ContainerStyleProperties(
-                      fillColors: UpTo6Colors(color1: ColorModel.blue()),
+                      fillColors: UpTo6Colors(
+                        color1: ColorModel.fromColor(Colors.blue),
+                      ),
                     ),
                   ),
                 ),
@@ -1001,8 +1004,9 @@ class CAPIBloC extends Bloc<CAPIEvent, CAPIState> {
         final Node? pollParent = w.getParent();
         w = ContainerNode(
           csPropGroup: ContainerStyleProperties(
-            decoration: MappableDecorationShapeEnum.rounded_rectangle_dotted,
-            borderColors: UpTo6Colors(color1: ColorModel.black()),
+            decorationShapeEnum:
+                DecorationShapeEnum.rectangle_dotted,
+            borderColors: UpTo6Colors(color1: ColorModel.fromColor(Colors.black)),
             borderThickness: 4,
           ),
           child: w,
@@ -1180,7 +1184,7 @@ class CAPIBloC extends Bloc<CAPIEvent, CAPIState> {
     // STreeNode? childNode;
 
     // if (selectedNode is ContainerNode) {
-    //   selectedNode.alignment = AlignmentEnum.center;
+    //   selectedNode.alignment = AlignmentEnumModel.center;
     // }
     // if (selectedNode is PlaceholderNode) {
     //   selectedNode.child = newNode;
@@ -1256,7 +1260,7 @@ class CAPIBloC extends Bloc<CAPIEvent, CAPIState> {
 
     // // Container's Container parent should have an alignment property
     // if (event.selectedNode is ContainerNode) {
-    //   (event.selectedNode as ContainerNode).alignment = AlignmentEnum.center;
+    //   (event.selectedNode as ContainerNode).alignment = AlignmentEnumModel.center;
     // }
     // if (event.selectedNode is SingleChildNode) {
     //   (event.selectedNode as SingleChildNode).child = clipboardNode;

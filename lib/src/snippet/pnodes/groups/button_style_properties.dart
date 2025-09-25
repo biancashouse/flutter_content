@@ -1,16 +1,13 @@
 import 'package:dart_mappable/dart_mappable.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_callouts/flutter_callouts.dart'
-    show ColorModel, ColorModelCopyWith, ColorModelMapper;
+import 'package:flutter_content/flutter_content.dart';
 
 // import 'package:flutter_content/flutter_content.dart';
 import 'package:flutter_content/src/snippet/pnodes/enums/enum_outlined_border.dart';
 import 'package:flutter_content/src/snippet/pnodes/groups/border_side_properties.dart';
-import 'package:flutter_content/src/snippet/pnodes/groups/text_style_properties.dart';
 import 'package:flutter_content/src/snippet/snodes/text_style_hook.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 
-import '../../../typedefs.dart';
 
 part 'button_style_properties.mapper.dart';
 

@@ -1,11 +1,12 @@
 import 'dart:math';
 
 import 'package:flutter/material.dart';
-import 'package:flutter_callouts/flutter_callouts.dart';
 import 'package:flutter_content/src/algc/model/m/flowchart_m.dart';
 import 'package:flutter_content/src/algc/model/m/step_m.dart';
 import 'package:flutter_content/src/algc/widgets/painters/dashed_line_helper.dart';
 import 'package:flutter_content/src/algc/widgets/painters/paint_helper.dart';
+
+import '../../../../flutter_content.dart';
 
 class FlowchartSkeletonPainter extends CustomPainter with WidgetHelperMixin {
   final bool skipDashedBorder;

@@ -295,7 +295,7 @@ class SnippetBuilderState extends State<SnippetBuilder>
                     alignment: Alignment.topRight,
                     child: PointerInterceptor(
                       child: Tooltip(
-                        message: 'show Snippet menu',
+                        message: 'show Snippet menu\n${snippetInfo?.name}',
                         child: Container(
                           width: 20,
                           height: 20,

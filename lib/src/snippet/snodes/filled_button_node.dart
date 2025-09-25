@@ -18,7 +18,7 @@ class FilledButtonNode extends ButtonNode with FilledButtonNodeMappable {
     // super.destinationSnippetName,
     required super.bsPropGroup,
     super.onTapHandlerName,
-    super.calloutConfig,
+    // super.calloutConfig,
     super.child,
   });
 
@@ -56,7 +56,7 @@ class FilledButtonNode extends ButtonNode with FilledButtonNodeMappable {
             key: gk,
             child: FilledButton(
               // if feature specified, must be a callout
-              key: cid != null ? fco.setCalloutGk(cid!, GlobalKey()) : null,
+              // key: cid != null ? fco.setCalloutGk(cid!, GlobalKey()) : null,
               onPressed: ()=>onPressed(context, gk, scName),
               onLongPress: f != null ? () => f.call(context) : null,
               style: btnStyle,

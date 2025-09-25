@@ -37,11 +37,11 @@ Future<void> showTargetDurationCallout(
               fco.dismiss("duration");
             },
           ),
-      calloutConfig: CalloutConfigModel(
+      calloutConfig: CalloutConfig(
         cId: "duration",
         scrollControllerName: scName,
-        initialTargetAlignment: AlignmentEnum.centerRight,
-        initialCalloutAlignment: AlignmentEnum.centerLeft,
+        initialTargetAlignment: Alignment.centerRight,
+        initialCalloutAlignment: Alignment.centerLeft,
         finalSeparation: 30,
         barrier: CalloutBarrierConfig(
           opacity: 0.1,
@@ -49,11 +49,11 @@ Future<void> showTargetDurationCallout(
             removeTargetDurationCallout();
           },
         ),
-        arrowType: ArrowTypeEnum.POINTY,
+        targetPointerType: TargetPointerType.bubble()  ,
         initialCalloutW: 400,
         initialCalloutH: 450,
         draggable: true,
-        fillColor: ColorModel.purpleAccent(),
+        decorationFillColors: ColorOrGradient.color(Colors.purpleAccent),
         // showCloseButton: true,
         // onTopRightButtonPressF: () {
         //   fco.logger.i("closed");

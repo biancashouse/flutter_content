@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:flutter_callouts/flutter_callouts.dart';
+
+import '../../../../flutter_content.dart';
 
 /// https://www.flutterbeads.com/multiline-textfield-in-flutter/
 ///
@@ -119,7 +120,7 @@ class StringOrNumberEditorState extends State<StringOrNumberEditor> {
     _txtController = TextEditingController();
     _txtController.text = widget.originalS;
     if (!widget.dontAutoFocus) {
-      fca.afterNextBuildDo(() {
+      fco.afterNextBuildDo(() {
         _focusNode.requestFocus();
       });
     } else {
@@ -268,7 +269,7 @@ class StringOrNumberEditorState extends State<StringOrNumberEditor> {
       },
       onTapOutside: (_) {
         _focusNode.unfocus();
-        fca.allowParentCalloutDrag(context);
+        fco.allowParentCalloutDrag(context);
       },
       autocorrect: false,
       enableInteractiveSelection: true,

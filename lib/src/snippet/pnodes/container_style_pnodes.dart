@@ -5,65 +5,43 @@ import 'package:flutter_content/src/snippet/pnodes/decimal_pnode.dart';
 import 'package:flutter_content/src/snippet/pnodes/edge_insets_pnode.dart';
 import 'package:flutter_content/src/snippet/pnodes/editors/property_button_search_container_styles.dart';
 import 'package:flutter_content/src/snippet/pnodes/enum_pnode.dart';
-import 'package:flutter_content/src/snippet/pnodes/enums/mappable_enum_decoration.dart';
+import 'package:flutter_content/src/snippet/pnodes/enums/enum_decoration_shape.dart';
 import 'package:flutter_content/src/snippet/pnodes/fyi_pnodes.dart';
 import 'package:flutter_content/src/snippet/pnodes/gradient_pnode.dart';
 import 'package:flutter_content/src/snippet/pnodes/size_pnode.dart';
 import 'package:flutter_content/src/text_styles/style_name_editor.dart';
 
 class ContainerStylePNode /*Group*/ extends PNode /*Group*/ {
-  final ContainerStyleProperties containerStyleGroup;
+  final ContainerStyleProperties containerStyleProperties;
   final ContainerStylePropertiesChangeCallback onGroupChange;
 
   ContainerStylePNode /*Group*/ ({
     super.name = 'container style',
-    required this.containerStyleGroup,
+    required this.containerStyleProperties,
     required this.onGroupChange,
     required super.snode,
     super.children = const [],
   }) {
-    String paddingLabel = containerStyleGroup.padding == null
+    String paddingLabel = containerStyleProperties.padding == null
         ? 'padding'
-        : 'padding (${containerStyleGroup.padding!.top},${containerStyleGroup.padding!.left},${containerStyleGroup.padding!.bottom},${containerStyleGroup.padding!.right})';
-    String marginLabel = containerStyleGroup.margin == null
+        : 'padding (${containerStyleProperties.padding!.top},${containerStyleProperties.padding!.left},${containerStyleProperties.padding!.bottom},${containerStyleProperties.padding!.right})';
+    String marginLabel = containerStyleProperties.margin == null
         ? 'margin'
-        : 'margin (${containerStyleGroup.margin!.top},${containerStyleGroup.margin!.left},${containerStyleGroup.margin!.bottom},${containerStyleGroup.margin!.right})';
+        : 'margin (${containerStyleProperties.margin!.top},${containerStyleProperties.margin!.left},${containerStyleProperties.margin!.bottom},${containerStyleProperties.margin!.right})';
 
     super.children = [
       ContainerStyleSearchPNode(
           snode: super.snode,
           name: 'Container style search',
-          containerStyleProps: containerStyleGroup,
+          containerStyleProps: containerStyleProperties,
           onAnyContainerStylePropertyChangeF: (newProps) {
             // containerStyleGroup.fillColors = newProps.fillColors;
             // containerStyleGroup.borderColors = newProps.borderColors;
             onGroupChange.call(newProps, true);
             return;
-            // textStyleProperties = newProps;
-            // fco.forceRefresh();
-            containerStyleGroup
-              ..fillColors = newProps.fillColors
-              ..margin = newProps.margin
-              ..padding = newProps.padding
-              ..width = newProps.width
-              ..height = newProps.height
-              ..alignment = newProps.alignment
-              ..decoration = newProps.decoration
-              ..borderThickness = newProps.borderThickness
-              ..borderColors = newProps.borderColors
-              ..borderRadius = newProps.borderRadius
-              ..starPoints = newProps.starPoints
-              ..dash = newProps.dash
-              ..gap = newProps.gap
-              ..badgeCorner = newProps.badgeCorner
-              ..badgeHeight = newProps.badgeHeight
-              ..badgeText = newProps.badgeText
-              ..badgeWidth = newProps.badgeWidth
-              ..outlinedBorderGroup = newProps.outlinedBorderGroup;
-            onGroupChange.call(containerStyleGroup, true);
           }),
-      if (containerStyleGroup.width != null ||
-          containerStyleGroup.height != null)
+      if (containerStyleProperties.width != null ||
+          containerStyleProperties.height != null)
         FYIPNode(
             label: "about constraints...",
             msg:
@@ -74,16 +52,16 @@ class ContainerStylePNode /*Group*/ extends PNode /*Group*/ {
       SizePNode(
           snode: super.snode,
           name: 'size',
-          widthValue: containerStyleGroup.width,
-          heightValue: containerStyleGroup.height,
+          widthValue: containerStyleProperties.width,
+          heightValue: containerStyleProperties.height,
           onSizeChange: (newValues) {
-            if (newValues.$1 != containerStyleGroup.width) {
-              containerStyleGroup.width = newValues.$1;
+            if (newValues.$1 != containerStyleProperties.width) {
+              containerStyleProperties.width = newValues.$1;
             }
-            if (newValues.$2 != containerStyleGroup.height) {
-              containerStyleGroup.height = newValues.$2;
+            if (newValues.$2 != containerStyleProperties.height) {
+              containerStyleProperties.height = newValues.$2;
             }
-            onGroupChange.call(containerStyleGroup, true);
+            onGroupChange.call(containerStyleProperties, true);
           }),
       PNode /*Group*/ (
         snode: super.snode,
@@ -92,10 +70,10 @@ class ContainerStylePNode /*Group*/ extends PNode /*Group*/ {
           EdgeInsetsPNode(
               snode: super.snode,
               name: 'margin',
-              eiValue: containerStyleGroup.margin,
+              eiValue: containerStyleProperties.margin,
               onEIChangedF: (newValue) {
-                containerStyleGroup.margin = newValue;
-                onGroupChange.call(containerStyleGroup, true);
+                containerStyleProperties.margin = newValue;
+                onGroupChange.call(containerStyleProperties, true);
               }),
         ],
       ),
@@ -106,10 +84,10 @@ class ContainerStylePNode /*Group*/ extends PNode /*Group*/ {
           EdgeInsetsPNode(
               snode: super.snode,
               name: 'padding',
-              eiValue: containerStyleGroup.padding,
+              eiValue: containerStyleProperties.padding,
               onEIChangedF: (newValue) {
-                containerStyleGroup.padding = newValue;
-                onGroupChange.call(containerStyleGroup, true);
+                containerStyleProperties.padding = newValue;
+                onGroupChange.call(containerStyleProperties, true);
               }),
         ],
       ),
@@ -119,58 +97,58 @@ class ContainerStylePNode /*Group*/ extends PNode /*Group*/ {
         children: [
           // SHAPE
           // FILL COLOR(s)
-          GradientPNode(
+          ColorOrGradientPNode(
               snode: super.snode,
               name: 'fill color(s)',
-              colors: containerStyleGroup.fillColors,
+              colors: containerStyleProperties.fillColors,
               onColorChange: (newValues) {
-                containerStyleGroup.fillColors = newValues;
-                onGroupChange.call(containerStyleGroup, true);
+                containerStyleProperties.fillColors = newValues;
+                onGroupChange.call(containerStyleProperties, true);
               }),
-          if (containerStyleGroup.fillColors?.isAGradient() ?? false)
+          if (containerStyleProperties.fillColors?.isAGradient() ?? false)
             BoolPNode(
                 snode: super.snode,
                 name: 'radial Gradient ?',
-                boolValue: containerStyleGroup.radialGradient,
+                boolValue: containerStyleProperties.radialGradient,
                 onBoolChange: (newValue) {
-                  containerStyleGroup.radialGradient = newValue;
-                  onGroupChange.call(containerStyleGroup, true);
+                  containerStyleProperties.radialGradient = newValue;
+                  onGroupChange.call(containerStyleProperties, true);
                 }), // BORDER COLOR(s)
-          GradientPNode(
+          ColorOrGradientPNode(
               snode: super.snode,
               name: 'border color(s)',
-              colors: containerStyleGroup.borderColors,
+              colors: containerStyleProperties.borderColors,
               onColorChange: (newValues) {
-                containerStyleGroup.borderColors = newValues;
-                onGroupChange.call(containerStyleGroup, true);
+                containerStyleProperties.borderColors = newValues;
+                onGroupChange.call(containerStyleProperties, true);
               }),
-          EnumPNode<MappableDecorationShapeEnum?>(
+          EnumPNode<DecorationShapeEnum?>(
               snode: super.snode,
               name: 'shape',
-              valueIndex: containerStyleGroup.decoration.index,
+              valueIndex: containerStyleProperties.decorationShapeEnum?.index,
               onIndexChange: (newValue) {
-                containerStyleGroup.decoration =
-                    MappableDecorationShapeEnum.of(newValue) ??
-                        MappableDecorationShapeEnum.rectangle;
-                onGroupChange.call(containerStyleGroup, true);
+                containerStyleProperties.decorationShapeEnum =
+                    DecorationShapeEnum.of(newValue) ??
+                        DecorationShapeEnum.rectangle;
+                onGroupChange.call(containerStyleProperties, true);
               }),
           DecimalPNode(
             snode: super.snode,
             name: 'thickness',
-            decimalValue: containerStyleGroup.borderThickness,
+            decimalValue: containerStyleProperties.borderThickness,
             onDoubleChange: (newValue) {
-              containerStyleGroup.borderThickness = newValue;
-              onGroupChange.call(containerStyleGroup, true);
+              containerStyleProperties.borderThickness = newValue;
+              onGroupChange.call(containerStyleProperties, true);
             },
             calloutButtonSize: const Size(90, 20),
           ),
           DecimalPNode(
             snode: super.snode,
             name: 'radius',
-            decimalValue: containerStyleGroup.borderRadius,
+            decimalValue: containerStyleProperties.borderRadius,
             onDoubleChange: (newValue) {
-              containerStyleGroup.borderRadius = newValue;
-              onGroupChange.call(containerStyleGroup, true);
+              containerStyleProperties.borderRadius = newValue;
+              onGroupChange.call(containerStyleProperties, true);
             },
             calloutButtonSize: const Size(90, 20),
           ),
@@ -179,10 +157,10 @@ class ContainerStylePNode /*Group*/ extends PNode /*Group*/ {
       EnumPNode<AlignmentEnum?>(
         snode: super.snode,
         name: 'alignment',
-        valueIndex: containerStyleGroup.alignment?.index,
+        valueIndex: containerStyleProperties.alignment?.index,
         onIndexChange: (newValue) {
-          containerStyleGroup.alignment = AlignmentEnum.of(newValue);
-          onGroupChange.call(containerStyleGroup, true);
+          containerStyleProperties.alignment = AlignmentEnum.of(newValue);
+          onGroupChange.call(containerStyleProperties, true);
         },
       ),
       ContainerStyleSavePNode(
@@ -195,7 +173,7 @@ class ContainerStylePNode /*Group*/ extends PNode /*Group*/ {
 
   @override
   String propertyLabel() {
-    var containerStyleName = fco.findContainerStyleName(fco.appInfo, containerStyleGroup);
+    var containerStyleName = fco.findContainerStyleName(fco.appInfo, containerStyleProperties);
     return containerStyleName != null ? '$name: $containerStyleName' : name;
   }
 }

@@ -15,8 +15,8 @@ class WrapNodeMapper extends SubClassMapperBase<WrapNode> {
       MapperContainer.globals.use(_instance = WrapNodeMapper._());
       MCMapper.ensureInitialized().addSubMapper(_instance!);
       AxisEnumMapper.ensureInitialized();
-      WrapAlignmentEnumMapper.ensureInitialized();
-      WrapCrossAlignmentEnumMapper.ensureInitialized();
+      WrapAlignmentEnumModelMapper.ensureInitialized();
+      WrapCrossAlignmentEnumModelMapper.ensureInitialized();
       SNodeMapper.ensureInitialized();
     }
     return _instance!;
@@ -34,15 +34,16 @@ class WrapNodeMapper extends SubClassMapperBase<WrapNode> {
   static double? _$runSpacing(WrapNode v) => v.runSpacing;
   static const Field<WrapNode, double> _f$runSpacing =
       Field('runSpacing', _$runSpacing, opt: true);
-  static WrapAlignmentEnum? _$alignment(WrapNode v) => v.alignment;
-  static const Field<WrapNode, WrapAlignmentEnum> _f$alignment =
+  static WrapAlignmentEnumModel? _$alignment(WrapNode v) => v.alignment;
+  static const Field<WrapNode, WrapAlignmentEnumModel> _f$alignment =
       Field('alignment', _$alignment, opt: true);
-  static WrapAlignmentEnum? _$runAlignment(WrapNode v) => v.runAlignment;
-  static const Field<WrapNode, WrapAlignmentEnum> _f$runAlignment =
+  static WrapAlignmentEnumModel? _$runAlignment(WrapNode v) => v.runAlignment;
+  static const Field<WrapNode, WrapAlignmentEnumModel> _f$runAlignment =
       Field('runAlignment', _$runAlignment, opt: true);
-  static WrapCrossAlignmentEnum? _$crossAxisAlignment(WrapNode v) =>
+  static WrapCrossAlignmentEnumModel? _$crossAxisAlignment(WrapNode v) =>
       v.crossAxisAlignment;
-  static const Field<WrapNode, WrapCrossAlignmentEnum> _f$crossAxisAlignment =
+  static const Field<WrapNode, WrapCrossAlignmentEnumModel>
+      _f$crossAxisAlignment =
       Field('crossAxisAlignment', _$crossAxisAlignment, opt: true);
   static List<SNode> _$children(WrapNode v) => v.children;
   static const Field<WrapNode, List<SNode>> _f$children =
@@ -153,9 +154,9 @@ abstract class WrapNodeCopyWith<$R, $In extends WrapNode, $Out>
       {AxisEnum? direction,
       double? spacing,
       double? runSpacing,
-      WrapAlignmentEnum? alignment,
-      WrapAlignmentEnum? runAlignment,
-      WrapCrossAlignmentEnum? crossAxisAlignment,
+      WrapAlignmentEnumModel? alignment,
+      WrapAlignmentEnumModel? runAlignment,
+      WrapCrossAlignmentEnumModel? crossAxisAlignment,
       List<SNode>? children});
   WrapNodeCopyWith<$R2, $In, $Out2> $chain<$R2, $Out2>(Then<$Out2, $R2> t);
 }

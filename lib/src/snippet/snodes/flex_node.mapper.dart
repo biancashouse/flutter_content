@@ -16,9 +16,9 @@ class FlexNodeMapper extends SubClassMapperBase<FlexNode> {
       MCMapper.ensureInitialized().addSubMapper(_instance!);
       RowNodeMapper.ensureInitialized();
       ColumnNodeMapper.ensureInitialized();
-      MainAxisAlignmentEnumMapper.ensureInitialized();
+      MainAxisAlignmentEnumModelMapper.ensureInitialized();
       MainAxisSizeEnumMapper.ensureInitialized();
-      CrossAxisAlignmentEnumMapper.ensureInitialized();
+      CrossAxisAlignmentEnumModelMapper.ensureInitialized();
       SNodeMapper.ensureInitialized();
     }
     return _instance!;
@@ -27,16 +27,18 @@ class FlexNodeMapper extends SubClassMapperBase<FlexNode> {
   @override
   final String id = 'FlexNode';
 
-  static MainAxisAlignmentEnum? _$mainAxisAlignment(FlexNode v) =>
+  static MainAxisAlignmentEnumModel? _$mainAxisAlignment(FlexNode v) =>
       v.mainAxisAlignment;
-  static const Field<FlexNode, MainAxisAlignmentEnum> _f$mainAxisAlignment =
+  static const Field<FlexNode, MainAxisAlignmentEnumModel>
+      _f$mainAxisAlignment =
       Field('mainAxisAlignment', _$mainAxisAlignment, opt: true);
   static MainAxisSizeEnum? _$mainAxisSize(FlexNode v) => v.mainAxisSize;
   static const Field<FlexNode, MainAxisSizeEnum> _f$mainAxisSize =
       Field('mainAxisSize', _$mainAxisSize, opt: true);
-  static CrossAxisAlignmentEnum? _$crossAxisAlignment(FlexNode v) =>
+  static CrossAxisAlignmentEnumModel? _$crossAxisAlignment(FlexNode v) =>
       v.crossAxisAlignment;
-  static const Field<FlexNode, CrossAxisAlignmentEnum> _f$crossAxisAlignment =
+  static const Field<FlexNode, CrossAxisAlignmentEnumModel>
+      _f$crossAxisAlignment =
       Field('crossAxisAlignment', _$crossAxisAlignment, opt: true);
   static List<SNode> _$children(FlexNode v) => v.children;
   static const Field<FlexNode, List<SNode>> _f$children =
@@ -105,9 +107,9 @@ abstract class FlexNodeCopyWith<$R, $In extends FlexNode, $Out>
   ListCopyWith<$R, SNode, SNodeCopyWith<$R, SNode, SNode>> get children;
   @override
   $R call(
-      {MainAxisAlignmentEnum? mainAxisAlignment,
+      {MainAxisAlignmentEnumModel? mainAxisAlignment,
       MainAxisSizeEnum? mainAxisSize,
-      CrossAxisAlignmentEnum? crossAxisAlignment,
+      CrossAxisAlignmentEnumModel? crossAxisAlignment,
       List<SNode>? children});
   FlexNodeCopyWith<$R2, $In, $Out2> $chain<$R2, $Out2>(Then<$Out2, $R2> t);
 }

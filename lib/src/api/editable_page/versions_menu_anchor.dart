@@ -22,9 +22,9 @@ class VersionsMenuAnchor extends StatelessWidget {
     //     onPressed: () async {
     //       if (versionId == currentVersionId) {
     //         fco.showToast(
-    //           calloutConfig: CalloutConfigModel(
+    //           calloutConfig: CalloutConfig(
     //             cId: "cannot-revert-to-current-version",
-    //             gravity: AlignmentEnum.topCenter,
+    //             gravity: AlignmentEnumModel.topCenter,
     //             fillColor: Colors.yellow,
     //             initialCalloutW: fco.scrW * .8,
     //             initialCalloutH: 40,

@@ -320,10 +320,10 @@ class FlutterPollState extends State<FlutterPoll> {
   //           });
   //         },
   //       ),
-  //       calloutConfig: CalloutConfigModel(
+  //       calloutConfig: CalloutConfig(
   //         cId: "voter-ea",
-  //         initialTargetAlignment: AlignmentEnum.topLeft,
-  //         initialCalloutAlignment: AlignmentEnum.bottomRight,
+  //         initialTargetAlignment: Alignment.topLeft,
+  //         initialCalloutAlignment: Alignment.bottomRight,
   //         finalSeparation: 60,
   //         barrier: CalloutBarrierConfig(
   //           opacity: .5,
@@ -334,7 +334,7 @@ class FlutterPollState extends State<FlutterPoll> {
   //         initialCalloutW: 400,
   //         initialCalloutH: 180,
   //         borderRadius: 12,
-  //         fillColor: Colors.white,
+  //         decorationFillColors: ColorOrGradient.color(Colors.purpleAccent),
   //       ),
   //     );
 }

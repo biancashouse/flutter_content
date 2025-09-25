@@ -18,7 +18,7 @@ class TextButtonNode extends ButtonNode with TextButtonNodeMappable {
     // super.destinationSnippetName,
     required super.bsPropGroup,
     super.onTapHandlerName,
-    super.calloutConfig,
+    // super.calloutConfig,
     super.child,
   });
 
@@ -54,7 +54,7 @@ class TextButtonNode extends ButtonNode with TextButtonNodeMappable {
             key: gk,
             child: TextButton(
               // if feature specified, must be a callout
-              key: cid != null ? fco.setCalloutGk(cid!, GlobalKey()) : null,
+              // key: cid != null ? fco.setCalloutGk(cid!, GlobalKey()) : null,
               onPressed: ()=>onPressed(context, gk, scName),
               onLongPress: ()=>f?.call(context),
               style: btnStyle,

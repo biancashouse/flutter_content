@@ -1,7 +1,7 @@
 import 'dart:ui';
 
 import 'package:dart_mappable/dart_mappable.dart';
-import 'package:flutter_callouts/flutter_callouts.dart' show ColorModel, ColorModelCopyWith, ColorModelMapper;
+import 'package:flutter_content/flutter_content.dart';
 
 part 'upto6colors.mapper.dart';
 
@@ -13,6 +13,7 @@ class UpTo6Colors with UpTo6ColorsMappable {
   ColorModel? color4;
   ColorModel? color5;
   ColorModel? color6;
+  bool? isLinear;
 
   // deprecated
   double? color1Value;
@@ -69,6 +70,23 @@ class UpTo6Colors with UpTo6ColorsMappable {
     return count > 1;
   }
 
+  ColorOrGradient getColorOrGradient({bool isRadial=false}) {
+    ColorOrGradient result;
+    if (isAGradient()) {
+      result = ColorOrGradient.gradient([
+        if (color1 != null) color1!.flutterValue,
+        if (color2 != null) color2!.flutterValue,
+        if (color3 != null) color3!.flutterValue,
+        if (color4 != null) color4!.flutterValue,
+        if (color5 != null) color5!.flutterValue,
+        if (color6 != null) color6!.flutterValue,
+      ], isLinear: !isRadial);
+    } else {
+      result = ColorOrGradient.color(color1!.flutterValue,);
+    }
+    return result;
+  }
+
   @override
   operator ==(o) =>
       o is UpTo6Colors &&
@@ -80,5 +98,6 @@ class UpTo6Colors with UpTo6ColorsMappable {
       color6 == o.color6;
 
   @override
-  int get hashCode => Object.hash(color1, color2, color3, color4, color5, color6);
+  int get hashCode =>
+      Object.hash(color1, color2, color3, color4, color5, color6);
 }

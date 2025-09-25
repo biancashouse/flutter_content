@@ -612,7 +612,7 @@ packages:
       path: "../../flutter_callouts"
       relative: true
     source: path
-    version: "8.3.1"
+    version: "10.0.0"
   flutter_content:
     dependency: "direct main"
     description:

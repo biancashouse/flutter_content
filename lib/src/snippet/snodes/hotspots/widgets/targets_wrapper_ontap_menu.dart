@@ -16,7 +16,7 @@ class TargetsWrapperOnTapMenu extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       decoration: BoxDecoration(
-        color: Colors.purpleAccent,
+        // color: Colors.purpleAccent,
         borderRadius: BorderRadius.all(Radius.circular(4.0)),
       ),
       child: IntrinsicWidth(
@@ -39,7 +39,7 @@ class TargetsWrapperOnTapMenu extends StatelessWidget {
 
     // menuItems.add(Container(
     //     width: double.infinity,
-    //     alignment: AlignmentEnum.topLeft,
+    //     alignment: AlignmentEnumModel.topLeft,
     //     child: Icon(Icons.north_west)));
 
     menuItems.add(
@@ -49,7 +49,7 @@ class TargetsWrapperOnTapMenu extends StatelessWidget {
           padding: WidgetStatePropertyAll(EdgeInsets.all(8)),
         ),
         onPressed: () async {
-          fco.removeParentCallout(context);
+          fco.dismissAll();
           await createTarget(details, true);
         },
         child: Text(

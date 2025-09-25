@@ -1,13 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_content/flutter_content.dart';
 import 'package:flutter_content/src/snippet/pnodes/editors/property_button_color.dart';
-import 'package:flutter_content/src/snippet/snodes/upto6colors.dart';
 
-class GradientPNode extends PNode {
+class ColorOrGradientPNode extends PNode {
   UpTo6Colors? colors;
   final void Function(UpTo6Colors?) onColorChange;
 
-  GradientPNode({
+  ColorOrGradientPNode({
     required this.colors,
     required this.onColorChange,
     required super.snode,
@@ -39,9 +38,7 @@ class GradientPNode extends PNode {
                           cId: '$name:1',
                           // key: GlobalKey(),
                           label: '',
-                          originalColor: colors?.color1 != null
-                              ? colors!.color1!.flutterValue
-                              : null,
+                          originalColor: colors?.color1?.flutterValue,
                           onChangeF: (Color? newColor) {
                             if (newColor != null) {
                               setState(() => onColorChange.call(
@@ -65,9 +62,7 @@ class GradientPNode extends PNode {
                       return PropertyButtonColor(
                         cId: '$name:2',
                         label: '',
-                        originalColor: colors?.color2 != null
-                            ? colors!.color2!.flutterValue
-                            : null,
+                        originalColor: colors?.color2?.flutterValue,
                         onChangeF: (Color? newColor) {
                           if (newColor != null) {
                             setState(() => onColorChange.call(
@@ -92,9 +87,7 @@ class GradientPNode extends PNode {
                       return PropertyButtonColor(
                         cId: '$name:3',
                         label: '',
-                        originalColor: colors?.color3 != null
-                            ? colors!.color3!.flutterValue
-                            : null,
+                        originalColor: colors?.color3?.flutterValue,
                         onChangeF: (Color? newColor) {
                           if (newColor != null) {
                             setState(() => onColorChange.call(
@@ -119,9 +112,7 @@ class GradientPNode extends PNode {
                       return PropertyButtonColor(
                         cId: '$name:4',
                         label: '',
-                        originalColor: colors?.color4 != null
-                            ? colors!.color4!.flutterValue
-                            : null,
+                        originalColor: colors?.color4?.flutterValue,
                         onChangeF: (Color? newColor) {
                           if (newColor != null) {
                             setState(() => onColorChange.call(
@@ -146,9 +137,7 @@ class GradientPNode extends PNode {
                       return PropertyButtonColor(
                         cId: '$name:5',
                         label: '',
-                        originalColor: colors?.color5 != null
-                            ? colors!.color5!.flutterValue
-                            : null,
+                        originalColor: colors?.color5?.flutterValue,
                         onChangeF: (Color? newColor) {
                           if (newColor != null) {
                             setState(() => onColorChange.call(
@@ -173,9 +162,7 @@ class GradientPNode extends PNode {
                       return PropertyButtonColor(
                         cId: '$name:6',
                         label: '',
-                        originalColor: colors?.color6 != null
-                            ? colors!.color6!.flutterValue
-                            : null,
+                        originalColor: colors?.color6?.flutterValue,
                         onChangeF: (Color? newColor) {
                           if (newColor != null) {
                             setState(() => onColorChange.call(

@@ -4,16 +4,17 @@ import 'package:flutter/material.dart';
 
 import 'package:flutter_content/flutter_content.dart';
 import 'package:flutter_content/src/snippet/pnodes/editors/property_button_enum.dart';
-import 'package:flutter_content/src/snippet/pnodes/enums/mappable_enum_decoration.dart';
+import 'package:flutter_content/src/snippet/pnodes/enums/enum_decoration_shape.dart';
+import 'package:flutter_content/src/snippet/pnodes/enums/enum_target_pointer_type.dart';
+import 'package:flutter_content/src/snippet/snodes/hotspots/widgets/config_toolbar/colour_callout.dart';
 
-import 'colour_callout.dart';
 import 'duration_callout.dart';
 import 'more_callout_settings.dart';
 import 'pointy_callout.dart';
 import 'resize_slider.dart';
 
 class CalloutConfigToolbar extends StatefulWidget {
-  final CalloutConfigModel cc;
+  final CalloutConfig cc;
   final TargetModel tc;
   final Rect wrapperRect;
   final VoidCallback onCloseF;
@@ -36,7 +37,7 @@ class CalloutConfigToolbar extends StatefulWidget {
   static double CALLOUT_CONFIG_TOOLBAR_H(TargetModel tc) => 60.0;
 
   static void closeThenReopenContentCallout(
-    CalloutConfigModel cc,
+    CalloutConfig cc,
     TargetModel tc,
     Rect wrapperRect,
     ScrollControllerName? scName,
@@ -48,8 +49,8 @@ class CalloutConfigToolbar extends StatefulWidget {
     //     ?.zoomer
     //     ?.zoomImmediately(tc.transformScale, tc.transformScale);
 
-    Alignment? ta = fco.calcTargetAlignmentWithinWrapper(
-        wrapperRect: wrapperRect, targetRect: cc.tR());
+    // Alignment? ta = fco.calcTargetAlignmentWithinWrapper(
+    //     wrapperRect: wrapperRect, targetRect: cc.tR());
 
     tc
         .targetsWrapperState()
@@ -246,20 +247,22 @@ class CalloutConfigToolbarState extends State<CalloutConfigToolbar> {
             Tooltip(
               message: 'configure callout shape...',
               child: PropertyButtonEnum(
-                label: "",
-                menuItems: MappableDecorationShapeEnum.values
+                label: "shape",
+                skipShowingLabel: true, // passing label as the cId
+                menuItems: DecorationShapeEnum.values
                     .map((e) => e.toMenuItem())
                     .toList(),
-                originalEnumIndex: tc.calloutDecorationShape.index,
+                originalEnumIndex: tc.calloutDecorationShapeEnum?.index,
                 onChangeF: (newIndex) {
-                  tc.calloutDecorationShape =
-                      MappableDecorationShapeEnum.of(newIndex) ??
-                          MappableDecorationShapeEnum.rectangle;
-                  if (tc.calloutDecorationShape ==
-                      MappableDecorationShapeEnum.star) {
-                    tc.calloutArrowTypeIndex = ArrowTypeEnum.NONE.index;
+                  fco.dismiss('shape');
+                  tc.calloutDecorationShapeEnum =
+                      DecorationShapeEnum.of(newIndex) ??
+                          DecorationShapeEnum.rectangle;
+                  if (tc.calloutDecorationShapeEnum ==
+                      DecorationShapeEnum.star) {
+                    tc.targetPointerTypeEnum = TargetPointerTypeEnum.NONE;
                   }
-                  tc.calloutBorderColor = ColorModel.grey();
+                  tc.calloutBorderColors = UpTo6Colors(color1: ColorModel.grey());
                   tc.calloutBorderThickness = 2;
                   SnippetRootNode? rootNode = tc.parentTargetsWrapperNode?.rootNodeOfSnippet();
                   if (rootNode == null) return;

@@ -239,17 +239,17 @@ class SNodeWidget extends StatelessWidget {
 
   void _showNodeWidgetMenu(BuildContext context, Offset tapPos, SNode node) {
     fco.showOverlay(
-      calloutConfig: CalloutConfigModel(
+      calloutConfig: CalloutConfig(
         cId: 'node-actions',
         scrollControllerName: scName,
         initialCalloutW: 300,
         initialCalloutH: 220,
-        initialTargetAlignment: AlignmentEnum.centerRight,
-        initialCalloutAlignment: AlignmentEnum.centerLeft,
+        initialTargetAlignment: Alignment.centerRight,
+        initialCalloutAlignment: Alignment.centerLeft,
         finalSeparation: 300,
-        arrowType: ArrowTypeEnum.THIN,
-        arrowColor: ColorModel.fromColor(Colors.white),
-        animate: true,
+        targetPointerType: TargetPointerType.thin_line(),
+        bubbleOrTargetPointerColor: Colors.white,
+        animatePointer: true,
         barrier: CalloutBarrierConfig(
           color: Colors.black,
           opacity: .4,

@@ -15,9 +15,9 @@ part 'wrap_node.mapper.dart';
 @MappableClass()
 class WrapNode extends MC with WrapNodeMappable {
   AxisEnum direction;
-  WrapAlignmentEnum? alignment;
-  WrapAlignmentEnum? runAlignment;
-  WrapCrossAlignmentEnum? crossAxisAlignment;
+  WrapAlignmentEnumModel? alignment;
+  WrapAlignmentEnumModel? runAlignment;
+  WrapCrossAlignmentEnumModel? crossAxisAlignment;
 
   double? spacing;
   double? runSpacing;
@@ -59,17 +59,17 @@ class WrapNode extends MC with WrapNodeMappable {
           onDoubleChange: (newValue) => refreshWithUpdate(context,() => runSpacing = newValue),
           calloutButtonSize: const Size(140, 30),
         ),
-        EnumPNode<WrapAlignmentEnum?>(
+        EnumPNode<WrapAlignmentEnumModel?>(
           snode: this,
           name: 'alignment',
           valueIndex: alignment?.index,
-          onIndexChange: (newValue) => refreshWithUpdate(context,() => alignment = WrapAlignmentEnum.of(newValue)),
+          onIndexChange: (newValue) => refreshWithUpdate(context,() => alignment = WrapAlignmentEnumModel.of(newValue)),
         ),
-        EnumPNode<CrossAxisAlignmentEnum?>(
+        EnumPNode<CrossAxisAlignmentEnumModel?>(
           snode: this,
           name: 'crossAlignment',
           valueIndex: crossAxisAlignment?.index,
-          onIndexChange: (newValue) => refreshWithUpdate(context,() => crossAxisAlignment = WrapCrossAlignmentEnum.of(newValue)),
+          onIndexChange: (newValue) => refreshWithUpdate(context,() => crossAxisAlignment = WrapCrossAlignmentEnumModel.of(newValue)),
         ),
       ];
 

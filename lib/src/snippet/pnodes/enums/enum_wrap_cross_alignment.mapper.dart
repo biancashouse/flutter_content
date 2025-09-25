@@ -6,53 +6,56 @@
 
 part of 'enum_wrap_cross_alignment.dart';
 
-class WrapCrossAlignmentEnumMapper extends EnumMapper<WrapCrossAlignmentEnum> {
-  WrapCrossAlignmentEnumMapper._();
+class WrapCrossAlignmentEnumModelMapper
+    extends EnumMapper<WrapCrossAlignmentEnumModel> {
+  WrapCrossAlignmentEnumModelMapper._();
 
-  static WrapCrossAlignmentEnumMapper? _instance;
-  static WrapCrossAlignmentEnumMapper ensureInitialized() {
+  static WrapCrossAlignmentEnumModelMapper? _instance;
+  static WrapCrossAlignmentEnumModelMapper ensureInitialized() {
     if (_instance == null) {
-      MapperContainer.globals.use(_instance = WrapCrossAlignmentEnumMapper._());
+      MapperContainer.globals
+          .use(_instance = WrapCrossAlignmentEnumModelMapper._());
     }
     return _instance!;
   }
 
-  static WrapCrossAlignmentEnum fromValue(dynamic value) {
+  static WrapCrossAlignmentEnumModel fromValue(dynamic value) {
     ensureInitialized();
     return MapperContainer.globals.fromValue(value);
   }
 
   @override
-  WrapCrossAlignmentEnum decode(dynamic value) {
+  WrapCrossAlignmentEnumModel decode(dynamic value) {
     switch (value) {
       case r'start':
-        return WrapCrossAlignmentEnum.start;
+        return WrapCrossAlignmentEnumModel.start;
       case r'end':
-        return WrapCrossAlignmentEnum.end;
+        return WrapCrossAlignmentEnumModel.end;
       case r'center':
-        return WrapCrossAlignmentEnum.center;
+        return WrapCrossAlignmentEnumModel.center;
       default:
         throw MapperException.unknownEnumValue(value);
     }
   }
 
   @override
-  dynamic encode(WrapCrossAlignmentEnum self) {
+  dynamic encode(WrapCrossAlignmentEnumModel self) {
     switch (self) {
-      case WrapCrossAlignmentEnum.start:
+      case WrapCrossAlignmentEnumModel.start:
         return r'start';
-      case WrapCrossAlignmentEnum.end:
+      case WrapCrossAlignmentEnumModel.end:
         return r'end';
-      case WrapCrossAlignmentEnum.center:
+      case WrapCrossAlignmentEnumModel.center:
         return r'center';
     }
   }
 }
 
-extension WrapCrossAlignmentEnumMapperExtension on WrapCrossAlignmentEnum {
+extension WrapCrossAlignmentEnumModelMapperExtension
+    on WrapCrossAlignmentEnumModel {
   String toValue() {
-    WrapCrossAlignmentEnumMapper.ensureInitialized();
-    return MapperContainer.globals.toValue<WrapCrossAlignmentEnum>(this)
+    WrapCrossAlignmentEnumModelMapper.ensureInitialized();
+    return MapperContainer.globals.toValue<WrapCrossAlignmentEnumModel>(this)
         as String;
   }
 }

@@ -117,16 +117,16 @@ class TargetsWrapper extends StatefulWidget {
     Rect wrapperRect,
     final ScrollControllerName? scName,
   ) {
-    final cc = CalloutConfigModel(
+    final cc = CalloutConfig(
       cId: CalloutConfigToolbar.CID,
       scrollControllerName: scName,
-      fillColor: ColorModel.purpleAccent(),
+      decorationFillColors: ColorOrGradient.color(Colors.purpleAccent),
       initialCalloutW: 820,
       initialCalloutH: 80,
-      decorationShape: DecorationShapeEnum.rounded_rectangle,
-      borderRadius: 16,
-      animate: false,
-      arrowType: ArrowTypeEnum.NONE,
+      decorationShape: DecorationShape.rounded_rectangle(),
+      decorationBorderRadius: 16,
+      animatePointer: false,
+      targetPointerType: TargetPointerType.none(),
       initialCalloutPos: OffsetModel.fromOffset(fco.calloutConfigToolbarPos()),
       onDragEndedF: (newPos) {
         fco.setCalloutConfigToolbarPos(newPos);
@@ -386,10 +386,10 @@ class TargetsWrapperState extends State<TargetsWrapper> {
                           fco.snippetBeingEdited != null) {
                         return;
                       }
-                      CalloutConfigModel cc = CalloutConfigModel(
+                      CalloutConfig cc = CalloutConfig(
                           cId: 'create-target-menu',
-                          initialTargetAlignment: AlignmentEnum.topRight,
-                          initialCalloutAlignment: AlignmentEnum.bottomLeft,
+                          initialTargetAlignment: Alignment.topRight,
+                          initialCalloutAlignment: Alignment.bottomLeft,
                           initialCalloutW: TargetsWrapperOnTapMenu.menuWidth(),
                           initialCalloutH: TargetsWrapperOnTapMenu.menuHeight(),
                           // contentTranslateX: 1,
@@ -398,14 +398,14 @@ class TargetsWrapperState extends State<TargetsWrapper> {
                             opacity: 0.1,
                           ),
                           // finalSeparation: 50,
-                          arrowColor: ColorModel.purpleAccent(),
-                          animate: true,
-                          fillColor: ColorModel.purpleAccent(),
+                          bubbleOrTargetPointerColor: Colors.purpleAccent,
+                          animatePointer: true,
+                          decorationFillColors: ColorOrGradient.color(Colors.purpleAccent.withAlpha(90)),
                           scrollControllerName: null,
                           showCloseButton: true,
                           closeButtonPos: Offset(10, 10),
                           closeButtonColor: Colors.white,
-                          borderRadius: 16,
+                          decorationBorderRadius: 16,
                           onDismissedF: () {
                             hidePossibleNewTarget();
                           });

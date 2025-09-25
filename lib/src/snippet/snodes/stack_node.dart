@@ -76,7 +76,7 @@ class StackNode extends MC with StackNodeMappable {
                   key: createNodeWidgetGK(),
                   fit: fit.flutterValue,
                   clipBehavior: clipBehavior.flutterValue,
-                  alignment: alignment.flutterValue,
+                  alignment: alignment.alignment,
                   children: children
                       .map((node) => node.buildFlutterWidget(context, this))
                       .toList(),

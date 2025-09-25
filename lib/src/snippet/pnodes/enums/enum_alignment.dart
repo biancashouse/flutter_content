@@ -6,7 +6,7 @@
 // part 'enum_alignment.mapper.dart';
 //
 // @MappableEnum()
-// enum AlignmentEnum   {
+// enum AlignmentEnumModel   {
 //   topLeft(Alignment.topLeft),
 //   topCenter(Alignment.topCenter),
 //   topRight(Alignment.topRight),
@@ -17,20 +17,20 @@
 //   bottomCenter(Alignment.bottomCenter),
 //   bottomRight(Alignment.bottomRight);
 //
-//   const AlignmentEnum(this.flutterValue);
+//   const AlignmentEnumModel(this.flutterValue);
 //
 //   final Alignment flutterValue;
 //
-//   AlignmentEnum get oppositeEnum => switch (this) {
-//         AlignmentEnum.topLeft => AlignmentEnum.bottomRight,
-//         AlignmentEnum.topCenter => AlignmentEnum.bottomCenter,
-//         AlignmentEnum.topRight => AlignmentEnum.bottomLeft,
-//         AlignmentEnum.centerLeft => AlignmentEnum.centerRight,
-//         AlignmentEnum.center => AlignmentEnum.center,
-//         AlignmentEnum.centerRight => AlignmentEnum.centerLeft,
-//         AlignmentEnum.bottomLeft => AlignmentEnum.topRight,
-//         AlignmentEnum.bottomCenter => AlignmentEnum.topCenter,
-//         AlignmentEnum.bottomRight => AlignmentEnum.topLeft,
+//   AlignmentEnumModel get oppositeAlignment => switch (this) {
+//         AlignmentEnumModel.topLeft => AlignmentEnumModel.bottomRight,
+//         AlignmentEnumModel.topCenter => AlignmentEnumModel.bottomCenter,
+//         AlignmentEnumModel.topRight => AlignmentEnumModel.bottomLeft,
+//         AlignmentEnumModel.centerLeft => AlignmentEnumModel.centerRight,
+//         AlignmentEnumModel.center => AlignmentEnumModel.center,
+//         AlignmentEnumModel.centerRight => AlignmentEnumModel.centerLeft,
+//         AlignmentEnumModel.bottomLeft => AlignmentEnumModel.topRight,
+//         AlignmentEnumModel.bottomCenter => AlignmentEnumModel.topCenter,
+//         AlignmentEnumModel.bottomRight => AlignmentEnumModel.topLeft,
 //       };
 //
 //   /// for flutter_content usage
@@ -84,5 +84,5 @@
 //
 //   String toSource() => 'Alignment.$name';
 //
-//   static AlignmentEnum? of(int? index) => index != null ? AlignmentEnum.values.elementAtOrNull(index) : null;
+//   static AlignmentEnumModel? of(int? index) => index != null ? AlignmentEnumModel.values.elementAtOrNull(index) : null;
 // }

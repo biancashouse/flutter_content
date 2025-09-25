@@ -1,19 +1,19 @@
 // import 'package:dart_mappable/dart_mappable.dart';
 // import 'package:flutter/material.dart';
 // import 'package:flutter_content/src/snippet/pnodes/enums/enum_alignment.dart';
-// import 'package:flutter_content/src/snippet/pnodes/enums/enum_arrow_type.dart';
+// import 'package:flutter_content/src/snippet/pnodes/enums/enum_target_pointer_type.dart';
 //
 // part 'callout_config_properties.mapper.dart';
 //
 // @MappableClass()
 // class CalloutConfigProperties with CalloutConfigPropertiesMappable {
 //   String? cid;
-//   AlignmentEnum? targetAlignment;
-//   // AlignmentEnum? calloutAlignment;
+//   AlignmentEnumModel? targetAlignment;
+//   // AlignmentEnumModel? calloutAlignment;
 //   double? calloutTop;
 //   double? calloutLeft;
 //   int? colorValue;
-//   ArrowTypeEnum? arrowType;
+//   ArrowTypeEnumModel? arrowType;
 //   Color? arrowColor;
 //   double? separation;
 //   bool resizableH;

@@ -18,7 +18,7 @@ class ContainerStylePropertiesMapper
       UpTo6ColorsMapper.ensureInitialized();
       EdgeInsetsValueMapper.ensureInitialized();
       AlignmentEnumMapper.ensureInitialized();
-      MappableDecorationShapeEnumMapper.ensureInitialized();
+      DecorationShapeEnumMapper.ensureInitialized();
       BadgePositionEnumMapper.ensureInitialized();
       OutlinedBorderPropertiesMapper.ensureInitialized();
     }
@@ -54,11 +54,12 @@ class ContainerStylePropertiesMapper
   static AlignmentEnum? _$alignment(ContainerStyleProperties v) => v.alignment;
   static const Field<ContainerStyleProperties, AlignmentEnum> _f$alignment =
       Field('alignment', _$alignment, opt: true);
-  static MappableDecorationShapeEnum _$decoration(ContainerStyleProperties v) =>
-      v.decoration;
-  static const Field<ContainerStyleProperties, MappableDecorationShapeEnum>
-      _f$decoration = Field('decoration', _$decoration,
-          opt: true, def: MappableDecorationShapeEnum.rectangle);
+  static DecorationShapeEnum? _$decorationShapeEnum(
+          ContainerStyleProperties v) =>
+      v.decorationShapeEnum;
+  static const Field<ContainerStyleProperties, DecorationShapeEnum>
+      _f$decorationShapeEnum =
+      Field('decorationShapeEnum', _$decorationShapeEnum, opt: true);
   static double? _$borderThickness(ContainerStyleProperties v) =>
       v.borderThickness;
   static const Field<ContainerStyleProperties, double> _f$borderThickness =
@@ -124,7 +125,7 @@ class ContainerStylePropertiesMapper
     #width: _f$width,
     #height: _f$height,
     #alignment: _f$alignment,
-    #decoration: _f$decoration,
+    #decorationShapeEnum: _f$decorationShapeEnum,
     #borderThickness: _f$borderThickness,
     #borderColors: _f$borderColors,
     #borderColorValues: _f$borderColorValues,
@@ -151,7 +152,7 @@ class ContainerStylePropertiesMapper
         width: data.dec(_f$width),
         height: data.dec(_f$height),
         alignment: data.dec(_f$alignment),
-        decoration: data.dec(_f$decoration),
+        decorationShapeEnum: data.dec(_f$decorationShapeEnum),
         borderThickness: data.dec(_f$borderThickness),
         borderColors: data.dec(_f$borderColors),
         borderColorValues: data.dec(_f$borderColorValues),
@@ -241,7 +242,7 @@ abstract class ContainerStylePropertiesCopyWith<
       double? width,
       double? height,
       AlignmentEnum? alignment,
-      MappableDecorationShapeEnum? decoration,
+      DecorationShapeEnum? decorationShapeEnum,
       double? borderThickness,
       UpTo6Colors? borderColors,
       UpTo6Colors? borderColorValues,
@@ -301,7 +302,7 @@ class _ContainerStylePropertiesCopyWithImpl<$R, $Out>
           Object? width = $none,
           Object? height = $none,
           Object? alignment = $none,
-          MappableDecorationShapeEnum? decoration,
+          Object? decorationShapeEnum = $none,
           Object? borderThickness = $none,
           Object? borderColors = $none,
           Object? borderColorValues = $none,
@@ -323,7 +324,8 @@ class _ContainerStylePropertiesCopyWithImpl<$R, $Out>
         if (width != $none) #width: width,
         if (height != $none) #height: height,
         if (alignment != $none) #alignment: alignment,
-        if (decoration != null) #decoration: decoration,
+        if (decorationShapeEnum != $none)
+          #decorationShapeEnum: decorationShapeEnum,
         if (borderThickness != $none) #borderThickness: borderThickness,
         if (borderColors != $none) #borderColors: borderColors,
         if (borderColorValues != $none) #borderColorValues: borderColorValues,
@@ -348,7 +350,8 @@ class _ContainerStylePropertiesCopyWithImpl<$R, $Out>
       width: data.get(#width, or: $value.width),
       height: data.get(#height, or: $value.height),
       alignment: data.get(#alignment, or: $value.alignment),
-      decoration: data.get(#decoration, or: $value.decoration),
+      decorationShapeEnum:
+          data.get(#decorationShapeEnum, or: $value.decorationShapeEnum),
       borderThickness: data.get(#borderThickness, or: $value.borderThickness),
       borderColors: data.get(#borderColors, or: $value.borderColors),
       borderColorValues:

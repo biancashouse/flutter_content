@@ -17,7 +17,6 @@ class ChipNodeMapper extends SubClassMapperBase<ChipNode> {
       TextStylePropertiesMapper.ensureInitialized();
       EdgeInsetsValueMapper.ensureInitialized();
       ColorModelMapper.ensureInitialized();
-      CalloutConfigModelMapper.ensureInitialized();
     }
     return _instance!;
   }
@@ -66,9 +65,6 @@ class ChipNodeMapper extends SubClassMapperBase<ChipNode> {
   static String? _$onTapHandlerName(ChipNode v) => v.onTapHandlerName;
   static const Field<ChipNode, String> _f$onTapHandlerName =
       Field('onTapHandlerName', _$onTapHandlerName, opt: true);
-  static CalloutConfigModel? _$calloutConfig(ChipNode v) => v.calloutConfig;
-  static const Field<ChipNode, CalloutConfigModel> _f$calloutConfig =
-      Field('calloutConfig', _$calloutConfig, opt: true);
   static String _$uid(ChipNode v) => v.uid;
   static const Field<ChipNode, String> _f$uid =
       Field('uid', _$uid, mode: FieldMode.member);
@@ -98,7 +94,6 @@ class ChipNodeMapper extends SubClassMapperBase<ChipNode> {
     #destinationSnippetName: _f$destinationSnippetName,
     #destinationRoutePathSnippetName: _f$destinationRoutePathSnippetName,
     #onTapHandlerName: _f$onTapHandlerName,
-    #calloutConfig: _f$calloutConfig,
     #uid: _f$uid,
     #treeNodeGK: _f$treeNodeGK,
     #isExpanded: _f$isExpanded,
@@ -126,8 +121,7 @@ class ChipNodeMapper extends SubClassMapperBase<ChipNode> {
         destinationSnippetName: data.dec(_f$destinationSnippetName),
         destinationRoutePathSnippetName:
             data.dec(_f$destinationRoutePathSnippetName),
-        onTapHandlerName: data.dec(_f$onTapHandlerName),
-        calloutConfig: data.dec(_f$calloutConfig));
+        onTapHandlerName: data.dec(_f$onTapHandlerName));
   }
 
   @override
@@ -187,8 +181,6 @@ abstract class ChipNodeCopyWith<$R, $In extends ChipNode, $Out>
   ColorModelCopyWith<$R, ColorModel, ColorModel>? get bgColor;
   ColorModelCopyWith<$R, ColorModel, ColorModel>? get disabledColor;
   ColorModelCopyWith<$R, ColorModel, ColorModel>? get selectedColor;
-  CalloutConfigModelCopyWith<$R, CalloutConfigModel, CalloutConfigModel>?
-      get calloutConfig;
   @override
   $R call(
       {String? label,
@@ -201,8 +193,7 @@ abstract class ChipNodeCopyWith<$R, $In extends ChipNode, $Out>
       String? destinationPanelOrPlaceholderName,
       String? destinationSnippetName,
       String? destinationRoutePathSnippetName,
-      String? onTapHandlerName,
-      CalloutConfigModel? calloutConfig});
+      String? onTapHandlerName});
   ChipNodeCopyWith<$R2, $In, $Out2> $chain<$R2, $Out2>(Then<$Out2, $R2> t);
 }
 
@@ -232,10 +223,6 @@ class _ChipNodeCopyWithImpl<$R, $Out>
   ColorModelCopyWith<$R, ColorModel, ColorModel>? get selectedColor =>
       $value.selectedColor?.copyWith.$chain((v) => call(selectedColor: v));
   @override
-  CalloutConfigModelCopyWith<$R, CalloutConfigModel, CalloutConfigModel>?
-      get calloutConfig =>
-          $value.calloutConfig?.copyWith.$chain((v) => call(calloutConfig: v));
-  @override
   $R call(
           {String? label,
           TextStyleProperties? labelTSPropGroup,
@@ -247,8 +234,7 @@ class _ChipNodeCopyWithImpl<$R, $Out>
           Object? destinationPanelOrPlaceholderName = $none,
           Object? destinationSnippetName = $none,
           Object? destinationRoutePathSnippetName = $none,
-          Object? onTapHandlerName = $none,
-          Object? calloutConfig = $none}) =>
+          Object? onTapHandlerName = $none}) =>
       $apply(FieldCopyWithData({
         if (label != null) #label: label,
         if (labelTSPropGroup != null) #labelTSPropGroup: labelTSPropGroup,
@@ -263,8 +249,7 @@ class _ChipNodeCopyWithImpl<$R, $Out>
           #destinationSnippetName: destinationSnippetName,
         if (destinationRoutePathSnippetName != $none)
           #destinationRoutePathSnippetName: destinationRoutePathSnippetName,
-        if (onTapHandlerName != $none) #onTapHandlerName: onTapHandlerName,
-        if (calloutConfig != $none) #calloutConfig: calloutConfig
+        if (onTapHandlerName != $none) #onTapHandlerName: onTapHandlerName
       }));
   @override
   ChipNode $make(CopyWithData data) => ChipNode(
@@ -285,8 +270,7 @@ class _ChipNodeCopyWithImpl<$R, $Out>
           #destinationRoutePathSnippetName,
           or: $value.destinationRoutePathSnippetName),
       onTapHandlerName:
-          data.get(#onTapHandlerName, or: $value.onTapHandlerName),
-      calloutConfig: data.get(#calloutConfig, or: $value.calloutConfig));
+          data.get(#onTapHandlerName, or: $value.onTapHandlerName));
 
   @override
   ChipNodeCopyWith<$R2, ChipNode, $Out2> $chain<$R2, $Out2>(

@@ -39,14 +39,14 @@ class AppInfoModel with AppInfoModelMappable {
     fco.dismiss("floating-clipboard");
     fco.showOverlay(
       calloutContent: const ClipboardView(),
-      calloutConfig: CalloutConfigModel(
+      calloutConfig: CalloutConfig(
         cId: "floating-clipboard",
         initialCalloutW: 300,
         initialCalloutH: 180,
         initialCalloutPos: OffsetModel(fco.scrW - 400, 0),
-        fillColor: ColorModel.fromColor(Colors.transparent),
-        arrowType: ArrowTypeEnum.NONE,
-        borderRadius: 16,
+        decorationFillColors: ColorOrGradient.color(Colors.transparent),
+        decorationBorderRadius: 16,
+        targetPointerType: TargetPointerType.none(),
         scrollControllerName: scName,
       ),
     );

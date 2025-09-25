@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_content/flutter_content.dart';
 
 class TargetColourTool extends StatelessWidget {
-  final CalloutConfigModel cc;
+  final CalloutConfig cc;
   final TargetModel tc;
   final Rect wrapperRect;
   final VoidCallback onParentBarrierTappedF;
@@ -27,7 +27,7 @@ class TargetColourTool extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     void colorPicked(Color pickedColor) {
-      tc.setCalloutColor(ColorModel.fromColor(pickedColor));
+      tc.setCalloutFillColor(ColorModel.fromColor(pickedColor));
       tc.changed_saveRootSnippet();
       // STreeNode.hideAllTargetCovers();
       // STreeNode.showAllTargetCovers();
@@ -76,7 +76,7 @@ class TargetColourTool extends StatelessWidget {
           ),
           ColorPicker(
             // Use the screenPickerColor as color.
-            color: tc.calloutFillColor!.flutterValue,
+            color: tc.calloutFillColors?.color1?.flutterValue??Colors.white,
             // Update the screenPickerColor using the callback.
             onColorChanged: (Color color) => colorPicked(color),
             // onCompleted: () => fco.dismiss(cId),
@@ -91,13 +91,14 @@ class TargetColourTool extends StatelessWidget {
   }
 
   static void show(
-    CalloutConfigModel cc,
+    CalloutConfig cc,
     TargetModel tc,
     Rect wrapperRect, {
     required VoidCallback onBarrierTappedF,
     ScrollControllerName? scName,
     required bool justPlaying,
   }) {
+    print('xxxxxxxxxxx');
     GlobalKey? targetGK =
         // tc.single
         // ? FCO.getSingleTargetGk(tc.wName)
@@ -106,13 +107,13 @@ class TargetColourTool extends StatelessWidget {
 
     fco.showOverlay(
       targetGkF: () => targetGK,
-      calloutConfig: CalloutConfigModel(
+      calloutConfig: CalloutConfig(
         cId: 'color-picker',
         initialCalloutW: 320,
         initialCalloutH: 380,
-        fillColor: ColorModel.purpleAccent(),
-        borderRadius: 16,
-        arrowType: ArrowTypeEnum.NONE,
+        decorationFillColors: ColorOrGradient.color(Colors.purpleAccent),
+        decorationBorderRadius: 16,
+        targetPointerType: TargetPointerType.none()  ,
         barrier: CalloutBarrierConfig(
           opacity: 0.1,
         ),
@@ -130,5 +131,5 @@ class TargetColourTool extends StatelessWidget {
     );
   }
 
-  static bool isShowing() => fco.anyPresent(["arrow-type"]);
+  // static bool isShowing() => fco.anyPresent(["arrow-type"]);
 }

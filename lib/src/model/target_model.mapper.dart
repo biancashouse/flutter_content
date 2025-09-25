@@ -13,8 +13,10 @@ class TargetModelMapper extends ClassMapperBase<TargetModel> {
   static TargetModelMapper ensureInitialized() {
     if (_instance == null) {
       MapperContainer.globals.use(_instance = TargetModelMapper._());
+      UpTo6ColorsMapper.ensureInitialized();
+      DecorationShapeEnumMapper.ensureInitialized();
+      TargetPointerTypeEnumMapper.ensureInitialized();
       ColorModelMapper.ensureInitialized();
-      MappableDecorationShapeEnumMapper.ensureInitialized();
     }
     return _instance!;
   }
@@ -73,26 +75,19 @@ class TargetModelMapper extends ClassMapperBase<TargetModel> {
   static bool _$followScroll(TargetModel v) => v.followScroll;
   static const Field<TargetModel, bool> _f$followScroll =
       Field('followScroll', _$followScroll, opt: true, def: true);
-  static int? _$calloutFillColorValue(TargetModel v) => v.calloutFillColorValue;
-  static const Field<TargetModel, int> _f$calloutFillColorValue =
-      Field('calloutFillColorValue', _$calloutFillColorValue, opt: true);
-  static ColorModel? _$calloutFillColor(TargetModel v) => v.calloutFillColor;
-  static const Field<TargetModel, ColorModel> _f$calloutFillColor =
-      Field('calloutFillColor', _$calloutFillColor, opt: true);
-  static int? _$calloutBorderColorValue(TargetModel v) =>
-      v.calloutBorderColorValue;
-  static const Field<TargetModel, int> _f$calloutBorderColorValue =
-      Field('calloutBorderColorValue', _$calloutBorderColorValue, opt: true);
-  static ColorModel? _$calloutBorderColor(TargetModel v) =>
-      v.calloutBorderColor;
-  static const Field<TargetModel, ColorModel> _f$calloutBorderColor =
-      Field('calloutBorderColor', _$calloutBorderColor, opt: true);
-  static MappableDecorationShapeEnum _$calloutDecorationShape(TargetModel v) =>
-      v.calloutDecorationShape;
-  static const Field<TargetModel, MappableDecorationShapeEnum>
-      _f$calloutDecorationShape = Field(
-          'calloutDecorationShape', _$calloutDecorationShape,
-          opt: true, def: MappableDecorationShapeEnum.rectangle);
+  static UpTo6Colors? _$calloutFillColors(TargetModel v) => v.calloutFillColors;
+  static const Field<TargetModel, UpTo6Colors> _f$calloutFillColors =
+      Field('calloutFillColors', _$calloutFillColors, opt: true);
+  static UpTo6Colors? _$calloutBorderColors(TargetModel v) =>
+      v.calloutBorderColors;
+  static const Field<TargetModel, UpTo6Colors> _f$calloutBorderColors =
+      Field('calloutBorderColors', _$calloutBorderColors, opt: true);
+  static DecorationShapeEnum? _$calloutDecorationShapeEnum(TargetModel v) =>
+      v.calloutDecorationShapeEnum;
+  static const Field<TargetModel, DecorationShapeEnum>
+      _f$calloutDecorationShapeEnum = Field(
+          'calloutDecorationShapeEnum', _$calloutDecorationShapeEnum,
+          opt: true);
   static double _$calloutBorderRadius(TargetModel v) => v.calloutBorderRadius;
   static const Field<TargetModel, double> _f$calloutBorderRadius =
       Field('calloutBorderRadius', _$calloutBorderRadius, opt: true, def: 30);
@@ -104,20 +99,18 @@ class TargetModelMapper extends ClassMapperBase<TargetModel> {
   static int? _$starPoints(TargetModel v) => v.starPoints;
   static const Field<TargetModel, int> _f$starPoints =
       Field('starPoints', _$starPoints, opt: true);
-  static int? _$calloutArrowTypeIndex(TargetModel v) => v.calloutArrowTypeIndex;
-  static const Field<TargetModel, int> _f$calloutArrowTypeIndex = Field(
-      'calloutArrowTypeIndex', _$calloutArrowTypeIndex,
-      opt: true, def: 4);
-  static int? _$calloutArrowColorValue(TargetModel v) =>
-      v.calloutArrowColorValue;
-  static const Field<TargetModel, int> _f$calloutArrowColorValue =
-      Field('calloutArrowColorValue', _$calloutArrowColorValue, opt: true);
-  static ColorModel? _$calloutArrowColor(TargetModel v) => v.calloutArrowColor;
-  static const Field<TargetModel, ColorModel> _f$calloutArrowColor =
-      Field('calloutArrowColor', _$calloutArrowColor, opt: true);
-  static bool _$animateArrow(TargetModel v) => v.animateArrow;
-  static const Field<TargetModel, bool> _f$animateArrow =
-      Field('animateArrow', _$animateArrow, opt: true, def: false);
+  static TargetPointerTypeEnum? _$targetPointerTypeEnum(TargetModel v) =>
+      v.targetPointerTypeEnum;
+  static const Field<TargetModel, TargetPointerTypeEnum>
+      _f$targetPointerTypeEnum =
+      Field('targetPointerTypeEnum', _$targetPointerTypeEnum, opt: true);
+  static ColorModel? _$bubbleOrTargetPointerColor(TargetModel v) =>
+      v.bubbleOrTargetPointerColor;
+  static const Field<TargetModel, ColorModel> _f$bubbleOrTargetPointerColor =
+      Field('bubbleOrTargetPointerColor', _$bubbleOrTargetPointerColor, opt: true);
+  static bool? _$animatePointer(TargetModel v) => v.animatePointer;
+  static const Field<TargetModel, bool> _f$animatePointer =
+      Field('animatePointer', _$animatePointer, opt: true, def: false);
   static bool _$autoPlay(TargetModel v) => v.autoPlay;
   static const Field<TargetModel, bool> _f$autoPlay =
       Field('autoPlay', _$autoPlay, opt: true, def: false);
@@ -147,18 +140,15 @@ class TargetModelMapper extends ClassMapperBase<TargetModel> {
     #canResizeH: _f$canResizeH,
     #canResizeV: _f$canResizeV,
     #followScroll: _f$followScroll,
-    #calloutFillColorValue: _f$calloutFillColorValue,
-    #calloutFillColor: _f$calloutFillColor,
-    #calloutBorderColorValue: _f$calloutBorderColorValue,
-    #calloutBorderColor: _f$calloutBorderColor,
-    #calloutDecorationShape: _f$calloutDecorationShape,
+    #calloutFillColors: _f$calloutFillColors,
+    #calloutBorderColors: _f$calloutBorderColors,
+    #calloutDecorationShapeEnum: _f$calloutDecorationShapeEnum,
     #calloutBorderRadius: _f$calloutBorderRadius,
     #calloutBorderThickness: _f$calloutBorderThickness,
     #starPoints: _f$starPoints,
-    #calloutArrowTypeIndex: _f$calloutArrowTypeIndex,
-    #calloutArrowColorValue: _f$calloutArrowColorValue,
-    #calloutArrowColor: _f$calloutArrowColor,
-    #animateArrow: _f$animateArrow,
+    #targetPointerTypeEnum: _f$targetPointerTypeEnum,
+    #bubbleOrTargetPointerColor: _f$bubbleOrTargetPointerColor,
+    #animatePointer: _f$animatePointer,
     #autoPlay: _f$autoPlay,
     #parentTargetsWrapperNode: _f$parentTargetsWrapperNode,
   };
@@ -182,18 +172,15 @@ class TargetModelMapper extends ClassMapperBase<TargetModel> {
         canResizeH: data.dec(_f$canResizeH),
         canResizeV: data.dec(_f$canResizeV),
         followScroll: data.dec(_f$followScroll),
-        calloutFillColorValue: data.dec(_f$calloutFillColorValue),
-        calloutFillColor: data.dec(_f$calloutFillColor),
-        calloutBorderColorValue: data.dec(_f$calloutBorderColorValue),
-        calloutBorderColor: data.dec(_f$calloutBorderColor),
-        calloutDecorationShape: data.dec(_f$calloutDecorationShape),
+        calloutFillColors: data.dec(_f$calloutFillColors),
+        calloutBorderColors: data.dec(_f$calloutBorderColors),
+        calloutDecorationShapeEnum: data.dec(_f$calloutDecorationShapeEnum),
         calloutBorderRadius: data.dec(_f$calloutBorderRadius),
         calloutBorderThickness: data.dec(_f$calloutBorderThickness),
         starPoints: data.dec(_f$starPoints),
-        calloutArrowTypeIndex: data.dec(_f$calloutArrowTypeIndex),
-        calloutArrowColorValue: data.dec(_f$calloutArrowColorValue),
-        calloutArrowColor: data.dec(_f$calloutArrowColor),
-        animateArrow: data.dec(_f$animateArrow),
+        targetPointerTypeEnum: data.dec(_f$targetPointerTypeEnum),
+        bubbleOrTargetPointerColor: data.dec(_f$bubbleOrTargetPointerColor),
+        animatePointer: data.dec(_f$animatePointer),
         autoPlay: data.dec(_f$autoPlay));
   }
 
@@ -249,9 +236,9 @@ extension TargetModelValueCopy<$R, $Out>
 
 abstract class TargetModelCopyWith<$R, $In extends TargetModel, $Out>
     implements ClassCopyWith<$R, $In, $Out> {
-  ColorModelCopyWith<$R, ColorModel, ColorModel>? get calloutFillColor;
-  ColorModelCopyWith<$R, ColorModel, ColorModel>? get calloutBorderColor;
-  ColorModelCopyWith<$R, ColorModel, ColorModel>? get calloutArrowColor;
+  UpTo6ColorsCopyWith<$R, UpTo6Colors, UpTo6Colors>? get calloutFillColors;
+  UpTo6ColorsCopyWith<$R, UpTo6Colors, UpTo6Colors>? get calloutBorderColors;
+  ColorModelCopyWith<$R, ColorModel, ColorModel>? get bubbleOrTargetPointerColor;
   $R call(
       {int? uid,
       double? transformScale,
@@ -270,18 +257,15 @@ abstract class TargetModelCopyWith<$R, $In extends TargetModel, $Out>
       bool? canResizeH,
       bool? canResizeV,
       bool? followScroll,
-      int? calloutFillColorValue,
-      ColorModel? calloutFillColor,
-      int? calloutBorderColorValue,
-      ColorModel? calloutBorderColor,
-      MappableDecorationShapeEnum? calloutDecorationShape,
+      UpTo6Colors? calloutFillColors,
+      UpTo6Colors? calloutBorderColors,
+      DecorationShapeEnum? calloutDecorationShapeEnum,
       double? calloutBorderRadius,
       double? calloutBorderThickness,
       int? starPoints,
-      int? calloutArrowTypeIndex,
-      int? calloutArrowColorValue,
-      ColorModel? calloutArrowColor,
-      bool? animateArrow,
+      TargetPointerTypeEnum? targetPointerTypeEnum,
+      ColorModel? bubbleOrTargetPointerColor,
+      bool? animatePointer,
       bool? autoPlay});
   TargetModelCopyWith<$R2, $In, $Out2> $chain<$R2, $Out2>(Then<$Out2, $R2> t);
 }
@@ -295,17 +279,17 @@ class _TargetModelCopyWithImpl<$R, $Out>
   late final ClassMapperBase<TargetModel> $mapper =
       TargetModelMapper.ensureInitialized();
   @override
-  ColorModelCopyWith<$R, ColorModel, ColorModel>? get calloutFillColor =>
-      $value.calloutFillColor?.copyWith
-          .$chain((v) => call(calloutFillColor: v));
+  UpTo6ColorsCopyWith<$R, UpTo6Colors, UpTo6Colors>? get calloutFillColors =>
+      $value.calloutFillColors?.copyWith
+          .$chain((v) => call(calloutFillColors: v));
   @override
-  ColorModelCopyWith<$R, ColorModel, ColorModel>? get calloutBorderColor =>
-      $value.calloutBorderColor?.copyWith
-          .$chain((v) => call(calloutBorderColor: v));
+  UpTo6ColorsCopyWith<$R, UpTo6Colors, UpTo6Colors>? get calloutBorderColors =>
+      $value.calloutBorderColors?.copyWith
+          .$chain((v) => call(calloutBorderColors: v));
   @override
-  ColorModelCopyWith<$R, ColorModel, ColorModel>? get calloutArrowColor =>
-      $value.calloutArrowColor?.copyWith
-          .$chain((v) => call(calloutArrowColor: v));
+  ColorModelCopyWith<$R, ColorModel, ColorModel>? get bubbleOrTargetPointerColor =>
+      $value.bubbleOrTargetPointerColor?.copyWith
+          .$chain((v) => call(bubbleOrTargetPointerColor: v));
   @override
   $R call(
           {int? uid,
@@ -325,18 +309,15 @@ class _TargetModelCopyWithImpl<$R, $Out>
           bool? canResizeH,
           bool? canResizeV,
           bool? followScroll,
-          Object? calloutFillColorValue = $none,
-          Object? calloutFillColor = $none,
-          Object? calloutBorderColorValue = $none,
-          Object? calloutBorderColor = $none,
-          MappableDecorationShapeEnum? calloutDecorationShape,
+          Object? calloutFillColors = $none,
+          Object? calloutBorderColors = $none,
+          Object? calloutDecorationShapeEnum = $none,
           double? calloutBorderRadius,
           double? calloutBorderThickness,
           Object? starPoints = $none,
-          Object? calloutArrowTypeIndex = $none,
-          Object? calloutArrowColorValue = $none,
-          Object? calloutArrowColor = $none,
-          bool? animateArrow,
+          Object? targetPointerTypeEnum = $none,
+          Object? bubbleOrTargetPointerColor = $none,
+          Object? animatePointer = $none,
           bool? autoPlay}) =>
       $apply(FieldCopyWithData({
         if (uid != null) #uid: uid,
@@ -358,26 +339,21 @@ class _TargetModelCopyWithImpl<$R, $Out>
         if (canResizeH != null) #canResizeH: canResizeH,
         if (canResizeV != null) #canResizeV: canResizeV,
         if (followScroll != null) #followScroll: followScroll,
-        if (calloutFillColorValue != $none)
-          #calloutFillColorValue: calloutFillColorValue,
-        if (calloutFillColor != $none) #calloutFillColor: calloutFillColor,
-        if (calloutBorderColorValue != $none)
-          #calloutBorderColorValue: calloutBorderColorValue,
-        if (calloutBorderColor != $none)
-          #calloutBorderColor: calloutBorderColor,
-        if (calloutDecorationShape != null)
-          #calloutDecorationShape: calloutDecorationShape,
+        if (calloutFillColors != $none) #calloutFillColors: calloutFillColors,
+        if (calloutBorderColors != $none)
+          #calloutBorderColors: calloutBorderColors,
+        if (calloutDecorationShapeEnum != $none)
+          #calloutDecorationShapeEnum: calloutDecorationShapeEnum,
         if (calloutBorderRadius != null)
           #calloutBorderRadius: calloutBorderRadius,
         if (calloutBorderThickness != null)
           #calloutBorderThickness: calloutBorderThickness,
         if (starPoints != $none) #starPoints: starPoints,
-        if (calloutArrowTypeIndex != $none)
-          #calloutArrowTypeIndex: calloutArrowTypeIndex,
-        if (calloutArrowColorValue != $none)
-          #calloutArrowColorValue: calloutArrowColorValue,
-        if (calloutArrowColor != $none) #calloutArrowColor: calloutArrowColor,
-        if (animateArrow != null) #animateArrow: animateArrow,
+        if (targetPointerTypeEnum != $none)
+          #targetPointerTypeEnum: targetPointerTypeEnum,
+        if (bubbleOrTargetPointerColor != $none)
+          #bubbleOrTargetPointerColor: bubbleOrTargetPointerColor,
+        if (animatePointer != $none) #animatePointer: animatePointer,
         if (autoPlay != null) #autoPlay: autoPlay
       }));
   @override
@@ -402,28 +378,22 @@ class _TargetModelCopyWithImpl<$R, $Out>
       canResizeH: data.get(#canResizeH, or: $value.canResizeH),
       canResizeV: data.get(#canResizeV, or: $value.canResizeV),
       followScroll: data.get(#followScroll, or: $value.followScroll),
-      calloutFillColorValue:
-          data.get(#calloutFillColorValue, or: $value.calloutFillColorValue),
-      calloutFillColor:
-          data.get(#calloutFillColor, or: $value.calloutFillColor),
-      calloutBorderColorValue: data.get(#calloutBorderColorValue,
-          or: $value.calloutBorderColorValue),
-      calloutBorderColor:
-          data.get(#calloutBorderColor, or: $value.calloutBorderColor),
-      calloutDecorationShape:
-          data.get(#calloutDecorationShape, or: $value.calloutDecorationShape),
+      calloutFillColors:
+          data.get(#calloutFillColors, or: $value.calloutFillColors),
+      calloutBorderColors:
+          data.get(#calloutBorderColors, or: $value.calloutBorderColors),
+      calloutDecorationShapeEnum: data.get(#calloutDecorationShapeEnum,
+          or: $value.calloutDecorationShapeEnum),
       calloutBorderRadius:
           data.get(#calloutBorderRadius, or: $value.calloutBorderRadius),
       calloutBorderThickness:
           data.get(#calloutBorderThickness, or: $value.calloutBorderThickness),
       starPoints: data.get(#starPoints, or: $value.starPoints),
-      calloutArrowTypeIndex:
-          data.get(#calloutArrowTypeIndex, or: $value.calloutArrowTypeIndex),
-      calloutArrowColorValue:
-          data.get(#calloutArrowColorValue, or: $value.calloutArrowColorValue),
-      calloutArrowColor:
-          data.get(#calloutArrowColor, or: $value.calloutArrowColor),
-      animateArrow: data.get(#animateArrow, or: $value.animateArrow),
+      targetPointerTypeEnum:
+          data.get(#targetPointerTypeEnum, or: $value.targetPointerTypeEnum),
+      bubbleOrTargetPointerColor:
+          data.get(#bubbleOrTargetPointerColor, or: $value.bubbleOrTargetPointerColor),
+      animatePointer: data.get(#animatePointer, or: $value.animatePointer),
       autoPlay: data.get(#autoPlay, or: $value.autoPlay));
 
   @override

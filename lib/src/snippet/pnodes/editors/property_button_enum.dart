@@ -4,6 +4,7 @@ import 'package:flutter_content/src/snippet/pnodes/editors/property_callout_butt
 
 class PropertyButtonEnum extends StatelessWidget {
   final String label;
+  final bool skipShowingLabel; // in case label passed in only as cId
   final List<Widget> menuItems;
   final int? originalEnumIndex;
   final Function(int) onChangeF;
@@ -14,6 +15,7 @@ class PropertyButtonEnum extends StatelessWidget {
 
   const PropertyButtonEnum({
     required this.label,
+    this.skipShowingLabel = false,
     required this.menuItems,
     required this.originalEnumIndex,
     required this.onChangeF,
@@ -31,36 +33,42 @@ class PropertyButtonEnum extends StatelessWidget {
       cId: label,
       scName: scName,
       // notifier: ValueNotifier<int>(0),
-      labelWidget: label.isNotEmpty
+      labelWidget: !skipShowingLabel && label.isNotEmpty
           ? Row(
               mainAxisAlignment: MainAxisAlignment.start,
               mainAxisSize: MainAxisSize.min,
               children: [
-                (fco.coloredText(label.isNotEmpty ? '$label: ' : '', color: Colors.white)),
-                originalEnumIndex == null ? fco.coloredText('...', color: Colors.white) : mi,
+                (fco.coloredText(
+                  label.isNotEmpty ? '$label: ' : '',
+                  color: Colors.white,
+                )),
+                originalEnumIndex == null
+                    ? fco.coloredText('...', color: Colors.white)
+                    : mi,
               ],
             )
           : originalEnumIndex == null
-              ? fco.coloredText('...', color: Colors.white)
-              : mi,
+          ? fco.coloredText('...', color: Colors.white)
+          : mi,
       calloutButtonSize: calloutButtonSize,
-      initialCalloutAlignment: AlignmentEnum.bottomCenter,
-      initialTargetAlignment: AlignmentEnum.topCenter,
+      initialCalloutAlignment: Alignment.bottomCenter,
+      initialTargetAlignment: Alignment.topCenter,
       calloutContents: (ctx) => Center(
         child: Padding(
           padding: const EdgeInsets.all(16.0),
           child: Wrap(
-              children: menuItems.asMap().entries.map((entry) {
-            return Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: GestureDetector(
-                onTap: () {
-                  _changed(entry.key);
-                },
-                child: entry.value,
-              ),
-            );
-          }).toList()),
+            children: menuItems.asMap().entries.map((entry) {
+              return Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: InkWell(
+                  onTap: () {
+                    _changed(entry.key);
+                  },
+                  child: entry.value,
+                ),
+              );
+            }).toList(),
+          ),
         ),
       ),
       calloutSize: calloutSize,

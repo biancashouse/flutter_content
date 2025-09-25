@@ -94,14 +94,14 @@ class TappableCommentBtn extends StatelessWidget {
         (isBeginStep ? FlowchartM.BEGIN_STEP_ID : FlowchartM.END_STEP_ID);
     fco.showOverlay(
       onReadyF: onReadyF,
-      calloutConfig: CalloutConfigModel(
+      calloutConfig: CalloutConfig(
         cId: 'comment-snippet',
         initialCalloutW: comment.calloutWidth,
         initialCalloutH: comment.calloutHeight,
-        fillColor: ColorModel.fromColor(Colors.purple),
-        borderThickness: 5,
-        borderRadius: 16,
-        borderColor: ColorModel.fromColor(Colors.yellow),
+        decorationFillColors: ColorOrGradient.color(Colors.purple),
+        decorationBorderThickness: 5,
+        decorationBorderRadius: 16,
+        decorationBorderColors: ColorOrGradient.color(Colors.yellow),
         elevation: 10,
         scrollControllerName: scName,
       ),

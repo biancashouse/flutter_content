@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_content/flutter_content.dart';
-import 'package:flutter_content/src/snippet/pnodes/enums/mappable_enum_decoration.dart';
+import 'package:flutter_content/src/snippet/pnodes/enums/enum_decoration_shape.dart';
 
 bool isShowingSnippetCallout(TargetModel tc) => fco.anyPresent([tc.contentCId]);
 
@@ -85,27 +85,27 @@ Future<void> showSnippetContentCallout({
         return contentWidget;
       },
     ),
-    calloutConfig: CalloutConfigModel(
+    calloutConfig: CalloutConfig(
       cId: tc.contentCId,
       scrollControllerName: scName,
       // finalSeparation: 50,
-      fillColor: tc.calloutFillColor,
-      decorationShape: tc.calloutDecorationShape.toDecorationShapeEnum(),
-      starPoints: tc.starPoints,
-      borderColor: tc.calloutBorderColor ?? ColorModel.grey(),
-      borderThickness: tc.calloutBorderThickness,
-      borderRadius: tc.calloutBorderRadius,
-      arrowColor: tc.calloutFillColor,
-      arrowType: tc.hasAHotspot() ? tc.getArrowType() : ArrowTypeEnum.NONE,
-      fromDelta: tc.calloutDecorationShape == MappableDecorationShapeEnum.star ? 60 : null,
-      animate: tc.animateArrow,
+      decorationFillColors: tc.calloutFillColors?.getColorOrGradient(),
+      decorationShape: tc.calloutDecorationShapeEnum?.decorationShape,
+      decorationStarPoints: tc.starPoints,
+      decorationBorderColors: tc.calloutBorderColors?.getColorOrGradient(),
+      decorationBorderThickness: tc.calloutBorderThickness,
+      decorationBorderRadius: tc.calloutBorderRadius,
+      bubbleOrTargetPointerColor: tc.bgColor(),
+      targetPointerType: tc.hasAHotspot() ? tc.targetPointerTypeEnum?.targetPointerType : TargetPointerType.thin_line(),
+      fromDelta: tc.calloutDecorationShapeEnum == DecorationShapeEnum.star ? 60 : null,
+      animatePointer: tc.animatePointer,
       // https://stackoverflow.com/questions/11671100/scale-path-from-center
       initialCalloutPos: OffsetModel.fromOffset(
         tc.getCalloutPos().translate(1 - tc.getScale(), 1 - tc.getScale()),
         // .translate(translateX, translateY),
       ),
-      // initialCalloutAlignment: AlignmentEnum.bottomCenter,
-      // initialTargetAlignment: AlignmentEnum.topCenter,
+      // initialCalloutAlignment: Alignment.bottomCenter,
+      // initialTargetAlignment: Alignment.topCenter,
       initialCalloutW: tc.calloutWidth,
       initialCalloutH: tc.calloutHeight,
       minHeight: minHeight + 4,
@@ -244,7 +244,7 @@ Future<void> showSnippetContentCallout({
 //       children: [
 //         Center(child: Text('abc')),
 //         Align(
-//           alignment: AlignmentEnum.topRight,
+//           alignment: AlignmentEnumModel.topRight,
 //           child: IconButton(icon: Icon(Icons.edit), iconSize: 40, onPressed: () {}),
 //         ),
 //       ],
@@ -255,8 +255,8 @@ Future<void> showSnippetContentCallout({
 //     arrowType: tc.getArrowType(),
 //     animate: tc.animateArrow,
 //     initialCalloutPos: tc.getTextCalloutPos(),
-//     // initialCalloutAlignment: AlignmentEnum.bottomCenter,
-//     // initialTargetAlignment: AlignmentEnum.topCenter,
+//     // initialCalloutAlignment: Alignment.bottomCenter,
+//     // initialTargetAlignment: Alignment.topCenter,
 //     modal: false,
 //     width: tc.calloutWidth,
 //     height: tc.calloutHeight,

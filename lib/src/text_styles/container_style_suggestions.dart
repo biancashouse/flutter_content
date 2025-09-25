@@ -66,12 +66,11 @@ class ContainerStyleNameSuggestions extends StatelessWidget {
             onSelectionF(suggestedContainerStyleName);
           },
           child: Container(
-            decoration: csProps.decoration.toDecoration(
-              upTo6FillColors: csProps.fillColors,
-              radialGradient: csProps.radialGradient,
-              upTo6BorderColors: csProps.borderColors,
+            decoration: csProps.decorationShapeEnum?.decorationShape.toDecoration(
+              fillColorOrGradient: csProps.fillColors?.getColorOrGradient(),
+              borderColorOrGradient: csProps.borderColors?.getColorOrGradient(),
               borderRadius: csProps.borderRadius,
-              thickness: csProps.borderThickness,
+              borderThickness: csProps.borderThickness,
               starPoints: csProps.starPoints,
             ),
             // decoration: ShapeDecoration(
@@ -82,7 +81,7 @@ class ContainerStyleNameSuggestions extends StatelessWidget {
             margin: csProps.margin?.toEdgeInsets(),
             width: csProps.width,
             height: csProps.height,
-            alignment: csProps.alignment?.flutterValue,
+            alignment: csProps.alignment?.alignment,
             child: Text(suggestedContainerStyleName),
           )
 

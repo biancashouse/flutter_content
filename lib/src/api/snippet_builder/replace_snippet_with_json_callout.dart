@@ -18,16 +18,16 @@ void showSaveAsCallout({
         // targetGKF: targetGKF,
         saveModelF: saveModelF,
       ),
-      calloutConfig: CalloutConfigModel(
+      calloutConfig: CalloutConfig(
         cId: "input-snippet-name",
         initialCalloutW: 400,
         initialCalloutH: 159,
-        initialTargetAlignment: AlignmentEnum.bottomCenter,
-        initialCalloutAlignment: AlignmentEnum.topCenter,
-        arrowType: ArrowTypeEnum.THIN,
-        arrowColor: ColorModel.fromColor(Colors.blue[900]!),
+        initialTargetAlignment: Alignment.bottomCenter,
+        initialCalloutAlignment: Alignment.topCenter,
+        targetPointerType: TargetPointerType.thin_line()  ,
+        bubbleOrTargetPointerColor: Colors.blue[900]!,
         finalSeparation: 60,
-        fillColor: ColorModel.purpleAccent(),
+        decorationFillColors: ColorOrGradient.color(Colors.purpleAccent),
         barrier: CalloutBarrierConfig(
           opacity: 0.25,
           onTappedF: () async {

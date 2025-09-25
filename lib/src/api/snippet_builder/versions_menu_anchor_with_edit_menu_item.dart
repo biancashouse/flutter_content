@@ -25,7 +25,7 @@ class SnippetMenuAnchor extends StatelessWidget {
           (BuildContext context, MenuController controller, Widget? child) {
             return anchorWidget == AnchorWidgetEnum.Triangle
                 ? Tooltip(
-                    message: 'show Snippet menu',
+                    message: 'show Snippet menu\n"${snippetInfo.name}"',
                     child: InkWell(
                       onTap: () {
                         if (controller.isOpen) {
@@ -51,7 +51,7 @@ class SnippetMenuAnchor extends StatelessWidget {
                     icon: Icon(Icons.edit, color: Colors.white),
                     iconSize: 16,
                     padding: EdgeInsets.zero,
-                    tooltip: 'show Snippet menu',
+                    tooltip: 'show Snippet menu\n"${snippetInfo.name}"',
                   );
           },
       menuChildren: [

@@ -4,8 +4,10 @@ import 'package:dart_mappable/dart_mappable.dart';
 import 'package:flutter/material.dart';
 
 import 'package:flutter_content/flutter_content.dart';
-import 'package:flutter_content/src/snippet/pnodes/enums/mappable_enum_decoration.dart';
+import 'package:flutter_content/src/snippet/pnodes/enums/enum_decoration_shape.dart';
 import 'package:json_annotation/json_annotation.dart';
+
+import '../snippet/pnodes/enums/enum_target_pointer_type.dart';
 
 part 'target_model.mapper.dart';
 
@@ -46,23 +48,19 @@ class TargetModel with TargetModelMappable {
   double calloutHeight;
   int calloutDurationMs;
 
-  // deprecated
-  final int? calloutFillColorValue;
-  ColorModel? calloutFillColor;
-  final int? calloutBorderColorValue;
-  ColorModel? calloutBorderColor;
-  MappableDecorationShapeEnum calloutDecorationShape;
+  // decoration
+  UpTo6Colors? calloutFillColors;
+  UpTo6Colors? calloutBorderColors;
+  DecorationShapeEnum? calloutDecorationShapeEnum;
   double calloutBorderRadius;
   double calloutBorderThickness;
   int? starPoints;
 
   // String snippetName;
 
-  int? calloutArrowTypeIndex;
-  ColorModel? calloutArrowColor;
-  final int? calloutArrowColorValue;
-
-  bool animateArrow;
+  TargetPointerTypeEnum? targetPointerTypeEnum;
+  ColorModel? bubbleOrTargetPointerColor;
+  bool? animatePointer;
 
   bool autoPlay;
 
@@ -90,37 +88,24 @@ class TargetModel with TargetModelMappable {
     this.canResizeH = true,
     this.canResizeV = true,
     this.followScroll = true,
-    this.calloutFillColorValue,
-    this.calloutFillColor,
-    this.calloutBorderColorValue,
-    this.calloutBorderColor,
-    this.calloutDecorationShape = MappableDecorationShapeEnum.rectangle,
+    this.calloutFillColors,
+    this.calloutBorderColors,
+    this.calloutDecorationShapeEnum,
     this.calloutBorderRadius = 30,
     this.calloutBorderThickness = 1,
     this.starPoints,
     // required this.snippetName,
-    this.calloutArrowTypeIndex = 4, //ArrowTypeEnum.THIN.index,
-    this.calloutArrowColorValue,
-    this.calloutArrowColor,
-    this.animateArrow = false,
+    this.targetPointerTypeEnum,
+    this.bubbleOrTargetPointerColor,
+    this.animatePointer = false,
     this.autoPlay = false,
-  }) {
-    if (calloutFillColor == null && calloutFillColorValue != null) {
-      calloutFillColor = ColorModel.fromColor(Color(calloutFillColorValue!));
-    } else {
-      calloutFillColor ??= ColorModel.grey();
-    }
-    if (calloutBorderColor == null && calloutBorderColorValue != null) {
-      calloutBorderColor = ColorModel.fromColor(Color(calloutBorderColorValue!));
-    } else {
-      calloutBorderColor ??= ColorModel.grey();
-    }
-    if (calloutArrowColor == null && calloutArrowColorValue != null) {
-      calloutArrowColor = ColorModel.fromColor(Color(calloutArrowColorValue!));
-    } else {
-      calloutArrowColor ??= ColorModel.grey();
-    }
-  }
+  });
+
+  // for now, assumes a single fill color
+  Color bgColor() => calloutFillColors?.color1?.flutterValue ?? Colors.white;
+
+  Color borderColor() =>
+      calloutBorderColors?.color1?.flutterValue ?? Colors.grey;
 
   // if target does not have a hotspot, callout will autoplay
   bool hasAHotspot() => btnLocalTopPc != null && btnLocalLeftPc != null;
@@ -160,7 +145,8 @@ class TargetModel with TargetModelMappable {
       targetsWrapperState()?.widget.parentNode.playList.isNotEmpty ??
       false; // || (_bloc.state.aTargetIsSelected() && _bloc.state.selectedTarget!.uid == uid);
 
-  double getScale({bool testing = false}) => playingOrSelected() || testing ? max(transformScale, 0.01) : 1.0;
+  double getScale({bool testing = false}) =>
+      playingOrSelected() || testing ? max(transformScale, 0.01) : 1.0;
 
   // Offset getTranslate(CAPIState state, {bool testing = false}) {
   //   Size ivSize = TargetsWrapper.iwSize(wName);
@@ -172,10 +158,6 @@ class TargetModel with TargetModelMappable {
   double get radius {
     Size ivSize = targetsWrapperState()!.wrapperRect.size;
     return radiusPc != null ? radiusPc! * ivSize.width : 30.0;
-  }
-
-  ArrowTypeEnum getArrowType() {
-    return ArrowTypeEnum.values[calloutArrowTypeIndex ?? ArrowTypeEnum.POINTY.index];
   }
 
   // CAPIBloc get bloc => _bloc;
@@ -206,11 +188,15 @@ class TargetModel with TargetModelMappable {
   //     ? Colors.white
   //     : Color(calloutFillColorValue!);
 
-  void setCalloutColor(ColorModel? newColor) => calloutFillColor = newColor ?? ColorModel.white();
+  void setCalloutFillColor(ColorModel? newColor) =>
+      calloutFillColors = UpTo6Colors(color1: newColor ?? ColorModel.white());
 
   void setCalloutStarPoints(int? newValue) => starPoints = newValue;
 
-  Offset targetGlobalPos({required Size wrapperSize, required Offset wrapperPos}) {
+  Offset targetGlobalPos({
+    required Size wrapperSize,
+    required Offset wrapperPos,
+  }) {
     // iv rect should always be measured
     Offset ivTopLeft = wrapperPos;
     Size ivSize = wrapperSize;
@@ -219,8 +205,12 @@ class TargetModel with TargetModelMappable {
     double scale = getScale();
     // Offset translate = getTranslate(state);
 
-    double globalPosX = ivTopLeft.dx + /* translate.dx + */ ((targetLocalPosLeftPc ?? 0.0) * ivSize.width * scale);
-    double globalPosY = ivTopLeft.dy + /* translate.dy + */ ((targetLocalPosTopPc ?? 0.0) * ivSize.height * scale);
+    double globalPosX =
+        ivTopLeft.dx + /* translate.dx + */
+        ((targetLocalPosLeftPc ?? 0.0) * ivSize.width * scale);
+    double globalPosY =
+        ivTopLeft.dy + /* translate.dy + */
+        ((targetLocalPosTopPc ?? 0.0) * ivSize.height * scale);
 
     // in prod, target callout will be much smaller
     // if (bloc.state.isPlaying(name)) {
@@ -286,7 +276,8 @@ class TargetModel with TargetModelMappable {
     // fco.logger.i("${btnLocalLeftPc}, ${btnLocalTopPc}");
   }
 
-  Offset getCalloutPos() => Offset(fco.scrW * (calloutLeftPc ?? .5), fco.scrH * (calloutTopPc ?? .5));
+  Offset getCalloutPos() =>
+      Offset(fco.scrW * (calloutLeftPc ?? .5), fco.scrH * (calloutTopPc ?? .5));
 
   // setTextCalloutPos(Offset newGlobalPos) {
   //   calloutTopPc = newGlobalPos.dy / FCO.scrH;
@@ -318,12 +309,12 @@ class TargetModel with TargetModelMappable {
       fco.showToast(
         removeAfterMs: 1000,
         msg: 'saving changes...',
-        gravity: AlignmentEnum.topCenter,
+        gravity: Alignment.topCenter,
         bgColor: Colors.yellow,
         textColor: Colors.black,
       );
       fco.saveNewVersion(snippet: rootNode);
-      fco.dismissToast(AlignmentEnum.topCenter);
+      fco.dismissToast(Alignment.topCenter);
     }
 
     // emit(state.copyWith(

@@ -50,7 +50,8 @@ class TargetPlayBtn extends StatelessWidget {
             child: IntegerCircleAvatar(
               tc,
               num: index + 1,
-              bgColor: tc.calloutFillColor!.flutterValue,
+              bgColor: tc.calloutFillColors?.color1?.flutterValue??Colors.black,
+              //tc.calloutFillColor!.decorationShapeEnum,
               radius: fco.capiBloc.state.CAPI_TARGET_BTN_RADIUS,
               fontSize: 14,
             ),
@@ -63,7 +64,7 @@ class TargetPlayBtn extends StatelessWidget {
                 : IntegerCircleAvatar(
                     tc,
                     num: index + 1,
-                    bgColor: tc.calloutFillColor!.flutterValue,
+                    bgColor: tc.bgColor(),
                     radius:
                         fco.capiBloc.state.CAPI_TARGET_BTN_RADIUS,
                     fontSize: 14,
@@ -150,7 +151,7 @@ class TargetPlayBtn extends StatelessWidget {
               child: IntegerCircleAvatar(
                 tc,
                 num: index + 1,
-                bgColor: tc.calloutFillColor!.flutterValue,
+                bgColor: tc.bgColor(),
                 radius: fco.capiBloc.state.CAPI_TARGET_BTN_RADIUS,
                 fontSize: 14,
               ),

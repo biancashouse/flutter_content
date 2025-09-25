@@ -8,14 +8,14 @@ import 'package:flutter_content/src/snippet/pnodes/editors/property_button_enum.
 part 'enum_cross_axis_alignment.mapper.dart';
 
 @MappableEnum()
-enum CrossAxisAlignmentEnum  {
+enum CrossAxisAlignmentEnumModel  {
   start(CrossAxisAlignment.start),
   end(CrossAxisAlignment.end),
   center(CrossAxisAlignment.center),
   stretch(CrossAxisAlignment.stretch);
   // baseline;
 
-  const CrossAxisAlignmentEnum(this.flutterValue);
+  const CrossAxisAlignmentEnumModel(this.flutterValue);
 
   final CrossAxisAlignment flutterValue;
 
@@ -128,6 +128,6 @@ enum CrossAxisAlignmentEnum  {
         ),
       );
 
-  static CrossAxisAlignmentEnum? of(int? index) => index != null ? CrossAxisAlignmentEnum.values.elementAtOrNull(index) : null;
+  static CrossAxisAlignmentEnumModel? of(int? index) => index != null ? CrossAxisAlignmentEnumModel.values.elementAtOrNull(index) : null;
 
 }

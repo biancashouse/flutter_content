@@ -8,12 +8,12 @@ import 'package:flutter_content/src/snippet/pnodes/editors/property_button_enum.
 part 'enum_wrap_cross_alignment.mapper.dart';
 
 @MappableEnum()
-enum WrapCrossAlignmentEnum  {
+enum WrapCrossAlignmentEnumModel  {
   start(WrapCrossAlignment.start),
   end(WrapCrossAlignment.end),
   center(WrapCrossAlignment.center);
 
-  const WrapCrossAlignmentEnum(this.flutterValue);
+  const WrapCrossAlignmentEnumModel(this.flutterValue);
 
   final WrapCrossAlignment flutterValue;
 
@@ -112,6 +112,6 @@ enum WrapCrossAlignmentEnum  {
         ),
       );
 
-  static WrapCrossAlignmentEnum? of(int? index) => index != null ? WrapCrossAlignmentEnum.values.elementAtOrNull(index) : null;
+  static WrapCrossAlignmentEnumModel? of(int? index) => index != null ? WrapCrossAlignmentEnumModel.values.elementAtOrNull(index) : null;
 
 }

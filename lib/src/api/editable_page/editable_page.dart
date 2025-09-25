@@ -662,10 +662,10 @@ class EditablePageState extends State<EditablePage> {
           ),
         ],
       ),
-      calloutConfig: CalloutConfigModel(
+      calloutConfig: CalloutConfig(
         cId: cid_EditorPassword,
-        // initialTargetAlignment: AlignmentEnum.bottomLeft,
-        // initialCalloutAlignment: AlignmentEnum.topRight,
+        // initialTargetAlignment: Alignment.bottomLeft,
+        // initialCalloutAlignment: Alignment.topRight,
         // finalSeparation: 200,
         barrier: CalloutBarrierConfig(
           opacity: .5,
@@ -675,9 +675,9 @@ class EditablePageState extends State<EditablePage> {
         ),
         initialCalloutW: 240,
         initialCalloutH: 150,
-        borderRadius: 12,
-        // arrowType: ArrowTypeEnum.THIN_REVERSED,
-        fillColor: ColorModel.fromColor(Colors.white),
+        decorationBorderRadius: 12,
+        // arrowType: ArrowTypeEnumModel.THIN_REVERSED,
+        decorationFillColors: ColorOrGradient.color(Colors.white),
         scrollControllerName: widget.routePath,
         onDismissedF: () {
           fco.removeKeystrokeHandler(cid_EditorPassword);
@@ -779,10 +779,10 @@ class EditablePageState extends State<EditablePage> {
           ),
         ],
       ),
-      calloutConfig: CalloutConfigModel(
+      calloutConfig: CalloutConfig(
         cId: cid_editablePageName,
-        // initialTargetAlignment: AlignmentEnum.bottomLeft,
-        // initialCalloutAlignment: AlignmentEnum.topRight,
+        // initialTargetAlignment: Alignment.bottomLeft,
+        // initialCalloutAlignment: Alignment.topRight,
         // finalSeparation: 200,
         barrier: CalloutBarrierConfig(
           opacity: .5,
@@ -792,9 +792,8 @@ class EditablePageState extends State<EditablePage> {
         ),
         initialCalloutW: 500,
         initialCalloutH: 180,
-        borderRadius: 12,
-        // arrowType: ArrowTypeEnum.THIN_REVERSED,
-        fillColor: ColorModel.white(),
+        decorationBorderRadius: 12,
+        decorationFillColors: ColorOrGradient.color(Colors.white),
         scrollControllerName: widget.routePath,
         onDismissedF: () {
           fco.removeKeystrokeHandler(cid_editablePageName);

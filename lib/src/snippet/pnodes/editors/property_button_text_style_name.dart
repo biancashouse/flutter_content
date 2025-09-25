@@ -40,11 +40,11 @@
 //       color: Colors.white,
 //       fontSize: 14,
 //     );
-//     CalloutConfig config = CalloutConfigModel(
+//     CalloutConfig config = CalloutConfig(
 //       cId: 'named-text-style',
 //       initialCalloutW: calloutSize.width,
 //       initialCalloutH: calloutSize.height,
-//       arrowType: ArrowTypeEnum.NONE,
+//       arrowType: ArrowTypeEnumModel.NONE,
 //       // arrowColor: Colors.blueAccent,
 //       fillColor: menuBgColor,
 //       //alwaysReCalcSize: true,
@@ -68,7 +68,7 @@
 //       containsTextField: true,
 //       resizeableH: true,
 //       resizeableV: true,
-//       borderRadius: 16,
+//       decorationBorderRadius: 16,
 //       onDismissedF: onDismissedF,
 //       scrollControllerName: widget.scName,
 //     );

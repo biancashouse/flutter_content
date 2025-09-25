@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_content/flutter_content.dart';
-import 'package:flutter_content/src/snippet/pnodes/editors/property_button_enum.dart';
 import 'package:flutter_content/src/snippet/pnodes/enums/enum_boxfit.dart';
 import 'package:flutter_content/src/snippet/pnodes/enums/enum_clip.dart';
 import 'package:flutter_content/src/snippet/pnodes/enums/enum_cross_axis_alignment.dart';
@@ -15,7 +14,9 @@ import 'package:flutter_content/src/snippet/pnodes/enums/enum_stepper_type.dart'
 import 'package:flutter_content/src/snippet/pnodes/enums/enum_text_align.dart';
 import 'package:flutter_content/src/snippet/pnodes/enums/enum_text_direction.dart';
 import 'package:flutter_content/src/snippet/pnodes/enums/enum_text_overflow.dart';
-import 'package:flutter_content/src/snippet/pnodes/enums/mappable_enum_decoration.dart';
+import 'package:flutter_content/src/snippet/pnodes/enums/enum_decoration_shape.dart';
+
+import 'enums/enum_target_pointer_type.dart';
 
 class EnumPNode<T> extends PNode {
   int? valueIndex;
@@ -62,7 +63,7 @@ class EnumPNode<T> extends PNode {
     }
     // Alignment -------------
     if (_sameType<T, AlignmentEnum?>()) {
-      return propertyNodeContentsAlignment(
+      return AlignmentEnum.propertyNodeContents(
         snode: snode,
         label: name,
         enumValueIndex: valueIndex,
@@ -72,8 +73,8 @@ class EnumPNode<T> extends PNode {
       );
     }
     // Alignment -------------
-    if (_sameType<T, MappableDecorationShapeEnum?>()) {
-      return MappableDecorationShapeEnum.propertyNodeContents(
+    if (_sameType<T, DecorationShapeEnum?>()) {
+      return DecorationShapeEnum.propertyNodeContents(
         snode: snode,
         label: name,
         enumValueIndex: valueIndex,
@@ -83,8 +84,8 @@ class EnumPNode<T> extends PNode {
       );
     }
     // ArrowType -------------
-    if (_sameType<T, ArrowTypeEnum?>()) {
-      return propertyNodeContentsArrowType(
+    if (_sameType<T, TargetPointerTypeEnum?>()) {
+      return TargetPointerTypeEnum.propertyNodeContents(
         snode: snode,
         label: name,
         enumValueIndex: valueIndex,
@@ -113,8 +114,8 @@ class EnumPNode<T> extends PNode {
               onIndexChange(valueIndex = newValueIndex));
     }
     // MainAxisAlignment -------------
-    if (_sameType<T, MainAxisAlignmentEnum?>()) {
-      return MainAxisAlignmentEnum.propertyNodeContents(
+    if (_sameType<T, MainAxisAlignmentEnumModel?>()) {
+      return MainAxisAlignmentEnumModel.propertyNodeContents(
         snode: snode,
         label: name,
         enumValueIndex: valueIndex,
@@ -133,9 +134,9 @@ class EnumPNode<T> extends PNode {
               onIndexChange(valueIndex = newValueIndex));
     }
     // CrossAxisAlignment -------------
-    if (_sameType<T, CrossAxisAlignmentEnum?>()) {
+    if (_sameType<T, CrossAxisAlignmentEnumModel?>()) {
       ScrollControllerName? scName = EditablePage.maybeScrollControllerName(context);
-      return CrossAxisAlignmentEnum.propertyNodeContents(
+      return CrossAxisAlignmentEnumModel.propertyNodeContents(
         snode: snode,
         label: name,
         enumValueIndex: valueIndex,
@@ -265,75 +266,5 @@ class EnumPNode<T> extends PNode {
         errorMsg: 'property not implemented yet');
   }
 }
-
-Widget propertyNodeContentsAlignment({
-    int? enumValueIndex,
-    required SNode snode,
-    required String label,
-    ValueChanged<int?>? onChangedF,
-    required ScrollControllerName? scName,
-  }) =>
-      PropertyButtonEnum(
-        label: label,
-        menuItems: AlignmentEnum.values.map((e) => _toAlignmentMenuItem(e)).toList(),
-        originalEnumIndex: enumValueIndex,
-        onChangeF: (newIndex) {
-          onChangedF?.call(newIndex);
-        },
-        wrap: true,
-        calloutButtonSize: const Size(120, 40),
-        calloutSize: const Size(240, 200),
-        scName: scName,
-      );
-
-  Widget _toAlignmentMenuItem(AlignmentEnum ae) => Row(
-        mainAxisSize: MainAxisSize.min,
-        children: [
-          const SizedBox(
-            width: 8,
-          ),
-          Container(
-            width: 30,
-            height: 30,
-            alignment: ae.flutterValue,
-            decoration: const ShapeDecoration(
-              shape: RoundedRectangleBorder(
-                side: BorderSide(color: Colors.white, width: 1),
-                borderRadius: BorderRadius.all(Radius.circular(6)),
-              ),
-            ),
-            child: Container(
-              width: 10,
-              height: 10,
-              color: Colors.white,
-            ),
-          ),
-          const SizedBox(
-            width: 8,
-          ),
-        ],
-      );
-
-  Widget propertyNodeContentsArrowType({
-    int? enumValueIndex,
-    required SNode snode,
-    required String label,
-    ValueChanged<int?>? onChangedF,
-    required ScrollControllerName? scName,
-  }) =>
-      PropertyButtonEnum(
-        label: label,
-        menuItems: ArrowTypeEnum.values.map((e) => _toArrowTypeMenuItem(e.name)).toList(),
-        originalEnumIndex: enumValueIndex,
-        onChangeF: (newIndex) {
-          onChangedF?.call(newIndex);
-        },
-        wrap: true,
-        calloutButtonSize: const Size(120, 80),
-        calloutSize: Size(260, ArrowTypeEnum.values.length * 50),
-        scName: scName,
-      );
-
-  Widget _toArrowTypeMenuItem(name) => fco.coloredText(name, color: Colors.white);
 
 bool _sameType<T1, T2>() => T1 == T2;

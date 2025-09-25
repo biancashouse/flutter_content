@@ -3,11 +3,9 @@
 import 'dart:typed_data';
 
 import 'package:flutter/material.dart';
-import 'package:flutter_callouts/flutter_callouts.dart' show ArrowTypeEnum, AlignmentEnum, CalloutId, TargetId;
 import 'package:flutter_content/src/snippet/pnodes/groups/button_style_properties.dart';
-import 'package:flutter_content/src/snippet/pnodes/groups/container_style_properties.dart';
-import 'package:flutter_content/src/snippet/pnodes/groups/text_style_properties.dart';
-import 'package:flutter_content/src/snippet/snodes/snippet_root_node.dart';
+
+import '../flutter_content.dart';
 
 typedef VoterId = String;
 typedef PollOptionId = String;
@@ -71,10 +69,10 @@ typedef SnippetMap = Map<SnippetName, SnippetRootNode>;
 
 // typedef DoubleFunc = double Function();
 
-// typedef CalloutConfigChangedF = void Function(AlignmentEnum newTA, ArrowTypeEnum newAT);
+// typedef CalloutConfigChangedF = void Function(AlignmentEnumModel newTA, ArrowTypeEnumModel newAT);
 
-typedef CalloutConfigChangedF = void Function(
-    AlignmentEnum newTA, ArrowTypeEnum newAT);
+// typedef CalloutConfigChangedF = void Function(
+//     AlignmentEnumModel newTA, ArrowTypeEnumModel newAT);
 
 typedef MaterialAppHomeFunc = Widget Function();
 typedef MaterialAppThemeFunc = ThemeData Function();

@@ -19,8 +19,8 @@ class ContainerNode extends SC with ContainerNodeMappable {
   // EdgeInsetsValue? padding;
   // double? width;
   // double? height;
-  // AlignmentEnum? alignment;
-  // MappableDecorationShapeEnum decoration;
+  // AlignmentEnumModel? alignment;
+  // MappableDecorationShapeEnumModel decoration;
   // double? borderThickness;
   // UpTo6Colors? borderColorValues;
   // int? borderColor2Value;
@@ -52,7 +52,7 @@ class ContainerNode extends SC with ContainerNodeMappable {
     // this.width,
     // this.height,
     // this.alignment,
-    // this.decoration = MappableDecorationShapeEnum.rectangle,
+    // this.decoration = MappableDecorationShapeEnumModel.rectangle,
     // this.borderThickness,
     // this.borderColorValues,
     // this.borderRadius,
@@ -85,15 +85,15 @@ class ContainerNode extends SC with ContainerNodeMappable {
 
     return [
       FlutterDocPNode(
-          buttonLabel: 'Container',
-          webLink:
-          'https://api.flutter.dev/flutter/widgets/Container-class.html',
-          snode: this,
-          name: 'fyi'),
-      ContainerStylePNode /*Group*/(
+        buttonLabel: 'Container',
+        webLink: 'https://api.flutter.dev/flutter/widgets/Container-class.html',
+        snode: this,
+        name: 'fyi',
+      ),
+      ContainerStylePNode /*Group*/ (
         snode: this,
         name: 'container style',
-        containerStyleGroup: csPropGroup,
+        containerStyleProperties: csPropGroup,
         onGroupChange: (newValue, refreshPTree) {
           refreshWithUpdate(context, () {
             csPropGroup = newValue;
@@ -177,13 +177,13 @@ class ContainerNode extends SC with ContainerNodeMappable {
       //         // fco.hideOP('easy-color-picker');
       //       }),
       //     ),
-      //     EnumPNode<MappableDecorationShapeEnum?>(
+      //     EnumPNode<MappableDecorationShapeEnumModel?>(
       //       snode: this,
       //       name: 'shape',
       //       valueIndex: decoration.index,
       //       onIndexChange: (newValue) => refreshWithUpdate(context,() => decoration =
-      //           MappableDecorationShapeEnum.of(newValue) ??
-      //               MappableDecorationShapeEnum.rectangle),
+      //           MappableDecorationShapeEnumModel.of(newValue) ??
+      //               MappableDecorationShapeEnumModel.rectangle),
       //     ),
       //     DecimalPNode(
       //       snode: this,
@@ -203,13 +203,13 @@ class ContainerNode extends SC with ContainerNodeMappable {
       //     ),
       //   ],
       // ),
-      // EnumPNode<AlignmentEnum?>(
+      // EnumPNode<AlignmentEnumModel?>(
       //   snode: this,
       //   name: 'alignment',
       //   valueIndex: alignment?.index,
       //   onIndexChange: (newValue) => refreshWithUpdate(context,
       //     () {
-      //       alignment = AlignmentEnum.of(newValue);
+      //       alignment = AlignmentEnumModel.of(newValue);
       //     },
       //   ),
       // ),
@@ -254,8 +254,7 @@ class ContainerNode extends SC with ContainerNodeMappable {
   }
 
   @override
-  Widget buildFlutterWidget(BuildContext context, SNode? parentNode,
-      ) {
+  Widget buildFlutterWidget(BuildContext context, SNode? parentNode) {
     setParent(parentNode);
     //ScrollControllerName? scName = EditablePage.name(context);
     //possiblyHighlightSelectedNode(scName);
@@ -270,32 +269,29 @@ class ContainerNode extends SC with ContainerNodeMappable {
     try {
       return Container(
         key: gk,
-        decoration: csPropGroup.decoration.toDecoration(
-          upTo6FillColors: csPropGroup.fillColors,
-          radialGradient: csPropGroup.radialGradient,
-          upTo6BorderColors: csPropGroup.borderColors,
+        decoration: csPropGroup.decorationShapeEnum?.toDecoration(
+          fillColorOrGradient: csPropGroup.fillColors?.getColorOrGradient(
+            isRadial: csPropGroup.radialGradient ?? false,
+          ),
+          borderColorOrGradient: csPropGroup.borderColors?.getColorOrGradient(),
+          borderThickness: csPropGroup.borderThickness,
           borderRadius: csPropGroup.borderRadius,
-          thickness: csPropGroup.borderThickness,
-          starPoints: csPropGroup.starPoints,
         ),
-        // decoration: ShapeDecoration(
-        //   shape: outlinedBorderGroup!.outlinedBorderType!.toFlutterWidget(nodeSide: outlinedBorderGroup?.side, nodeRadius: borderRadius),
-        //   color: fillColor1Value != null ? Color(fillColor1Value!) : null,
-        // ),
         padding: csPropGroup.padding?.toEdgeInsets(),
         margin: csPropGroup.margin?.toEdgeInsets(),
         width: csPropGroup.width,
         height: csPropGroup.height,
-        alignment: csPropGroup.alignment?.flutterValue,
+        alignment: csPropGroup.alignment?.alignment,
         child: child?.buildFlutterWidget(context, this),
       );
     } catch (e) {
       return Error(
-          key: createNodeWidgetGK(),
-          FLUTTER_TYPE,
-          color: Colors.red,
-          size: 16,
-          errorMsg: e.toString());
+        key: createNodeWidgetGK(),
+        FLUTTER_TYPE,
+        color: Colors.red,
+        size: 16,
+        errorMsg: e.toString(),
+      );
     }
   }
 
@@ -465,13 +461,13 @@ class ContainerNode extends SC with ContainerNodeMappable {
   //       //   children: [
   //       //     NodePropertyButtonRadioMenu(
   //       //       label: 'alignment',
-  //       //       menuItems: AlignmentEnum.values.map((e) => e.toMenuItem()).toList(),
+  //       //       menuItems: AlignmentEnumModel.values.map((e) => e.toMenuItem()).toList(),
   //       //       originalOption: alignment?.index,
   //       //       onChangeF: (newOption) {
-  //       //         alignment = AlignmentEnum.values[newOption];
+  //       //         alignment = AlignmentEnumModel.values[newOption];
   //       //         bloc.add(const const CAPIEvent.forceRefresh());
   //       //       },
-  //       //       calloutSize: AlignmentEnum.calloutSize,
+  //       //       calloutSize: AlignmentEnumModel.calloutSize,
   //       //     ),
   //       //     NodePropertyButtonColor(
   //       //       label: "color",

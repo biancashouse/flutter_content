@@ -30,7 +30,7 @@ class IconButtonNode extends ButtonNode with IconButtonNodeMappable {
     // super.destinationSnippetName,
     required super.bsPropGroup,
     super.onTapHandlerName,
-    super.calloutConfig,
+    // super.calloutConfig,
     super.child,
   });
 
@@ -100,7 +100,7 @@ class IconButtonNode extends ButtonNode with IconButtonNodeMappable {
 
     IconButton button = IconButton(
       // if feature specified, must be a callout
-      key: cid != null ? fco.setCalloutGk(cid!, GlobalKey()) : null,
+      // key: cid != null ? fco.setCalloutGk(cid!, GlobalKey()) : null,
       onPressed: ()=>onPressed(context, gk, scName),
       style: btnStyle,
       icon: child?.buildFlutterWidget(context, this) ?? const Icon(Icons.warning, color: Colors.red),

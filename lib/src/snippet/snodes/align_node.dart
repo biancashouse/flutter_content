@@ -39,13 +39,13 @@ class AlignNode extends SC with AlignNodeMappable {
   // List<Widget> nodePropertyEditors(BuildContext context, {bool allowButtonCallouts = false}) => [
   //       NodePropertyButtonEnum(
   //         label: 'alignment',
-  //         menuItems: AlignmentEnum.values.map((e) => e.toMenuItem()).toList(),
+  //         menuItems: AlignmentEnumModel.values.map((e) => e.toMenuItem()).toList(),
   //         originalEnumIndex: alignmentIndex,
   //         onChangeF: (newIndex) {
   //           alignmentIndex = newIndex;
   //           bloc.add(const CAPIEvent.forceRefresh());
   //         },
-  //         calloutSize: AlignmentEnum.calloutSize,
+  //         calloutSize: AlignmentEnumModel.calloutSize,
   //       ),
   //     ];
 
@@ -53,10 +53,10 @@ class AlignNode extends SC with AlignNodeMappable {
   // List<Widget> nodePropertyEditors(BuildContext context, {bool allowButtonCallouts = false}) => [
   //       NodePropertyButtonEnum(
   //         label: 'alignment',
-  //         menuItems: AlignmentEnum.values.map((e) => e.toMenuItem()).toList(),
+  //         menuItems: AlignmentEnumModel.values.map((e) => e.toMenuItem()).toList(),
   //         originalEnumIndex: alignment.index,
   //         onChangeF: (newOption) {
-  //           alignment = AlignmentEnum.values[newOption];
+  //           alignment = AlignmentEnumModel.values[newOption];
   //           bloc.add(const CAPIEvent.forceRefresh());
   //         },
   //         calloutSize: calloutSize,
@@ -73,7 +73,7 @@ class AlignNode extends SC with AlignNodeMappable {
 
       return Align(
         key: createNodeWidgetGK(),
-        alignment: alignment.flutterValue,
+        alignment: alignment.alignment,
         child: child?.buildFlutterWidget(context, this),
       );
     } catch (e) {

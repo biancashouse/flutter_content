@@ -65,16 +65,16 @@ class _DateRangeButtonState extends State<DateRangeButton> {
 
   @override
   Widget build(BuildContext context) {
-    CalloutConfigModel calloutConfig = CalloutConfigModel(
+    CalloutConfig calloutConfig = CalloutConfig(
       cId: 'DateRange',
       // targetGKF: () => gk,
       initialCalloutW: 425,
       initialCalloutH: 400,
-      fillColor: ColorModel.white(),
-      borderRadius: 16,
-      arrowType: ArrowTypeEnum.POINTY,
-      initialTargetAlignment: AlignmentEnum.topRight,
-      initialCalloutAlignment: AlignmentEnum.centerLeft,
+      decorationFillColors: ColorOrGradient.color(Colors.purpleAccent),
+      decorationBorderRadius: 16,
+      targetPointerType: TargetPointerType.bubble()  ,
+      initialTargetAlignment: Alignment.topRight,
+      initialCalloutAlignment: Alignment.centerLeft,
       finalSeparation: 50,
       scrollControllerName: widget.scName,
     );

@@ -21,7 +21,6 @@ class ButtonNodeMapper extends SubClassMapperBase<ButtonNode> {
       IconButtonNodeMapper.ensureInitialized();
       MenuItemButtonNodeMapper.ensureInitialized();
       ButtonStylePropertiesMapper.ensureInitialized();
-      CalloutConfigModelMapper.ensureInitialized();
       SNodeMapper.ensureInitialized();
     }
     return _instance!;
@@ -42,9 +41,6 @@ class ButtonNodeMapper extends SubClassMapperBase<ButtonNode> {
   static String? _$onTapHandlerName(ButtonNode v) => v.onTapHandlerName;
   static const Field<ButtonNode, String> _f$onTapHandlerName =
       Field('onTapHandlerName', _$onTapHandlerName, opt: true);
-  static CalloutConfigModel? _$calloutConfig(ButtonNode v) => v.calloutConfig;
-  static const Field<ButtonNode, CalloutConfigModel> _f$calloutConfig =
-      Field('calloutConfig', _$calloutConfig, opt: true);
   static SNode? _$child(ButtonNode v) => v.child;
   static const Field<ButtonNode, SNode> _f$child =
       Field('child', _$child, opt: true);
@@ -69,7 +65,6 @@ class ButtonNodeMapper extends SubClassMapperBase<ButtonNode> {
     #destinationRoutePathSnippetName: _f$destinationRoutePathSnippetName,
     #bsPropGroup: _f$bsPropGroup,
     #onTapHandlerName: _f$onTapHandlerName,
-    #calloutConfig: _f$calloutConfig,
     #child: _f$child,
     #uid: _f$uid,
     #treeNodeGK: _f$treeNodeGK,
@@ -111,8 +106,6 @@ abstract class ButtonNodeCopyWith<$R, $In extends ButtonNode, $Out>
     implements SCCopyWith<$R, $In, $Out> {
   ButtonStylePropertiesCopyWith<$R, ButtonStyleProperties,
       ButtonStyleProperties> get bsPropGroup;
-  CalloutConfigModelCopyWith<$R, CalloutConfigModel, CalloutConfigModel>?
-      get calloutConfig;
   @override
   SNodeCopyWith<$R, SNode, SNode>? get child;
   @override
@@ -120,7 +113,6 @@ abstract class ButtonNodeCopyWith<$R, $In extends ButtonNode, $Out>
       {String? destinationRoutePathSnippetName,
       ButtonStyleProperties? bsPropGroup,
       String? onTapHandlerName,
-      CalloutConfigModel? calloutConfig,
       SNode? child});
   ButtonNodeCopyWith<$R2, $In, $Out2> $chain<$R2, $Out2>(Then<$Out2, $R2> t);
 }

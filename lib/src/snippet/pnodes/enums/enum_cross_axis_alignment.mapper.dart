@@ -6,57 +6,60 @@
 
 part of 'enum_cross_axis_alignment.dart';
 
-class CrossAxisAlignmentEnumMapper extends EnumMapper<CrossAxisAlignmentEnum> {
-  CrossAxisAlignmentEnumMapper._();
+class CrossAxisAlignmentEnumModelMapper
+    extends EnumMapper<CrossAxisAlignmentEnumModel> {
+  CrossAxisAlignmentEnumModelMapper._();
 
-  static CrossAxisAlignmentEnumMapper? _instance;
-  static CrossAxisAlignmentEnumMapper ensureInitialized() {
+  static CrossAxisAlignmentEnumModelMapper? _instance;
+  static CrossAxisAlignmentEnumModelMapper ensureInitialized() {
     if (_instance == null) {
-      MapperContainer.globals.use(_instance = CrossAxisAlignmentEnumMapper._());
+      MapperContainer.globals
+          .use(_instance = CrossAxisAlignmentEnumModelMapper._());
     }
     return _instance!;
   }
 
-  static CrossAxisAlignmentEnum fromValue(dynamic value) {
+  static CrossAxisAlignmentEnumModel fromValue(dynamic value) {
     ensureInitialized();
     return MapperContainer.globals.fromValue(value);
   }
 
   @override
-  CrossAxisAlignmentEnum decode(dynamic value) {
+  CrossAxisAlignmentEnumModel decode(dynamic value) {
     switch (value) {
       case r'start':
-        return CrossAxisAlignmentEnum.start;
+        return CrossAxisAlignmentEnumModel.start;
       case r'end':
-        return CrossAxisAlignmentEnum.end;
+        return CrossAxisAlignmentEnumModel.end;
       case r'center':
-        return CrossAxisAlignmentEnum.center;
+        return CrossAxisAlignmentEnumModel.center;
       case r'stretch':
-        return CrossAxisAlignmentEnum.stretch;
+        return CrossAxisAlignmentEnumModel.stretch;
       default:
         throw MapperException.unknownEnumValue(value);
     }
   }
 
   @override
-  dynamic encode(CrossAxisAlignmentEnum self) {
+  dynamic encode(CrossAxisAlignmentEnumModel self) {
     switch (self) {
-      case CrossAxisAlignmentEnum.start:
+      case CrossAxisAlignmentEnumModel.start:
         return r'start';
-      case CrossAxisAlignmentEnum.end:
+      case CrossAxisAlignmentEnumModel.end:
         return r'end';
-      case CrossAxisAlignmentEnum.center:
+      case CrossAxisAlignmentEnumModel.center:
         return r'center';
-      case CrossAxisAlignmentEnum.stretch:
+      case CrossAxisAlignmentEnumModel.stretch:
         return r'stretch';
     }
   }
 }
 
-extension CrossAxisAlignmentEnumMapperExtension on CrossAxisAlignmentEnum {
+extension CrossAxisAlignmentEnumModelMapperExtension
+    on CrossAxisAlignmentEnumModel {
   String toValue() {
-    CrossAxisAlignmentEnumMapper.ensureInitialized();
-    return MapperContainer.globals.toValue<CrossAxisAlignmentEnum>(this)
+    CrossAxisAlignmentEnumModelMapper.ensureInitialized();
+    return MapperContainer.globals.toValue<CrossAxisAlignmentEnumModel>(this)
         as String;
   }
 }

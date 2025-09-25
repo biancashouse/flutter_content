@@ -10,8 +10,8 @@ class PropertyCalloutButton extends StatelessWidget {
   final Widget? labelWidget;
   final WidgetBuilder calloutContents;
   final Color menuBgColor;
-  final AlignmentEnum? initialTargetAlignment;
-  final AlignmentEnum? initialCalloutAlignment;
+  final Alignment? initialTargetAlignment;
+  final Alignment? initialCalloutAlignment;
   final bool? draggable;
   final Size calloutButtonSize;
   final Color calloutButtonColor;
@@ -45,16 +45,16 @@ class PropertyCalloutButton extends StatelessWidget {
 
     final notifier = ValueNotifier<int>(0);
 
-    CalloutConfigModel config = CalloutConfigModel(
+    CalloutConfig config = CalloutConfig(
       cId: cId,
       initialCalloutW: calloutSize.width,
       initialCalloutH: calloutSize.height,
-      arrowType: ArrowTypeEnum.NONE,
+      targetPointerType: TargetPointerType.none()  ,
       // arrowColor: Colors.blueAccent,
-      fillColor: ColorModel.fromColor(menuBgColor),
+      decorationFillColors: ColorOrGradient.color(menuBgColor),
       //alwaysReCalcSize: true,
-      initialTargetAlignment: initialTargetAlignment ?? AlignmentEnum.centerRight,
-      initialCalloutAlignment: initialCalloutAlignment ?? AlignmentEnum.centerLeft,
+      initialTargetAlignment: initialTargetAlignment ?? Alignment.centerRight,
+      initialCalloutAlignment: initialCalloutAlignment ?? Alignment.centerLeft,
       draggable: draggable ?? true,
       onDragStartedF: () {
         // FCO.capiBloc.selectedNode?.hidePropertiesWhileDragging = true;
@@ -72,12 +72,40 @@ class PropertyCalloutButton extends StatelessWidget {
       // containsTextField: true,
       resizeableH: false,
       resizeableV: false,
-      borderRadius: 16,
+      decorationBorderRadius: 16,
       onDismissedF: onDismissedF,
       scrollControllerName: scName,
     );
 
+    // experiment
+    return GestureDetector(
+      onTap: (){
+        fco.showOverlay(
+          calloutConfig: config,
+          calloutContent: calloutContents(context),
+          wrapInPointerInterceptor: true,
+          targetGkF: null,
+        );
+      },
+      child: MouseRegion(
+        cursor: SystemMouseCursors.click,
+        child: Tooltip(message: cId,
+          child: Container(
+            // key: propertyBtnGK,
+            // margin: const EdgeInsets.only(top: 8),
+            width: calloutButtonSize.width,
+            height: calloutButtonSize.height,
+            // padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 2),
+            color: calloutButtonColor,
+            alignment: alignment.alignment,
+            child: labelWidget ?? (label != null ? fco.coloredText(label!, color: Colors.white, ) : const Offstage()),
+          ),
+        ),
+      ),
+    );
+
     return WrappedCallout(
+      wrapInPointerInterceptor: true,
       calloutConfig: config,
       calloutBoxContentBuilderF: (ctx) => calloutContents(ctx),
       targetChangedNotifier: notifier,
@@ -95,7 +123,7 @@ class PropertyCalloutButton extends StatelessWidget {
               height: calloutButtonSize.height,
               // padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 2),
               color: calloutButtonColor,
-              alignment: alignment.flutterValue,
+              alignment: alignment.alignment,
               child: labelWidget ?? (label != null ? fco.coloredText(label!, color: Colors.white, ) : const Offstage()),
             ),
           ),

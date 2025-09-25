@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_callouts/flutter_callouts.dart';
 import 'package:flutter_content/src/snippet/pnodes/editors/property_callout_button.dart';
 import 'package:flutter_content/src/snippet/snodes/widget/fs_folder_tree_and_image_picker.dart';
+
+import '../../../../flutter_content.dart';
 
 class PropertyButtonFSBrowser extends StatelessWidget {
   final String label;
@@ -33,8 +34,8 @@ class PropertyButtonFSBrowser extends StatelessWidget {
               )),
       tooltip: tooltip,
       calloutButtonSize: calloutButtonSize,
-      initialCalloutAlignment: AlignmentEnum.bottomCenter,
-      initialTargetAlignment: AlignmentEnum.topCenter,
+      initialCalloutAlignment: Alignment.bottomCenter,
+      initialTargetAlignment: Alignment.topCenter,
       calloutContents: (ctx) {
         // cId:
         // fco.afterNextBuildDo((){

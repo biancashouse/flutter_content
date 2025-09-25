@@ -54,8 +54,8 @@ class PropertyButtonContainerStyleNameSearch extends StatelessWidget {
       calloutButtonSize: calloutButtonSize,
       calloutButtonColor: Colors.white,
       menuBgColor: Colors.white,
-      initialCalloutAlignment: AlignmentEnum.center,
-      initialTargetAlignment: AlignmentEnum.center,
+      initialCalloutAlignment: Alignment.center,
+      initialTargetAlignment: Alignment.center,
       calloutContents: (ctx) {
         ContainerStyleNameSearchAnchor anchor = fco.containerStyleNameAnchor ??
             ContainerStyleNameSearchAnchor(

@@ -6,64 +6,65 @@
 
 part of 'enum_wrap_alignment.dart';
 
-class WrapAlignmentEnumMapper extends EnumMapper<WrapAlignmentEnum> {
-  WrapAlignmentEnumMapper._();
+class WrapAlignmentEnumModelMapper extends EnumMapper<WrapAlignmentEnumModel> {
+  WrapAlignmentEnumModelMapper._();
 
-  static WrapAlignmentEnumMapper? _instance;
-  static WrapAlignmentEnumMapper ensureInitialized() {
+  static WrapAlignmentEnumModelMapper? _instance;
+  static WrapAlignmentEnumModelMapper ensureInitialized() {
     if (_instance == null) {
-      MapperContainer.globals.use(_instance = WrapAlignmentEnumMapper._());
+      MapperContainer.globals.use(_instance = WrapAlignmentEnumModelMapper._());
     }
     return _instance!;
   }
 
-  static WrapAlignmentEnum fromValue(dynamic value) {
+  static WrapAlignmentEnumModel fromValue(dynamic value) {
     ensureInitialized();
     return MapperContainer.globals.fromValue(value);
   }
 
   @override
-  WrapAlignmentEnum decode(dynamic value) {
+  WrapAlignmentEnumModel decode(dynamic value) {
     switch (value) {
       case r'start':
-        return WrapAlignmentEnum.start;
+        return WrapAlignmentEnumModel.start;
       case r'end':
-        return WrapAlignmentEnum.end;
+        return WrapAlignmentEnumModel.end;
       case r'center':
-        return WrapAlignmentEnum.center;
+        return WrapAlignmentEnumModel.center;
       case r'space_between':
-        return WrapAlignmentEnum.space_between;
+        return WrapAlignmentEnumModel.space_between;
       case r'space_around':
-        return WrapAlignmentEnum.space_around;
+        return WrapAlignmentEnumModel.space_around;
       case r'space_evenly':
-        return WrapAlignmentEnum.space_evenly;
+        return WrapAlignmentEnumModel.space_evenly;
       default:
         throw MapperException.unknownEnumValue(value);
     }
   }
 
   @override
-  dynamic encode(WrapAlignmentEnum self) {
+  dynamic encode(WrapAlignmentEnumModel self) {
     switch (self) {
-      case WrapAlignmentEnum.start:
+      case WrapAlignmentEnumModel.start:
         return r'start';
-      case WrapAlignmentEnum.end:
+      case WrapAlignmentEnumModel.end:
         return r'end';
-      case WrapAlignmentEnum.center:
+      case WrapAlignmentEnumModel.center:
         return r'center';
-      case WrapAlignmentEnum.space_between:
+      case WrapAlignmentEnumModel.space_between:
         return r'space_between';
-      case WrapAlignmentEnum.space_around:
+      case WrapAlignmentEnumModel.space_around:
         return r'space_around';
-      case WrapAlignmentEnum.space_evenly:
+      case WrapAlignmentEnumModel.space_evenly:
         return r'space_evenly';
     }
   }
 }
 
-extension WrapAlignmentEnumMapperExtension on WrapAlignmentEnum {
+extension WrapAlignmentEnumModelMapperExtension on WrapAlignmentEnumModel {
   String toValue() {
-    WrapAlignmentEnumMapper.ensureInitialized();
-    return MapperContainer.globals.toValue<WrapAlignmentEnum>(this) as String;
+    WrapAlignmentEnumModelMapper.ensureInitialized();
+    return MapperContainer.globals.toValue<WrapAlignmentEnumModel>(this)
+        as String;
   }
 }

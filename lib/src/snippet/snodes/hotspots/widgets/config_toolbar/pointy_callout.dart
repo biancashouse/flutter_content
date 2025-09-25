@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
 
 import 'package:flutter_content/flutter_content.dart';
+import 'package:flutter_content/src/snippet/pnodes/enums/enum_target_pointer_type.dart';
 
 class PointyTool extends StatefulWidget {
-  final CalloutConfigModel cc;
+  final CalloutConfig cc;
   final TargetModel tc;
   final Rect wrapperRect;
   final ScrollControllerName? scName;
@@ -22,7 +23,7 @@ class PointyTool extends StatefulWidget {
   State<PointyTool> createState() => _PointyToolState();
 
   static void show(
-    CalloutConfigModel cc,
+    CalloutConfig cc,
     TargetModel tc,
     Rect wrapperRect, {
     ScrollControllerName? scName,
@@ -43,7 +44,7 @@ class PointyTool extends StatefulWidget {
           scName: scName,
           justPlaying: justPlaying,
         ),
-        calloutConfig: CalloutConfigModel(
+        calloutConfig: CalloutConfig(
           cId: "arrow-type",
           initialCalloutW: 300,
           initialCalloutH: 200,
@@ -53,9 +54,9 @@ class PointyTool extends StatefulWidget {
             //   fco.removeOverlay("arrow-type");
             // },
           ),
-          fillColor: ColorModel.purpleAccent(),
-          borderRadius: 16,
-          arrowType: ArrowTypeEnum.NONE,
+          decorationFillColors: ColorOrGradient.color(Colors.purpleAccent),
+          decorationBorderRadius: 16,
+          targetPointerType: TargetPointerType.none(),
           notUsingHydratedStorage: true,
           scrollControllerName: scName,
         ));
@@ -65,7 +66,7 @@ class PointyTool extends StatefulWidget {
 }
 
 class _PointyToolState extends State<PointyTool> {
-  late ArrowTypeEnum _arrowType;
+  late TargetPointerTypeEnum _arrowType;
   late bool _animate;
 
   TargetModel get tc => widget.tc;
@@ -75,13 +76,13 @@ class _PointyToolState extends State<PointyTool> {
   @override
   void initState() {
     super.initState();
-    _arrowType = tc.getArrowType();
-    _animate = tc.animateArrow;
+    _arrowType = tc.targetPointerTypeEnum ?? TargetPointerTypeEnum.THIN;
+    _animate = tc.animatePointer??false;
   }
 
-  void _onPressed(ArrowTypeEnum t, TargetModel tc, bool animate) {
+  void _onPressed(TargetPointerTypeEnum t, TargetModel tc, bool animate) {
     setState(() => _arrowType = t);
-    tc.calloutArrowTypeIndex = t.index;
+    tc.targetPointerTypeEnum = t;
     // bloc.add(CAPIEvent.TargetModelChanged(newTC: tc));
     fco.dismiss("arrow-type");
     // fco.afterNextBuildDo(() {
@@ -102,54 +103,54 @@ class _PointyToolState extends State<PointyTool> {
   Widget build(BuildContext context) {
     List<Widget> widgets = [
       ...[
-        ArrowTypeEnum.NONE,
-        ArrowTypeEnum.POINTY,
+        TargetPointerTypeEnum.NONE,
+        TargetPointerTypeEnum.POINTY,
       ].map((t) => Padding(
             padding: const EdgeInsets.all(3.0),
             child: _ArrowTypeOption(
               arrowType: t,
-              arrowColor: tc.calloutFillColor!.flutterValue,
+              arrowColor: tc.bgColor(),
               isActive: _arrowType == t,
-              onPressed: () => _onPressed(t, tc, tc.animateArrow),
+              onPressed: () => _onPressed(t, tc, tc.animatePointer??false),
             ),
           )),
       ...[
-        ArrowTypeEnum.VERY_THIN,
-        ArrowTypeEnum.THIN,
-        ArrowTypeEnum.MEDIUM,
-        ArrowTypeEnum.LARGE,
-        // ArrowTypeEnum.HUGE,
+        TargetPointerTypeEnum.VERY_THIN,
+        TargetPointerTypeEnum.THIN,
+        TargetPointerTypeEnum.MEDIUM,
+        TargetPointerTypeEnum.LARGE,
+        // TargetPointerTypeEnum.HUGE,
       ].map((t) => Padding(
             padding: const EdgeInsets.all(3.0),
             child: _ArrowTypeOption(
               arrowType: t,
-              arrowColor: tc.calloutFillColor!.flutterValue,
+              arrowColor: tc.bgColor(),
               isActive: _arrowType == t,
-              onPressed: () => _onPressed(t, tc, tc.animateArrow),
+              onPressed: () => _onPressed(t, tc, tc.animatePointer??false),
             ),
           )),
       ...[
-        ArrowTypeEnum.VERY_THIN_REVERSED,
-        ArrowTypeEnum.THIN_REVERSED,
-        ArrowTypeEnum.MEDIUM_REVERSED,
-        ArrowTypeEnum.LARGE_REVERSED,
-        // ArrowTypeEnum.HUGE_REVERSED,
+        TargetPointerTypeEnum.VERY_THIN_REVERSED,
+        TargetPointerTypeEnum.THIN_REVERSED,
+        TargetPointerTypeEnum.MEDIUM_REVERSED,
+        TargetPointerTypeEnum.LARGE_REVERSED,
+        // TargetPointerTypeEnum.HUGE_REVERSED,
       ].map((t) => Padding(
             padding: const EdgeInsets.all(3.0),
             child: _ArrowTypeOption(
               arrowType: t,
-              arrowColor: tc.calloutFillColor!.flutterValue,
+              arrowColor: tc.bgColor(),
               isActive: _arrowType == t,
-              onPressed: () => _onPressed(t, tc, tc.animateArrow),
+              onPressed: () => _onPressed(t, tc, tc.animatePointer??false),
             ),
           ))
     ];
-    if (tc.calloutArrowTypeIndex != ArrowTypeEnum.NONE.index &&
-        tc.calloutArrowTypeIndex != ArrowTypeEnum.POINTY.index) {
+    if (tc.targetPointerTypeEnum != TargetPointerTypeEnum.NONE.index &&
+        tc.targetPointerTypeEnum != TargetPointerTypeEnum.POINTY.index) {
       widgets.add(
         OutlinedButton(
           style: OutlinedButton.styleFrom(
-              backgroundColor: tc.animateArrow ? Colors.white : Colors.white60),
+              backgroundColor: tc.animatePointer??false ? Colors.white : Colors.white60),
           child: const SizedBox(
             width: 75,
             child: Text(
@@ -159,8 +160,8 @@ class _PointyToolState extends State<PointyTool> {
           ),
           onPressed: () {
             setState(() => _animate = !_animate);
-            tc.animateArrow = _animate;
-            _onPressed(tc.getArrowType(), tc, tc.animateArrow);
+            tc.animatePointer = _animate;
+            _onPressed(tc.targetPointerTypeEnum!, tc, tc.animatePointer??false);
             fco.dismiss("arrow-type");
             // fco.afterNextBuildDo(() {
             //   reshowSnippetContentCallout(tc, widget.allowButtonCallouts, widget.justPlaying, widget.onDiscardedF);
@@ -177,7 +178,7 @@ class _PointyToolState extends State<PointyTool> {
 }
 
 class _ArrowTypeOption extends StatelessWidget {
-  final ArrowTypeEnum arrowType;
+  final TargetPointerTypeEnum arrowType;
   final Color arrowColor;
   final Function() onPressed;
   final bool isActive;
@@ -203,34 +204,34 @@ class _ArrowTypeOption extends StatelessWidget {
       height: 40,
       child: InkWell(
         onTap: onPressed,
-        child: arrowType == ArrowTypeEnum.NONE
+        child: arrowType == TargetPointerTypeEnum.NONE
             ? Icon(Icons.rectangle_rounded, color: arrowColor)
-            : arrowType == ArrowTypeEnum.POINTY
+            : arrowType == TargetPointerTypeEnum.POINTY
                 ? Icon(Icons.messenger, color: arrowColor)
-                : arrowType == ArrowTypeEnum.VERY_THIN
+                : arrowType == TargetPointerTypeEnum.VERY_THIN
                     ? Icon(Icons.south_west, color: arrowColor, size: 15)
-                    : arrowType == ArrowTypeEnum.VERY_THIN_REVERSED
+                    : arrowType == TargetPointerTypeEnum.VERY_THIN_REVERSED
                         ? Icon(Icons.north_east, color: arrowColor, size: 15)
-                        : arrowType == ArrowTypeEnum.THIN
+                        : arrowType == TargetPointerTypeEnum.THIN
                             ? Icon(Icons.south_west,
                                 color: arrowColor, size: 20)
-                            : arrowType == ArrowTypeEnum.THIN_REVERSED
+                            : arrowType == TargetPointerTypeEnum.THIN_REVERSED
                                 ? Icon(Icons.north_east,
                                     color: arrowColor, size: 20)
-                                : arrowType == ArrowTypeEnum.MEDIUM
+                                : arrowType == TargetPointerTypeEnum.MEDIUM
                                     ? Icon(Icons.south_west,
                                         color: arrowColor, size: 25)
-                                    : arrowType == ArrowTypeEnum.MEDIUM_REVERSED
+                                    : arrowType == TargetPointerTypeEnum.MEDIUM_REVERSED
                                         ? Icon(Icons.north_east,
                                             color: arrowColor, size: 25)
-                                        : arrowType == ArrowTypeEnum.LARGE
+                                        : arrowType == TargetPointerTypeEnum.LARGE
                                             ? Icon(Icons.south_west,
                                                 color: arrowColor, size: 35)
                                             : arrowType ==
-                                                    ArrowTypeEnum.LARGE_REVERSED
+                                                    TargetPointerTypeEnum.LARGE_REVERSED
                                                 ? Icon(Icons.north_east,
                                                     color: arrowColor, size: 35)
-                                                // : arrowType == ArrowTypeEnum.HUGE
+                                                // : arrowType == TargetPointerTypeEnum.HUGE
                                                 //     ? Icon(Icons.south_west, color: arrowColor, size: 40)
                                                 : Icon(Icons.north_east,
                                                     color: arrowColor,

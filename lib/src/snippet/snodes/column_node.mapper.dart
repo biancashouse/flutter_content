@@ -14,9 +14,9 @@ class ColumnNodeMapper extends SubClassMapperBase<ColumnNode> {
     if (_instance == null) {
       MapperContainer.globals.use(_instance = ColumnNodeMapper._());
       FlexNodeMapper.ensureInitialized().addSubMapper(_instance!);
-      MainAxisAlignmentEnumMapper.ensureInitialized();
+      MainAxisAlignmentEnumModelMapper.ensureInitialized();
       MainAxisSizeEnumMapper.ensureInitialized();
-      CrossAxisAlignmentEnumMapper.ensureInitialized();
+      CrossAxisAlignmentEnumModelMapper.ensureInitialized();
       SNodeMapper.ensureInitialized();
     }
     return _instance!;
@@ -25,16 +25,18 @@ class ColumnNodeMapper extends SubClassMapperBase<ColumnNode> {
   @override
   final String id = 'ColumnNode';
 
-  static MainAxisAlignmentEnum? _$mainAxisAlignment(ColumnNode v) =>
+  static MainAxisAlignmentEnumModel? _$mainAxisAlignment(ColumnNode v) =>
       v.mainAxisAlignment;
-  static const Field<ColumnNode, MainAxisAlignmentEnum> _f$mainAxisAlignment =
+  static const Field<ColumnNode, MainAxisAlignmentEnumModel>
+      _f$mainAxisAlignment =
       Field('mainAxisAlignment', _$mainAxisAlignment, opt: true);
   static MainAxisSizeEnum? _$mainAxisSize(ColumnNode v) => v.mainAxisSize;
   static const Field<ColumnNode, MainAxisSizeEnum> _f$mainAxisSize =
       Field('mainAxisSize', _$mainAxisSize, opt: true);
-  static CrossAxisAlignmentEnum? _$crossAxisAlignment(ColumnNode v) =>
+  static CrossAxisAlignmentEnumModel? _$crossAxisAlignment(ColumnNode v) =>
       v.crossAxisAlignment;
-  static const Field<ColumnNode, CrossAxisAlignmentEnum> _f$crossAxisAlignment =
+  static const Field<ColumnNode, CrossAxisAlignmentEnumModel>
+      _f$crossAxisAlignment =
       Field('crossAxisAlignment', _$crossAxisAlignment, opt: true);
   static List<SNode> _$children(ColumnNode v) => v.children;
   static const Field<ColumnNode, List<SNode>> _f$children =
@@ -138,9 +140,9 @@ abstract class ColumnNodeCopyWith<$R, $In extends ColumnNode, $Out>
   ListCopyWith<$R, SNode, SNodeCopyWith<$R, SNode, SNode>> get children;
   @override
   $R call(
-      {MainAxisAlignmentEnum? mainAxisAlignment,
+      {MainAxisAlignmentEnumModel? mainAxisAlignment,
       MainAxisSizeEnum? mainAxisSize,
-      CrossAxisAlignmentEnum? crossAxisAlignment,
+      CrossAxisAlignmentEnumModel? crossAxisAlignment,
       List<SNode>? children});
   ColumnNodeCopyWith<$R2, $In, $Out2> $chain<$R2, $Out2>(Then<$Out2, $R2> t);
 }

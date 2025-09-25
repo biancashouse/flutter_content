@@ -17,16 +17,16 @@ mixin PasswordlessMixin {
       targetGkF: targetGkF,
       calloutContent: PasswordlessStepper(
           gcrServerUrl: gcrServerUrl, onSignedInF: onSignedInF),
-      calloutConfig: CalloutConfigModel(
+      calloutConfig: CalloutConfig(
         cId: "passwordless-stepper",
         initialCalloutW: 600,
         initialCalloutH: 200,
-        initialTargetAlignment: AlignmentEnum.bottomCenter,
-        initialCalloutAlignment: AlignmentEnum.topCenter,
-        arrowType: ArrowTypeEnum.THIN,
-        arrowColor: ColorModel.fromColor(Colors.blue[900]!),
+        initialTargetAlignment: Alignment.bottomCenter,
+        initialCalloutAlignment: Alignment.topCenter,
+        targetPointerType: TargetPointerType.thin_line()  ,
+        bubbleOrTargetPointerColor: Colors.blue[900]!,
         finalSeparation: 60,
-        // fillColor: Colors.purpleAccent,
+        // decorationFillColors: ColorOrGradient.color(Colors.purpleAccent),
         barrier: CalloutBarrierConfig(
           opacity: 0.25,
           onTappedF: () async {
@@ -283,10 +283,10 @@ class Step1 extends StatelessWidget {
   void _showAlreadySignInToast() {
     fco.showToastOverlay(
       removeAfterMs: 5000,
-      calloutConfig: CalloutConfigModel(
+      calloutConfig: CalloutConfig(
         cId: "already-signed-in",
-        gravity: AlignmentEnum.topCenter,
-        fillColor: ColorModel.yellow(),
+        gravity: Alignment.topCenter,
+        decorationFillColors: ColorOrGradient.color(Colors.yellow),
         initialCalloutW: fco.scrW * .8,
         initialCalloutH: 40,
         scrollControllerName: null,
@@ -353,10 +353,10 @@ class Step2 extends StatelessWidget {
   void _showConfirmedOKToast() {
     fco.showToastOverlay(
       removeAfterMs: 3000,
-      calloutConfig: CalloutConfigModel(
+      calloutConfig: CalloutConfig(
         cId: "sign-in-confirmed",
-        gravity: AlignmentEnum.topCenter,
-        fillColor: ColorModel.yellow(),
+        gravity: Alignment.topCenter,
+        decorationFillColors: ColorOrGradient.color(Colors.yellow),
         initialCalloutW: fco.scrW * .8,
         initialCalloutH: 40,
         scrollControllerName: null,
@@ -371,10 +371,10 @@ class Step2 extends StatelessWidget {
   void _showWaitingForYouToConfirmToast() {
     fco.showToastOverlay(
       removeAfterMs: 5000,
-      calloutConfig: CalloutConfigModel(
+      calloutConfig: CalloutConfig(
         cId: "waiting-for-confirmation-button",
-        gravity: AlignmentEnum.topCenter,
-        fillColor: ColorModel.yellow(),
+        gravity: Alignment.topCenter,
+        decorationFillColors: ColorOrGradient.color(Colors.yellow),
         initialCalloutW: fco.scrW * .8,
         initialCalloutH: 40,
         scrollControllerName: null,

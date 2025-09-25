@@ -17,7 +17,7 @@
 //   double? width;
 //   double? height;
 //   BoxFitEnum? fit;
-//   AlignmentEnum? alignment;
+//   AlignmentEnumModel? alignment;
 //
 //   FirebaseStorageImageNode({
 //     this.name = '',
@@ -73,12 +73,12 @@
 //           onIndexChange: (newValue) =>
 //               refreshWithUpdate(context,() => fit = BoxFitEnum.of(newValue)),
 //         ),
-//         EnumPNode<AlignmentEnum?>(
+//         EnumPNode<AlignmentEnumModel?>(
 //           snode: this,
 //           name: 'alignment',
 //           valueIndex: alignment?.index,
 //           onIndexChange: (newValue) =>
-//               refreshWithUpdate(context,() => alignment = AlignmentEnum.of(newValue)),
+//               refreshWithUpdate(context,() => alignment = AlignmentEnumModel.of(newValue)),
 //         ),
 //       ];
 //

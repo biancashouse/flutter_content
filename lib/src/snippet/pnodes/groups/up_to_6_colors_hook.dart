@@ -3,8 +3,7 @@
 import 'dart:ui';
 
 import 'package:dart_mappable/dart_mappable.dart';
-import 'package:flutter_callouts/flutter_callouts.dart';
-import 'package:flutter_content/src/snippet/snodes/upto6colors.dart';
+import 'package:flutter_content/flutter_content.dart';
 
 class UpTo6ColorsHook extends MappingHook {
   const UpTo6ColorsHook();
@@ -12,15 +11,15 @@ class UpTo6ColorsHook extends MappingHook {
   @override
   Object? beforeDecode(Object? value) {
     // ColorModel props might have the old naming
-    final upTo6ColorsMap = value as Map<String, dynamic>?;
-    if (upTo6ColorsMap != null && upTo6ColorsMap.containsKey('color1Value')) {
+    final gradientMap = value as Map<String, dynamic>?;
+    if (gradientMap != null && gradientMap.containsKey('color1Value')) {
       Map<String, dynamic>? updatedValue = UpTo6Colors(
-        color1: _toColorModel(upTo6ColorsMap, 1),
-        color2: _toColorModel(upTo6ColorsMap, 2),
-        color3: _toColorModel(upTo6ColorsMap, 3),
-        color4: _toColorModel(upTo6ColorsMap, 4),
-        color5: _toColorModel(upTo6ColorsMap, 5),
-        color6: _toColorModel(upTo6ColorsMap, 6),
+        color1: _toColorModel(gradientMap, 1),
+        color2: _toColorModel(gradientMap, 2),
+        color3: _toColorModel(gradientMap, 3),
+        color4: _toColorModel(gradientMap, 4),
+        color5: _toColorModel(gradientMap, 5),
+        color6: _toColorModel(gradientMap, 6),
       ).toMap();
       return updatedValue;
     } else {
@@ -28,9 +27,9 @@ class UpTo6ColorsHook extends MappingHook {
     }
   }
 
-  ColorModel? _toColorModel(upTo6ColorsMap, int colorIndex) {
-    Object? o = upTo6ColorsMap['color${colorIndex}Value'];
-    o ??= upTo6ColorsMap['color$colorIndex'];
+  ColorModel? _toColorModel(Map<String, dynamic> gradientMap, int colorIndex) {
+    Object? o = gradientMap['color${colorIndex}Value'];
+    o ??= gradientMap['color$colorIndex'];
     if (o == null) return null;
     if (o is int) {
       return ColorModel.fromColor(Color(o));

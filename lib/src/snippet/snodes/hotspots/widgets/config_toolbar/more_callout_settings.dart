@@ -3,10 +3,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter_content/flutter_content.dart';
 import 'package:flutter_content/src/snippet/pnodes/editors/property_button_bool.dart';
 import 'package:flutter_content/src/snippet/pnodes/editors/property_button_number_T.dart';
-import 'package:flutter_content/src/snippet/pnodes/enums/mappable_enum_decoration.dart';
+import 'package:flutter_content/src/snippet/pnodes/enums/enum_decoration_shape.dart';
 
 class MoreCalloutConfigSettings extends StatefulWidget {
-  final CalloutConfigModel cc;
+  final CalloutConfig cc;
   final TargetModel tc;
   final Rect wrapperRect;
   final ScrollControllerName? scName;
@@ -24,7 +24,7 @@ class MoreCalloutConfigSettings extends StatefulWidget {
       _MoreCalloutConfigSettingsState();
 
   static void show(
-    CalloutConfigModel cc,
+    CalloutConfig cc,
     TargetModel tc,
     Rect wrapperRect, {
     ScrollControllerName? scName,
@@ -44,7 +44,7 @@ class MoreCalloutConfigSettings extends StatefulWidget {
           wrapperRect,
           scName: scName,
         ),
-        calloutConfig: CalloutConfigModel(
+        calloutConfig: CalloutConfig(
           cId: "more-cc-settings",
           initialCalloutW: 200,
           initialCalloutH: 550,
@@ -65,9 +65,9 @@ class MoreCalloutConfigSettings extends StatefulWidget {
             //   // });
             // },
           ),
-          fillColor: ColorModel.purpleAccent(),
-          borderRadius: 16,
-          arrowType: ArrowTypeEnum.NONE,
+          decorationFillColors: ColorOrGradient.color(Colors.purpleAccent),
+          decorationBorderRadius: 16,
+          targetPointerType: TargetPointerType.none()  ,
           notUsingHydratedStorage: true,
           scrollControllerName: scName,
         ));
@@ -93,13 +93,13 @@ class _MoreCalloutConfigSettingsState extends State<MoreCalloutConfigSettings> {
       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
       crossAxisAlignment: CrossAxisAlignment.center,
       children: [
-        if (tc.calloutDecorationShape != MappableDecorationShapeEnum.circle &&
-            tc.calloutDecorationShape !=
-                MappableDecorationShapeEnum.rectangle_dotted &&
-            tc.calloutDecorationShape !=
-                MappableDecorationShapeEnum.rounded_rectangle_dotted &&
-            tc.calloutDecorationShape != MappableDecorationShapeEnum.stadium &&
-            tc.calloutDecorationShape != MappableDecorationShapeEnum.star)
+        if (tc.calloutDecorationShapeEnum != DecorationShapeEnum.circle &&
+            tc.calloutDecorationShapeEnum !=
+                DecorationShapeEnum.rectangle_dotted &&
+            tc.calloutDecorationShapeEnum !=
+                DecorationShapeEnum.rounded_rectangle_dotted &&
+            tc.calloutDecorationShapeEnum != DecorationShapeEnum.stadium &&
+            tc.calloutDecorationShapeEnum != DecorationShapeEnum.star)
           Row(
             mainAxisSize: MainAxisSize.max,
             mainAxisAlignment: MainAxisAlignment.center,
@@ -128,10 +128,10 @@ class _MoreCalloutConfigSettingsState extends State<MoreCalloutConfigSettings> {
               ),
             ],
           ),
-        if (tc.calloutDecorationShape !=
-                MappableDecorationShapeEnum.rectangle_dotted &&
-            tc.calloutDecorationShape !=
-                MappableDecorationShapeEnum.rounded_rectangle_dotted)
+        if (tc.calloutDecorationShapeEnum !=
+                DecorationShapeEnum.rectangle_dotted &&
+            tc.calloutDecorationShapeEnum !=
+                DecorationShapeEnum.rounded_rectangle_dotted)
           Row(
               mainAxisSize: MainAxisSize.max,
               mainAxisAlignment: MainAxisAlignment.center,
@@ -160,7 +160,7 @@ class _MoreCalloutConfigSettingsState extends State<MoreCalloutConfigSettings> {
                   ),
                 ),
               ]),
-        if (tc.calloutDecorationShape == MappableDecorationShapeEnum.star)
+        if (tc.calloutDecorationShapeEnum == DecorationShapeEnum.star)
           Row(
               mainAxisSize: MainAxisSize.max,
               mainAxisAlignment: MainAxisAlignment.center,

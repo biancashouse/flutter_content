@@ -114,7 +114,7 @@ class FSImageNode extends CL with FSImageNodeMappable {
         width: width,
         height: height,
         scale: scale ?? 1.0,
-        alignment: alignment?.flutterValue ?? Alignment.center,
+        alignment: alignment?.alignment ?? Alignment.center,
         ref: FirebaseStorage.instance.ref(fsFullPath ??
             'gs://bh-apps.appspot.com/flutter-content-pkg/missing-image.png'),
       );
