@@ -24,42 +24,48 @@ abstract class FlexNode extends MC with FlexNodeMappable {
   });
 
   @override
-  List<PNode> propertyNodes(BuildContext context, SNode? parentSNode) => [
+  List<PNode> propertyNodes(BuildContext context, SNode? parentSNode) =>
+      [
         FlutterDocPNode(
             buttonLabel: 'Flex',
             webLink:
-                'https://api.flutter.dev/flutter/widgets/Flex-class.html',
+            'https://api.flutter.dev/flutter/widgets/Flex-class.html',
             snode: this,
             name: 'fyi'),
         EnumPNode<MainAxisAlignmentEnumModel?>(
           snode: this,
           name: 'mainAxisAlignment',
           valueIndex: mainAxisAlignment?.index,
-          onIndexChange: (newValue) => refreshWithUpdate(context,
-              () => mainAxisAlignment = MainAxisAlignmentEnumModel.of(newValue)),
+          onIndexChange: (newValue) =>
+              refreshWithUpdate(context,
+                      () =>
+                  mainAxisAlignment = MainAxisAlignmentEnumModel.of(newValue)),
         ),
         EnumPNode<MainAxisSizeEnum?>(
           snode: this,
           name: 'mainAxisSize',
           valueIndex: mainAxisSize?.index,
-          onIndexChange: (newValue) => refreshWithUpdate(
-              context, () => mainAxisSize = MainAxisSizeEnum.of(newValue)),
+          onIndexChange: (newValue) =>
+              refreshWithUpdate(
+                  context, () => mainAxisSize = MainAxisSizeEnum.of(newValue)),
         ),
         EnumPNode<CrossAxisAlignmentEnumModel?>(
           snode: this,
           name: 'crossAxisAlignment',
           valueIndex: crossAxisAlignment?.index,
-          onIndexChange: (newValue) => refreshWithUpdate(context,
-              () => crossAxisAlignment = CrossAxisAlignmentEnumModel.of(newValue)),
+          onIndexChange: (newValue) =>
+              refreshWithUpdate(context,
+                      () =>
+                  crossAxisAlignment =
+                      CrossAxisAlignmentEnumModel.of(newValue)),
         ),
       ];
 
   @override
   List<Widget> menuAnchorWidgets_WrapWith(BuildContext context,
-    NodeAction action,
-    bool? skipHeading,
-    ScrollControllerName? scName,
-  ) {
+      NodeAction action,
+      bool? skipHeading,
+      ScrollControllerName? scName,) {
     return [
       ...super.menuAnchorWidgets_Heading(context, action, scName),
       menuItemButton(context, "Expanded", ExpandedNode, action, scName),
@@ -69,27 +75,51 @@ abstract class FlexNode extends MC with FlexNodeMappable {
   }
 
   @override
-  Widget buildFlutterWidget(BuildContext context, SNode? parentNode,
-      ) {
+  Widget buildFlutterWidget(BuildContext context, SNode? parentNode) {
     try {
       setParent(parentNode);
       //ScrollControllerName? scName = EditablePage.name(context);
       //possiblyHighlightSelectedNode(scName);
-      Widget w;
+      late Widget w;
+      bool needsIntrinsicWidth = false;
+      bool needsIntrinsicHeight = false;
       try {
         w = LayoutBuilder(builder: (context, constraints) {
-          // bool constraintsError = (this is RowNode && constraints.maxWidth == double.infinity) || (this is ColumnNode && constraints.maxHeight == double.infinity);
+          if (false&&this is RowNode && constraints.maxWidth == double.infinity) {
+            return Error(
+                key: createNodeWidgetGK(),
+                FLUTTER_TYPE,
+                color: Colors.red,
+                size: 16,
+                errorMsg: "This ${this.toString()} has an infinite max Constraints Error!");
+          } else
+          if (false&&this is ColumnNode && constraints.maxHeight == double.infinity) {
+            return Error(
+                key: createNodeWidgetGK(),
+                FLUTTER_TYPE,
+                color: Colors.pink,
+                size: 16,
+                errorMsg: "This ${this.toString()} has an infinite max Constraints Error!");
+          }
           return Flex(
             direction: this is RowNode ? Axis.horizontal : Axis.vertical,
             key: createNodeWidgetGK(),
             mainAxisAlignment:
-                mainAxisAlignment?.flutterValue ?? MainAxisAlignment.start,
+            mainAxisAlignment?.flutterValue ?? MainAxisAlignment.start,
             mainAxisSize: mainAxisSize?.flutterValue ?? MainAxisSize.max,
             crossAxisAlignment:
-                crossAxisAlignment?.flutterValue ?? CrossAxisAlignment.center,
+            crossAxisAlignment?.flutterValue ?? CrossAxisAlignment.center,
             textBaseline: TextBaseline.alphabetic,
             children:
-                children.map((node) => node.buildFlutterWidget(context, this)).toList(),
+            children.map((childNode) {
+              // enforce a wrapper for each child
+              if (childNode is! ExpandedNode && childNode is! FlexibleNode) {
+                return Flexible(fit: FlexFit.loose,
+                    child: childNode.buildFlutterWidget(context, this));
+              } else {
+                return childNode.buildFlutterWidget(context, this);
+              }
+            }).toList(),
           );
         });
       } catch (e) {
@@ -97,6 +127,7 @@ abstract class FlexNode extends MC with FlexNodeMappable {
         fco.logger.i(
             'Flex() failed to render properly. ===============================================');
       }
+
       return w;
     } catch (e) {
       return Error(
@@ -108,18 +139,21 @@ abstract class FlexNode extends MC with FlexNodeMappable {
     }
   }
 
-  Widget _Error() => const Row(
-        children: [
-          Icon(
-            Icons.error,
-            color: Colors.red,
-          ),
-          Gap(10),
-          Text('Row has infinite maxWidth constraint!'),
-        ],
+  Widget _Error() =>
+      SizedBox(width: 20, height: 20,
+        child: const Row(
+          children: [
+            Icon(
+              Icons.error,
+              color: Colors.red,
+            ),
+            Gap(10),
+            Text('Row has infinite maxWidth constraint!'),
+          ],
+        ),
       );
 
-  @override
+  // @override
   List<Type> addChildRecommendations() => [ExpandedNode, FlexibleNode];
 
 // bool get isRow {

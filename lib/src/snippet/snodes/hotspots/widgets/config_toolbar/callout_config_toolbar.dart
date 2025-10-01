@@ -6,7 +6,7 @@ import 'package:flutter_content/flutter_content.dart';
 import 'package:flutter_content/src/snippet/pnodes/editors/property_button_enum.dart';
 import 'package:flutter_content/src/snippet/pnodes/enums/enum_decoration_shape.dart';
 import 'package:flutter_content/src/snippet/pnodes/enums/enum_target_pointer_type.dart';
-import 'package:flutter_content/src/snippet/snodes/hotspots/widgets/config_toolbar/colour_callout.dart';
+import 'package:flutter_content/src/snippet/snodes/hotspots/widgets/config_toolbar/colour_picker_tool.dart';
 
 import 'duration_callout.dart';
 import 'more_callout_settings.dart';
@@ -52,10 +52,10 @@ class CalloutConfigToolbar extends StatefulWidget {
     // Alignment? ta = fco.calcTargetAlignmentWithinWrapper(
     //     wrapperRect: wrapperRect, targetRect: cc.tR());
 
-    tc
-        .targetsWrapperState()
-        ?.zoomer
-        ?.zoomImmediately(tc.transformScale, tc.transformScale);
+    tc.targetsWrapperState()?.zoomer?.zoomImmediately(
+      tc.transformScale,
+      tc.transformScale,
+    );
 
     showSnippetContentCallout(
       tc: tc,
@@ -65,11 +65,7 @@ class CalloutConfigToolbar extends StatefulWidget {
     );
 
     fco.dismiss(CalloutConfigToolbar.CID, skipOnDismiss: true);
-    TargetsWrapper.showConfigToolbar(
-      tc,
-      wrapperRect,
-      scName,
-    );
+    TargetsWrapper.showConfigToolbar(tc, wrapperRect, scName);
   }
 
   @override
@@ -84,289 +80,291 @@ class CalloutConfigToolbarState extends State<CalloutConfigToolbar> {
   @override
   Widget build(BuildContext context) {
     TargetModel tc = widget.tc;
-    Size ivSize = tc.targetsWrapperState()?.wrapperRect.size ??
+    Size ivSize =
+        tc.targetsWrapperState()?.wrapperRect.size ??
         MediaQuery.sizeOf(context);
     return SizedBox(
       width: CalloutConfigToolbar.CALLOUT_CONFIG_TOOLBAR_W(tc),
       height: CalloutConfigToolbar.CALLOUT_CONFIG_TOOLBAR_H(tc),
       child: Row(
-          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-          crossAxisAlignment: CrossAxisAlignment.center,
-          children: [
-            toolbarVFlipIcon(),
-            const VerticalDivider(color: Colors.white, width: 2),
-            if (tc.hasAHotspot())
-              Column(
-                children: [
-                  fco.coloredText('zoom', color: Colors.white70),
-                  Tooltip(
-                    message: 'edit the zoom...',
-                    child: SizedBox(
-                      width: 200,
-                      child: ResizeSlider(
-                          value: tc.transformScale,
-                          //icon: Icons.zoom_in,
-                          iconSize: 30,
-                          color: Colors.white,
-                          onDragStartF: () => _onDragStartF(tc),
-                          onDragEndF: () => _onDragEndF(tc),
-                          // onDragEndF: () {
-                          //   tc.changed_saveRootSnippet();
-                          //   SNode.showAllTargetBtns();
-                          //   SNode.showAllHotspotTargetCovers();
-                          //   // fco.dismiss(CalloutConfigToolbar.CID);
-                          //   showSnippetContentCallout(
-                          //     tc: tc,
-                          //     justPlaying: false,
-                          //     wrapperRect: widget.wrapperRect,
-                          //     scName: widget.scName,
-                          //   );
-                          // },
-                          onChangeF: (value) {
-                            TargetsWrapperState? state =
-                                tc.targetsWrapperState();
-                            // state?.zoomer?.resetTransform(afterTransformF: () {
-                            tc.transformScale = value;
-                            state?.zoomer?.zoomImmediately(value, value);
-                            // });
-                          },
-                          min: 1.0,
-                          max: 3.0),
-                    ),
-                  ),
-                ],
-              ),
-            if (tc.hasAHotspot())
-              const VerticalDivider(color: Colors.white, width: 2),
+        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+        crossAxisAlignment: CrossAxisAlignment.center,
+        children: [
+          toolbarVFlipIcon(),
+          const VerticalDivider(color: Colors.white, width: 2),
+          if (tc.hasAHotspot())
             Column(
               children: [
-                fco.coloredText('target size', color: Colors.white70),
+                fco.coloredText('zoom', color: Colors.white70),
                 Tooltip(
-                  message: 'resize the circular target radius...',
+                  message: 'edit the zoom...',
                   child: SizedBox(
                     width: 200,
                     child: ResizeSlider(
-                        value: tc.radiusPc != null
-                            ? max(16, tc.radiusPc! * ivSize.width)
-                            : 30,
-                        // icon: Icons.circle_rounded,
-                        color: Colors.white70,
-                        onDragStartF: () => _onDragStartF(tc),
-                        onDragEndF: () => _onDragEndF(tc),
-                        // onDragStartF: () {
-                        //   removeSnippetContentCallout(tc);
-                        //   tc
-                        //       .targetsWrapperState()
-                        //       ?.zoomer
-                        //       ?.resetTransform(afterTransformF: () {});
-                        // },
-                        // onDragEndF: () {
-                        //   tc.changed_saveRootSnippet();
-                        //   // SNode.showAllTargetBtns();
-                        //   // SNode.showAllHotspotTargetCovers();
-                        //   TargetsWrapper.configureTarget(
-                        //     tc,
-                        //     widget.wrapperRect,
-                        //     widget.scName,
-                        //   );
-                        // },
-                        onChangeF: (value) {
-                          // Cancel previous debounce timer, if any
-                          tc.targetsWrapperState()?.refresh(
-                                () => tc.radiusPc = value / ivSize.width,
-                              );
-                        },
-                        min: 16.0,
-                        max: 100.0),
+                      value: tc.transformScale,
+                      //icon: Icons.zoom_in,
+                      iconSize: 30,
+                      color: Colors.white,
+                      onDragStartF: () => _onDragStartF(tc),
+                      onDragEndF: () => _onDragEndF(tc),
+                      // onDragEndF: () {
+                      //   tc.changed_saveRootSnippet();
+                      //   SNode.showAllTargetBtns();
+                      //   SNode.showAllHotspotTargetCovers();
+                      //   // fco.dismiss(CalloutConfigToolbar.CID);
+                      //   showSnippetContentCallout(
+                      //     tc: tc,
+                      //     justPlaying: false,
+                      //     wrapperRect: widget.wrapperRect,
+                      //     scName: widget.scName,
+                      //   );
+                      // },
+                      onChangeF: (value) {
+                        TargetsWrapperState? state = tc.targetsWrapperState();
+                        // state?.zoomer?.resetTransform(afterTransformF: () {
+                        tc.transformScale = value;
+                        state?.zoomer?.zoomImmediately(value, value);
+                        // });
+                      },
+                      min: 1.0,
+                      max: 3.0,
+                    ),
                   ),
                 ),
               ],
             ),
+          if (tc.hasAHotspot())
             const VerticalDivider(color: Colors.white, width: 2),
-            IconButton(
-              tooltip: 'edit the callout show duration in ms...',
-              icon: const Icon(
-                Icons.timer,
-                color: Colors.white,
-              ),
-              onPressed: () {
-                showTargetDurationCallout(tc);
-              },
-            ),
-            const VerticalDivider(color: Colors.white, width: 2),
-            IconButton(
-              tooltip: 'change the callout fill colour...',
-              icon: const Icon(
-                Icons.palette_outlined,
-                color: Colors.white,
-              ),
-              onPressed: () {
-                TargetColourTool.show(
-                  widget.cc,
-                  tc,
-                  widget.wrapperRect,
-                  onBarrierTappedF: widget.onCloseF,
-                  justPlaying: false,
-                );
-
-                // hideTargetModelToolbarCallout();
-                // // ensure snippet exists
-                // SnippetNode? sNode = bloc.state.snippet(tc.snippetName);
-                // if (sNode == null) {
-                //   sNode = SnippetNode(name: tc.snippetName);
-                //   bloc.add(CAPIEvent.createdSnippet(
-                //     newNode: sNode,
-                //   ));
-                //   fco.afterNextBuildDo(() {
-                //     showHelpContentCallout(tc, tc.snippetName, true, ancestorHScrollController, ancestorVScrollController);
-                //   });
-                // } else {
-                //   showHelpContentCallout(tc, tc.snippetName, true, ancestorHScrollController, ancestorVScrollController);
-                // }
-              },
-            ),
-            IconButton(
-              tooltip: 'configure how the callout points to the target...',
-              icon: Transform.rotate(
-                angle: pi * 3 / 4,
-                child: const Icon(
-                  Icons.arrow_right_alt,
-                  color: Colors.white,
+          Column(
+            children: [
+              fco.coloredText('target size', color: Colors.white70),
+              Tooltip(
+                message: 'resize the circular target radius...',
+                child: SizedBox(
+                  width: 200,
+                  child: ResizeSlider(
+                    value: tc.radiusPc != null
+                        ? max(16, tc.radiusPc! * ivSize.width)
+                        : 30,
+                    // icon: Icons.circle_rounded,
+                    color: Colors.white70,
+                    onDragStartF: () => _onDragStartF(tc),
+                    onDragEndF: () => _onDragEndF(tc),
+                    // onDragStartF: () {
+                    //   removeSnippetContentCallout(tc);
+                    //   tc
+                    //       .targetsWrapperState()
+                    //       ?.zoomer
+                    //       ?.resetTransform(afterTransformF: () {});
+                    // },
+                    // onDragEndF: () {
+                    //   tc.changed_saveRootSnippet();
+                    //   // SNode.showAllTargetBtns();
+                    //   // SNode.showAllHotspotTargetCovers();
+                    //   TargetsWrapper.configureTarget(
+                    //     tc,
+                    //     widget.wrapperRect,
+                    //     widget.scName,
+                    //   );
+                    // },
+                    onChangeF: (value) {
+                      // Cancel previous debounce timer, if any
+                      tc.targetsWrapperState()?.refresh(
+                        () => tc.radiusPc = value / ivSize.width,
+                      );
+                    },
+                    min: 16.0,
+                    max: 100.0,
+                  ),
                 ),
               ),
-              onPressed: () {
-                PointyTool.show(
-                  widget.cc,
-                  tc, widget.wrapperRect,
-                  // onBarrierTappedF: onParentBarrierTappedF,
-                  scName: widget.scName,
-                  justPlaying: false,
-                );
-              },
-            ),
-            Tooltip(
-              message: 'configure callout shape...',
-              child: PropertyButtonEnum(
-                label: "shape",
-                skipShowingLabel: true, // passing label as the cId
-                menuItems: DecorationShapeEnum.values
-                    .map((e) => e.toMenuItem())
-                    .toList(),
-                originalEnumIndex: tc.calloutDecorationShapeEnum?.index,
-                onChangeF: (newIndex) {
-                  fco.dismiss('shape');
-                  tc.calloutDecorationShapeEnum =
-                      DecorationShapeEnum.of(newIndex) ??
-                          DecorationShapeEnum.rectangle;
-                  if (tc.calloutDecorationShapeEnum ==
-                      DecorationShapeEnum.star) {
-                    tc.targetPointerTypeEnum = TargetPointerTypeEnum.NONE;
+            ],
+          ),
+          const VerticalDivider(color: Colors.white, width: 2),
+          IconButton(
+            tooltip: 'edit the callout show duration in ms...',
+            icon: const Icon(Icons.timer, color: Colors.white),
+            onPressed: () {
+              showTargetDurationCallout(tc);
+            },
+          ),
+          const VerticalDivider(color: Colors.white, width: 2),
+          IconButton(
+            tooltip: 'change the callout fill colour...',
+            icon: const Icon(Icons.palette_outlined, color: Colors.white),
+            onPressed: () {
+              showTargetColorTool(
+                onColorPickedF: (Color? pickedColor) {
+                  if (pickedColor == null) {
+                    widget.tc.setCalloutFillColor(null);
+                  } else {
+                    widget.tc.setCalloutFillColor(
+                      ColorModel.fromColor(pickedColor),
+                    );
                   }
-                  tc.calloutBorderColors = UpTo6Colors(color1: ColorModel.grey());
-                  tc.calloutBorderThickness = 2;
-                  SnippetRootNode? rootNode = tc.parentTargetsWrapperNode?.rootNodeOfSnippet();
-                  if (rootNode == null) return;
-                  fco.saveNewVersion(snippet: rootNode);
+                  widget.tc.changed_saveRootSnippet();
+                  // STreeNode.hideAllTargetCovers();
+                  // STreeNode.showAllTargetCovers();
+                  // fco.refreshOverlay(tc.snippetName);
+                  // // bloc.add(CAPIEvent.TargetModelChanged(newTC: tc));
+                  // fco.afterNextBuildDo(() {
+                  //   widget.onParentBarrierTappedF.call();
+                  //   fco.refreshOverlay(tc.snippetName, f: () {});
+                  fco.dismiss('color-picker');
                   CalloutConfigToolbar.closeThenReopenContentCallout(
                     widget.cc,
-                    tc,
+                    widget.tc,
                     widget.wrapperRect,
                     widget.scName,
                   );
-                  // fco.capiBloc.add(CAPIEvent.TargetModelChanged(newTC: tc));
-                  // fco.afterNextBuildDo(() {
-                  //   removeSnippetContentCallout(tc.snippetName);
-                  //   showSnippetContentCallout(
-                  //     twName: widget.twName,
-                  //     tc:tc,
-                  //     justPlaying: false,
-                  // ancestorHScrollController: widget.ancestorHScrollController,
-                  // ancestorVScrollController: widget.ancestorVScrollController,
-                  //   );
-                  // });
                 },
-                wrap: true,
-                calloutButtonSize: const Size(70, 40),
-                calloutSize: const Size(240, 220),
+              );
+
+              // hideTargetModelToolbarCallout();
+              // // ensure snippet exists
+              // SnippetNode? sNode = bloc.state.snippet(tc.snippetName);
+              // if (sNode == null) {
+              //   sNode = SnippetNode(name: tc.snippetName);
+              //   bloc.add(CAPIEvent.createdSnippet(
+              //     newNode: sNode,
+              //   ));
+              //   fco.afterNextBuildDo(() {
+              //     showHelpContentCallout(tc, tc.snippetName, true, ancestorHScrollController, ancestorVScrollController);
+              //   });
+              // } else {
+              //   showHelpContentCallout(tc, tc.snippetName, true, ancestorHScrollController, ancestorVScrollController);
+              // }
+            },
+          ),
+          IconButton(
+            tooltip: 'configure how the callout points to the target...',
+            icon: Transform.rotate(
+              angle: pi * 3 / 4,
+              child: const Icon(Icons.arrow_right_alt, color: Colors.white),
+            ),
+            onPressed: () {
+              PointyTool.show(
+                widget.cc,
+                tc,
+                widget.wrapperRect,
+                // onBarrierTappedF: onParentBarrierTappedF,
                 scName: widget.scName,
-              ),
-            ),
-            IconButton(
-              tooltip: 'more callout settings...',
-              icon: const Icon(
-                Icons.more_vert,
-                color: Colors.white,
-              ),
-              onPressed: () {
-                MoreCalloutConfigSettings.show(
+                justPlaying: false,
+              );
+            },
+          ),
+          Tooltip(
+            message: 'configure callout shape...',
+            child: PropertyButtonEnum(
+              label: "shape",
+              skipShowingLabel: true,
+              // passing label as the cId
+              menuItems: DecorationShapeEnum.values
+                  .map((e) => e.toMenuItem())
+                  .toList(),
+              originalEnumIndex: tc.calloutDecorationShapeEnum?.index,
+              onChangeF: (newIndex) {
+                fco.dismiss('shape');
+                tc.calloutDecorationShapeEnum =
+                    DecorationShapeEnum.of(newIndex) ??
+                    DecorationShapeEnum.rectangle;
+                if (tc.calloutDecorationShapeEnum == DecorationShapeEnum.star) {
+                  tc.targetPointerTypeEnum = TargetPointerTypeEnum.NONE;
+                }
+                tc.calloutBorderColors = UpTo6Colors(color1: ColorModel.grey());
+                tc.calloutBorderThickness = 2;
+                SnippetRootNode? rootNode = tc.parentTargetsWrapperNode
+                    ?.rootNodeOfSnippet();
+                if (rootNode == null) return;
+                fco.saveNewVersion(snippet: rootNode);
+                CalloutConfigToolbar.closeThenReopenContentCallout(
                   widget.cc,
-                  widget.tc,
+                  tc,
                   widget.wrapperRect,
-                  scName: widget.scName,
-                  justPlaying: false,
+                  widget.scName,
                 );
+                // fco.capiBloc.add(CAPIEvent.TargetModelChanged(newTC: tc));
+                // fco.afterNextBuildDo(() {
+                //   removeSnippetContentCallout(tc.snippetName);
+                //   showSnippetContentCallout(
+                //     twName: widget.twName,
+                //     tc:tc,
+                //     justPlaying: false,
+                // ancestorHScrollController: widget.ancestorHScrollController,
+                // ancestorVScrollController: widget.ancestorVScrollController,
+                //   );
+                // });
               },
+              wrap: true,
+              calloutButtonSize: const Size(70, 40),
+              calloutSize: const Size(240, 220),
+              scName: widget.scName,
             ),
-            const VerticalDivider(color: Colors.white, width: 2),
-            IconButton(
-                tooltip: 'delete this target.',
-                icon: const Icon(
-                  Icons.delete,
-                  color: Colors.orangeAccent,
-                ),
-                onPressed: () {
-                  SnippetRootNode? rootNode =
-                      tc.parentTargetsWrapperNode?.rootNodeOfSnippet();
-                  if (rootNode == null) return;
-                  tc
-                      .targetsWrapperState()
-                      ?.widget
-                      .parentNode
-                      .targets
-                      .remove(tc);
-                  fco.saveNewVersion(snippet: rootNode);
-                  // fco.cacheAndSaveANewSnippetVersion(
-                  //   snippetName: rootNode.name, // tc.snippetName,
-                  //   rootNode: rootNode,
-                  // );
-                  _closeCalloutConfigToolbar(tc);
-                  //tc.targetsWrapperState()?.refresh(() {});
-                }),
-            const VerticalDivider(color: Colors.white, width: 2),
-            IconButton(
-              tooltip: 'close this toolbar',
-              icon: const Icon(
-                Icons.close,
-                color: Colors.white,
-              ),
-              onPressed: () {
-                _closeCalloutConfigToolbar(tc);
-              },
-            ),
-            const VerticalDivider(color: Colors.white, width: 2),
-            toolbarVFlipIcon(),
-          ]),
+          ),
+          IconButton(
+            tooltip: 'more callout settings...',
+            icon: const Icon(Icons.more_vert, color: Colors.white),
+            onPressed: () {
+              MoreCalloutConfigSettings.show(
+                widget.cc,
+                widget.tc,
+                widget.wrapperRect,
+                scName: widget.scName,
+                justPlaying: false,
+              );
+            },
+          ),
+          const VerticalDivider(color: Colors.white, width: 2),
+          IconButton(
+            tooltip: 'delete this target.',
+            icon: const Icon(Icons.delete, color: Colors.orangeAccent),
+            onPressed: () {
+              SnippetRootNode? rootNode = tc.parentTargetsWrapperNode
+                  ?.rootNodeOfSnippet();
+              if (rootNode == null) return;
+              tc.targetsWrapperState()?.widget.parentNode.targets.remove(tc);
+              fco.saveNewVersion(snippet: rootNode);
+              // fco.cacheAndSaveANewSnippetVersion(
+              //   snippetName: rootNode.name, // tc.snippetName,
+              //   rootNode: rootNode,
+              // );
+              _closeCalloutConfigToolbar(tc);
+              //tc.targetsWrapperState()?.refresh(() {});
+            },
+          ),
+          const VerticalDivider(color: Colors.white, width: 2),
+          IconButton(
+            tooltip: 'close this toolbar',
+            icon: const Icon(Icons.close, color: Colors.white),
+            onPressed: () {
+              _closeCalloutConfigToolbar(tc);
+            },
+          ),
+          const VerticalDivider(color: Colors.white, width: 2),
+          toolbarVFlipIcon(),
+        ],
+      ),
     );
   }
 
   Widget toolbarVFlipIcon() => IconButton(
-        onPressed: () {
-          fco.dismiss(CalloutConfigToolbar.CID, skipOnDismiss: true);
-          fco.calloutConfigToolbarAtTopOfScreen =
-              !fco.calloutConfigToolbarAtTopOfScreen;
-          TargetsWrapper.showConfigToolbar(
-            widget.tc,
-            widget.wrapperRect,
-            widget.scName,
-          );
-        },
-        icon: Icon(
-          fco.calloutConfigToolbarAtTopOfScreen
-              ? Icons.arrow_downward
-              : Icons.arrow_upward,
-          color: Colors.white70,
-        ),
+    onPressed: () {
+      fco.dismiss(CalloutConfigToolbar.CID, skipOnDismiss: true);
+      fco.calloutConfigToolbarAtTopOfScreen =
+          !fco.calloutConfigToolbarAtTopOfScreen;
+      TargetsWrapper.showConfigToolbar(
+        widget.tc,
+        widget.wrapperRect,
+        widget.scName,
       );
+    },
+    icon: Icon(
+      fco.calloutConfigToolbarAtTopOfScreen
+          ? Icons.arrow_downward
+          : Icons.arrow_upward,
+      color: Colors.white70,
+    ),
+  );
 
   // used by both slider
   void _onDragStartF(TargetModel tc) {
@@ -393,21 +391,45 @@ class CalloutConfigToolbarState extends State<CalloutConfigToolbar> {
     removeSnippetContentCallout(tc);
   }
 
-// @override
-// void didChangeDependencies() {
-//   // FCO.instance.initWithContext(context);
-//   updatedContext = context;
-//   super.didChangeDependencies();
-// }
+  void showTargetColorTool({required ColorPickedCallback onColorPickedF}) {
+    GlobalKey? targetGK = fco.getTargetGk(widget.tc.uid);
 
-// Offset _topLeft(TargetModel tc) {
-//   Rect calloutRect = Rect.fromLTWH(widget.parent.left!, widget.parent.top!,
-//       widget.parent.calloutW!, widget.parent.calloutH!);
-//   if (widget.side == Side.TOP) {
-//     return (calloutRect.topLeft
-//         .translate(0, -CalloutConfigToolbar.CALLOUT_CONFIG_TOOLBAR_H(tc)));
-//   } else {
-//     return (calloutRect.bottomLeft.translate(0, 0));
-//   }
-// }
+    fco.showOverlay(
+      targetGkF: () => targetGK,
+      calloutConfig: CalloutConfig(
+        cId: 'color-picker',
+        initialCalloutW: 320,
+        initialCalloutH: 380,
+        decorationFillColors: ColorOrGradient.color(Colors.purpleAccent),
+        decorationBorderRadius: 16,
+        targetPointerType: TargetPointerType.none(),
+        barrier: CalloutBarrierConfig(opacity: 0.1),
+        notUsingHydratedStorage: true,
+        scrollControllerName: widget.scName,
+      ),
+      calloutContent: ColourPickerTool(
+        originalColor:
+            widget.tc.calloutFillColors?.color1?.flutterValue ?? Colors.white,
+        onColorPickedF: onColorPickedF,
+      ),
+    );
+  }
+
+  // @override
+  // void didChangeDependencies() {
+  //   // FCO.instance.initWithContext(context);
+  //   updatedContext = context;
+  //   super.didChangeDependencies();
+  // }
+
+  // Offset _topLeft(TargetModel tc) {
+  //   Rect calloutRect = Rect.fromLTWH(widget.parent.left!, widget.parent.top!,
+  //       widget.parent.calloutW!, widget.parent.calloutH!);
+  //   if (widget.side == Side.TOP) {
+  //     return (calloutRect.topLeft
+  //         .translate(0, -CalloutConfigToolbar.CALLOUT_CONFIG_TOOLBAR_H(tc)));
+  //   } else {
+  //     return (calloutRect.bottomLeft.translate(0, 0));
+  //   }
+  // }
 }

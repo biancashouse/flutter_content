@@ -87,6 +87,7 @@ typedef SuggestionSelectionCallback = void Function(String selectedSuggestion);
 typedef TextStylePropertiesChangeCallback = void Function(TextStyleProperties newTSProps, bool refreshPTree);
 typedef ButtonStylePropertiesChangeCallback = void Function(ButtonStyleProperties newBSProps, bool refreshPTree);
 typedef ContainerStylePropertiesChangeCallback = void Function(ContainerStyleProperties newCSProps, bool refreshPTree);
+typedef ColorPickedCallback = void Function(Color? pickedColor);
 
 // typedef FeaturedWidgetHelpSnippetBuilder = Widget Function(
 //     BuildContext context, FeaturedWidget? parent);

@@ -107,7 +107,8 @@ class TargetModelMapper extends ClassMapperBase<TargetModel> {
   static ColorModel? _$bubbleOrTargetPointerColor(TargetModel v) =>
       v.bubbleOrTargetPointerColor;
   static const Field<TargetModel, ColorModel> _f$bubbleOrTargetPointerColor =
-      Field('bubbleOrTargetPointerColor', _$bubbleOrTargetPointerColor, opt: true);
+      Field('bubbleOrTargetPointerColor', _$bubbleOrTargetPointerColor,
+          opt: true);
   static bool? _$animatePointer(TargetModel v) => v.animatePointer;
   static const Field<TargetModel, bool> _f$animatePointer =
       Field('animatePointer', _$animatePointer, opt: true, def: false);
@@ -238,7 +239,8 @@ abstract class TargetModelCopyWith<$R, $In extends TargetModel, $Out>
     implements ClassCopyWith<$R, $In, $Out> {
   UpTo6ColorsCopyWith<$R, UpTo6Colors, UpTo6Colors>? get calloutFillColors;
   UpTo6ColorsCopyWith<$R, UpTo6Colors, UpTo6Colors>? get calloutBorderColors;
-  ColorModelCopyWith<$R, ColorModel, ColorModel>? get bubbleOrTargetPointerColor;
+  ColorModelCopyWith<$R, ColorModel, ColorModel>?
+      get bubbleOrTargetPointerColor;
   $R call(
       {int? uid,
       double? transformScale,
@@ -287,9 +289,10 @@ class _TargetModelCopyWithImpl<$R, $Out>
       $value.calloutBorderColors?.copyWith
           .$chain((v) => call(calloutBorderColors: v));
   @override
-  ColorModelCopyWith<$R, ColorModel, ColorModel>? get bubbleOrTargetPointerColor =>
-      $value.bubbleOrTargetPointerColor?.copyWith
-          .$chain((v) => call(bubbleOrTargetPointerColor: v));
+  ColorModelCopyWith<$R, ColorModel, ColorModel>?
+      get bubbleOrTargetPointerColor =>
+          $value.bubbleOrTargetPointerColor?.copyWith
+              .$chain((v) => call(bubbleOrTargetPointerColor: v));
   @override
   $R call(
           {int? uid,
@@ -391,8 +394,8 @@ class _TargetModelCopyWithImpl<$R, $Out>
       starPoints: data.get(#starPoints, or: $value.starPoints),
       targetPointerTypeEnum:
           data.get(#targetPointerTypeEnum, or: $value.targetPointerTypeEnum),
-      bubbleOrTargetPointerColor:
-          data.get(#bubbleOrTargetPointerColor, or: $value.bubbleOrTargetPointerColor),
+      bubbleOrTargetPointerColor: data.get(#bubbleOrTargetPointerColor,
+          or: $value.bubbleOrTargetPointerColor),
       animatePointer: data.get(#animatePointer, or: $value.animatePointer),
       autoPlay: data.get(#autoPlay, or: $value.autoPlay));
 

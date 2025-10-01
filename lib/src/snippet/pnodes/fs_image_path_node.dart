@@ -4,8 +4,7 @@ import 'package:flutter_content/src/snippet/pnodes/editors/property_button_fs_br
 
 class FSImagePathPNode extends PNode {
   String? stringValue;
-  final
-  ValueChanged<String?> onPathChange;
+  final ValueChanged<String?> onPathChange;
   final Size calloutButtonSize;
 
   FSImagePathPNode({

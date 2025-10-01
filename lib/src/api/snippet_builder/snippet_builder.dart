@@ -6,7 +6,8 @@ import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_content/flutter_content.dart';
 import 'package:pointer_interceptor/pointer_interceptor.dart';
-import 'versions_menu_anchor_with_edit_menu_item.dart' show SnippetMenuAnchor, AnchorWidgetEnum;
+import 'versions_menu_anchor_with_edit_menu_item.dart'
+    show SnippetMenuAnchor, AnchorWidgetEnum;
 
 const BODY_PLACEHOLDER = 'body-placeholder';
 
@@ -225,7 +226,9 @@ class SnippetBuilderState extends State<SnippetBuilder>
               );
             }
 
-            bool isPublishedVersion = fco.isEditingVersionPublished(snippetName());
+            bool isPublishedVersion = fco.isEditingVersionPublished(
+              snippetName(),
+            );
 
             SnippetRootNode snippet = snapshot.data!;
 
@@ -261,9 +264,21 @@ class SnippetBuilderState extends State<SnippetBuilder>
               snippetName(),
             );
 
+            late Widget generatedWidget;
+
+            try {
+              generatedWidget = snippet.buildFlutterWidget(context, null);
+            } catch (e) {
+              generatedWidget = Icon(
+                Icons.error,
+                size: 40,
+                color: Colors.purpleAccent,
+              );
+            }
+
             Widget snippetWidget = Stack(
               children: [
-                snippet.buildFlutterWidget(context, null),
+                generatedWidget,
                 if (!widget.justPlaying && !isPublishedVersion && !canEdit)
                   Align(
                     alignment: Alignment.topLeft,
@@ -348,7 +363,7 @@ class SnippetBuilderState extends State<SnippetBuilder>
     // no need to de-reigister once set up
     fco.registerKeystrokeHandler('exit-Select-Widget-Mode', (KeyEvent event) {
       if (event.logicalKey == LogicalKeyboardKey.escape) {
-        if (fco.capiBloc.state.inSelectWidgetMode??false) {
+        if (fco.capiBloc.state.inSelectWidgetMode ?? false) {
           fco.capiBloc.add(CAPIEvent.exitSelectWidgetMode());
         }
       }
@@ -385,7 +400,8 @@ class SnippetBuilderState extends State<SnippetBuilder>
             // fco.logger.i('_showNodeWidgetOverlay...');
             // removeAllNodeWidgetOverlays();
             // pass possible ancestor scrollcontroller to overlay
-            node.showTappableNodeWidgetOverlay(context,
+            node.showTappableNodeWidgetOverlay(
+              context,
               //whiteBarrier: !barrierApplied,
               scName: scName,
             );

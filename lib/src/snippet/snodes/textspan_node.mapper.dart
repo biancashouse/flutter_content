@@ -50,6 +50,11 @@ class TextSpanNodeMapper extends SubClassMapperBase<TextSpanNode> {
   static const Field<TextSpanNode, bool> _f$hidePropertiesWhileDragging = Field(
       'hidePropertiesWhileDragging', _$hidePropertiesWhileDragging,
       mode: FieldMode.member);
+  static TargetModel? _$calloutTargetConfig(TextSpanNode v) =>
+      v.calloutTargetConfig;
+  static const Field<TextSpanNode, TargetModel> _f$calloutTargetConfig = Field(
+      'calloutTargetConfig', _$calloutTargetConfig,
+      mode: FieldMode.member);
 
   @override
   final MappableFields<TextSpanNode> fields = const {
@@ -61,6 +66,7 @@ class TextSpanNodeMapper extends SubClassMapperBase<TextSpanNode> {
     #treeNodeGK: _f$treeNodeGK,
     #isExpanded: _f$isExpanded,
     #hidePropertiesWhileDragging: _f$hidePropertiesWhileDragging,
+    #calloutTargetConfig: _f$calloutTargetConfig,
   };
 
   @override

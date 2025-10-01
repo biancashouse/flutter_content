@@ -25,6 +25,7 @@ class CLMapper extends SubClassMapperBase<CL> {
       MarkdownNodeMapper.ensureInitialized();
       PlaceholderNodeMapper.ensureInitialized();
       PollOptionNodeMapper.ensureInitialized();
+      QuillTextNodeMapper.ensureInitialized();
       RichTextNodeMapper.ensureInitialized();
       StepNodeMapper.ensureInitialized();
       TextNodeMapper.ensureInitialized();

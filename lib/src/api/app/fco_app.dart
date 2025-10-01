@@ -8,13 +8,15 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_content/flutter_content.dart';
+import 'package:flutter_quill/flutter_quill.dart';
+import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:flutter_web_plugins/flutter_web_plugins.dart'
     show PathUrlStrategy, setUrlStrategy;
 import 'package:go_router/go_router.dart';
 
 // conditional import for webview ------------------
 import 'register_ios_or_android_webview.dart'
-    if (dart.library.html) 'register_web_webview.dart';
+if (dart.library.html) 'register_web_webview.dart';
 
 /// this widget must enclose your MaterialApp, or CupertinoApp or WidgetsApp
 /// so that the CAPIBloc becomes available to overlays, which are placed into
@@ -194,53 +196,65 @@ class FlutterContentAppState extends State<FlutterContentApp>
             child: ValueListenableBuilder<ThemeMode>(
               valueListenable: fco.themeModeNotifier,
               builder: (context, currentMode, child) =>
-                  widget.routingConfig != null
+              widget.routingConfig != null
                   ? MaterialApp.router(
-                      // following line not valid for router;
-                      // instead pass navigatorKey: fco.globalNavigatorKey
-                      // to GoRouter.routingConfig()
-                      routerConfig: fco.router,
-                      themeMode: currentMode,
-                      theme: widget.materialAppThemeF(),
-                      darkTheme: ThemeData(
-                        brightness: Brightness.light,
-                        primarySwatch: Colors.purple,
-                        // ... other dark theme properties
-                        scaffoldBackgroundColor: Colors.black54,
-                        // Example
-                        textTheme: TextTheme(
-                          bodyMedium: TextStyle(color: Colors.black87),
-                        ),
-                        appBarTheme: AppBarTheme(
-                          backgroundColor: Colors.grey[850],
-                        ),
-                      ),
-                      debugShowCheckedModeBanner: false,
-                      title: widget.title,
-                      scrollBehavior: const ConstantScrollBehavior(),
-                    )
+                // following line not valid for router;
+                // instead pass navigatorKey: fco.globalNavigatorKey
+                // to GoRouter.routingConfig()
+                routerConfig: fco.router,
+                localizationsDelegates: const [
+                  GlobalMaterialLocalizations.delegate,
+                  GlobalCupertinoLocalizations.delegate,
+                  GlobalWidgetsLocalizations.delegate,
+                  FlutterQuillLocalizations.delegate,
+                ],
+                themeMode: currentMode,
+                theme: widget.materialAppThemeF(),
+                darkTheme: ThemeData(
+                  brightness: Brightness.light,
+                  primarySwatch: Colors.purple,
+                  // ... other dark theme properties
+                  scaffoldBackgroundColor: Colors.black54,
+                  // Example
+                  textTheme: TextTheme(
+                    bodyMedium: TextStyle(color: Colors.black87),
+                  ),
+                  appBarTheme: AppBarTheme(
+                    backgroundColor: Colors.grey[850],
+                  ),
+                ),
+                debugShowCheckedModeBanner: false,
+                title: widget.title,
+                scrollBehavior: const ConstantScrollBehavior(),
+              )
                   : MaterialApp(
-                      navigatorKey: fco.globalNavigatorKey,
-                      home: widget.home,
-                      themeMode: currentMode,
-                      theme: widget.materialAppThemeF(),
-                      darkTheme: ThemeData(
-                        brightness: Brightness.light,
-                        primarySwatch: Colors.purple,
-                        // ... other dark theme properties
-                        scaffoldBackgroundColor: Colors.black54,
-                        // Example
-                        textTheme: TextTheme(
-                          bodyMedium: TextStyle(color: Colors.black87),
-                        ),
-                        appBarTheme: AppBarTheme(
-                          backgroundColor: Colors.grey[850],
-                        ),
-                      ),
-                      debugShowCheckedModeBanner: false,
-                      title: widget.title,
-                      scrollBehavior: const ConstantScrollBehavior(),
-                    ),
+                navigatorKey: fco.globalNavigatorKey,
+                home: widget.home,
+                localizationsDelegates: const [
+                  GlobalMaterialLocalizations.delegate,
+                  GlobalCupertinoLocalizations.delegate,
+                  GlobalWidgetsLocalizations.delegate,
+                  FlutterQuillLocalizations.delegate,
+                ],
+                themeMode: currentMode,
+                theme: widget.materialAppThemeF(),
+                darkTheme: ThemeData(
+                  brightness: Brightness.light,
+                  primarySwatch: Colors.purple,
+                  // ... other dark theme properties
+                  scaffoldBackgroundColor: Colors.black54,
+                  // Example
+                  textTheme: TextTheme(
+                    bodyMedium: TextStyle(color: Colors.black87),
+                  ),
+                  appBarTheme: AppBarTheme(
+                    backgroundColor: Colors.grey[850],
+                  ),
+                ),
+                debugShowCheckedModeBanner: false,
+                title: widget.title,
+                scrollBehavior: const ConstantScrollBehavior(),
+              ),
             ),
           );
         } else {

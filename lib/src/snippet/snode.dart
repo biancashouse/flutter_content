@@ -5,6 +5,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_content/flutter_content.dart';
 import 'package:flutter_content/src/snippet/pnodes/groups/button_style_properties.dart';
 import 'package:flutter_content/src/snippet/snodes/algc_node.dart';
+import 'package:flutter_content/src/snippet/snodes/quill_text_node.dart';
+import 'package:flutter_content/src/snippet/snodes/tab_node.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 
 import 'snodes/fs_image_node.dart';
@@ -24,6 +26,7 @@ const List<Type> childlessSubClasses = [
   MarkdownNode,
   PlaceholderNode,
   PollOptionNode,
+  QuillTextNode,
   RichTextNode,
   StepNode,
   TextNode,
@@ -41,12 +44,13 @@ const List<Type> singleChildSubClasses = [
   ExpandedNode,
   FlexibleNode,
   GenericSingleChildNode,
-  TargetsWrapperNode,
   PaddingNode,
   PositionedNode,
   SingleChildScrollViewNode,
   SizedBoxNode,
   SnippetRootNode,
+  TabNode,
+  TargetsWrapperNode,
 ];
 
 const List<Type> multiChildSubClasses = [
@@ -130,18 +134,18 @@ abstract class SNode extends Node with SNodeMappable {
     // prevExpansions =
     // _pTreeC!.expand(_pTreeC!.roots.first);
     //_pTreeC!.expandedNodes = prevExpansions;
-    if (false) {
-      for (PropertyName pNodeName in prevExpansions.keys) {
-        fco.logger.i('restoring $pNodeName ${prevExpansions[pNodeName]}');
-        // find pNode by its name
-        PNode? pNode = fco.pNodes[pNodeName];
-        bool? expanded = prevExpansions[pNodeName];
-        // override padding and margin s.t. they always get collapsed
-        if (pNode != null && expanded != null) {
-          _pTreeC!.setExpansionState(pNode, expanded);
-        }
-      }
-    }
+    // if (false) {
+    //   for (PropertyName pNodeName in prevExpansions.keys) {
+    //     fco.logger.i('restoring $pNodeName ${prevExpansions[pNodeName]}');
+    //     // find pNode by its name
+    //     PNode? pNode = fco.pNodes[pNodeName];
+    //     bool? expanded = prevExpansions[pNodeName];
+    //     // override padding and margin s.t. they always get collapsed
+    //     if (pNode != null && expanded != null) {
+    //       _pTreeC!.setExpansionState(pNode, expanded);
+    //     }
+    //   }
+    // }
     // _pTreeC!.rebuild();
     return _pTreeC!;
   }
@@ -149,13 +153,13 @@ abstract class SNode extends Node with SNodeMappable {
   void forcePropertyTreeRefresh(BuildContext context) {
     return;
     // only related to group node, which are exandable
-    Map<PropertyName, bool> prevExpansions = {};
-    for (PNode pNode in _pTreeC?.expandedNodes ?? []) {
-      prevExpansions[pNode.name] = pNode.expanded;
-    }
-    _properties = null;
-    _pTreeC = null;
-    pTreeC(context, prevExpansions);
+    // Map<PropertyName, bool> prevExpansions = {};
+    // for (PNode pNode in _pTreeC?.expandedNodes ?? []) {
+    //   prevExpansions[pNode.name] = pNode.expanded;
+    // }
+    // _properties = null;
+    // _pTreeC = null;
+    // pTreeC(context, prevExpansions);
   }
 
   double propertiesPaneScrollPos() => propertiesPaneSC().offset;
@@ -215,20 +219,17 @@ abstract class SNode extends Node with SNodeMappable {
   //maybe a hotspot, so will have a tc
   void showTappableNodeWidgetOverlay(
     BuildContext context, {
-    bool whiteBarrier = false,
+    // bool whiteBarrier = false,
     ScrollControllerName? scName,
-    TargetModel? tc,
+    // TargetModel? tc,
   }) {
     // Rect borderRect = measuredRect!; //_borderRect(measuredRect!);
-    Rect? borderRect = calcBborderRect();
+    Rect? borderRect = calcBorderRect();
 
     if (borderRect != null) {
-      String feature = '${nodeWidgetGK.hashCode}-pink-overlay';
-
       CalloutConfig cc = _cc(
-        cId: feature,
+        cId: '${nodeWidgetGK.hashCode}-pink-overlay',
         borderRect: borderRect,
-        whiteBarrier: whiteBarrier,
         scName: scName,
         followScroll: false,
       );
@@ -238,7 +239,7 @@ abstract class SNode extends Node with SNodeMappable {
         calloutContent: Tooltip(
           message: 'tap to edit this ${toString()} node',
           child: InkWell(
-            onTap: () => _tappedToEditSnippetNode(context, scName),
+            onTap: () => tappedToEditSnippetNode(context, scName),
             child: Container(
               width: borderRect.width.abs(),
               height: borderRect.height.abs(),
@@ -261,7 +262,7 @@ abstract class SNode extends Node with SNodeMappable {
     }
   }
 
-  void _tappedToEditSnippetNode(
+  void tappedToEditSnippetNode(
     BuildContext context,
     ScrollControllerName? scName,
   ) {
@@ -282,7 +283,7 @@ abstract class SNode extends Node with SNodeMappable {
     // FCO.capiBloc.add(const CAPIEvent.hideAllTargetGroupBtns());
     // FCO.capiBloc.add(const CAPIEvent.hideTargetGroupsExcept());
     EditablePageState? eps = EditablePage.of(context);
-    eps?.removeAllNodeWidgetOverlays();
+    eps?.dismissAllNodeWidgetOverlays();
     // remove the barrier if about to edit a content callout
     if (SnippetRootNode.isHotspotCalloutContent(snippetName)) {
       final cc = fco.findOE(snippetName)?.calloutConfig;
@@ -306,43 +307,44 @@ abstract class SNode extends Node with SNodeMappable {
     pushThenShowNamedSnippetWithNodeSelected(snippetName, this, scName: scName);
   }
 
-  void showNonTappableNodeWidgetOverlay({
-    required bool selected,
+  void showSelectedNonTappableNodeWidgetOverlay({
     required Rect borderRect,
-    bool whiteBarrier = false,
-    // bool skipMeasure = false,
     ScrollControllerName? scName,
   }) {
+    bool isSelected = this == fco.selectedNode;
+    if (!isSelected) {
+      return;
+    }
+    // if (this is AppBarNode || this is ScaffoldNode) return;
     CalloutConfig cc = _cc(
       cId: '${nodeWidgetGK.hashCode}-pink-overlay',
       borderRect: borderRect,
-      whiteBarrier: whiteBarrier,
       scName: scName,
       followScroll: true,
     );
+    // if (nodeWidgetGK?.currentContext != null) {
+    //   EditablePageState? eps = EditablePage.of(
+    //       nodeWidgetGK!.currentContext!);
+    //   eps?.dismissAllNodeWidgetOverlays();
+    // }
     fco.showOverlay(
-      // ensureLowestOverlay: true,
       calloutContent: Container(
         width: cc.calloutW,
         height: cc.calloutH,
-        decoration: selected
-            ? DottedDecoration(
-                shape: Shape.box,
-                dash: const <int>[6, 6],
-                borderColor: Colors.black,
-                strokeWidth: 3,
-                fillColor: Colors.transparent,
-                // fillGradient: fillGradient,
-              )
-            : null,
+        decoration: DottedDecoration(
+          shape: Shape.box,
+          dash: const <int>[6, 6],
+          borderColor: Colors.black,
+          strokeWidth: 3,
+          fillColor: Colors.transparent,
+        ),
       ),
       calloutConfig: cc,
-      // targetGkF: () => nodeWidgetGK,
       wrapInPointerInterceptor: isHtmlElementViewOrPlatformView(),
     );
   }
 
-  Rect? calcBborderRect() {
+  Rect? calcBorderRect() {
     // var gkState = nodeWidgetGK?.currentState;
     // var gkCtx = nodeWidgetGK?.currentContext;
     Rect? r = nodeWidgetGK?.globalPaintBounds(
@@ -350,10 +352,10 @@ abstract class SNode extends Node with SNodeMappable {
       skipHeightConstraintWarning: true,
     );
     // in case widget doesn't have a key (e.g. inlinespans)
-    r ??= (getParent() as SNode?)?.nodeWidgetGK?.globalPaintBounds(
-      skipWidthConstraintWarning: true,
-      skipHeightConstraintWarning: true,
-    );
+    // r ??= (getParent() as SNode?)?.nodeWidgetGK?.globalPaintBounds(
+    //   skipWidthConstraintWarning: true,
+    //   skipHeightConstraintWarning: true,
+    // );
     if (r != null) {
       Rect borderRect;
       // ensure has a width and height
@@ -372,7 +374,6 @@ abstract class SNode extends Node with SNodeMappable {
   CalloutConfig _cc({
     required String cId,
     required Rect borderRect,
-    bool whiteBarrier = false,
     ScrollControllerName? scName,
     bool? followScroll,
   }) => CalloutConfig(
@@ -385,15 +386,6 @@ abstract class SNode extends Node with SNodeMappable {
     //.translate(-BORDER, -BORDER),
     decorationFillColors: ColorOrGradient.color(Colors.transparent),
     targetPointerType: TargetPointerType.none(),
-    barrier: whiteBarrier
-        ? CalloutBarrierConfig(
-            opacity: .5,
-            color: Colors.white,
-            onTappedF: () {
-              fco.dismissAll();
-            },
-          )
-        : null,
     draggable: false,
     scrollControllerName: scName,
     skipOnScreenCheck: true,
@@ -481,13 +473,10 @@ abstract class SNode extends Node with SNodeMappable {
         }
         fco.hide(CalloutConfigToolbar.CID);
         fco.afterMsDelayDo(1000, () {
-          var ctx = rootNode
-              .child
-              ?.nodeWidgetGK
-              ?.currentContext;
+          var ctx = rootNode.child?.nodeWidgetGK?.currentContext;
           if (ctx != null) {
             EditablePageState? eps = EditablePage.of(ctx);
-            eps?.showNodeWidgetOverlaysNeedingInterception();
+            eps?.showNodeWidgetOverlays();
           }
         });
       }
@@ -518,7 +507,7 @@ abstract class SNode extends Node with SNodeMappable {
         assert(rootNode.isValid());
         fco.saveNewVersion(snippet: rootNode);
         EditablePageState? eps = EditablePage.of(context);
-        eps?.refreshSelectedNodeWidgetBorderOverlay(rootNode.name);
+        eps?.showNodeWidgetOverlays();
       }
     });
   }
@@ -643,8 +632,12 @@ abstract class SNode extends Node with SNodeMappable {
   // List<String> sensibleParents() => const [];
 
   GlobalKey createNodeWidgetGK() {
-    // fco.logger.i('--- createNodeGK --- ${toString()}');
-    _nodeWidgetGK = GlobalKey(debugLabel: toString());
+    print('--- createNodeGK --- ${toString()}');
+    String debugLabel = toString();
+    if (this is TextNode) {
+      debugLabel += "${(this as TextNode).text}";
+    }
+    _nodeWidgetGK = GlobalKey(debugLabel: debugLabel);
     // if (fco.nodesByGK.containsKey(nodeWidgetGK)) {
     //   fco.logger.d('Trying to use GlobalKey twice!');
     // }
@@ -1465,6 +1458,7 @@ abstract class SNode extends Node with SNodeMappable {
             scName,
           ),
           menuItemButton(context, "Text", TextNode, action, scName),
+          menuItemButton(context, "QuillText", QuillTextNode, action, scName),
           menuItemButton(context, "RichText", RichTextNode, action, scName),
           menuItemButton(context, "TextSpan", TextSpanNode, action, scName),
           menuItemButton(context, "WidgetSpan", WidgetSpanNode, action, scName),
@@ -1746,6 +1740,7 @@ abstract class SNode extends Node with SNodeMappable {
               scName,
             ),
             menuItemButton(context, "Text", TextNode, action, scName),
+            menuItemButton(context, "QuillText", QuillTextNode, action, scName),
             menuItemButton(context, "RichText", RichTextNode, action, scName),
             menuItemButton(context, "TextSpan", TextSpanNode, action, scName),
             menuItemButton(
@@ -1782,6 +1777,7 @@ abstract class SNode extends Node with SNodeMappable {
             ),
             SubmenuButton(
               menuChildren: [
+                menuItemButton(context, "Tab", TabNode, action, scName),
                 menuItemButton(context, "TabBar", TabBarNode, action, scName),
                 menuItemButton(
                   context,
@@ -1937,28 +1933,28 @@ abstract class SNode extends Node with SNodeMappable {
         fco.afterNextBuildDo(() {
           fco.dismiss('node-actions');
           EditablePageState? eps = EditablePage.of(context);
-          eps?.refreshSelectedNodeWidgetBorderOverlay(scName);
+          eps?.showNodeWidgetOverlays();
         });
       } else if (action == NodeAction.addChild) {
         fco.capiBloc.add(CAPIEvent.appendChild(type: childType));
         fco.afterNextBuildDo(() {
           fco.dismiss('node-actions');
           EditablePageState? eps = EditablePage.of(context);
-          eps?.refreshSelectedNodeWidgetBorderOverlay(scName);
+          eps?.showNodeWidgetOverlays();
         });
       } else if (action == NodeAction.addSiblingBefore) {
         fco.capiBloc.add(CAPIEvent.addSiblingBefore(type: childType));
         fco.afterNextBuildDo(() {
           fco.dismiss('node-actions');
           EditablePageState? eps = EditablePage.of(context);
-          eps?.refreshSelectedNodeWidgetBorderOverlay(scName);
+          eps?.showNodeWidgetOverlays();
         });
       } else if (action == NodeAction.addSiblingAfter) {
         fco.capiBloc.add(CAPIEvent.addSiblingAfter(type: childType));
         fco.afterNextBuildDo(() {
           fco.dismiss('node-actions');
           EditablePageState? eps = EditablePage.of(context);
-          eps?.refreshSelectedNodeWidgetBorderOverlay(scName);
+          eps?.showNodeWidgetOverlays();
         });
       }
     },

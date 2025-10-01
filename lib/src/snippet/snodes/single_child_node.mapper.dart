@@ -23,12 +23,13 @@ class SCMapper extends SubClassMapperBase<SC> {
       DefaultTextStyleNodeMapper.ensureInitialized();
       ExpandedNodeMapper.ensureInitialized();
       FlexibleNodeMapper.ensureInitialized();
-      TargetsWrapperNodeMapper.ensureInitialized();
       PaddingNodeMapper.ensureInitialized();
       PositionedNodeMapper.ensureInitialized();
       SingleChildScrollViewNodeMapper.ensureInitialized();
       SizedBoxNodeMapper.ensureInitialized();
       SnippetRootNodeMapper.ensureInitialized();
+      TabNodeMapper.ensureInitialized();
+      TargetsWrapperNodeMapper.ensureInitialized();
       SNodeMapper.ensureInitialized();
     }
     return _instance!;

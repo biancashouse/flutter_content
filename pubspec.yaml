@@ -134,6 +134,8 @@ dependencies:
   file_picker: ^10.2.0
   flutter_callouts: #^8.3.1
     path: ../flutter_callouts
+  flutter_quill: #^11.4.2
+    path: ../flutter_quill
 
 #dependency_overrides:
 #  web: ^0.5.0 # latest version as of now

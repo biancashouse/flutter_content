@@ -3,7 +3,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_content/flutter_content.dart';
 import 'package:flutter_content/src/snippet/pnodes/editors/plantuml_msv.dart';
 
-class PropertyButtonUML extends StatefulWidget {
+class PropertyButtonUML extends StatelessWidget {
+  final SNode snode;
   final UMLRecord originalUMLRecord;
   final String? label;
   final Size calloutButtonSize;
@@ -12,7 +13,7 @@ class PropertyButtonUML extends StatefulWidget {
   final ValueChanged<Size> onSizedF;
   final ScrollControllerName? scName;
 
-  const PropertyButtonUML({
+  const PropertyButtonUML(this.snode, {
     required this.originalUMLRecord,
     this.label,
     required this.calloutButtonSize,
@@ -24,80 +25,70 @@ class PropertyButtonUML extends StatefulWidget {
   });
 
   @override
-  State<PropertyButtonUML> createState() => _PropertyButtonUMLState();
-}
+  Widget build(BuildContext context) {
+    final teC = TextEditingController();
 
-class _PropertyButtonUMLState extends State<PropertyButtonUML> {
-  late UMLRecord umlRecord;
-  late TextEditingController teC;
-
-  @override
-  void initState() {
-    umlRecord = widget.originalUMLRecord;
-    teC = TextEditingController();
     // make sure start and end are present for viewing, but they don't get sent to the encoder
-    teC.text = !(widget.originalUMLRecord.text??'').contains('@startuml')
-    ? "@startuml\n${widget.originalUMLRecord.text ?? ''}\n@enduml" ?? ''
-    : widget.originalUMLRecord.text ?? '';
-    super.initState();
+    teC.text = !(originalUMLRecord.text ?? '').contains('@startuml')
+        ? "@startuml\n${originalUMLRecord.text ?? ''}\n@enduml"
+        : originalUMLRecord.text ?? '';
+
+    String textLabel() =>
+        (originalUMLRecord.text?.isNotEmpty??false) ? teC.text : '$label...';
+    Widget labelWidget = Text(
+      textLabel(),
+      style: const TextStyle(color: Colors.white),
+      // overflow: TextOverflow.ellipsis,
+    );
+
+    return GestureDetector(
+      onTap: () {
+        showUMLEditor(context, originalUMLRecord, teC, onChangeF, onSizedF);
+      },
+      child: Container(
+        alignment: Alignment.topLeft,
+        key: propertyBtnGK,
+        width: calloutButtonSize.width,
+        height: calloutButtonSize.height,
+        child: labelWidget,
+      ),
+    );
   }
 
-  @override
-  Widget build(BuildContext context) {
-    return StatefulBuilder(
-        builder: (BuildContext context, StateSetter setState) {
-          String editedText = umlRecord.text ?? '';
-          String textLabel() => editedText.isNotEmpty ? editedText : '${widget.label}...';
-          Widget labelWidget = Text(
-            textLabel(),
-            style: const TextStyle(color: Colors.white),
-            // overflow: TextOverflow.ellipsis,
-          );
-          return GestureDetector(
-            onTap: () {
-              CalloutConfig teCC = CalloutConfig(
-                cId: 'uml-te',
-                scrollControllerName: widget.scName,
-                // containsTextField: true,
-                barrier: CalloutBarrierConfig(
-                    opacity: .25,
-                    onTappedF: () {
-                      fco.dismiss('uml-te');
-                    }),
-                decorationFillColors: ColorOrGradient.color(Colors.purpleAccent),
-                targetPointerType: TargetPointerType.none()  ,
-                initialCalloutW: fco.scrW * .8,
-                initialCalloutH: fco.scrH * .8,
-                onDismissedF: () {},
-                onAcceptedF: () {},
-                onResizeF: (Size newSize) {},
-                onDragF: (Offset newOffset) {},
-                draggable: false,
-                notUsingHydratedStorage: true,
-              );
+  static void showUMLEditor(context, originalUMLRecord, teC, onChangeF, onSizedF) {
 
-              Widget calloutContent = PlantUMLMSV(
-                teC: teC,
-                onChangeF: (UMLRecord newUmlRecord) {
-                  widget.onChangeF.call(umlRecord = newUmlRecord);
-                },
-                onSizedF: widget.onSizedF,
-              );
+    CalloutConfig teCC = CalloutConfig(
+      cId: 'uml-te',
+      scrollControllerName: null,
+      // containsTextField: true,
+      barrier: CalloutBarrierConfig(
+        opacity: .25,
+        onTappedF: () {
+          fco.dismiss('uml-te');
+        },
+      ),
+      decorationFillColors: ColorOrGradient.color(Colors.purpleAccent),
+      targetPointerType: TargetPointerType.none(),
+      initialCalloutW: fco.scrW * .8,
+      initialCalloutH: fco.scrH * .8,
+      onAcceptedF: () {},
+      onResizeF: (Size newSize) {},
+      onDragF: (Offset newOffset) {},
+      draggable: false,
+      notUsingHydratedStorage: true,
+    );
 
-              fco.showOverlay(
-                calloutConfig: teCC,
-                calloutContent: calloutContent,
-                targetGkF: () => widget.propertyBtnGK,
-              );
-            },
-            child: Container(
-              alignment: Alignment.topLeft,
-              key: widget.propertyBtnGK,
-              width: widget.calloutButtonSize.width,
-              height: widget.calloutButtonSize.height,
-              child: labelWidget,
-            ),
-          );
-        });
+    Widget calloutContent = PlantUMLMSV(
+      teC: teC,
+      onChangeF: (UMLRecord newUmlRecord) {
+        onChangeF.call(newUmlRecord);
+      },
+      onSizedF: onSizedF,
+    );
+
+    fco.showOverlay(
+      calloutConfig: teCC,
+      calloutContent: calloutContent,
+    );
   }
 }

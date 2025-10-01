@@ -122,9 +122,9 @@ class SnippetRootNode extends SC with SnippetRootNodeMappable {
               if (!(snippet?.isValid()??false)) {
                 return const Offstage();
               }
-              Widget snippetWidgetStack = Stack(
+              Widget snippetWidgetStack = Stack(fit: StackFit.loose,
                 children: [
-                  snippetWidget,
+                  Center(child: snippetWidget),
                   if (fco.canEditContent())
                     Align(
                       alignment: Alignment.topRight,
@@ -134,13 +134,13 @@ class SnippetRootNode extends SC with SnippetRootNodeMappable {
               );
 
               return fco.canEditContent()
-                  ? Banner(
+                  ? SizedBox(width:double.infinity, child:Banner(
                     message: isPublishedVersion ? 'published' : 'not published',
                     location: BannerLocation.topEnd,
                     color: isPublishedVersion ? Colors.limeAccent.withValues(alpha: .5) : Colors.pink.shade100,
                     textStyle: TextStyle(color: Colors.black, fontSize: 10),
                     child: snippetWidgetStack,
-                  )
+                  ))
                   //TODO warn user if in debug mode and snippet version does not match editing version
                   : !isPublishedVersion && kDebugMode
                   ? Container(color: Colors.red, padding: EdgeInsets.all(50), child: snippetWidget)

@@ -27,6 +27,9 @@ class SnippetMenuAnchor extends StatelessWidget {
                 ? Tooltip(
                     message: 'show Snippet menu\n"${snippetInfo.name}"',
                     child: InkWell(
+                      onDoubleTap: () {
+                       snippetInfo.currentVersionFromCache()?.tappedToEditSnippetNode(context, null);
+                      },
                       onTap: () {
                         if (controller.isOpen) {
                           controller.close();
@@ -40,18 +43,18 @@ class SnippetMenuAnchor extends StatelessWidget {
                       ),
                     ),
                   )
-                : IconButton(
-                    onPressed: () {
+                : InkWell(
+                    onDoubleTap: () {
+                      snippetInfo.currentVersionFromCache()?.tappedToEditSnippetNode(context, null);
+                    },
+                    onTap: () {
                       if (controller.isOpen) {
                         controller.close();
                       } else {
                         controller.open();
                       }
                     },
-                    icon: Icon(Icons.edit, color: Colors.white),
-                    iconSize: 16,
-                    padding: EdgeInsets.zero,
-                    tooltip: 'show Snippet menu\n"${snippetInfo.name}"',
+                    child: Icon(Icons.edit, size: 16, color: Colors.white),
                   );
           },
       menuChildren: [
@@ -153,6 +156,9 @@ class SnippetMenuAnchor extends StatelessWidget {
     required VoidCallback onPressed,
   }) => MenuItemButton(
     onPressed: onPressed,
-    child: Align(alignment: Alignment.centerLeft, child:PointerInterceptor(child: child)),
+    child: Align(
+      alignment: Alignment.centerLeft,
+      child: PointerInterceptor(child: child),
+    ),
   );
 }

@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_content/flutter_content.dart';
 import 'package:flutter_content/src/snippet/pnodes/fyi_pnodes.dart';
 import 'package:flutter_content/src/snippet/pnodes/markdown_pnode.dart';
+import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:markdown_widget/config/configs.dart';
 import 'package:markdown_widget/widget/blocks/leaf/link.dart';
 import 'package:markdown_widget/widget/markdown.dart';
@@ -15,7 +16,85 @@ class MarkdownNode extends CL with MarkdownNodeMappable {
   String data;
 
   MarkdownNode({
-    this.data = """
+    this.data = SAMPLE_MD,
+  });
+
+  @override
+  List<PNode> propertyNodes(BuildContext context, SNode? parentSNode) => [
+    FlutterDocPNode(
+      buttonLabel: 'Markdown',
+      webLink: 'https://pub.dev/packages/flutter_markdown',
+      snode: this,
+      name: 'fyi',
+    ),
+    FlutterDocPNode(
+      buttonLabel: 'Markdown Editor Plus',
+      webLink: 'https://pub.dev/packages/markdown_editor_plus',
+      snode: this,
+      name: 'fyi2',
+    ),
+    MarkdownPNode(
+      snode: this,
+      name: 'data',
+      stringValue: data,
+      // stringValue: data,
+      onStringChange: (newValue) {
+        refreshWithUpdate(context, () => data = newValue ?? '');
+      },
+      calloutButtonSize: const Size(280, 3000),
+      calloutWidth: fco.scrW * .8,
+      calloutHeight: fco.scrH * .8,
+    ),
+  ];
+
+  @override
+  Widget buildFlutterWidget(BuildContext context, SNode? parentNode) {
+    try {
+      setParent(parentNode); // propagating parents down from root
+      //ScrollControllerName? scName = EditablePage.name(context);
+      //possiblyHighlightSelectedNode(scName);
+      return MarkdownWidget(
+        key: createNodeWidgetGK(),
+        data: data,
+        config: MarkdownConfig(
+          configs: [
+            LinkConfig(
+              // style: TextStyle(
+              //   color: Colors.red,
+              //   decoration: TextDecoration.underline,
+              // ),
+              onTap: (href) async {
+                try {
+                  Uri url = Uri.parse(href);
+                  if (!await launchUrl(url)) {
+                    throw Exception('Could not launch $href');
+                  }
+                } catch (e) {
+                  fco.logger.d('Following exception ignored:');
+                  fco.logger.e('', error: e);
+                }
+              },
+            ),
+          ],
+        ),
+      );
+    } catch (e) {
+      return Error(
+        key: createNodeWidgetGK(),
+        FLUTTER_TYPE,
+        color: Colors.red,
+        size: 16,
+        errorMsg: e.toString(),
+      );
+    }
+  }
+
+  @override
+  String toString() => 'Markdown';
+
+  static const String FLUTTER_TYPE = "Markdown";
+
+  static const SAMPLE_MD = """
 # Markdown Example
 Markdown allows you to easily include formatted text, images, and even formatted
 Dart code in your app.
@@ -129,80 +208,5 @@ line 2
 
 
 line 3
-""",
-  });
-
-  @override
-  List<PNode> propertyNodes(BuildContext context, SNode? parentSNode) => [
-    FlutterDocPNode(
-      buttonLabel: 'Markdown',
-      webLink: 'https://pub.dev/packages/flutter_markdown',
-      snode: this,
-      name: 'fyi',
-    ),
-    FlutterDocPNode(
-      buttonLabel: 'Markdown Editor Plus',
-      webLink: 'https://pub.dev/packages/markdown_editor_plus',
-      snode: this,
-      name: 'fyi2',
-    ),
-    MarkdownPNode(
-      snode: this,
-      name: 'data',
-      stringValue: data,
-      onStringChange: (newValue) {
-        refreshWithUpdate(context, () => data = newValue ?? '');
-      },
-      calloutButtonSize: const Size(280, 3000),
-      calloutWidth: fco.scrW * .8,
-      calloutHeight: fco.scrH * .8,
-    ),
-  ];
-
-  @override
-  Widget buildFlutterWidget(BuildContext context, SNode? parentNode) {
-    try {
-      setParent(parentNode); // propagating parents down from root
-      //ScrollControllerName? scName = EditablePage.name(context);
-      //possiblyHighlightSelectedNode(scName);
-      return MarkdownWidget(
-        key: createNodeWidgetGK(),
-        data: data,
-        config: MarkdownConfig(
-          configs: [
-            LinkConfig(
-              // style: TextStyle(
-              //   color: Colors.red,
-              //   decoration: TextDecoration.underline,
-              // ),
-              onTap: (href) async {
-                try {
-                  Uri url = Uri.parse(href);
-                  if (!await launchUrl(url)) {
-                    throw Exception('Could not launch $href');
-                  }
-                } catch (e) {
-                  fco.logger.d('Following exception ignored:');
-                  fco.logger.e('', error: e);
-                }
-              },
-            ),
-          ],
-        ),
-      );
-    } catch (e) {
-      return Error(
-        key: createNodeWidgetGK(),
-        FLUTTER_TYPE,
-        color: Colors.red,
-        size: 16,
-        errorMsg: e.toString(),
-      );
-    }
-  }
-
-  @override
-  String toString() => 'Markdown';
-
-  static const String FLUTTER_TYPE = "Markdown";
+""";
 }

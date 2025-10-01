@@ -70,7 +70,18 @@ class UpTo6Colors with UpTo6ColorsMappable {
     return count > 1;
   }
 
-  ColorOrGradient getColorOrGradient({bool isRadial=false}) {
+  bool isEmpty() {
+    int count = 0;
+    if (color1 != null) count++;
+    if (color2 != null) count++;
+    if (color3 != null) count++;
+    if (color4 != null) count++;
+    if (color5 != null) count++;
+    if (color6 != null) count++;
+    return count == 0;
+  }
+
+  ColorOrGradient getColorOrGradient({bool isRadial = false}) {
     ColorOrGradient result;
     if (isAGradient()) {
       result = ColorOrGradient.gradient([
@@ -82,7 +93,7 @@ class UpTo6Colors with UpTo6ColorsMappable {
         if (color6 != null) color6!.flutterValue,
       ], isLinear: !isRadial);
     } else {
-      result = ColorOrGradient.color(color1!.flutterValue,);
+      result = ColorOrGradient.color(color1!.flutterValue);
     }
     return result;
   }

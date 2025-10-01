@@ -103,6 +103,9 @@ class ContainerStylePNode /*Group*/ extends PNode /*Group*/ {
               colors: containerStyleProperties.fillColors,
               onColorChange: (newValues) {
                 containerStyleProperties.fillColors = newValues;
+                if (newValues != null && !newValues.isEmpty()) {
+                  containerStyleProperties.decorationShapeEnum ??= DecorationShapeEnum.rectangle;
+                }
                 onGroupChange.call(containerStyleProperties, true);
               }),
           if (containerStyleProperties.fillColors?.isAGradient() ?? false)

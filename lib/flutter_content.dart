@@ -21,6 +21,7 @@ import 'package:flutter_content/src/snippet/pnodes/groups/text_style_properties.
 // import 'package:flutter_content/src/snippet/pnodes/groups/text_style_properties.dart';
 import 'package:flutter_content/src/snippet/snodes/center_node.dart';
 import 'package:flutter_content/src/snippet/snodes/text_node.dart';
+// import 'package:flutter_content/src/snippet/snodes/quill_text_node.dart';
 import 'package:flutter_content/src/snippet/snodes/widget/fs_folder_node.dart';
 import 'package:flutter_content/src/text_styles/button_style_search_anchor.dart';
 import 'package:flutter_content/src/text_styles/container_style_search_anchor.dart';
@@ -190,6 +191,7 @@ export 'src/snippet/snodes/tabbar_node.dart';
 export 'src/snippet/snodes/tabbarview_node.dart';
 export 'src/snippet/snodes/text_button_node.dart';
 export 'src/snippet/snodes/text_node.dart';
+export 'src/snippet/snodes/quill_text_node.dart';
 export 'src/snippet/snodes/textspan_node.dart';
 export 'src/snippet/snodes/title_snippet_root_node.dart';
 export 'src/snippet/snodes/uml_image_node.dart';
@@ -427,13 +429,13 @@ class FlutterContentMixins
   SnippetBeingEdited? get snippetBeingEdited =>
       capiBloc.state.snippetBeingEdited;
 
+  bool get aNodeIsSelected => snippetBeingEdited?.selectedNode != null;
+
   bool get inSelectWidgetMode => capiBloc.state.inSelectWidgetMode;
 
   SNode? get selectedNode => snippetBeingEdited?.selectedNode;
 
   bool get showProperties => snippetBeingEdited?.showProperties ?? false;
-
-  bool get aNodeIsSelected => snippetBeingEdited?.selectedNode != null;
 
   Future<void> ensureContentSnippetPresent(String contentCId) async =>
       SnippetInfoModel.cachedSnippetInfo(contentCId) ??
@@ -738,4 +740,40 @@ class FlutterContentMixins
     _targetGK[targetId] = gk;
     return gk;
   }
+
+    // stolen from quill, because not exported
+  Color hexToColor(String? hexString) {
+    if (hexString == null) {
+      return Colors.black;
+    }
+    final hexRegex = RegExp(r'([0-9A-Fa-f]{3}|[0-9A-Fa-f]{6})$');
+
+    hexString = hexString.replaceAll('#', '');
+    if (!hexRegex.hasMatch(hexString)) {
+      return Colors.black;
+    }
+
+    final buffer = StringBuffer();
+    if (hexString.length == 6 || hexString.length == 7) buffer.write('ff');
+    buffer.write(hexString);
+    return Color(int.tryParse(buffer.toString(), radix: 16) ?? 0xFF000000);
+  }
+
+  // stolen from quill, because not exported
+  // Without the hash sign (`#`).
+  String colorToHex(Color color) {
+    int floatToInt8(double x) => (x * 255.0).round() & 0xff;
+
+    final alpha = floatToInt8(color.a);
+    final red = floatToInt8(color.r);
+    final green = floatToInt8(color.g);
+    final blue = floatToInt8(color.b);
+
+    return '${alpha.toRadixString(16).padLeft(2, '0')}'
+        '${red.toRadixString(16).padLeft(2, '0')}'
+        '${green.toRadixString(16).padLeft(2, '0')}'
+        '${blue.toRadixString(16).padLeft(2, '0')}'
+        .toUpperCase();
+  }
+
 }

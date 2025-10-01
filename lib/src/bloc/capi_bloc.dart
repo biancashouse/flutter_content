@@ -10,6 +10,8 @@ import 'package:flutter_content/src/snippet/pnodes/enums/enum_main_axis_size.dar
 import 'package:flutter_content/src/snippet/pnodes/groups/button_style_properties.dart';
 import 'package:flutter_content/src/snippet/snodes/algc_node.dart';
 import 'package:flutter_content/src/snippet/snodes/fs_image_node.dart';
+import 'package:flutter_content/src/snippet/snodes/quill_text_node.dart';
+import 'package:flutter_content/src/snippet/snodes/tab_node.dart';
 
 class CAPIBloC extends Bloc<CAPIEvent, CAPIState> {
   // late SnippetUndoRedoStack _ur;
@@ -272,12 +274,18 @@ class CAPIBloC extends Bloc<CAPIEvent, CAPIState> {
   }
 
   /// copy snippet json to clipboard
-  Future<void> _copySnippetJsonToClipboard(CopySnippetJsonToClipboard event, emit) async {
+  Future<void> _copySnippetJsonToClipboard(
+    CopySnippetJsonToClipboard event,
+    emit,
+  ) async {
     await FlutterClipboard.copy(event.rootNode.toJson());
   }
 
   /// paste clipboard, or supplied json String to form a snippet
-  Future<void> _replaceSnippetFromJson(ReplaceSnippetFromJson event, emit) async {
+  Future<void> _replaceSnippetFromJson(
+    ReplaceSnippetFromJson event,
+    emit,
+  ) async {
     SnippetRootNode? rootNode;
     if (event.snippetJson == null) {
       var snippetJson = await FlutterClipboard.paste();
@@ -772,6 +780,7 @@ class CAPIBloC extends Bloc<CAPIEvent, CAPIState> {
         left: 0,
         child: childNode,
       ),
+      const (QuillTextNode) => QuillTextNode(),
       const (RichTextNode) => RichTextNode(
         text: TextSpanNode(
           text: 'rich',
@@ -920,6 +929,7 @@ class CAPIBloC extends Bloc<CAPIEvent, CAPIState> {
       // const (TargetButtonNode) =>
       //   TargetButtonNode(name: 'no name!', child: childNode),
       const (TargetsWrapperNode) => TargetsWrapperNode(child: childNode),
+      const (TabNode) => TabNode(text: 'new tab'),
       const (TabBarNode) => TabBarNode(
         name: uniqueTabBarName,
         labelTSPropGroup: TextStyleProperties(),
@@ -1004,9 +1014,10 @@ class CAPIBloC extends Bloc<CAPIEvent, CAPIState> {
         final Node? pollParent = w.getParent();
         w = ContainerNode(
           csPropGroup: ContainerStyleProperties(
-            decorationShapeEnum:
-                DecorationShapeEnum.rectangle_dotted,
-            borderColors: UpTo6Colors(color1: ColorModel.fromColor(Colors.black)),
+            decorationShapeEnum: DecorationShapeEnum.rectangle_dotted,
+            borderColors: UpTo6Colors(
+              color1: ColorModel.fromColor(Colors.black),
+            ),
             borderThickness: 4,
           ),
           child: w,

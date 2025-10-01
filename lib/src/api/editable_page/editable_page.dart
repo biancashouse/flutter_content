@@ -2,10 +2,13 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_callouts/flutter_callouts.dart';
 import 'package:flutter_content/flutter_content.dart';
 import 'package:flutter_content/src/api/editable_page/snippet_properties_tree_view.dart';
+import 'package:flutter_content/src/api/editable_page/snippet_tree_view.dart';
 import 'package:flutter_content/src/api/editable_page/versions_menu_anchor.dart';
-import 'package:flutter_content/src/api/editable_page/snippet_tree_pane.dart';
+
+// import 'package:flutter_content/src/api/editable_page/snippet_tree_pane.dart';
 import 'package:flutter_content/src/bloc/snippet_being_edited.dart';
 import 'package:go_router/go_router.dart';
 import 'package:multi_split_view/multi_split_view.dart';
@@ -29,11 +32,11 @@ class EditablePage extends StatefulWidget {
       ? context.findAncestorStateOfType<EditablePageState>()
       : null;
 
-  static NamedScrollController? maybeScrollController(context) =>
+  static NamedScrollController? maybeScrollController(BuildContext context) =>
       of(context)?.namedSC;
 
-  static String? maybeScrollControllerName(context) =>
-      of(context)?.namedSC?.name;
+  static String? maybeScrollControllerName(BuildContext context) =>
+      maybeScrollController(context)?.name;
 
   // static ScrollController? ancestorSc(BuildContext context, Axis? axis) {
   //   ScrollableState? scrollableState = Scrollable.maybeOf(context, axis: axis);
@@ -46,7 +49,9 @@ class EditablePage extends StatefulWidget {
 
 class EditablePageState extends State<EditablePage> {
   late MultiSplitViewController msvC;
-  late NamedScrollController? namedSC;
+  late NamedScrollController namedSC;
+  final kDividerThickness = 20.0;
+  double sNodeTreeAreaMaxWidth = 0; // LayoutBuilder will update it
 
   SnippetBeingEdited? get snippetBeingEdited => fco.snippetBeingEdited;
 
@@ -82,57 +87,55 @@ class EditablePageState extends State<EditablePage> {
   @override
   void dispose() {
     if (!mounted) return;
-    namedSC?.dispose(); // Dispose of the ScrollController
+    namedSC.dispose(); // Dispose of the ScrollController
     super.dispose();
   }
 
-  void refreshSelectedNodeWidgetBorderOverlay(String? scName) {
-    if (fco.selectedNode != null) {
-      fco.dismiss('${fco.selectedNode!.nodeWidgetGK.hashCode}-pink-overlay');
-      fco.afterMsDelayDo(500, () {
-        Rect? borderRect = fco.selectedNode!.calcBborderRect();
-        if (borderRect != null) {
-          fco.selectedNode!.showNonTappableNodeWidgetOverlay(
-            selected: true,
-            borderRect: borderRect,
-            scName: scName,
-          );
-        } else {
-          print('borderRect?');
-        }
-      });
-    }
-  }
-
-  void removeAllNodeWidgetOverlays() {
-    // fco.logger.i('removeAllTappableNodeWidgetOverlays - start');
-    for (GlobalKey nodeWidgetGK in fco.nodesByGK.keys) {
-      fco.dismiss('${nodeWidgetGK.hashCode}-pink-overlay');
-    }
-    // fco.logger.i('removeAllTappableNodeWidgetOverlays - ended');
-    // fco.showingNodeBoundaryOverlays = false;
-  }
+  // void refreshSelectedNodeWidgetBorderOverlay(String? scName) {
+  //   if (fco.selectedNode != null) {
+  //     fco.dismiss('${fco.selectedNode!.nodeWidgetGK.hashCode}-pink-overlay');
+  //     fco.afterMsDelayDo(500, () {
+  //       showUnselectedNonTappableNodeWidgetOverlays();
+  //       Rect? borderRect = fco.selectedNode!.calcBborderRect();
+  //       if (borderRect != null) {
+  //         fco.selectedNode!.showNonTappableNodeWidgetOverlay(
+  //           // selected: true,
+  //           borderRect: borderRect,
+  //           scName: scName,
+  //         );
+  //       } else {
+  //         print('borderRect?');
+  //       }
+  //     });
+  //   }
+  // }
 
   @override
   Widget build(BuildContext context) {
     print('EditablePageState ${widget.routePath}');
     return BlocConsumer<CAPIBloC, CAPIState>(
-      listenWhen: (context, state) =>
-          fco.snippetBeingEdited?.aNodeIsSelected ?? false,
+      listenWhen: (context, state) => fco.aNodeIsSelected,
       listener: (context, state) {
-        if (state.snippetBeingEdited?.aNodeIsSelected ?? false) {
+        // update selection widget overlay
+        // skip if currently editing a markdown, quill, or uml
+        if (fco.anyPresent(['quill-te', 'uml-te', 'markdown-te'])) return;
+        fco.afterMsDelayDo(kDebugMode ? 1000 : 300, () {
           final selectedNode = state.snippetBeingEdited!.selectedNode;
-          Future.delayed(Duration(milliseconds: kDebugMode ? 1000 : 300), () {
-            Rect? borderRect = selectedNode!.calcBborderRect();
+          if (mounted) {
+            Rect? borderRect = selectedNode!.calcBorderRect();
             if (borderRect != null) {
-              selectedNode.showNonTappableNodeWidgetOverlay(
-                selected: true,
+              selectedNode.showSelectedNonTappableNodeWidgetOverlay(
+                // selected: true,
                 borderRect: borderRect,
-                scName: namedSC!.name,
+                scName: namedSC.name,
               );
+              // force an extra build to ensure sNodeTreeAreaMaxWidth set
+              fco.afterNextBuildDo(() {
+                setState(() {});
+              });
             }
-          });
-        }
+          }
+        });
       },
       buildWhen: (previous, current) {
         // bool  nodeChanged = current.snippetBeingEdited != previous.snippetBeingEdited;
@@ -157,7 +160,17 @@ class EditablePageState extends State<EditablePage> {
     List<Area> areas = [];
     if (showSNodeTree()) {
       // double flex = (fco.selectedNode is MarkdownNode) ? 0 : 1;
-      areas.add(Area(builder: (ctx, area) => _snodeTreeArea(), flex: 1));
+      areas.add(
+        Area(
+          builder: (ctx, area) => LayoutBuilder(
+            builder: (context, BoxConstraints constraints) {
+              sNodeTreeAreaMaxWidth = constraints.maxWidth;
+              return _snodeTreeArea();
+            },
+          ),
+          flex: 1,
+        ),
+      );
     }
     areas.add(
       Area(
@@ -176,7 +189,7 @@ class EditablePageState extends State<EditablePage> {
     // 2 layouts: 1) property tree on right of content area, 2) hidden snode tree, single property above content area
     var msvt = MultiSplitViewTheme(
       data: MultiSplitViewThemeData(
-        dividerThickness: 24,
+        dividerThickness: kDividerThickness,
         dividerPainter: DividerPainters.grooved1(
           backgroundColor: Colors.purple,
           color: Colors.indigo[100]!,
@@ -188,15 +201,15 @@ class EditablePageState extends State<EditablePage> {
         axis: Axis.horizontal,
         initialAreas: areas,
         onDividerDragStart: (_) {
-          removeAllNodeWidgetOverlays();
+          dismissAllNodeWidgetOverlays();
         },
         onDividerDragEnd: (_) {
           final rootNode = fco.selectedNode?.rootNodeOfSnippet();
           if (rootNode != null) {
             assert(rootNode.isValid());
             fco.saveNewVersion(snippet: rootNode);
-            refreshSelectedNodeWidgetBorderOverlay(rootNode.name);
-            showNodeWidgetOverlaysNeedingInterception();
+            // refreshSelectedNodeWidgetBorderOverlay(rootNode.name);
+            showNodeWidgetOverlays();
           }
         },
       ),
@@ -218,12 +231,12 @@ class EditablePageState extends State<EditablePage> {
                 : Colors.transparent,
             child: ClipRect(
               child: SizedBox(
-                width: 330.0, // Ensures the child is laid out for the full width
+                width: 330.0,
+                // Ensures the child is laid out for the full width
                 child: _propertiesPanel(),
               ),
             ),
-          )
-
+          ),
         ],
       ),
     );
@@ -251,9 +264,9 @@ class EditablePageState extends State<EditablePage> {
             // EditablePage.removeAllTappableNodeWidgetOverlays();
             fco.dismissAll();
             // show a barrier for any parts of page not being edited
-            showTappableNodeWidgetOverlays();
+            showNodeWidgetOverlays();
             // protect iFrames and PlatformViews with an overlay having PointerInterceptor
-            showNodeWidgetOverlaysNeedingInterception();
+            // showNodeWidgetOverlays();
             // fco.afterNextBuildDo(() {});
           }
         });
@@ -266,7 +279,7 @@ class EditablePageState extends State<EditablePage> {
             fco.capiBloc.add(CAPIEvent.exitSelectWidgetMode());
             fco.afterNextBuildDo(() {
               fco.afterMsDelayDo(1000, () {
-                showNodeWidgetOverlaysNeedingInterception();
+                showNodeWidgetOverlays();
               });
             });
           },
@@ -295,14 +308,29 @@ class EditablePageState extends State<EditablePage> {
                     //   return widget.child;
                     // }),
                   ),
-                if (!aSnippetIsBeingEdited)
-                Align(
-                  alignment: Alignment.topRight,
-                  child: Padding(
-                    padding:  EdgeInsets.only(right:fco.canEditContent() ?  68: 8.0),
-                    child: fco.NavigationDD(pencilIconColor: Colors.red),
+                if (aSnippetIsBeingEdited &&
+                    fco.selectedNode != null &&
+                    mounted)
+                  ModalBarrierWithCutout(
+                    cutoutRect:
+                        (fco.selectedNode?.calcBorderRect() ?? Rect.zero)
+                            .translate(
+                              -sNodeTreeAreaMaxWidth - kDividerThickness,
+                              0,
+                            ),
+                    color: Colors.grey,
+                    opacity: .75,
                   ),
-                ),
+                if (!aSnippetIsBeingEdited)
+                  Align(
+                    alignment: Alignment.topRight,
+                    child: Padding(
+                      padding: EdgeInsets.only(
+                        right: fco.canEditContent() ? 68 : 8.0,
+                      ),
+                      child: fco.NavigationDD(pencilIconColor: Colors.red),
+                    ),
+                  ),
                 // Builder(
                 //   builder: (context) {
                 //     Widget? cutout;
@@ -344,16 +372,17 @@ class EditablePageState extends State<EditablePage> {
         //snippetBeingEdited?.treeC.rebuild();
         return GestureDetector(
           onTap: () {
+            fco.dismissAll();
             // if showing markdown editor callout, just dismiss it, but don't remove node selection
-            if (fco.anyPresent(['md-te'])) {
-              fco.dismiss('md-te');
-              return;
-            }
+            // if (fco.anyPresent(['md-te'])) {
+            //   fco.dismiss('md-te');
+            //   return;
+            // }
             fco.capiBloc.add(CAPIEvent.clearNodeSelection());
-            removeAllNodeWidgetOverlays();
-            fco.afterMsDelayDo(1000, () {
-              showNodeWidgetOverlaysNeedingInterception();
-            });
+            // removeAllNodeWidgetOverlays();
+            // fco.afterMsDelayDo(1000, () {
+            //   showNodeWidgetOverlays();
+            // });
             fco.hide("floating-clipboard");
           },
           child: Column(
@@ -421,7 +450,7 @@ class EditablePageState extends State<EditablePage> {
                             )) {
                               fco.dismissAll();
                             } else {
-                              removeAllNodeWidgetOverlays();
+                              dismissAllNodeWidgetOverlays();
                               // fco.dismissAll(exceptFeatures: [CalloutConfigToolbar.CID]);
                               fco.unhide(CalloutConfigToolbar.CID);
                               fco.appInfo.hideClipboard();
@@ -441,8 +470,31 @@ class EditablePageState extends State<EditablePage> {
                 ),
               ),
               Expanded(
-                // child: Offstage()
-                child: SnippetTreePane(snippetInfo, widget.routePath),
+                child: Material(
+                  color: Colors.purple.shade200,
+                  child: Padding(
+                    padding: const EdgeInsets.all(10),
+                    child: InteractiveViewer(
+                      transformationController: fco.snippetTreeTC,
+                      // trackpadScrollCausesScale: true,
+                      alignment: Alignment.topLeft,
+                      constrained: false,
+                      // onInteractionStart: (_) => snippetBloc.add(const CAPIEvent.clearNodeSelection()),
+                      // onInteractionEnd: (_) => snippetBloc.add(const CAPIEvent.clearNodeSelection()),
+                      child: SizedBox(
+                        width: 700,
+                        height: 1200,
+                        child: Builder(
+                          builder: (context) {
+                            // fco.logger.i('SnippetTreeView...');
+                            return SnippetTreeView(scName: namedSC.name);
+                          },
+                        ),
+                      ),
+                    ),
+                  ),
+                ),
+                // SnippetTreePane(snippetInfo, widget.routePath),
               ),
             ],
           ),
@@ -467,19 +519,6 @@ class EditablePageState extends State<EditablePage> {
               controller: selectedNode!.propertiesPaneSC(),
               shrinkWrap: true,
               children: [
-                // icon buttons
-                // ExpansionTile(
-                //   title: fco.coloredText('widget actions',
-                //       color: Colors.white54,
-                //       fontSize: 14),
-                //   backgroundColor: Colors.black,
-                //   collapsedBackgroundColor: Colors.black,
-                //   onExpansionChanged: (bool isExpanded) =>
-                //       fco.showingNodeButtons = isExpanded,
-                //   initiallyExpanded:
-                //       fco.showingNodeButtons,
-                //   children: [nodeButtons(context, scName)],
-                // ),
                 // NODE PROPERTIES TREE
                 Material(
                   color: Colors.blue[50],
@@ -503,92 +542,112 @@ class EditablePageState extends State<EditablePage> {
   }
 
   // only called with MaterialAppWrapper context
-  void showTappableNodeWidgetOverlays() {
-    // fco.logger.i('showAllNodeWidgetOverlays...');
-    // if currently configuring a target, only show for the current target's snippet
-    // bool configuringATarget = fco.anyPresent([CalloutConfigToolbar.CALLOUT_CONFIG_TOOLBAR]);
-
-    void traverseAndMeasure(BuildContext el, bool overlayWithABarrier) {
-      // fco.logger.i('traverseAndMeasure(${el.toString()})');
-
+  void showNodeWidgetOverlays() {
+    return;
+    void traverseAndMeasure(BuildContext el) {
       if ((fco.nodesByGK.containsKey(el.widget.key))) {
-        // || (el.widget.key != null && gkSTreeNodeMap[el.widget.key]?.rootNodeOfSnippet() == FCO.targetSnippetBeingConfigured)) {
         GlobalKey gk = el.widget.key as GlobalKey;
         SNode? node = fco.nodesByGK[gk];
-        // fco.logger.i("traverseAndMeasure: ${node.toString()}");
-        if (node != null && node.canShowTappableNodeWidgetOverlay) {
-          // if (node.rootNodeOfSnippet() == FCO.targetSnippetBeingConfigured) {
-          // fco.logger.i("targetSnippetBeingConfigured: ${node.toString()}");
-          // }
-          // fco.logger.i('Rect? r = gk.globalPaintBounds...');
-          // measure node
+        if (node != null) {
           Rect? r = gk.globalPaintBounds(
             skipWidthConstraintWarning: true,
             skipHeightConstraintWarning: true,
           );
-          // if (node is PlaceholderNode) {
-          //   fco.logger.i('PlaceholderNode');
-          // }
           if (r != null) {
-            // node.measuredRect = Rect.fromLTWH(r.left, r.top, r.width, r.height);
             r = fco.restrictRectToScreen(r);
-            // fco.logger.i("========>  r restricted to ${r.toString()}");
-            // fco.logger.i('${node.runtimeType.toString()} - size: (${r != null ? r.size.toString() : ""})');
-            // node.setParent(parent);
-            // parent = node;
-            // fco.logger.i('_showNodeWidgetOverlay...');
-            // removeAllNodeWidgetOverlays();
-            // pass possible ancestor scrollcontroller to overlay
-            node.showTappableNodeWidgetOverlay(
-              context,
-              whiteBarrier: overlayWithABarrier,
-              scName: widget.routePath,
-            );
+            if (fco.inSelectWidgetMode &&
+                    node.canShowTappableNodeWidgetOverlay ||
+                node.isHtmlElementViewOrPlatformView()) {
+              node.showTappableNodeWidgetOverlay(
+                context,
+                // whiteBarrier: overlayWithABarrier,
+                scName: widget.routePath,
+              );
+            }
           }
         }
       }
+
       el.visitChildElements((innerEl) {
-        traverseAndMeasure(innerEl, false);
+        traverseAndMeasure(innerEl);
       });
     }
 
+    dismissAllNodeWidgetOverlays();
+
     var pageContext = context;
-    traverseAndMeasure(pageContext, true);
+    traverseAndMeasure(pageContext);
     // fco.showingNodeBoundaryOverlays = true;
     // fco.logger.i('traverseAndMeasure(context) finished.');
   }
+
+  void dismissAllNodeWidgetOverlays() {
+    for (GlobalKey nodeWidgetGK in fco.nodesByGK.keys) {
+      fco.dismiss('${nodeWidgetGK.hashCode}-pink-overlay');
+    }
+  }
+
+  // when a node is selected, whiten out ALL others
+  // void showUnselectedNonTappableNodeWidgetOverlays() {
+  //   void traverseAndMeasure(BuildContext el) {
+  //     if ((fco.nodesByGK.containsKey(el.widget.key))) {
+  //       GlobalKey gk = el.widget.key as GlobalKey;
+  //       SNode? node = fco.nodesByGK[gk];
+  //       if (node != null &&
+  //           fco.selectedNode != null &&
+  //           fco.selectedNode != node) {
+  //         Rect? r = gk.globalPaintBounds(
+  //           skipWidthConstraintWarning: true,
+  //           skipHeightConstraintWarning: true,
+  //         );
+  //         if (r != null) {
+  //           r = fco.restrictRectToScreen(r);
+  //           node.showNonTappableNodeWidgetOverlay(borderRect: r);
+  //         }
+  //       }
+  //     }
+  //     el.visitChildElements((innerEl) {
+  //       traverseAndMeasure(innerEl);
+  //     });
+  //   }
+  //
+  //   var pageContext = context;
+  //   traverseAndMeasure(pageContext);
+  //   // fco.showingNodeBoundaryOverlays = true;
+  //   // fco.logger.i('traverseAndMeasure(context) finished.');
+  // }
 
   // only called with MaterialAppWrapper context
-  void showNodeWidgetOverlaysNeedingInterception() {
-    void traverseAndMeasure(BuildContext el, bool overlayWithABarrier) {
-      if ((fco.nodesByGK.containsKey(el.widget.key))) {
-        GlobalKey gk = el.widget.key as GlobalKey;
-        SNode? node = fco.nodesByGK[gk];
-        if (node != null && node.isHtmlElementViewOrPlatformView()) {
-          Rect? r = gk.globalPaintBounds(
-            skipWidthConstraintWarning: true,
-            skipHeightConstraintWarning: true,
-          );
-          if (r != null) {
-            r = fco.restrictRectToScreen(r);
-            node.showNonTappableNodeWidgetOverlay(
-              selected: false,
-              borderRect: r,
-              scName: widget.routePath,
-            );
-          }
-        }
-      }
-      el.visitChildElements((innerEl) {
-        traverseAndMeasure(innerEl, false);
-      });
-    }
-
-    var pageContext = context;
-    traverseAndMeasure(pageContext, true);
-    // fco.showingNodeBoundaryOverlays = true;
-    // fco.logger.i('traverseAndMeasure(context) finished.');
-  }
+  // void showNodeWidgetOverlaysNeedingInterception() {
+  //   void traverseAndMeasure(BuildContext el, bool overlayWithABarrier) {
+  //     if ((fco.nodesByGK.containsKey(el.widget.key))) {
+  //       GlobalKey gk = el.widget.key as GlobalKey;
+  //       SNode? node = fco.nodesByGK[gk];
+  //       if (node != null && node.isHtmlElementViewOrPlatformView()) {
+  //         Rect? r = gk.globalPaintBounds(
+  //           skipWidthConstraintWarning: true,
+  //           skipHeightConstraintWarning: true,
+  //         );
+  //         if (r != null) {
+  //           r = fco.restrictRectToScreen(r);
+  //           node.showNonTappableNodeWidgetOverlay(
+  //             // selected: false,
+  //             borderRect: r,
+  //             scName: widget.routePath,
+  //           );
+  //         }
+  //       }
+  //     }
+  //     el.visitChildElements((innerEl) {
+  //       traverseAndMeasure(innerEl, false);
+  //     });
+  //   }
+  //
+  //   var pageContext = context;
+  //   traverseAndMeasure(pageContext, true);
+  //   // fco.showingNodeBoundaryOverlays = true;
+  //   // fco.logger.i('traverseAndMeasure(context) finished.');
+  // }
 
   static final String cid_EditorPassword = "editor-password";
 
@@ -746,7 +805,7 @@ class EditablePageState extends State<EditablePage> {
                   });
                 } else if (fco.canEditContent() &&
                     !fco.appInfo.snippetNames.contains(pageName)) {
-                  removeAllNodeWidgetOverlays();
+                  dismissAllNodeWidgetOverlays();
                   // fco.dismiss('exit-editMode');
                   // bool userCanEdit = canEditContent.isTrue;
                   final snippetName = pageName;
@@ -821,7 +880,7 @@ class EditablePageState extends State<EditablePage> {
       // SNode.unhighlightSelectedNode();
       // var currPageState = fco.currentPageState;
       // currPageState?.unhideFAB();
-      removeAllNodeWidgetOverlays();
+      dismissAllNodeWidgetOverlays();
       fco.dismiss(CalloutConfigToolbar.CID);
       fco.appInfo.hideClipboard();
       // exitEditModeF();
@@ -850,5 +909,49 @@ class EditablePageState extends State<EditablePage> {
       }
       return;
     });
+  }
+}
+
+class SelectionCutoutPainter extends CustomPainter {
+  final Rect cutoutRect;
+
+  SelectionCutoutPainter({required this.cutoutRect});
+
+  @override
+  void paint(Canvas canvas, Size size) {
+    // 1. Create the background paint
+    final backgroundPaint = Paint()
+      ..color = Colors.black
+          .withValues(alpha: 0.6) // Semi-transparent black
+      ..style = PaintingStyle.fill;
+
+    // 2. Create the cutout path
+    final cutoutPath = Path()..addRect(cutoutRect);
+
+    // 3. Create the full canvas path
+    final fullCanvasPath = Path()..addRect(Offset.zero & size);
+
+    // 4. Combine the paths using difference
+    final combinedPath = Path.combine(
+      PathOperation.difference,
+      fullCanvasPath,
+      cutoutPath,
+    );
+
+    // 5. Draw the combined path
+    canvas.drawPath(combinedPath, backgroundPaint);
+    canvas.drawRect(
+      cutoutRect,
+      Paint()
+        ..color = Colors
+            .transparent // Semi-transparent black
+        ..style = PaintingStyle.fill,
+    );
+  }
+
+  @override
+  bool shouldRepaint(covariant CustomPainter oldDelegate) {
+    return oldDelegate is SelectionCutoutPainter &&
+        oldDelegate.cutoutRect != cutoutRect;
   }
 }

@@ -75,6 +75,7 @@ class ContainerStyleProperties with ContainerStylePropertiesMappable {
     // handle name change
     if (fillColorValues != null) {
       fillColors = fillColorValues;
+      decorationShapeEnum ?? DecorationShape.rectangle();
     }
     if (borderColorValues != null) {
       borderColors = borderColorValues;

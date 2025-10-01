@@ -64,11 +64,11 @@ class TabBarNode extends MC with TabBarNodeMappable {
     textStyleName = textStyleName != null ? ': $textStyleName' : '';
     return [
       FlutterDocPNode(
-          buttonLabel: 'TabBar',
-          webLink:
-          'https://api.flutter.dev/flutter/material/TabBar-class.html',
-          snode: this,
-          name: 'fyi'),
+        buttonLabel: 'TabBar',
+        webLink: 'https://api.flutter.dev/flutter/material/TabBar-class.html',
+        snode: this,
+        name: 'fyi',
+      ),
       StringPNode(
         snode: this,
         name: 'name',
@@ -80,7 +80,7 @@ class TabBarNode extends MC with TabBarNodeMappable {
         calloutWidth: 400,
         numLines: 1,
       ),
-      PNode /*Group*/(
+      PNode /*Group*/ (
         snode: this,
         name: 'colours',
         children: [
@@ -97,22 +97,22 @@ class TabBarNode extends MC with TabBarNodeMappable {
             name: 'selected label Color',
             color: selectedLabelColor,
             onColorChange: (newValue) =>
-                refreshWithUpdate(
-                    context, () => selectedLabelColor = newValue),
+                refreshWithUpdate(context, () => selectedLabelColor = newValue),
             calloutButtonSize: const Size(160, 20),
           ),
           ColorPNode(
             snode: this,
             name: 'unselected label Color',
             color: unselectedLabelColor,
-            onColorChange: (newValue) =>
-                refreshWithUpdate(
-                    context, () => unselectedLabelColor = newValue),
+            onColorChange: (newValue) => refreshWithUpdate(
+              context,
+              () => unselectedLabelColor = newValue,
+            ),
             calloutButtonSize: const Size(180, 20),
           ),
         ],
       ),
-      TextStyleWithoutColorPNode /*Group*/(
+      TextStyleWithoutColorPNode /*Group*/ (
         snode: this,
         name: 'labelStyle',
         textStyleProperties: labelTSPropGroup,
@@ -148,10 +148,9 @@ class TabBarNode extends MC with TabBarNodeMappable {
         snode: this,
         name: 'indicatorWeight',
         decimalValue: indicatorWeight,
-        onDoubleChange: (newValue) =>
-            refreshWithUpdate(context, () {
-              if (newValue != indicatorWeight) indicatorWeight = newValue;
-            }),
+        onDoubleChange: (newValue) => refreshWithUpdate(context, () {
+          if (newValue != indicatorWeight) indicatorWeight = newValue;
+        }),
         calloutButtonSize: const Size(130, 20),
       ),
     ];
@@ -193,7 +192,7 @@ class TabBarNode extends MC with TabBarNodeMappable {
   }
 
   @override
-  Widget buildFlutterWidget(BuildContext context, SNode? parentNode,) {
+  Widget buildFlutterWidget(BuildContext context, SNode? parentNode) {
     try {
       setParent(parentNode);
       //ScrollControllerName? scName = EditablePage.name(context);
@@ -205,13 +204,15 @@ class TabBarNode extends MC with TabBarNodeMappable {
       _createTabController(spState, children.length);
       List<Widget> tabs = [];
       for (SNode node in children) {
-        tabs.add(Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 20),
-          // if just text, simply render a Tab with text, otherwise render a Tab with a child widget
-          child: node is TextNode
-              ? Tab(text: (node).text)
-              : Tab(child: node.buildFlutterWidget(context, parentNode)),
-        ));
+        tabs.add(
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 20),
+            // if just text, simply render a Tab with text, otherwise render a Tab with a child widget
+            child: node is TextNode
+                ? Tab(key: node.createNodeWidgetGK(), text: (node).text)
+                : Tab(child: node.buildFlutterWidget(context, parentNode)),
+          ),
+        );
       }
       final tabBar = TabBar(
         key: createNodeWidgetGK(),
@@ -238,11 +239,12 @@ class TabBarNode extends MC with TabBarNodeMappable {
       );
     } catch (e) {
       return Error(
-          key: createNodeWidgetGK(),
-          FLUTTER_TYPE,
-          color: Colors.red,
-          size: 16,
-          errorMsg: e.toString());
+        key: createNodeWidgetGK(),
+        FLUTTER_TYPE,
+        color: Colors.red,
+        size: 16,
+        errorMsg: e.toString(),
+      );
     }
   }
 

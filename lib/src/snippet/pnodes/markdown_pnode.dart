@@ -26,19 +26,17 @@ class MarkdownPNode extends PNode {
 
   @override
   Widget toPropertyNodeContents(BuildContext context) {
-    ScrollControllerName? scName = EditablePage.maybeScrollControllerName(context);
+    // ScrollControllerName? scName = EditablePage.maybeScrollControllerName(context);
     // fco.logger.i('toPropertyNodeContents');
     return PropertyButtonMarkdown(
       originalMarkdown: stringValue ?? '',
       label: super.name,
       // textInputType: const TextInputType.numberWithOptions(decimal: true),
       calloutButtonSize: calloutButtonSize,
-      propertyBtnGK: GlobalKey(debugLabel: 'markdown'),
       onChangeF: (s) {
         fco.dismiss('te');
         onStringChange(stringValue = s);
       },
-      scName: scName,
     );
   }
 }

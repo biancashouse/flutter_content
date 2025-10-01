@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_content/flutter_content.dart';
 import 'package:flutter_content/src/api/snippet_builder/replace_snippet_with_json_callout.dart';
+import 'package:flutter_content/src/snippet/pnodes/editors/property_callout_button_UML.dart';
+import 'package:flutter_content/src/snippet/pnodes/editors/property_callout_button_markdown.dart';
+import 'package:flutter_content/src/snippet/pnodes/editors/property_callout_button_quill_text.dart';
 
 import 'fancy_tree/tree_controller.dart';
 
@@ -71,6 +74,78 @@ class SNodeWidget extends StatelessWidget {
               // if (entry.node.logoSrc() != null) SizedBox(width: entry.node.logoSrc()!.contains('pub.dev') ? 6 : 0),
               _name(context),
               Gap(8),
+              if (entry.node is QuillTextNode)
+                InkWell(
+                  onTap: () {
+                    _tappedNode(context);
+                    fco.afterNextBuildDo(() {
+                      var quillTextNode = entry.node as QuillTextNode;
+                      PropertyButtonQuillText.showQuillEditor(
+                        quillTextNode.deltaJsonString,
+                        (String? newValue) {
+                          quillTextNode.refreshWithUpdate(
+                            context,
+                            () =>
+                                quillTextNode.deltaJsonString = newValue ?? '',
+                          );
+                        },
+                        scName,
+                      );
+                    });
+                  },
+                  child: Icon(Icons.edit, size: 20),
+                ),
+              if (entry.node is UMLImageNode)
+                InkWell(
+                  onTap: () {
+                    _tappedNode(context);
+                    fco.afterNextBuildDo(() {
+                      var umlImageNode = entry.node as UMLImageNode;
+                      final teC = TextEditingController();
+                      final originalUMLRecord = (
+                      text: umlImageNode.umlText,
+                      encodedText: umlImageNode.encodedText,
+                      bytes: umlImageNode.cachedPngBytes,
+                      width: umlImageNode.width,
+                      height: umlImageNode.height,
+                      );
+                      // make sure start and end are present for viewing, but they don't get sent to the encoder
+                      teC.text = !(originalUMLRecord.text ?? '').contains('@startuml')
+                          ? "@startuml\n${originalUMLRecord.text ?? ''}\n@enduml"
+                          : originalUMLRecord.text ?? '';
+                      PropertyButtonUML.showUMLEditor(
+                        context,
+                        originalUMLRecord,
+                        teC,
+                            (UMLRecord newValue) {
+                          umlImageNode.refreshWithUpdate(context, () {
+                            umlImageNode.umlText = newValue.text;
+                            umlImageNode.encodedText = newValue.encodedText;
+                            umlImageNode.cachedPngBytes = newValue.bytes;
+                            umlImageNode.width = newValue.width;
+                            umlImageNode.height = newValue.height;
+                          });
+                        },
+                        (newSize) {
+                          umlImageNode.width = newSize.width;
+                          umlImageNode.height = newSize.height;
+                        },
+                      );
+                    });
+                  },
+                  child: Icon(Icons.edit, size: 20),
+                ),
+              if (entry.node is MarkdownNode)
+                InkWell(
+                  onTap: () {
+                    _tappedNode(context);
+                    fco.afterNextBuildDo(() {
+                      var markdownNode = entry.node as MarkdownNode;
+                      // PropertyButtonMarkdown.showMarkdownEditor();
+                    });
+                  },
+                  child: Icon(Icons.edit, size: 20),
+                ),
             ],
           ),
         ),
@@ -198,7 +273,7 @@ class SNodeWidget extends StatelessWidget {
 
       // Rect? borderRect = entry.node.calcBborderRect();
       EditablePageState? eps = EditablePage.of(context);
-      eps?.removeAllNodeWidgetOverlays();
+      eps?.dismissAllNodeWidgetOverlays();
 
       fco.capiBloc.add(
         CAPIEvent.selectNode(
@@ -216,7 +291,7 @@ class SNodeWidget extends StatelessWidget {
         var ctx = rootNode?.child?.nodeWidgetGK?.currentContext;
         if (ctx != null) {
           EditablePageState? eps = EditablePage.of(ctx);
-          eps?.showNodeWidgetOverlaysNeedingInterception();
+          eps?.showNodeWidgetOverlays();
         }
       });
     });
@@ -225,7 +300,7 @@ class SNodeWidget extends StatelessWidget {
   void _longPressedNode(BuildContext context, Offset tapPos, SNode node) {
     // clear sel
     EditablePageState? eps = EditablePage.of(context);
-    eps?.removeAllNodeWidgetOverlays();
+    eps?.dismissAllNodeWidgetOverlays();
     // fco.dismiss(SELECTED_NODE_BORDER_CALLOUT);
     fco.hide("floating-clipboard");
 
@@ -425,7 +500,7 @@ class SNodeWidget extends StatelessWidget {
                     // bool wasShowingAsRoot = selectedNode == snippetBloc.treeC.roots.first;
                     // STreeNode? parentNode = selectedNode.getParent() as STreeNode?;
                     EditablePageState? eps = EditablePage.of(context);
-                    eps?.removeAllNodeWidgetOverlays();
+                    eps?.dismissAllNodeWidgetOverlays();
                     fco.capiBloc.add(const CAPIEvent.deleteNodeTapped());
                     fco.afterNextBuildDo(() async {
                       await Future.delayed(const Duration(milliseconds: 1000));
