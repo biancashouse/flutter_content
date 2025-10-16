@@ -5,18 +5,15 @@ The message format is based on [Keep a Changelog](https://keepachangelog.com/en/
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ## \[Unreleased\]
-add GUEST sign in option for sandpit editing
 
+## 4.0.0 - 2025-10-16
+## added
+add GUEST sign in option for sandpit editing
 ### Fixed
 - fix creation, deletion, and navigating dynamic pages
 - fix dynamic page and navigation
-
-## 4.0.0 - 2025-10-16
 ### Changed
 - breaking changes and fixes
-- major breaking changes and fixes
-- breaking changes and fixes
-- breaking api changes and fixes
 
 ## 3.11.1 - 2025-08-05
 ### Fixed

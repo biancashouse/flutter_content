@@ -113,11 +113,9 @@ class IconButtonNode extends ButtonNode with IconButtonNodeMappable {
       key: gk,
       child: kDebugMode
           ? GestureDetector(
-              onLongPress: f != null
-                  ? () {
-                      f.call(context);
-                    }
-                  : null,
+              onLongPress: () {
+                      f?.call(context);
+                    },
               child: button)
           : button,
     );

@@ -180,7 +180,7 @@ class FireStoreModelRepository implements IModelRepository {
         try {
           final data = versionDoc.data() as Map<String, dynamic>;
           var childMap = data['child'];
-          var scaffoldMap = childMap['appBar'];
+          // var scaffoldMap = childMap['appBar'];
           version = SnippetRootNodeMapper.fromMap(data);
           // cache it
           snippetInfo.cachedVersions[versionId] = version;

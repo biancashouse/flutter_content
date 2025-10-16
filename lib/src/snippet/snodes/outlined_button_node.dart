@@ -61,7 +61,7 @@ class OutlinedButtonNode extends ButtonNode with OutlinedButtonNodeMappable {
               // if feature specified, must be a callout
               // key: cid != null ? fco.setCalloutGk(cid!, GlobalKey()) : null,
               onPressed: ()=>onPressed(context, gk, scName),
-              onLongPress: f != null ? () => f.call(context) : null,
+              onLongPress: () => f?.call(context),
               style: btnStyle,
               child: child?.buildFlutterWidget(context, this),
             ),

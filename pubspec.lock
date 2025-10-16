@@ -697,9 +697,10 @@ packages:
   flutter_callouts:
     dependency: "direct main"
     description:
-      path: "../flutter_callouts"
-      relative: true
-    source: path
+      name: flutter_callouts
+      sha256: c725d89a5dc093fb4bd4424a18b0a2677f69c2514f50befc28df2b2124263ad6
+      url: "https://pub.dev"
+    source: hosted
     version: "10.1.0"
   flutter_colorpicker:
     dependency: transitive
@@ -774,7 +775,7 @@ packages:
     source: hosted
     version: "6.0.0"
   flutter_localizations:
-    dependency: transitive
+    dependency: "direct main"
     description: flutter
     source: sdk
     version: "0.0.0"

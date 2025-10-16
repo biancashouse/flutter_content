@@ -7,23 +7,22 @@ mixin FirebaseStorageMixin {
   Future<void> createImagesInFBStorage(HasImageInFBStorage imageOwner) async {
     // if localStore contains an image with this key
     String? storageKey = imageOwner.storageKey;
-    if (storageKey != null) {
-      Uint8List? bytes = await imageOwner.getImage(storageKey, localOnly: true);
-      if (bytes != null) {
-        try {
-          fco.logger.i('writing image data to storage key: $storageKey');
-          FirebaseStorage storage = FirebaseStorage.instance;
-          Reference ref = storage.ref(storageKey);
-          /* FullMetadata metadata = */
-          await ref.getMetadata();
-          await ref.putData(bytes);
-          imageOwner.imageSize = bytes.lengthInBytes;
-          fco.logger.d(
-            'wrote new image of ${imageOwner.imageSize} bytes to FB Storage.',
-          );
-        } on FirebaseException catch (e) {
-          fco.logger.d("Firestore Image Update failure: ${e.message}");
-        }
+    if (storageKey == null) return;
+    Uint8List? bytes = await imageOwner.getImage(storageKey, localOnly: true);
+    if (bytes != null) {
+      try {
+        fco.logger.i('writing image data to storage key: $storageKey');
+        FirebaseStorage storage = FirebaseStorage.instance;
+        Reference ref = storage.ref(storageKey);
+        /* FullMetadata metadata = */
+        await ref.getMetadata();
+        await ref.putData(bytes);
+        imageOwner.imageSize = bytes.lengthInBytes;
+        fco.logger.d(
+          'wrote new image of ${imageOwner.imageSize} bytes to FB Storage.',
+        );
+      } on FirebaseException catch (e) {
+        fco.logger.d("Firestore Image Update failure: ${e.message}");
       }
     }
   }

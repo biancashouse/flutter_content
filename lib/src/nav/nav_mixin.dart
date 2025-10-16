@@ -155,7 +155,7 @@ mixin NavMixin {
                 nextMode = ThemeMode.system;
                 buttonIcon = Icons.brightness_auto; // Auto icon
                 break;
-              case ThemeMode.system:
+              // case ThemeMode.system:
               default: // Treat system as default, cycle to light
                 buttonText = 'Switch to Light Mode';
                 nextMode = ThemeMode.light;
