@@ -1,5 +1,6 @@
 // coverage:ignore-file
 // GENERATED CODE - DO NOT MODIFY BY HAND
+// dart format off
 // ignore_for_file: type=lint
 // ignore_for_file: unused_element, unnecessary_cast, override_on_non_overriding_member
 // ignore_for_file: strict_raw_type, inference_failure_on_untyped_parameter
@@ -22,35 +23,71 @@ class YTNodeMapper extends SubClassMapperBase<YTNode> {
   final String id = 'YTNode';
 
   static String? _$ytUrl(YTNode v) => v.ytUrl;
-  static const Field<YTNode, String> _f$ytUrl =
-      Field('ytUrl', _$ytUrl, opt: true);
+  static const Field<YTNode, String> _f$ytUrl = Field(
+    'ytUrl',
+    _$ytUrl,
+    opt: true,
+  );
   static int? _$startAtSecs(YTNode v) => v.startAtSecs;
-  static const Field<YTNode, int> _f$startAtSecs =
-      Field('startAtSecs', _$startAtSecs, opt: true);
+  static const Field<YTNode, int> _f$startAtSecs = Field(
+    'startAtSecs',
+    _$startAtSecs,
+    opt: true,
+  );
   static int? _$endAtSecs(YTNode v) => v.endAtSecs;
-  static const Field<YTNode, int> _f$endAtSecs =
-      Field('endAtSecs', _$endAtSecs, opt: true);
+  static const Field<YTNode, int> _f$endAtSecs = Field(
+    'endAtSecs',
+    _$endAtSecs,
+    opt: true,
+  );
   static double _$iframeWidth(YTNode v) => v.iframeWidth;
-  static const Field<YTNode, double> _f$iframeWidth =
-      Field('iframeWidth', _$iframeWidth, opt: true, def: 560);
+  static const Field<YTNode, double> _f$iframeWidth = Field(
+    'iframeWidth',
+    _$iframeWidth,
+    opt: true,
+    def: 560,
+  );
   static double _$iframeHeight(YTNode v) => v.iframeHeight;
-  static const Field<YTNode, double> _f$iframeHeight =
-      Field('iframeHeight', _$iframeHeight, opt: true, def: 316);
+  static const Field<YTNode, double> _f$iframeHeight = Field(
+    'iframeHeight',
+    _$iframeHeight,
+    opt: true,
+    def: 316,
+  );
   static String _$uid(YTNode v) => v.uid;
-  static const Field<YTNode, String> _f$uid =
-      Field('uid', _$uid, mode: FieldMode.member);
+  static const Field<YTNode, String> _f$uid = Field(
+    'uid',
+    _$uid,
+    mode: FieldMode.member,
+  );
   static GlobalKey<State<StatefulWidget>>? _$treeNodeGK(YTNode v) =>
       v.treeNodeGK;
   static const Field<YTNode, GlobalKey<State<StatefulWidget>>> _f$treeNodeGK =
       Field('treeNodeGK', _$treeNodeGK, mode: FieldMode.member);
   static bool _$isExpanded(YTNode v) => v.isExpanded;
-  static const Field<YTNode, bool> _f$isExpanded =
-      Field('isExpanded', _$isExpanded, mode: FieldMode.member);
+  static const Field<YTNode, bool> _f$isExpanded = Field(
+    'isExpanded',
+    _$isExpanded,
+    mode: FieldMode.member,
+  );
   static bool? _$hidePropertiesWhileDragging(YTNode v) =>
       v.hidePropertiesWhileDragging;
   static const Field<YTNode, bool> _f$hidePropertiesWhileDragging = Field(
-      'hidePropertiesWhileDragging', _$hidePropertiesWhileDragging,
-      mode: FieldMode.member);
+    'hidePropertiesWhileDragging',
+    _$hidePropertiesWhileDragging,
+    mode: FieldMode.member,
+  );
+  static bool _$canShowTappableNodeWidgetOverlay(YTNode v) =>
+      v.canShowTappableNodeWidgetOverlay;
+  static const Field<YTNode, bool> _f$canShowTappableNodeWidgetOverlay = Field(
+    'canShowTappableNodeWidgetOverlay',
+    _$canShowTappableNodeWidgetOverlay,
+    mode: FieldMode.member,
+  );
+  static GlobalKey<State<StatefulWidget>>? _$nodeWidgetGK(YTNode v) =>
+      v.nodeWidgetGK;
+  static const Field<YTNode, GlobalKey<State<StatefulWidget>>> _f$nodeWidgetGK =
+      Field('nodeWidgetGK', _$nodeWidgetGK, mode: FieldMode.member);
 
   @override
   final MappableFields<YTNode> fields = const {
@@ -63,6 +100,8 @@ class YTNodeMapper extends SubClassMapperBase<YTNode> {
     #treeNodeGK: _f$treeNodeGK,
     #isExpanded: _f$isExpanded,
     #hidePropertiesWhileDragging: _f$hidePropertiesWhileDragging,
+    #canShowTappableNodeWidgetOverlay: _f$canShowTappableNodeWidgetOverlay,
+    #nodeWidgetGK: _f$nodeWidgetGK,
   };
 
   @override
@@ -74,11 +113,12 @@ class YTNodeMapper extends SubClassMapperBase<YTNode> {
 
   static YTNode _instantiate(DecodingData data) {
     return YTNode(
-        ytUrl: data.dec(_f$ytUrl),
-        startAtSecs: data.dec(_f$startAtSecs),
-        endAtSecs: data.dec(_f$endAtSecs),
-        iframeWidth: data.dec(_f$iframeWidth),
-        iframeHeight: data.dec(_f$iframeHeight));
+      ytUrl: data.dec(_f$ytUrl),
+      startAtSecs: data.dec(_f$startAtSecs),
+      endAtSecs: data.dec(_f$endAtSecs),
+      iframeWidth: data.dec(_f$iframeWidth),
+      iframeHeight: data.dec(_f$iframeHeight),
+    );
   }
 
   @override
@@ -128,12 +168,13 @@ extension YTNodeValueCopy<$R, $Out> on ObjectCopyWith<$R, YTNode, $Out> {
 abstract class YTNodeCopyWith<$R, $In extends YTNode, $Out>
     implements CLCopyWith<$R, $In, $Out> {
   @override
-  $R call(
-      {String? ytUrl,
-      int? startAtSecs,
-      int? endAtSecs,
-      double? iframeWidth,
-      double? iframeHeight});
+  $R call({
+    String? ytUrl,
+    int? startAtSecs,
+    int? endAtSecs,
+    double? iframeWidth,
+    double? iframeHeight,
+  });
   YTNodeCopyWith<$R2, $In, $Out2> $chain<$R2, $Out2>(Then<$Out2, $R2> t);
 }
 
@@ -144,28 +185,32 @@ class _YTNodeCopyWithImpl<$R, $Out> extends ClassCopyWithBase<$R, YTNode, $Out>
   @override
   late final ClassMapperBase<YTNode> $mapper = YTNodeMapper.ensureInitialized();
   @override
-  $R call(
-          {Object? ytUrl = $none,
-          Object? startAtSecs = $none,
-          Object? endAtSecs = $none,
-          double? iframeWidth,
-          double? iframeHeight}) =>
-      $apply(FieldCopyWithData({
-        if (ytUrl != $none) #ytUrl: ytUrl,
-        if (startAtSecs != $none) #startAtSecs: startAtSecs,
-        if (endAtSecs != $none) #endAtSecs: endAtSecs,
-        if (iframeWidth != null) #iframeWidth: iframeWidth,
-        if (iframeHeight != null) #iframeHeight: iframeHeight
-      }));
+  $R call({
+    Object? ytUrl = $none,
+    Object? startAtSecs = $none,
+    Object? endAtSecs = $none,
+    double? iframeWidth,
+    double? iframeHeight,
+  }) => $apply(
+    FieldCopyWithData({
+      if (ytUrl != $none) #ytUrl: ytUrl,
+      if (startAtSecs != $none) #startAtSecs: startAtSecs,
+      if (endAtSecs != $none) #endAtSecs: endAtSecs,
+      if (iframeWidth != null) #iframeWidth: iframeWidth,
+      if (iframeHeight != null) #iframeHeight: iframeHeight,
+    }),
+  );
   @override
   YTNode $make(CopyWithData data) => YTNode(
-      ytUrl: data.get(#ytUrl, or: $value.ytUrl),
-      startAtSecs: data.get(#startAtSecs, or: $value.startAtSecs),
-      endAtSecs: data.get(#endAtSecs, or: $value.endAtSecs),
-      iframeWidth: data.get(#iframeWidth, or: $value.iframeWidth),
-      iframeHeight: data.get(#iframeHeight, or: $value.iframeHeight));
+    ytUrl: data.get(#ytUrl, or: $value.ytUrl),
+    startAtSecs: data.get(#startAtSecs, or: $value.startAtSecs),
+    endAtSecs: data.get(#endAtSecs, or: $value.endAtSecs),
+    iframeWidth: data.get(#iframeWidth, or: $value.iframeWidth),
+    iframeHeight: data.get(#iframeHeight, or: $value.iframeHeight),
+  );
 
   @override
   YTNodeCopyWith<$R2, YTNode, $Out2> $chain<$R2, $Out2>(Then<$Out2, $R2> t) =>
       _YTNodeCopyWithImpl<$R2, $Out2>($value, $cast, t);
 }
+

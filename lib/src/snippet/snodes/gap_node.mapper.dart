@@ -1,5 +1,6 @@
 // coverage:ignore-file
 // GENERATED CODE - DO NOT MODIFY BY HAND
+// dart format off
 // ignore_for_file: type=lint
 // ignore_for_file: unused_element, unnecessary_cast, override_on_non_overriding_member
 // ignore_for_file: strict_raw_type, inference_failure_on_untyped_parameter
@@ -24,20 +25,43 @@ class GapNodeMapper extends SubClassMapperBase<GapNode> {
   static double _$gap(GapNode v) => v.gap;
   static const Field<GapNode, double> _f$gap = Field('gap', _$gap);
   static String _$uid(GapNode v) => v.uid;
-  static const Field<GapNode, String> _f$uid =
-      Field('uid', _$uid, mode: FieldMode.member);
+  static const Field<GapNode, String> _f$uid = Field(
+    'uid',
+    _$uid,
+    mode: FieldMode.member,
+  );
   static GlobalKey<State<StatefulWidget>>? _$treeNodeGK(GapNode v) =>
       v.treeNodeGK;
   static const Field<GapNode, GlobalKey<State<StatefulWidget>>> _f$treeNodeGK =
       Field('treeNodeGK', _$treeNodeGK, mode: FieldMode.member);
   static bool _$isExpanded(GapNode v) => v.isExpanded;
-  static const Field<GapNode, bool> _f$isExpanded =
-      Field('isExpanded', _$isExpanded, mode: FieldMode.member);
+  static const Field<GapNode, bool> _f$isExpanded = Field(
+    'isExpanded',
+    _$isExpanded,
+    mode: FieldMode.member,
+  );
   static bool? _$hidePropertiesWhileDragging(GapNode v) =>
       v.hidePropertiesWhileDragging;
   static const Field<GapNode, bool> _f$hidePropertiesWhileDragging = Field(
-      'hidePropertiesWhileDragging', _$hidePropertiesWhileDragging,
-      mode: FieldMode.member);
+    'hidePropertiesWhileDragging',
+    _$hidePropertiesWhileDragging,
+    mode: FieldMode.member,
+  );
+  static bool _$canShowTappableNodeWidgetOverlay(GapNode v) =>
+      v.canShowTappableNodeWidgetOverlay;
+  static const Field<GapNode, bool> _f$canShowTappableNodeWidgetOverlay = Field(
+    'canShowTappableNodeWidgetOverlay',
+    _$canShowTappableNodeWidgetOverlay,
+    mode: FieldMode.member,
+  );
+  static GlobalKey<State<StatefulWidget>>? _$nodeWidgetGK(GapNode v) =>
+      v.nodeWidgetGK;
+  static const Field<GapNode, GlobalKey<State<StatefulWidget>>>
+  _f$nodeWidgetGK = Field(
+    'nodeWidgetGK',
+    _$nodeWidgetGK,
+    mode: FieldMode.member,
+  );
 
   @override
   final MappableFields<GapNode> fields = const {
@@ -46,6 +70,8 @@ class GapNodeMapper extends SubClassMapperBase<GapNode> {
     #treeNodeGK: _f$treeNodeGK,
     #isExpanded: _f$isExpanded,
     #hidePropertiesWhileDragging: _f$hidePropertiesWhileDragging,
+    #canShowTappableNodeWidgetOverlay: _f$canShowTappableNodeWidgetOverlay,
+    #nodeWidgetGK: _f$nodeWidgetGK,
   };
 
   @override
@@ -73,18 +99,23 @@ class GapNodeMapper extends SubClassMapperBase<GapNode> {
 
 mixin GapNodeMappable {
   String toJson() {
-    return GapNodeMapper.ensureInitialized()
-        .encodeJson<GapNode>(this as GapNode);
+    return GapNodeMapper.ensureInitialized().encodeJson<GapNode>(
+      this as GapNode,
+    );
   }
 
   Map<String, dynamic> toMap() {
-    return GapNodeMapper.ensureInitialized()
-        .encodeMap<GapNode>(this as GapNode);
+    return GapNodeMapper.ensureInitialized().encodeMap<GapNode>(
+      this as GapNode,
+    );
   }
 
   GapNodeCopyWith<GapNode, GapNode, GapNode> get copyWith =>
       _GapNodeCopyWithImpl<GapNode, GapNode>(
-          this as GapNode, $identity, $identity);
+        this as GapNode,
+        $identity,
+        $identity,
+      );
   @override
   String toString() {
     return GapNodeMapper.ensureInitialized().stringifyValue(this as GapNode);
@@ -92,8 +123,10 @@ mixin GapNodeMappable {
 
   @override
   bool operator ==(Object other) {
-    return GapNodeMapper.ensureInitialized()
-        .equalsValue(this as GapNode, other);
+    return GapNodeMapper.ensureInitialized().equalsValue(
+      this as GapNode,
+      other,
+    );
   }
 
   @override
@@ -133,3 +166,4 @@ class _GapNodeCopyWithImpl<$R, $Out>
   GapNodeCopyWith<$R2, GapNode, $Out2> $chain<$R2, $Out2>(Then<$Out2, $R2> t) =>
       _GapNodeCopyWithImpl<$R2, $Out2>($value, $cast, t);
 }
+

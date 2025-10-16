@@ -7,34 +7,52 @@ class Page_Home extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-
     final uniqueTabBarName = DateTime.now().millisecondsSinceEpoch.toString();
     SnippetBuilder sp = SnippetBuilder.fromNodes(
       snippetRootNode: SnippetRootNode(
         name: 'home-scaffold-with-tabs',
         child: ScaffoldNode(
-          appBar: AppBarNode(
-            tabBarName: uniqueTabBarName,
-            bgColor: ColorModel.grey(),
-            title: GenericSingleChildNode(
-              propertyName: 'title',
-              child: TextNode(text: 'my title', tsPropGroup: TextStyleProperties()),
-            ),
-            bottom: GenericSingleChildNode(
-              propertyName: 'bottom',
-              child: TabBarNode(
-                name: uniqueTabBarName,
-                labelTSPropGroup: TextStyleProperties(),
-                children: [
-                  TextNode(text: 'tab 1', tsPropGroup: TextStyleProperties()),
-                  TextNode(text: 'Tab 2', tsPropGroup: TextStyleProperties()),
-                ],
+          appBar: NamedPS(
+            propertyName: 'appBar',
+            child: AppBarNode(
+              toolbarHeight: kToolbarHeight,
+              // tabBarName: uniqueTabBarName,
+              bgColor: ColorModel.grey(),
+              title: NamedSC(
+                propertyName: 'title',
+                child: TextNode(
+                  text: 'my title',
+                  tsPropGroup: TextStyleProperties(),
+                ),
+              ),
+              titleTextStyle: TextStyleProperties(),
+              actions: NamedMC(
+                propertyName: 'actions',
+                children: [],
+              ),
+              leading: NamedSC(propertyName: 'leading'),
+              bottom: NamedPS(
+                propertyName: 'bottom',
+                child: TabBarNode(
+                  name: uniqueTabBarName,
+                  labelTSPropGroup: TextStyleProperties(),
+                  children: [
+                    TextNode(text:'Tab 1', tsPropGroup: TextStyleProperties()),
+                    TextNode(text:'Tab 2', tsPropGroup: TextStyleProperties()),
+                  ],
+                ),
               ),
             ),
           ),
-          body: GenericSingleChildNode(
+          body: NamedSC(
             propertyName: 'body',
-            child: TabBarViewNode(tabBarName: uniqueTabBarName, children: [PlaceholderNode(), PlaceholderNode()]),
+            child: TabBarViewNode(
+              tabBarName: uniqueTabBarName,
+              children: [
+                ContainerNode(csPropGroup: ContainerStyleProperties(width: 100, height: 100, fillColors: UpTo6Colors(color1: ColorModel.red()))),
+                ContainerNode(csPropGroup: ContainerStyleProperties(width: 100, height: 100, fillColors: UpTo6Colors(color1: ColorModel.blue()))),
+              ],
+            ),
           ),
         ),
       ),

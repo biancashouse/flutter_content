@@ -13,7 +13,7 @@ part 'button_style_properties.mapper.dart';
 
 @MappableClass(discriminatorKey: 'bs', includeSubClasses: [])
 class ButtonStyleProperties with ButtonStylePropertiesMappable {
-  @MappableField(hook: TextStyleHook())
+  @MappableField(hook: TextStyleHook1())
   TextStyleProperties tsPropGroup;
   ColorModel? fgColor;
   ColorModel? bgColor;

@@ -78,13 +78,14 @@ class FireStoreModelRepository implements IModelRepository {
     final sw = Stopwatch();
     sw.start();
     DocumentSnapshot snippetInfoDoc = await snippetInfoDocRef.get();
+    late Map<String, dynamic> snippetInfoData;
     try {
       print(
         'getSnippetInfoFromCacheOrFB() await snippetInfoDocRef.get() took: ${sw.elapsedMilliseconds}ms',
       );
       sw.reset();
-      final data = snippetInfoDoc.data() as Map<String, dynamic>;
-      snippetInfo = SnippetInfoModelMapper.fromMap(data);
+      snippetInfoData = snippetInfoDoc.data() as Map<String, dynamic>;
+      snippetInfo = SnippetInfoModelMapper.fromMap(snippetInfoData);
       SnippetInfoModel.cacheSnippetInfo(snippetName, snippetInfo);
       fco.logger.d(
         "getSnippetInfoFromCacheOrFB($snippetName) - from FB (cached)",
@@ -97,10 +98,23 @@ class FireStoreModelRepository implements IModelRepository {
         'getSnippetInfoFromCacheOrFB() caching snippetInfo took: ${sw.elapsedMilliseconds}ms',
       );
     } catch (e) {
-      fco.logger.e('', error: e);
+      // must be a new snippet
+      return null;
+      // create a new SnippetInfo, but don't save the AppInfo yet
+      // fco.appInfo.snippetNames = [...fco.appInfo.snippetNames, snippetName];
+      // // await modelRepo.saveAppInfo(); might not be needed
+      // VersionId newVersionId = DateTime.now().millisecondsSinceEpoch.toString();
+      // snippetInfo = SnippetInfoModel(
+      //   snippetName,
+      //   editingVersionId: newVersionId,
+      //   publishedVersionId: newVersionId,
+      //   // routePath: pagePath,
+      //   autoPublish: fco.appInfo.autoPublishDefault,
+      //   versionIds: [],
+      // );
+      // SnippetInfoModel.cacheSnippetInfo(snippetName, snippetInfo);
     }
     // populate snippetInfo with its version ids (legacy code - model now stores list inside snippetInfo)
-    if (snippetInfo == null) return null;
     if (snippetInfo.versionIds?.isEmpty ?? true) {
       try {
         sw.reset();
@@ -165,6 +179,8 @@ class FireStoreModelRepository implements IModelRepository {
       if (versionDoc.exists) {
         try {
           final data = versionDoc.data() as Map<String, dynamic>;
+          var childMap = data['child'];
+          var scaffoldMap = childMap['appBar'];
           version = SnippetRootNodeMapper.fromMap(data);
           // cache it
           snippetInfo.cachedVersions[versionId] = version;
@@ -226,6 +242,7 @@ class FireStoreModelRepository implements IModelRepository {
 
   @override
   Future<void> saveAppInfo() async {
+    if (fco.isGuestEditor()) return;
     fco.logger.d('***********   saveAppInfo   ****************');
     fco.appInfo.userTextStyles = fco.namedTextStyles;
     fco.appInfo.userButtonStyles = fco.namedButtonStyles;
@@ -243,6 +260,7 @@ class FireStoreModelRepository implements IModelRepository {
     required VersionId newVersionId,
     required SnippetRootNode newVersion,
   }) async {
+    if (fco.isGuestEditor()) return true;
     SnippetInfoModel? snippetInfo = SnippetInfoModel.cachedSnippetInfo(
       snippetName,
     );
@@ -294,6 +312,7 @@ class FireStoreModelRepository implements IModelRepository {
   // My method extended by Gemini to also remove the versions collection
   @override
   Future<void> deleteSnippet(final String snippetName) async {
+    if (fco.isGuestEditor()) return;
     // Ensure consistent path format (remove leading '/' if present)
     String snippetId = snippetName.startsWith('/')
         ? snippetName.substring(1)
@@ -351,6 +370,7 @@ class FireStoreModelRepository implements IModelRepository {
     final String snippetName,
     final List<VersionId> tbd,
   ) async {
+    if (fco.isGuestEditor()) return;
     String sName = snippetName.startsWith('/')
         ? snippetName.substring(1)
         : snippetName;
@@ -393,7 +413,7 @@ class FireStoreModelRepository implements IModelRepository {
     bool? newAutoPublish,
     List<VersionId>? newVersionIds,
   }) async {
-    // var fc = FC();
+    if (fco.isGuestEditor()) return;
 
     SnippetInfoModel? snippetInfo = SnippetInfoModel.cachedSnippetInfo(
       snippetName,
@@ -411,6 +431,7 @@ class FireStoreModelRepository implements IModelRepository {
           newPublishingVersionId ?? snippetInfo.publishedVersionId,
       'autoPublish': newAutoPublish ?? snippetInfo.autoPublish,
       'versionIds': newVersionIds ?? snippetInfo.versionIds,
+      'hide': snippetInfo.hide,
     }, SetOptions(merge: true));
 
     // update local values
@@ -540,10 +561,10 @@ class FireStoreModelRepository implements IModelRepository {
 
     for (PollOptionId pollOptionId in pollOptionIds) {
       // each document in the voter collection represents a user who voted. The doc cannot be empty, so its id is the EmailAddress a property is time of vote.
-      CollectionReference pollOptionVotes = FirebaseFirestore.instance
-          .collection(
-            '/flutter-content/${fco.appName}/polls/$pollName/options/$pollOptionId/voters',
-          );
+      CollectionReference
+      pollOptionVotes = FirebaseFirestore.instance.collection(
+        '/flutter-content/${fco.appName}/polls/$pollName/options/$pollOptionId/voters',
+      );
       QuerySnapshot snap = await pollOptionVotes.get();
       List<EmailAddress> optionVoters = [];
       for (var doc in snap.docs) {
@@ -562,8 +583,10 @@ class FireStoreModelRepository implements IModelRepository {
     required PollOptionId optionId,
     required Map<PollOptionId, int> newOptionVoteCountMap,
   }) async {
+    if (fco.isGuestEditor()) return;
     // check whether already voted
-    final docPath = '/flutter-content/${fco.appName}/polls/$pollName/voters/$voterId';
+    final docPath =
+        '/flutter-content/${fco.appName}/polls/$pollName/voters/$voterId';
     DocumentReference userVoteDocRef = FirebaseFirestore.instance.doc(docPath);
     DocumentSnapshot snap = await userVoteDocRef.get();
     if (!snap.exists) {
@@ -618,8 +641,9 @@ class FireStoreModelRepository implements IModelRepository {
     return doc.exists;
   }
 
-  DocumentReference get appDocRef =>
-      FirebaseFirestore.instance.collection('/flutter-content').doc(fco.appName);
+  DocumentReference get appDocRef => FirebaseFirestore.instance
+      .collection('/flutter-content')
+      .doc(fco.appName);
 
   // @override
   // Future<void> copyCollectionBetweenProjects() async {

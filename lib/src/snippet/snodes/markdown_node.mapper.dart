@@ -1,5 +1,6 @@
 // coverage:ignore-file
 // GENERATED CODE - DO NOT MODIFY BY HAND
+// dart format off
 // ignore_for_file: type=lint
 // ignore_for_file: unused_element, unnecessary_cast, override_on_non_overriding_member
 // ignore_for_file: strict_raw_type, inference_failure_on_untyped_parameter
@@ -21,138 +22,57 @@ class MarkdownNodeMapper extends SubClassMapperBase<MarkdownNode> {
   @override
   final String id = 'MarkdownNode';
 
-  static String _$data(MarkdownNode v) => v.data;
-  static const Field<MarkdownNode, String> _f$data =
-      Field('data', _$data, opt: true, def: """
-# Markdown Example
-Markdown allows you to easily include formatted text, images, and even formatted
-Dart code in your app.
-
-## Titles
-
-Setext-style
-
-```
-This is an H1
-=============
-
-This is an H2
--------------
-```
-
-Atx-style
-
-```
-# This is an H1
-
-## This is an H2
-
-###### This is an H6
-```
-
-Select the valid headers:
-
-- [x] `# hello`
-- [ ] `#hello`
-
-## Links
-
-[Google's Homepage][Google]
-
-```
-[inline-style](https://www.google.com)
-
-[reference-style][Google]
-```
-
-## Images
-
-![Flowers](/assets/images/flowers.jpg)
-
-## Tables
-
-|Syntax                                 |Result                               |
-|---------------------------------------|-------------------------------------|
-|`*italic 1*`                           |*italic 1*                           |
-|`_italic 2_`                           | _italic 2_                          |
-|`**bold 1**`                           |**bold 1**                           |
-|`__bold 2__`                           |__bold 2__                           |
-|`This is a ~~strikethrough~~`          |This is a ~~strikethrough~~          |
-|`***italic bold 1***`                  |***italic bold 1***                  |
-|`___italic bold 2___`                  |___italic bold 2___                  |
-|`***~~italic bold strikethrough 1~~***`|***~~italic bold strikethrough 1~~***|
-|`~~***italic bold strikethrough 2***~~`|~~***italic bold strikethrough 2***~~|
-
-## Styling
-Style text as _italic_, __bold__, ~~strikethrough~~, or `inline code`.
-
-- Use bulleted lists
-- To better clarify
-- Your points
-
-## Code blocks
-Formatted Dart code looks really pretty too:
-
-```
-void main() {
-  runApp(FlutterCalloutsApp(
-    home: Scaffold(
-      body: Markdown(data: markdownData),
-    ),
-  ));
-}
-```
-
-## Center Title
-
-###### ※ ※ ※
-
-_* How to implement it see main.dart#L129 in example_using_go_router._
-
-## Custom Syntax
-
-NaOH + Al_2O_3 = NaAlO_2 + H_2O
-
-C_4H_10 = C_2H_6 + C_2H_4
-
-## Markdown widget
-
-This is an example_using_go_router of how to create your own Markdown widget:
-
-    Markdown(data: 'Hello _world_!');
-
-Enjoy!
-
-[Google]: https://www.google.com/
-
-## Line Breaks
-
-This is an example_using_go_router of how to create line breaks (tab or two whitespaces):
-
-line 1
-
-
-line 2
-
-
-
-line 3
-""");
+  static String? _$data(MarkdownNode v) => v.data;
+  static const Field<MarkdownNode, String> _f$data = Field(
+    'data',
+    _$data,
+    opt: true,
+  );
   static String _$uid(MarkdownNode v) => v.uid;
-  static const Field<MarkdownNode, String> _f$uid =
-      Field('uid', _$uid, mode: FieldMode.member);
+  static const Field<MarkdownNode, String> _f$uid = Field(
+    'uid',
+    _$uid,
+    mode: FieldMode.member,
+  );
   static GlobalKey<State<StatefulWidget>>? _$treeNodeGK(MarkdownNode v) =>
       v.treeNodeGK;
   static const Field<MarkdownNode, GlobalKey<State<StatefulWidget>>>
-      _f$treeNodeGK = Field('treeNodeGK', _$treeNodeGK, mode: FieldMode.member);
+  _f$treeNodeGK = Field('treeNodeGK', _$treeNodeGK, mode: FieldMode.member);
   static bool _$isExpanded(MarkdownNode v) => v.isExpanded;
-  static const Field<MarkdownNode, bool> _f$isExpanded =
-      Field('isExpanded', _$isExpanded, mode: FieldMode.member);
+  static const Field<MarkdownNode, bool> _f$isExpanded = Field(
+    'isExpanded',
+    _$isExpanded,
+    mode: FieldMode.member,
+  );
   static bool? _$hidePropertiesWhileDragging(MarkdownNode v) =>
       v.hidePropertiesWhileDragging;
   static const Field<MarkdownNode, bool> _f$hidePropertiesWhileDragging = Field(
-      'hidePropertiesWhileDragging', _$hidePropertiesWhileDragging,
-      mode: FieldMode.member);
+    'hidePropertiesWhileDragging',
+    _$hidePropertiesWhileDragging,
+    mode: FieldMode.member,
+  );
+  static bool _$canShowTappableNodeWidgetOverlay(MarkdownNode v) =>
+      v.canShowTappableNodeWidgetOverlay;
+  static const Field<MarkdownNode, bool> _f$canShowTappableNodeWidgetOverlay =
+      Field(
+        'canShowTappableNodeWidgetOverlay',
+        _$canShowTappableNodeWidgetOverlay,
+        mode: FieldMode.member,
+      );
+  static GlobalKey<State<StatefulWidget>>? _$nodeWidgetGK(MarkdownNode v) =>
+      v.nodeWidgetGK;
+  static const Field<MarkdownNode, GlobalKey<State<StatefulWidget>>>
+  _f$nodeWidgetGK = Field(
+    'nodeWidgetGK',
+    _$nodeWidgetGK,
+    mode: FieldMode.member,
+  );
+  static String _$SAMPLE_MD(MarkdownNode v) => v.SAMPLE_MD;
+  static const Field<MarkdownNode, String> _f$SAMPLE_MD = Field(
+    'SAMPLE_MD',
+    _$SAMPLE_MD,
+    mode: FieldMode.member,
+  );
 
   @override
   final MappableFields<MarkdownNode> fields = const {
@@ -161,6 +81,9 @@ line 3
     #treeNodeGK: _f$treeNodeGK,
     #isExpanded: _f$isExpanded,
     #hidePropertiesWhileDragging: _f$hidePropertiesWhileDragging,
+    #canShowTappableNodeWidgetOverlay: _f$canShowTappableNodeWidgetOverlay,
+    #nodeWidgetGK: _f$nodeWidgetGK,
+    #SAMPLE_MD: _f$SAMPLE_MD,
   };
 
   @override
@@ -188,34 +111,43 @@ line 3
 
 mixin MarkdownNodeMappable {
   String toJson() {
-    return MarkdownNodeMapper.ensureInitialized()
-        .encodeJson<MarkdownNode>(this as MarkdownNode);
+    return MarkdownNodeMapper.ensureInitialized().encodeJson<MarkdownNode>(
+      this as MarkdownNode,
+    );
   }
 
   Map<String, dynamic> toMap() {
-    return MarkdownNodeMapper.ensureInitialized()
-        .encodeMap<MarkdownNode>(this as MarkdownNode);
+    return MarkdownNodeMapper.ensureInitialized().encodeMap<MarkdownNode>(
+      this as MarkdownNode,
+    );
   }
 
   MarkdownNodeCopyWith<MarkdownNode, MarkdownNode, MarkdownNode> get copyWith =>
       _MarkdownNodeCopyWithImpl<MarkdownNode, MarkdownNode>(
-          this as MarkdownNode, $identity, $identity);
+        this as MarkdownNode,
+        $identity,
+        $identity,
+      );
   @override
   String toString() {
-    return MarkdownNodeMapper.ensureInitialized()
-        .stringifyValue(this as MarkdownNode);
+    return MarkdownNodeMapper.ensureInitialized().stringifyValue(
+      this as MarkdownNode,
+    );
   }
 
   @override
   bool operator ==(Object other) {
-    return MarkdownNodeMapper.ensureInitialized()
-        .equalsValue(this as MarkdownNode, other);
+    return MarkdownNodeMapper.ensureInitialized().equalsValue(
+      this as MarkdownNode,
+      other,
+    );
   }
 
   @override
   int get hashCode {
-    return MarkdownNodeMapper.ensureInitialized()
-        .hashValue(this as MarkdownNode);
+    return MarkdownNodeMapper.ensureInitialized().hashValue(
+      this as MarkdownNode,
+    );
   }
 }
 
@@ -241,14 +173,15 @@ class _MarkdownNodeCopyWithImpl<$R, $Out>
   late final ClassMapperBase<MarkdownNode> $mapper =
       MarkdownNodeMapper.ensureInitialized();
   @override
-  $R call({String? data}) =>
-      $apply(FieldCopyWithData({if (data != null) #data: data}));
+  $R call({Object? data = $none}) =>
+      $apply(FieldCopyWithData({if (data != $none) #data: data}));
   @override
   MarkdownNode $make(CopyWithData data) =>
       MarkdownNode(data: data.get(#data, or: $value.data));
 
   @override
   MarkdownNodeCopyWith<$R2, MarkdownNode, $Out2> $chain<$R2, $Out2>(
-          Then<$Out2, $R2> t) =>
-      _MarkdownNodeCopyWithImpl<$R2, $Out2>($value, $cast, t);
+    Then<$Out2, $R2> t,
+  ) => _MarkdownNodeCopyWithImpl<$R2, $Out2>($value, $cast, t);
 }
+

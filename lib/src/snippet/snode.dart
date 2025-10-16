@@ -2,11 +2,9 @@ import 'dart:math';
 
 import 'package:dart_mappable/dart_mappable.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_content/flutter_content.dart';
 import 'package:flutter_content/src/snippet/pnodes/groups/button_style_properties.dart';
-import 'package:flutter_content/src/snippet/snodes/algc_node.dart';
-import 'package:flutter_content/src/snippet/snodes/quill_text_node.dart';
-import 'package:flutter_content/src/snippet/snodes/tab_node.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 
 import 'snodes/fs_image_node.dart';
@@ -15,10 +13,12 @@ part 'snode.mapper.dart';
 
 const List<Type> childlessSubClasses = [
   AlgCNode,
+  AppBarNode,
   AssetImageNode,
   ChipNode,
   FileNode,
   // FirebaseStorageImageNode,
+  FlexibleSpaceBarNode,
   FSImageNode,
   GapNode,
   GoogleDriveIFrameNode,
@@ -28,6 +28,7 @@ const List<Type> childlessSubClasses = [
   PollOptionNode,
   QuillTextNode,
   RichTextNode,
+  ScaffoldNode,
   StepNode,
   TextNode,
   UMLImageNode,
@@ -43,11 +44,18 @@ const List<Type> singleChildSubClasses = [
   DefaultTextStyleNode,
   ExpandedNode,
   FlexibleNode,
-  GenericSingleChildNode,
+  NamedSC,
+  NamedPS,
+  IntrinsicWidthNode,
+  IntrinsicHeightNode,
   PaddingNode,
+  PinnedHeaderSliverNode,
   PositionedNode,
   SingleChildScrollViewNode,
   SizedBoxNode,
+  SliverFloatingHeaderNode,
+  SliverResizingHeaderNode,
+  SliverToBoxAdapterNode,
   SnippetRootNode,
   TabNode,
   TargetsWrapperNode,
@@ -55,11 +63,14 @@ const List<Type> singleChildSubClasses = [
 
 const List<Type> multiChildSubClasses = [
   CarouselNode,
+  CustomScrollViewNode,
   DirectoryNode,
   FlexNode,
-  GenericMultiChildNode,
+  NamedMC,
+  ListViewNode,
   MenuBarNode,
   PollNode,
+  SliverListListNode,
   SplitViewNode,
   StackNode,
   StepperNode,
@@ -96,7 +107,12 @@ enum NodeAction {
 
 @MappableClass(
   discriminatorKey: 'snode',
-  includeSubClasses: [ScaffoldNode, AppBarNode, CL, SC, MC, InlineSpanNode],
+  includeSubClasses: [
+    CL,
+    SC,
+    MC,
+    InlineSpanNode,
+  ],
 )
 abstract class SNode extends Node with SNodeMappable {
   String uid = UniqueKey().toString();
@@ -129,7 +145,7 @@ abstract class SNode extends Node with SNodeMappable {
   ) {
     _pTreeC ??= PNodeTreeController(
       roots: _properties ??= propertyNodes(context, getParent() as SNode?),
-      childrenProvider: Node.propertyTreeChildrenProvider,
+      childrenProvider: PNode.propertyTreeChildrenProvider,
     );
     // prevExpansions =
     // _pTreeC!.expand(_pTreeC!.roots.first);
@@ -190,7 +206,7 @@ abstract class SNode extends Node with SNodeMappable {
     }
   }
 
-  List<PNode> propertyNodes(BuildContext context, SNode? parentSNode);
+  List<PNode> propertyNodes(BuildContext context, SNode? parentSNode) => [];
 
   // overidden by SNodes having text style props, such as TextNode, TextSpanNode, TabBarNode, DefaultTextStyleName and ChipNode
   TextStyleProperties? textStyleProperties() => null;
@@ -432,7 +448,6 @@ abstract class SNode extends Node with SNodeMappable {
     SnippetRootNode? rootNode = await snippetInfo.currentVersionFromCacheOrFB();
     if (rootNode == null) return;
 
-    // before starting the editing, check whether the context is null, which could mean this snippet is in a Tab and tab ay not be currently selected
     if (rootNode.child?.nodeWidgetGK?.currentContext == null) {
       fco.showToast(
         msg: "This node is not visible right now",
@@ -472,13 +487,13 @@ abstract class SNode extends Node with SNodeMappable {
           fco.appInfo.showFloatingClipboard(scName: scName);
         }
         fco.hide(CalloutConfigToolbar.CID);
-        fco.afterMsDelayDo(1000, () {
-          var ctx = rootNode.child?.nodeWidgetGK?.currentContext;
-          if (ctx != null) {
-            EditablePageState? eps = EditablePage.of(ctx);
-            eps?.showNodeWidgetOverlays();
-          }
-        });
+        // fco.afterMsDelayDo(1000, () {
+        //   var ctx = rootNode.child?.nodeWidgetGK?.currentContext;
+        //   if (ctx != null) {
+        //     EditablePageState? eps = EditablePage.of(ctx);
+        //     eps?.showNodeWidgetOverlays();
+        //   }
+        // });
       }
     });
   }
@@ -506,8 +521,8 @@ abstract class SNode extends Node with SNodeMappable {
       if (rootNode != null) {
         assert(rootNode.isValid());
         fco.saveNewVersion(snippet: rootNode);
-        EditablePageState? eps = EditablePage.of(context);
-        eps?.showNodeWidgetOverlays();
+        // EditablePageState? eps = EditablePage.of(context);
+        // eps?.showNodeWidgetOverlays();
       }
     });
   }
@@ -584,43 +599,6 @@ abstract class SNode extends Node with SNodeMappable {
   //   return mis;
   // }
 
-  bool canBeDeleted() {
-    if (this is StepNode) return true;
-    if (this is PollOptionNode) return true;
-    if (this is MC && (this as MC).children.length > 1) return false;
-    // ScaffoldNode? scaffold = findNearestAncestor<ScaffoldNode>();
-    // // if (this is RichTextNode) return false;
-    // STreeNode? bottomChild;
-    // if (scaffold?.appBar is AppBarNode) {
-    //   AppBarNode appbar = scaffold?.appBar as AppBarNode;
-    //   bottomChild = appbar.bottom?.child;
-    // } else if (scaffold?.appBar is AppBarWithTabBarNode) {
-    //   AppBarWithTabBarNode appbar = scaffold?.appBar as AppBarWithTabBarNode;
-    //   bottomChild = appbar.bottom?.child;
-    // } else if (scaffold?.appBar is AppBarWithMenuBarNode) {
-    //   AppBarWithMenuBarNode appbar = scaffold?.appBar as AppBarWithMenuBarNode;
-    //   bottomChild = appbar.bottom?.child;
-    // }
-    // if (bottomChild is TabBarNode) {
-    //   TabBarNode? tabBar = bottomChild;
-    //   TabBarViewNode? tabBarView = scaffold?.body?.child as TabBarViewNode?;
-    //   var firstTab = tabBar.children.firstOrNull;
-    //   var firstTabView = tabBar.children.firstOrNull;
-    //   int numTabs = tabBar.children.length ?? 99;
-    //   int numTabBiews = tabBarView?.children.length ?? 99;
-    //   if (firstTab == this && numTabs < 2) {
-    //     return false;
-    //   }
-    //   if (firstTabView == this && numTabBiews < 2) {
-    //     return false;
-    //   }
-    // }
-    // if (bottomChild is MenuBarNode) {
-    //   return bottomChild.children.isEmpty;
-    // }
-    return true;
-  }
-
   bool get canShowTappableNodeWidgetOverlay => getParent() is! CarouselNode;
 
   bool hasChildren() =>
@@ -635,7 +613,7 @@ abstract class SNode extends Node with SNodeMappable {
     print('--- createNodeGK --- ${toString()}');
     String debugLabel = toString();
     if (this is TextNode) {
-      debugLabel += "${(this as TextNode).text}";
+      debugLabel += (this as TextNode).text;
     }
     _nodeWidgetGK = GlobalKey(debugLabel: debugLabel);
     // if (fco.nodesByGK.containsKey(nodeWidgetGK)) {
@@ -736,14 +714,14 @@ abstract class SNode extends Node with SNodeMappable {
 
   void _setParents(SNode? parent) {
     setParent(parent);
-    var children = Node.snippetTreeChildrenProvider(this);
+    var children = childrenProvider(this);
     for (SNode child in children) {
       child._setParents(this);
     }
   }
 
   bool anyMissingParents() {
-    var children = Node.snippetTreeChildrenProvider(this);
+    var children = childrenProvider(this);
     for (SNode child in children) {
       bool foundAMissingParent =
           child.getParent() != this || child.anyMissingParents();
@@ -755,17 +733,24 @@ abstract class SNode extends Node with SNodeMappable {
   }
 
   bool isAScaffoldTabWidget() {
-    return getParent() is TabBarNode &&
-        getParent()?.getParent() is GenericSingleChildNode &&
-        (getParent()?.getParent() as GenericSingleChildNode?)?.propertyName ==
-            'bottom';
+    if (getParent() is TabBarNode)  {
+      var tabBarParent = getParent();
+      if (tabBarParent is NamedPS && tabBarParent.propertyName == 'bottom') {
+        return true;
+      }
+    }
+    return false;
   }
 
-  bool isAScaffoldTabViewWidget() =>
-      getParent() is TabBarViewNode &&
-      getParent()?.getParent() is GenericSingleChildNode &&
-      (getParent()?.getParent() as GenericSingleChildNode?)?.propertyName ==
-          'body';
+  bool isAScaffoldTabViewWidget() {
+    if (getParent() is TabBarViewNode)  {
+      var tabBarViewParent = getParent();
+      if (tabBarViewParent?.getParent() is AppBarNode) {
+        return true;
+      }
+    }
+    return false;
+  }
 
   bool isAStepNodeTitleOrContentPropertyWidget() {
     var node = getParent()?.getParent();
@@ -778,7 +763,7 @@ abstract class SNode extends Node with SNodeMappable {
 
     void findMatchingChild(SNode parent) {
       bool keepSearching = true;
-      for (SNode child in Node.snippetTreeChildrenProvider(parent)) {
+      for (SNode child in childrenProvider(parent)) {
         if (!keepSearching) return;
         if (child.runtimeType == type) {
           foundChild = child;
@@ -799,7 +784,7 @@ abstract class SNode extends Node with SNodeMappable {
     List<SNode> foundNodes = [];
 
     void findMatchingDescendants(SNode node) {
-      for (SNode child in Node.snippetTreeChildrenProvider(node)) {
+      for (SNode child in childrenProvider(node)) {
         if (child.runtimeType == type) {
           foundNodes.add(child);
         } else {
@@ -1243,7 +1228,27 @@ abstract class SNode extends Node with SNodeMappable {
   //       _ => Text('unknown type'),
   //     };
 
+  bool canWrap() =>
+      this is! NamedSC &&
+      this is! NamedMC &&
+      this is! InlineSpanNode &&
+      (this is! SnippetRootNode || this.getParent() != null) &&
+      this is! FileNode &&
+      this is! PollOptionNode &&
+      this is! StepNode;
+
   bool canRemove() => true;
+
+  bool canAppendAChild() => false;
+
+  bool canReplace() => getParent() != null;
+
+  bool canAddASibling() =>
+      (this is! NamedSC && this is! NamedMC && this is! NamedPS) ||
+      this is! InlineSpanNode &&
+      getParent() is MC ||
+      getParent() is TextSpanNode ||
+      getParent() is WidgetSpanNode;
 
   Widget insertItemMenuAnchor(
     BuildContext context, {
@@ -1344,16 +1349,13 @@ abstract class SNode extends Node with SNodeMappable {
 
   List<Type> replaceWithRecommendations() => [];
 
+  List<Type> addChildRecommendations() => [];
+
   List<Type> wrapCandidates() => [SC, MC];
 
   List<Type> wrapWithOnly() => [];
 
-  List<Type> wrapWithRecommendations() => [
-    if (getParent() is FlexNode) ExpandedNode,
-    if (getParent() is FlexNode) FlexibleNode,
-    if (getParent() is StackNode) PositionedNode,
-    if (getParent() is StackNode) AlignNode,
-  ];
+  List<Type> wrapWithRecommendations() => [];
 
   // List<Type> addChildOnly() => [];
 
@@ -1387,11 +1389,27 @@ abstract class SNode extends Node with SNodeMappable {
             scName,
           ),
           const Divider(),
+          menuItemButton(context, "ListView", ListViewNode, action, scName),
           menuItemButton(context, "Column", ColumnNode, action, scName),
           menuItemButton(context, "Row", RowNode, action, scName),
           menuItemButton(context, "Wrap", WrapNode, action, scName),
           menuItemButton(context, "Expanded", ExpandedNode, action, scName),
           menuItemButton(context, "Flexible", FlexibleNode, action, scName),
+          menuItemButton(
+            context,
+            "IntrinsicWidth",
+            IntrinsicWidthNode,
+            action,
+            scName,
+          ),
+          menuItemButton(
+            context,
+            "IntrinsicHeight",
+            IntrinsicHeightNode,
+            action,
+            scName,
+          ),
+          const Divider(),
           menuItemButton(context, "Stack", StackNode, action, scName),
           menuItemButton(context, "Positioned", PositionedNode, action, scName),
           const Divider(),
@@ -1399,6 +1417,54 @@ abstract class SNode extends Node with SNodeMappable {
         ],
         child: fco.coloredText("container", fontWeight: FontWeight.normal),
       ),
+      SubmenuButton(
+        menuChildren: [
+          menuItemButton(
+            context,
+            "CustomScrollView",
+            CustomScrollViewNode,
+            action,
+            scName,
+          ),
+          menuItemButton(
+            context,
+            "SliverAppBar",
+            SliverAppBarNode,
+            action,
+            scName,
+          ),
+          menuItemButton(
+            context,
+            "SliverList.list",
+            SliverListListNode,
+            action,
+            scName,
+          ),
+          menuItemButton(
+            context,
+            "SliverToBoxAdapter",
+            SliverToBoxAdapterNode,
+            action,
+            scName,
+          ),
+          menuItemButton(
+            context,
+            "SliverResizingHeader",
+            SliverResizingHeaderNode,
+            action,
+            scName,
+          ),
+          menuItemButton(
+            context,
+            "SliverFloatingHeader",
+            SliverFloatingHeaderNode,
+            action,
+            scName,
+          ),
+        ],
+        child: fco.coloredText("slivers", fontWeight: FontWeight.normal),
+      ),
+      menuItemButton(context, "Align", AlignNode, action, scName),
       menuItemButton(context, "SplitView", SplitViewNode, action, scName),
       menuItemButton(context, "Hotspots", TargetsWrapperNode, action, scName),
       menuItemButton(
@@ -1431,6 +1497,7 @@ abstract class SNode extends Node with SNodeMappable {
           // _addChildmenuItemButton(context, "IntrinsicWidth", IntrinsicWidthNode, action, scName),
           menuItemButton(context, "Padding", PaddingNode, action, scName),
           menuItemButton(context, "SizedBox", SizedBoxNode, action, scName),
+          menuItemButton(context, "ListView", ListViewNode, action, scName),
           menuItemButton(
             context,
             "SingleChildScrollView",
@@ -1445,8 +1512,69 @@ abstract class SNode extends Node with SNodeMappable {
           menuItemButton(context, "Stack", StackNode, action, scName),
           const Divider(),
           menuItemButton(context, "Scaffold", ScaffoldNode, action, scName),
+          menuItemButton(
+            context,
+            "IntrinsicWidth",
+            IntrinsicWidthNode,
+            action,
+            scName,
+          ),
+          menuItemButton(
+            context,
+            "IntrinsicHeight",
+            IntrinsicHeightNode,
+            action,
+            scName,
+          ),
         ],
         child: fco.coloredText("container", fontWeight: FontWeight.normal),
+      ),
+      SubmenuButton(
+        menuChildren: [
+          menuItemButton(
+            context,
+            "CustomScrollView",
+            CustomScrollViewNode,
+            action,
+            scName,
+          ),
+          menuItemButton(
+            context,
+            "SliverAppBar",
+            SliverAppBarNode,
+            action,
+            scName,
+          ),
+          menuItemButton(
+            context,
+            "SliverList.list",
+            SliverListListNode,
+            action,
+            scName,
+          ),
+          menuItemButton(
+            context,
+            "SliverToBoxAdapter",
+            SliverToBoxAdapterNode,
+            action,
+            scName,
+          ),
+          menuItemButton(
+            context,
+            "SliverResizingHeader",
+            SliverResizingHeaderNode,
+            action,
+            scName,
+          ),
+          menuItemButton(
+            context,
+            "SliverFloatingHeader",
+            SliverFloatingHeaderNode,
+            action,
+            scName,
+          ),
+        ],
+        child: fco.coloredText("slivers", fontWeight: FontWeight.normal),
       ),
       SubmenuButton(
         menuChildren: [
@@ -1613,6 +1741,20 @@ abstract class SNode extends Node with SNodeMappable {
         menuItemButton(context, "Expanded", ExpandedNode, action, scName),
         menuItemButton(context, "Flexible", FlexibleNode, action, scName),
       ],
+      menuItemButton(
+        context,
+        "IntrinsicWidth",
+        IntrinsicWidthNode,
+        action,
+        scName,
+      ),
+      menuItemButton(
+        context,
+        "IntrinsicHeight",
+        IntrinsicHeightNode,
+        action,
+        scName,
+      ),
       if (getParent() is StepperNode)
         menuItemButton(context, "Step", StepNode, action, scName),
       if (getParent() is PollNode)
@@ -1704,6 +1846,7 @@ abstract class SNode extends Node with SNodeMappable {
             menuItemButton(context, "Container", ContainerNode, action, scName),
             menuItemButton(context, "Padding", PaddingNode, action, scName),
             menuItemButton(context, "SizedBox", SizedBoxNode, action, scName),
+            menuItemButton(context, "ListView", ListViewNode, action, scName),
             menuItemButton(
               context,
               "SingleChildScrollView",
@@ -1717,6 +1860,21 @@ abstract class SNode extends Node with SNodeMappable {
             menuItemButton(context, "Wrap", WrapNode, action, scName),
             menuItemButton(context, "Expanded", ExpandedNode, action, scName),
             menuItemButton(context, "Flexible", FlexibleNode, action, scName),
+            menuItemButton(
+              context,
+              "IntrinsicWidth",
+              IntrinsicWidthNode,
+              action,
+              scName,
+            ),
+            menuItemButton(
+              context,
+              "IntrinsicHeight",
+              IntrinsicHeightNode,
+              action,
+              scName,
+            ),
+            const Divider(),
             menuItemButton(context, "Stack", StackNode, action, scName),
             menuItemButton(
               context,
@@ -1729,6 +1887,53 @@ abstract class SNode extends Node with SNodeMappable {
             menuItemButton(context, "Scaffold", ScaffoldNode, action, scName),
           ],
           child: fco.coloredText("container", fontWeight: FontWeight.normal),
+        ),
+        SubmenuButton(
+          menuChildren: [
+            menuItemButton(
+              context,
+              "CustomScrollView",
+              CustomScrollViewNode,
+              action,
+              scName,
+            ),
+            menuItemButton(
+              context,
+              "SliverAppBar",
+              SliverAppBarNode,
+              action,
+              scName,
+            ),
+            menuItemButton(
+              context,
+              "SliverList.list",
+              SliverListListNode,
+              action,
+              scName,
+            ),
+            menuItemButton(
+              context,
+              "SliverToBoxAdapter",
+              SliverToBoxAdapterNode,
+              action,
+              scName,
+            ),
+            menuItemButton(
+              context,
+              "SliverResizingHeader",
+              SliverResizingHeaderNode,
+              action,
+              scName,
+            ),
+            menuItemButton(
+              context,
+              "SliverFloatingHeader",
+              SliverFloatingHeaderNode,
+              action,
+              scName,
+            ),
+          ],
+          child: fco.coloredText("slivers", fontWeight: FontWeight.normal),
         ),
         SubmenuButton(
           menuChildren: [
@@ -1932,29 +2137,29 @@ abstract class SNode extends Node with SNodeMappable {
         fco.capiBloc.add(CAPIEvent.replaceSelectionWith(type: childType));
         fco.afterNextBuildDo(() {
           fco.dismiss('node-actions');
-          EditablePageState? eps = EditablePage.of(context);
-          eps?.showNodeWidgetOverlays();
+          //   EditablePageState? eps = EditablePage.of(context);
+          //   eps?.showNodeWidgetOverlays();
         });
       } else if (action == NodeAction.addChild) {
         fco.capiBloc.add(CAPIEvent.appendChild(type: childType));
         fco.afterNextBuildDo(() {
           fco.dismiss('node-actions');
-          EditablePageState? eps = EditablePage.of(context);
-          eps?.showNodeWidgetOverlays();
+          //   EditablePageState? eps = EditablePage.of(context);
+          //   eps?.showNodeWidgetOverlays();
         });
       } else if (action == NodeAction.addSiblingBefore) {
         fco.capiBloc.add(CAPIEvent.addSiblingBefore(type: childType));
         fco.afterNextBuildDo(() {
           fco.dismiss('node-actions');
-          EditablePageState? eps = EditablePage.of(context);
-          eps?.showNodeWidgetOverlays();
+          //   EditablePageState? eps = EditablePage.of(context);
+          //   eps?.showNodeWidgetOverlays();
         });
       } else if (action == NodeAction.addSiblingAfter) {
         fco.capiBloc.add(CAPIEvent.addSiblingAfter(type: childType));
         fco.afterNextBuildDo(() {
           fco.dismiss('node-actions');
-          EditablePageState? eps = EditablePage.of(context);
-          eps?.showNodeWidgetOverlays();
+          // EditablePageState? eps = EditablePage.of(context);
+          // eps?.showNodeWidgetOverlays();
         });
       }
     },
@@ -2084,6 +2289,60 @@ abstract class SNode extends Node with SNodeMappable {
       fco.logger.d('gk cloned !)');
     }
     return clonedNode;
+  }
+
+  static SNode? parentProvider(Node node) => node.getParent() as SNode?;
+
+  static Iterable<SNode> childrenProvider(SNode node) {
+    node.getParent();
+    Iterable<SNode> children = [];
+
+    if (node is SnippetRootNode && node.getParent() != null) {
+      children = [];
+    } else if (node is ScaffoldNode) {
+      children = [
+        node.appBar,
+        node.body,
+      ];
+    } else if (node is SliverAppBarNode) {
+      children = [
+        if (node.title != null) node.title!,
+        if (node.flexibleSpace != null) node.flexibleSpace!,
+      ];
+    } else if (node is AppBarNode) {
+      children = [
+       node.leading,
+        node.title,
+        node.bottom,
+      ];
+    } else if (node is StepNode) {
+      children = [
+        node.title,
+        if (node.subtitle != null) node.subtitle!,
+        node.content,
+      ];
+    } else if (node is NamedSC) {
+      children = node.child != null ? [node.child!] : [];
+    } else if (node is NamedPS) {
+      children = node.child != null ? [node.child!] : [];
+    } else if (node is RichTextNode) {
+      children = [node.text];
+    } else if (node is TextSpanNode) {
+      children = node.children ?? [];
+    } else if (node is WidgetSpanNode) {
+      children = node.child != null ? [node.child!] : [];
+    } else if (node is CL) {
+      children = [];
+    } else if (node is SC) {
+      children = [if (node.child != null) node.child!];
+    } else if (node is NamedMC) {
+      children = node.children;
+    } else if (node is MC) {
+      children = node.children;
+    }
+
+    // unexpected
+    return children;
   }
 }
 

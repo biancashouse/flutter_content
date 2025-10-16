@@ -1,15 +1,17 @@
 import 'package:dart_mappable/dart_mappable.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_content/flutter_content.dart';
+import 'package:flutter_content/src/snippet/pnodes/enums/enum_material3_text_size.dart';
 import 'package:flutter_content/src/snippet/pnodes/enums/enum_font_style.dart';
 import 'package:flutter_content/src/snippet/pnodes/enums/enum_font_weight.dart';
+import 'package:flutter_content/src/model/color_model.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:flutter_content/src/typedefs.dart';
 
 
 part 'text_style_properties.mapper.dart';
 
-@MappableClass(discriminatorKey: 'ts', includeSubClasses: [])
+@MappableClass()
 class TextStyleProperties with TextStylePropertiesMappable {
   String? fontFamily;
   double? fontSize;

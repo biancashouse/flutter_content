@@ -1,5 +1,6 @@
 // coverage:ignore-file
 // GENERATED CODE - DO NOT MODIFY BY HAND
+// dart format off
 // ignore_for_file: type=lint
 // ignore_for_file: unused_element, unnecessary_cast, override_on_non_overriding_member
 // ignore_for_file: strict_raw_type, inference_failure_on_untyped_parameter
@@ -22,13 +23,13 @@ class TargetGroupModelMapper extends ClassMapperBase<TargetGroupModel> {
   final String id = 'TargetGroupModel';
 
   static List<TargetModel> _$targets(TargetGroupModel v) => v.targets;
-  static const Field<TargetGroupModel, List<TargetModel>> _f$targets =
-      Field('targets', _$targets);
+  static const Field<TargetGroupModel, List<TargetModel>> _f$targets = Field(
+    'targets',
+    _$targets,
+  );
 
   @override
-  final MappableFields<TargetGroupModel> fields = const {
-    #targets: _f$targets,
-  };
+  final MappableFields<TargetGroupModel> fields = const {#targets: _f$targets};
 
   static TargetGroupModel _instantiate(DecodingData data) {
     return TargetGroupModel(data.dec(_f$targets));
@@ -58,42 +59,54 @@ mixin TargetGroupModelMappable {
   }
 
   TargetGroupModelCopyWith<TargetGroupModel, TargetGroupModel, TargetGroupModel>
-      get copyWith =>
-          _TargetGroupModelCopyWithImpl<TargetGroupModel, TargetGroupModel>(
-              this as TargetGroupModel, $identity, $identity);
+  get copyWith =>
+      _TargetGroupModelCopyWithImpl<TargetGroupModel, TargetGroupModel>(
+        this as TargetGroupModel,
+        $identity,
+        $identity,
+      );
   @override
   String toString() {
-    return TargetGroupModelMapper.ensureInitialized()
-        .stringifyValue(this as TargetGroupModel);
+    return TargetGroupModelMapper.ensureInitialized().stringifyValue(
+      this as TargetGroupModel,
+    );
   }
 
   @override
   bool operator ==(Object other) {
-    return TargetGroupModelMapper.ensureInitialized()
-        .equalsValue(this as TargetGroupModel, other);
+    return TargetGroupModelMapper.ensureInitialized().equalsValue(
+      this as TargetGroupModel,
+      other,
+    );
   }
 
   @override
   int get hashCode {
-    return TargetGroupModelMapper.ensureInitialized()
-        .hashValue(this as TargetGroupModel);
+    return TargetGroupModelMapper.ensureInitialized().hashValue(
+      this as TargetGroupModel,
+    );
   }
 }
 
 extension TargetGroupModelValueCopy<$R, $Out>
     on ObjectCopyWith<$R, TargetGroupModel, $Out> {
   TargetGroupModelCopyWith<$R, TargetGroupModel, $Out>
-      get $asTargetGroupModel => $base
-          .as((v, t, t2) => _TargetGroupModelCopyWithImpl<$R, $Out>(v, t, t2));
+  get $asTargetGroupModel =>
+      $base.as((v, t, t2) => _TargetGroupModelCopyWithImpl<$R, $Out>(v, t, t2));
 }
 
 abstract class TargetGroupModelCopyWith<$R, $In extends TargetGroupModel, $Out>
     implements ClassCopyWith<$R, $In, $Out> {
-  ListCopyWith<$R, TargetModel,
-      TargetModelCopyWith<$R, TargetModel, TargetModel>> get targets;
+  ListCopyWith<
+    $R,
+    TargetModel,
+    TargetModelCopyWith<$R, TargetModel, TargetModel>
+  >
+  get targets;
   $R call({List<TargetModel>? targets});
   TargetGroupModelCopyWith<$R2, $In, $Out2> $chain<$R2, $Out2>(
-      Then<$Out2, $R2> t);
+    Then<$Out2, $R2> t,
+  );
 }
 
 class _TargetGroupModelCopyWithImpl<$R, $Out>
@@ -105,10 +118,16 @@ class _TargetGroupModelCopyWithImpl<$R, $Out>
   late final ClassMapperBase<TargetGroupModel> $mapper =
       TargetGroupModelMapper.ensureInitialized();
   @override
-  ListCopyWith<$R, TargetModel,
-          TargetModelCopyWith<$R, TargetModel, TargetModel>>
-      get targets => ListCopyWith($value.targets,
-          (v, t) => v.copyWith.$chain(t), (v) => call(targets: v));
+  ListCopyWith<
+    $R,
+    TargetModel,
+    TargetModelCopyWith<$R, TargetModel, TargetModel>
+  >
+  get targets => ListCopyWith(
+    $value.targets,
+    (v, t) => v.copyWith.$chain(t),
+    (v) => call(targets: v),
+  );
   @override
   $R call({List<TargetModel>? targets}) =>
       $apply(FieldCopyWithData({if (targets != null) #targets: targets}));
@@ -118,6 +137,7 @@ class _TargetGroupModelCopyWithImpl<$R, $Out>
 
   @override
   TargetGroupModelCopyWith<$R2, TargetGroupModel, $Out2> $chain<$R2, $Out2>(
-          Then<$Out2, $R2> t) =>
-      _TargetGroupModelCopyWithImpl<$R2, $Out2>($value, $cast, t);
+    Then<$Out2, $R2> t,
+  ) => _TargetGroupModelCopyWithImpl<$R2, $Out2>($value, $cast, t);
 }
+

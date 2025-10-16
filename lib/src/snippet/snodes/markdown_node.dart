@@ -13,11 +13,9 @@ part 'markdown_node.mapper.dart';
 
 @MappableClass()
 class MarkdownNode extends CL with MarkdownNodeMappable {
-  String data;
+  String? data;
 
-  MarkdownNode({
-    this.data = SAMPLE_MD,
-  });
+  MarkdownNode({this.data});
 
   @override
   List<PNode> propertyNodes(BuildContext context, SNode? parentSNode) => [
@@ -55,7 +53,7 @@ class MarkdownNode extends CL with MarkdownNodeMappable {
       //possiblyHighlightSelectedNode(scName);
       return MarkdownWidget(
         key: createNodeWidgetGK(),
-        data: data,
+        data: data ?? SAMPLE_MD,
         config: MarkdownConfig(
           configs: [
             LinkConfig(
@@ -94,7 +92,8 @@ class MarkdownNode extends CL with MarkdownNodeMappable {
 
   static const String FLUTTER_TYPE = "Markdown";
 
-  static const SAMPLE_MD = """
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  final SAMPLE_MD = """
 # Markdown Example
 Markdown allows you to easily include formatted text, images, and even formatted
 Dart code in your app.

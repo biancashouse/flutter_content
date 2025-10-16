@@ -1,4 +1,3 @@
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -8,7 +7,6 @@ import 'package:flutter_content/src/api/editable_page/snippet_properties_tree_vi
 import 'package:flutter_content/src/api/editable_page/snippet_tree_view.dart';
 import 'package:flutter_content/src/api/editable_page/versions_menu_anchor.dart';
 
-// import 'package:flutter_content/src/api/editable_page/snippet_tree_pane.dart';
 import 'package:flutter_content/src/bloc/snippet_being_edited.dart';
 import 'package:go_router/go_router.dart';
 import 'package:multi_split_view/multi_split_view.dart';
@@ -52,13 +50,11 @@ class EditablePageState extends State<EditablePage> {
   late NamedScrollController namedSC;
   final kDividerThickness = 20.0;
   double sNodeTreeAreaMaxWidth = 0; // LayoutBuilder will update it
+  double pNodeTreeAreaMaxWidth = 0; // LayoutBuilder will update it
 
   SnippetBeingEdited? get snippetBeingEdited => fco.snippetBeingEdited;
 
   SNode? get selectedNode => fco.selectedNode;
-
-  // final GlobalKey<ScaffoldState> _propertiesScaffoldKey =
-  //     GlobalKey<ScaffoldState>();
 
   @override
   void initState() {
@@ -91,50 +87,50 @@ class EditablePageState extends State<EditablePage> {
     super.dispose();
   }
 
-  // void refreshSelectedNodeWidgetBorderOverlay(String? scName) {
-  //   if (fco.selectedNode != null) {
-  //     fco.dismiss('${fco.selectedNode!.nodeWidgetGK.hashCode}-pink-overlay');
-  //     fco.afterMsDelayDo(500, () {
-  //       showUnselectedNonTappableNodeWidgetOverlays();
-  //       Rect? borderRect = fco.selectedNode!.calcBborderRect();
-  //       if (borderRect != null) {
-  //         fco.selectedNode!.showNonTappableNodeWidgetOverlay(
-  //           // selected: true,
-  //           borderRect: borderRect,
-  //           scName: scName,
-  //         );
-  //       } else {
-  //         print('borderRect?');
-  //       }
-  //     });
-  //   }
-  // }
-
   @override
   Widget build(BuildContext context) {
-    print('EditablePageState ${widget.routePath}');
+    return BlocBuilder<CAPIBloC, CAPIState>(
+      // buildWhen: (previous, current) {
+      //   return true || current.isSignedIn != current.isSignedIn;
+      // },
+      builder: (context, state) {
+        bool isGuest = !fco.canEditContent();
+        return isGuest
+            ? buildWhenNotSignedIn(context)
+            : buildWhenSignedIn(context);
+      },
+    );
+  }
+
+  Widget buildWhenNotSignedIn(BuildContext context) => _guestPage();
+
+  Widget buildWhenSignedIn(BuildContext context) {
+    print('EditablePageState.buildWhenSignedIn ${widget.routePath}');
     return BlocConsumer<CAPIBloC, CAPIState>(
       listenWhen: (context, state) => fco.aNodeIsSelected,
       listener: (context, state) {
         // update selection widget overlay
         // skip if currently editing a markdown, quill, or uml
         if (fco.anyPresent(['quill-te', 'uml-te', 'markdown-te'])) return;
-        fco.afterMsDelayDo(kDebugMode ? 1000 : 300, () {
-          final selectedNode = state.snippetBeingEdited!.selectedNode;
-          if (mounted) {
-            Rect? borderRect = selectedNode!.calcBorderRect();
-            if (borderRect != null) {
-              selectedNode.showSelectedNonTappableNodeWidgetOverlay(
-                // selected: true,
-                borderRect: borderRect,
-                scName: namedSC.name,
-              );
-              // force an extra build to ensure sNodeTreeAreaMaxWidth set
-              fco.afterNextBuildDo(() {
-                setState(() {});
-              });
+        fco.dismissAll();
+        fco.afterNextBuildDo(() {
+          fco.afterNextBuildDo(() {
+            final selectedNode = state.snippetBeingEdited!.selectedNode;
+            if (mounted) {
+              Rect? borderRect = selectedNode!.calcBorderRect();
+              if (borderRect != null) {
+                selectedNode.showSelectedNonTappableNodeWidgetOverlay(
+                  // selected: true,
+                  borderRect: borderRect,
+                  scName: namedSC.name,
+                );
+              }
             }
-          }
+            fco.afterNextBuildDo(() {
+              // force an extra build to ensure sNodeTreeAreaMaxWidth set
+              setState(() {});
+            });
+          });
         });
       },
       buildWhen: (previous, current) {
@@ -142,14 +138,15 @@ class EditablePageState extends State<EditablePage> {
         // bool selectionChanged = current.snippetBeingEdited?.selectedNode !=
         //     previous.snippetBeingEdited?.selectedNode;
         // return true || nodeChanged || selectionChanged;
-        return !current.onlyTargetsWrappers &&
-            current.snippetNameShowingPinkOverlaysFor == null;
+        return !current.onlyTargetsWrappers
+        // && current.snippetNameShowingTappableOverlaysFor == null
+        ;
       },
-      builder: (context, state) => _page(),
+      builder: (context, state) => _signedInPage(),
     );
   }
 
-  Widget _page() {
+  Widget _signedInPage() {
     bool showSNodeTree() =>
         snippetBeingEdited != null; // && fco.selectedNode is! MarkdownNode;
     bool showPropertiesPane() =>
@@ -165,7 +162,20 @@ class EditablePageState extends State<EditablePage> {
           builder: (ctx, area) => LayoutBuilder(
             builder: (context, BoxConstraints constraints) {
               sNodeTreeAreaMaxWidth = constraints.maxWidth;
-              return _snodeTreeArea();
+              return _sNodeTreeArea();
+            },
+          ),
+          flex: 1,
+        ),
+      );
+    }
+    if (showPropertiesPane()) {
+      areas.add(
+        Area(
+          builder: (ctx, area) => LayoutBuilder(
+            builder: (context, BoxConstraints constraints) {
+              pNodeTreeAreaMaxWidth = constraints.maxWidth;
+              return _propertiesPanel();
             },
           ),
           flex: 1,
@@ -174,7 +184,7 @@ class EditablePageState extends State<EditablePage> {
     }
     areas.add(
       Area(
-        builder: (ctx, area) => _pageContentArea(),
+        builder: (ctx, area) => _pageContentArea(ctx),
         // {
         //   return fco.snippetBeingEdited == null
         //       ? _pageContentArea()
@@ -209,41 +219,58 @@ class EditablePageState extends State<EditablePage> {
             assert(rootNode.isValid());
             fco.saveNewVersion(snippet: rootNode);
             // refreshSelectedNodeWidgetBorderOverlay(rootNode.name);
-            showNodeWidgetOverlays();
+            // showNodeWidgetOverlays();
           }
         },
       ),
     );
 
     //
-    return Center(
-      child: Row(
-        mainAxisSize: MainAxisSize.max,
-        crossAxisAlignment: CrossAxisAlignment.stretch,
+    return Center(child: msvt);
+  }
+
+  Widget _guestPage() {
+    GlobalKey zoomerGk = GlobalKey();
+
+    Widget builtWidget = Material(
+      animateColor: true,
+      child: Stack(
+        fit: StackFit.loose,
         children: [
-          Expanded(child: msvt),
-          AnimatedContainer(
-            duration: const Duration(milliseconds: 500),
-            curve: Curves.easeInOut,
-            width: showPropertiesPane() ? 330.0 : 0.0,
-            color: showPropertiesPane()
-                ? Colors.purpleAccent[100]
-                : Colors.transparent,
-            child: ClipRect(
-              child: SizedBox(
-                width: 330.0,
-                // Ensures the child is laid out for the full width
-                child: _propertiesPanel(),
-              ),
+          // normal user view, wrapped in a Zoomer
+          Zoomer(key: zoomerGk, child: widget.child),
+          // show pencil signin icon button
+          Align(
+            alignment: Alignment.topRight,
+            child: Padding(
+              padding: EdgeInsets.only(right: fco.canEditContent() ? 68 : 8.0),
+              child: fco.NavigationDD(pencilIconColor: Colors.red),
             ),
           ),
         ],
       ),
     );
+
+    return fco.isAndroid
+        ? fco.androidAwareBuild(context, builtWidget)
+        : builtWidget;
   }
 
-  Widget _pageContentArea() {
+  Widget _pageContentArea(content) {
     GlobalKey zoomerGk = GlobalKey();
+
+    // set widgetToShow when in select widget mode
+    Widget? widgetToShow;
+    if (fco.inSelectWidgetMode) {
+      SnippetName snippetName = fco.capiBloc.state.showOnlySnippet!;
+      SnippetInfoModel? snippetInfo = SnippetInfoModel.cachedSnippetInfo(
+        snippetName,
+      );
+      widgetToShow = snippetInfo?.currentVersionFromCache()?.buildFlutterWidget(
+        context,
+        null,
+      );
+    }
 
     final aSnippetIsBeingEdited = fco.snippetBeingEdited != null;
     // final possiblyACalloutContentId = fco.snippetBeingEdited
@@ -264,7 +291,7 @@ class EditablePageState extends State<EditablePage> {
             // EditablePage.removeAllTappableNodeWidgetOverlays();
             fco.dismissAll();
             // show a barrier for any parts of page not being edited
-            showNodeWidgetOverlays();
+            // showNodeWidgetOverlays();
             // protect iFrames and PlatformViews with an overlay having PointerInterceptor
             // showNodeWidgetOverlays();
             // fco.afterNextBuildDo(() {});
@@ -277,32 +304,39 @@ class EditablePageState extends State<EditablePage> {
           onTap: () {
             // exitEditMode();
             fco.capiBloc.add(CAPIEvent.exitSelectWidgetMode());
-            fco.afterNextBuildDo(() {
-              fco.afterMsDelayDo(1000, () {
-                showNodeWidgetOverlays();
-              });
-            });
+            // fco.afterNextBuildDo(() {
+            //   fco.afterMsDelayDo(1000, () {
+            //     showNodeWidgetOverlays();
+            //   });
+            // });
           },
           child: Material(
+            animateColor: true,
             child: Stack(
+              fit: StackFit.loose,
               children: [
                 if (aSnippetIsBeingEdited)
-                  SnippetBuilder.fromNodes(
-                    // panelName: 'demo-buttons',
-                    snippetRootNode: snippetBeingEdited!.getRootNode(),
-                    // snippetRootNode: SnippetRootNode(
-                    //   name: 'we-create-flutter-apps-and-packages',
-                    //   child: PlaceholderNode()
-                    // ),
-                    scName: null, //sC.name, because no scrolling used
+                  // show just that snippet
+                  Scaffold(
+                    appBar: AppBar(
+                      backgroundColor: Colors.purple,
+                      title: fco.coloredText("preview", color: Colors.white),
+                    ),
+                    body: SnippetBuilder.fromNodes(
+                      // panelName: 'demo-buttons',
+                      snippetRootNode: snippetBeingEdited!.getRootNode(),
+                      // snippetRootNode: SnippetRootNode(
+                      //   name: 'we-create-flutter-apps-and-packages',
+                      //   child: PlaceholderNode()
+                      // ),
+                      scName: null, //sC.name, because no scrolling used
+                    ),
                   ),
-                //if (!editingACalloutContentSnippet) snippetBeingEdited!.getRootNode().toWidget(context, null),
-                // if (aSnippetIsBeingEdited)
-                //   if (editingACalloutContentSnippet) const Offstage(),
                 if (!aSnippetIsBeingEdited)
+                  // normal user view, wrapped in a Zoomer
                   Zoomer(
                     key: zoomerGk,
-                    child: widget.child,
+                    child: widgetToShow ?? widget.child,
                     // child: BlocBuilder<CAPIBloC, CAPIState>(
                     //     builder: (blocContext, state) {
                     //   return widget.child;
@@ -311,17 +345,21 @@ class EditablePageState extends State<EditablePage> {
                 if (aSnippetIsBeingEdited &&
                     fco.selectedNode != null &&
                     mounted)
+                  // show a cutout barrier for selected snode
                   ModalBarrierWithCutout(
                     cutoutRect:
                         (fco.selectedNode?.calcBorderRect() ?? Rect.zero)
                             .translate(
-                              -sNodeTreeAreaMaxWidth - kDividerThickness,
+                              -sNodeTreeAreaMaxWidth -
+                                  pNodeTreeAreaMaxWidth -
+                                  kDividerThickness * 2,
                               0,
                             ),
-                    color: Colors.grey,
+                    color: Colors.purple,
                     opacity: .75,
                   ),
                 if (!aSnippetIsBeingEdited)
+                  // show pencil signin icon button
                   Align(
                     alignment: Alignment.topRight,
                     child: Padding(
@@ -331,20 +369,6 @@ class EditablePageState extends State<EditablePage> {
                       child: fco.NavigationDD(pencilIconColor: Colors.red),
                     ),
                   ),
-                // Builder(
-                //   builder: (context) {
-                //     Widget? cutout;
-                //     if (capiState.cutoutRect != null) {
-                //       cutout = CustomPaint(
-                //         foregroundPainter: CutoutPainter(
-                //           cutoutRect: capiState.cutoutRect!,
-                //         ),
-                //         size: Size.infinite,
-                //       );
-                //     }
-                //     return cutout ?? const Offstage();
-                //   },
-                // ),
               ],
             ),
           ),
@@ -358,7 +382,7 @@ class EditablePageState extends State<EditablePage> {
         : builtWidget;
   }
 
-  Widget _snodeTreeArea() {
+  Widget _sNodeTreeArea() {
     SNode? rootNode = snippetBeingEdited?.treeC.roots.first.rootNodeOfSnippet();
     if (rootNode is SnippetRootNode) {
       SnippetName snippetName = rootNode.name;
@@ -385,118 +409,105 @@ class EditablePageState extends State<EditablePage> {
             // });
             fco.hide("floating-clipboard");
           },
-          child: Column(
-            children: [
-              Container(
-                color: Colors.purple,
-                child: Row(
-                  mainAxisSize: MainAxisSize.max,
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  crossAxisAlignment: CrossAxisAlignment.end,
-                  children: [
-                    Spacer(),
-                    Row(
-                      children: [
-                        IconButton(
-                          hoverColor: Colors.white30,
-                          onPressed: () async {
-                            CAPIState capiState = fco.capiBloc.state;
-                            if (!snippetInfo.isFirstVersion()) {
-                              VersionId? prevId = snippetInfo
-                                  .previousVersionId();
-                              revertToVersion(prevId, snippetInfo, capiState);
-                            }
-                          },
-                          icon: Icon(
-                            Icons.undo,
-                            color:
-                                !snippetInfo
-                                    .isFirstVersion() //|| fco.capiBloc.canUndo
-                                ? Colors.white
-                                : Colors.white54,
-                          ),
-                          tooltip: 'previous version',
-                        ),
-                        IconButton(
-                          hoverColor: Colors.white30,
-                          onPressed: () {
-                            CAPIState capiState = fco.capiBloc.state;
-                            if (!snippetInfo.isLatestVersion()) {
-                              VersionId? nextId = snippetInfo.nextVersionId();
-                              revertToVersion(nextId, snippetInfo, capiState);
-                            }
-                          },
-                          icon: Icon(
-                            Icons.redo,
-                            color:
-                                !snippetInfo
-                                    .isLatestVersion() //|| fco.capiBloc.canRedo
-                                ? Colors.white
-                                : Colors.white54,
-                          ),
-                          tooltip: 'next version',
-                        ),
-                        IconButton(
-                          hoverColor: Colors.white30,
-                          onPressed: () async {},
-                          icon: VersionsMenuAnchor(snippetInfo: snippetInfo),
-                        ),
-                        IconButton(
-                          onPressed: () {
-                            // SNode.unhighlightSelectedNode();
-                            // if was editing a callout content snippet, dismiss all callouts
-                            if (SnippetRootNode.isHotspotCalloutContent(
-                              snippetName,
-                            )) {
-                              fco.dismissAll();
-                            } else {
-                              dismissAllNodeWidgetOverlays();
-                              // fco.dismissAll(exceptFeatures: [CalloutConfigToolbar.CID]);
-                              fco.unhide(CalloutConfigToolbar.CID);
-                              fco.appInfo.hideClipboard();
-                            }
-                            fco.capiBloc.add(
-                              const CAPIEvent.popSnippetEditor(),
-                            );
-                            // fco.afterNextBuildDo(() {
-                            //   NamedScrollController.restoreOffset(scName);
-                            // });
-                          },
-                          icon: Icon(Icons.close),
-                        ),
-                      ],
+          child: Material(
+            child: Scaffold(
+              appBar: AppBar(
+                backgroundColor: Colors.purple,
+                title: fco.coloredText("Snippet", color: Colors.white),
+                centerTitle: true, // Add this line
+                actions: [
+                  IconButton(
+                    hoverColor: Colors.white30,
+                    onPressed: () async {
+                      CAPIState capiState = fco.capiBloc.state;
+                      if (!snippetInfo.isFirstVersion()) {
+                        VersionId? prevId = snippetInfo.previousVersionId();
+                        revertToVersion(prevId, snippetInfo, capiState);
+                      }
+                    },
+                    icon: Icon(
+                      Icons.undo,
+                      color:
+                          !snippetInfo
+                              .isFirstVersion() //|| fco.capiBloc.canUndo
+                          ? Colors.white
+                          : Colors.white54,
                     ),
-                  ],
-                ),
+                    tooltip: 'previous version',
+                  ),
+                  IconButton(
+                    hoverColor: Colors.white30,
+                    onPressed: () {
+                      CAPIState capiState = fco.capiBloc.state;
+                      if (!snippetInfo.isLatestVersion()) {
+                        VersionId? nextId = snippetInfo.nextVersionId();
+                        revertToVersion(nextId, snippetInfo, capiState);
+                      }
+                    },
+                    icon: Icon(
+                      Icons.redo,
+                      color:
+                          !snippetInfo
+                              .isLatestVersion() //|| fco.capiBloc.canRedo
+                          ? Colors.white
+                          : Colors.white54,
+                    ),
+                    tooltip: 'next version',
+                  ),
+                  IconButton(
+                    hoverColor: Colors.white30,
+                    onPressed: () async {},
+                    icon: VersionsMenuAnchor(snippetInfo: snippetInfo),
+                  ),
+                  IconButton(
+                    onPressed: () {
+                      // SNode.unhighlightSelectedNode();
+                      // if was editing a callout content snippet, dismiss all callouts
+                      if (SnippetRootNode.isHotspotCalloutContent(
+                        snippetName,
+                      )) {
+                        fco.dismissAll();
+                      } else {
+                        dismissAllNodeWidgetOverlays();
+                        // fco.dismissAll(exceptFeatures: [CalloutConfigToolbar.CID]);
+                        fco.unhide(CalloutConfigToolbar.CID);
+                        fco.appInfo.hideClipboard();
+                      }
+                      fco.capiBloc.add(const CAPIEvent.popSnippetEditor());
+                      // fco.afterNextBuildDo(() {
+                      //   NamedScrollController.restoreOffset(scName);
+                      // });
+                    },
+                    icon: Icon(Icons.close),
+                  ),
+                ],
               ),
-              Expanded(
-                child: Material(
-                  color: Colors.purple.shade200,
-                  child: Padding(
-                    padding: const EdgeInsets.all(10),
-                    child: InteractiveViewer(
-                      transformationController: fco.snippetTreeTC,
-                      // trackpadScrollCausesScale: true,
-                      alignment: Alignment.topLeft,
-                      constrained: false,
-                      // onInteractionStart: (_) => snippetBloc.add(const CAPIEvent.clearNodeSelection()),
-                      // onInteractionEnd: (_) => snippetBloc.add(const CAPIEvent.clearNodeSelection()),
-                      child: SizedBox(
-                        width: 700,
-                        height: 1200,
-                        child: Builder(
-                          builder: (context) {
-                            // fco.logger.i('SnippetTreeView...');
-                            return SnippetTreeView(scName: namedSC.name);
-                          },
-                        ),
+              body: Material(
+                color: Colors.purple.shade200,
+                child: Padding(
+                  padding: const EdgeInsets.all(10),
+                  child: InteractiveViewer(
+                    transformationController: fco.snippetTreeTC,
+                    // trackpadScrollCausesScale: true,
+                    alignment: Alignment.topLeft,
+                    constrained: false,
+                    // onInteractionStart: (_) => snippetBloc.add(const CAPIEvent.clearNodeSelection()),
+                    // onInteractionEnd: (_) => snippetBloc.add(const CAPIEvent.clearNodeSelection()),
+                    child: SizedBox(
+                      width: 700,
+                      height: 1200,
+                      child: Builder(
+                        builder: (context) {
+                          // fco.logger.i('SnippetTreeView...');
+                          return SnippetTreeView(scName: namedSC.name);
+                        },
                       ),
                     ),
                   ),
                 ),
-                // SnippetTreePane(snippetInfo, widget.routePath),
               ),
-            ],
+              // SnippetTreePane(snippetInfo, widget.routePath),
+            ),
           ),
         );
       }
@@ -513,73 +524,75 @@ class EditablePageState extends State<EditablePage> {
     // pTreeC!.collapseAll();
     return !showingProperties || propertiesPaneSC == null
         ? const Offstage()
-        : Container(
-            color: Colors.blue[50],
-            child: ListView(
-              controller: selectedNode!.propertiesPaneSC(),
-              shrinkWrap: true,
-              children: [
-                // NODE PROPERTIES TREE
-                Material(
-                  color: Colors.blue[50],
-                  child: PropertiesTreeView(
-                    treeC: pTreeC!,
-                    sNode: selectedNode!,
-                  ),
-                ),
-                if (pTreeC.roots.length < 2)
-                  Material(
-                    // color: Colors.purpleAccent[50],
-                    child: fco.coloredText(
-                      ' (${selectedNode.toString()} has no properties)',
-                      color: Colors.black87,
+        : Scaffold(
+            appBar: AppBar(
+              backgroundColor: Colors.purple,
+              title: fco.coloredText(
+                "Properties (selected node)",
+                color: Colors.white,
+              ),
+            ),
+            body: Material(
+              color: Colors.blue[50],
+              child: Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: InteractiveViewer(
+                  transformationController: fco.propertiesTreeTC,
+                  alignment: Alignment.topLeft,
+                  constrained: false,
+                  child: SizedBox(
+                    width: 330,
+                    height: 1000,
+                    child: PropertiesTreeView(
+                      treeC: pTreeC!,
+                      sNode: selectedNode!,
                     ),
                   ),
-                // Container(color: Colors.purpleAccent[100], width: double.infinity, height: 1000),
-              ],
+                ),
+              ),
             ),
           );
   }
 
   // only called with MaterialAppWrapper context
-  void showNodeWidgetOverlays() {
-    return;
-    void traverseAndMeasure(BuildContext el) {
-      if ((fco.nodesByGK.containsKey(el.widget.key))) {
-        GlobalKey gk = el.widget.key as GlobalKey;
-        SNode? node = fco.nodesByGK[gk];
-        if (node != null) {
-          Rect? r = gk.globalPaintBounds(
-            skipWidthConstraintWarning: true,
-            skipHeightConstraintWarning: true,
-          );
-          if (r != null) {
-            r = fco.restrictRectToScreen(r);
-            if (fco.inSelectWidgetMode &&
-                    node.canShowTappableNodeWidgetOverlay ||
-                node.isHtmlElementViewOrPlatformView()) {
-              node.showTappableNodeWidgetOverlay(
-                context,
-                // whiteBarrier: overlayWithABarrier,
-                scName: widget.routePath,
-              );
-            }
-          }
-        }
-      }
-
-      el.visitChildElements((innerEl) {
-        traverseAndMeasure(innerEl);
-      });
-    }
-
-    dismissAllNodeWidgetOverlays();
-
-    var pageContext = context;
-    traverseAndMeasure(pageContext);
-    // fco.showingNodeBoundaryOverlays = true;
-    // fco.logger.i('traverseAndMeasure(context) finished.');
-  }
+  // void showNodeWidgetOverlays() {
+  //   return;
+  //   void traverseAndMeasure(BuildContext el) {
+  //     if ((fco.nodesByGK.containsKey(el.widget.key))) {
+  //       GlobalKey gk = el.widget.key as GlobalKey;
+  //       SNode? node = fco.nodesByGK[gk];
+  //       if (node != null) {
+  //         Rect? r = gk.globalPaintBounds(
+  //           skipWidthConstraintWarning: true,
+  //           skipHeightConstraintWarning: true,
+  //         );
+  //         if (r != null) {
+  //           r = fco.restrictRectToScreen(r);
+  //           if (fco.inSelectWidgetMode &&
+  //                   node.canShowTappableNodeWidgetOverlay ||
+  //               node.isHtmlElementViewOrPlatformView()) {
+  //             node.showTappableNodeWidgetOverlay(
+  //               context,
+  //               // whiteBarrier: overlayWithABarrier,
+  //               scName: widget.routePath,
+  //             );
+  //           }
+  //         }
+  //       }
+  //     }
+  //
+  //     el.visitChildElements((innerEl) {
+  //       traverseAndMeasure(innerEl);
+  //     });
+  //   }
+  //
+  //   dismissAllNodeWidgetOverlays();
+  //
+  //   var pageContext = context;
+  //   traverseAndMeasure(pageContext);
+  //   // fco.showingNodeBoundaryOverlays = true;
+  //   // fco.logger.i('traverseAndMeasure(context) finished.');
+  // }
 
   void dismissAllNodeWidgetOverlays() {
     for (GlobalKey nodeWidgetGK in fco.nodesByGK.keys) {
@@ -670,56 +683,83 @@ class EditablePageState extends State<EditablePage> {
       return false;
     });
     fco.showOverlay(
-      calloutContent: Column(
-        mainAxisSize: MainAxisSize.max,
-        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-        crossAxisAlignment: CrossAxisAlignment.center,
-        children: [
-          fco.purpleText("Editor Access", fontSize: 24, family: 'Merriweather'),
-          Container(
-            padding: const EdgeInsets.symmetric(horizontal: 12),
-            width: 240,
-            height: 100,
-            child: StringOrNumberEditor(
-              inputType: String,
-              prompt: () => 'password',
-              originalS: '',
-              onTextChangedF: (String s) async {
-                if (!fco.appInfo.editorPasswords.contains(s)) {
-                  return;
-                }
-                // if (!kDebugMode && !(fco.editorPasswords.contains(s))) return;
-                fco.dismiss(cid_EditorPassword);
-                fco.setCanEditContent(true);
-                // await FC.loadLatestSnippetMap();
-                // fco.capiBloc.add(const CAPIEvent.hideAllTargetGroupsAndBtns());
-                // fco.afterNextBuildDo(() {
-                //   FC()
-                //       .capiBloc
-                //       .add(const CAPIEvent.unhideAllTargetGroupsAndBtns());
-                //   showDevToolsFAB();
-                // });
-                // fco.dismiss("editor-password");
-                fco.capiBloc.add(
-                  const CAPIEvent.forceRefresh(onlyTargetsWrappers: true),
-                );
-              },
-              onEscapedF: (_) {
-                fco.dismiss(cid_EditorPassword);
-              },
-              dontAutoFocus: false,
-              isPassword: true,
-              onEditingCompleteF: (s) {
-                // if (s == "lakebeachocean") {
-                //   FCO.om.remove("TrainerPassword".hashCode);
-                //   setState(() {
-                //     HydratedBloc.storage.write("trainerIsSignedIn", true);
-                //   });
-                // }
-              },
-            ),
+      calloutContent: Card(
+        color: Colors.white,
+        elevation: 4,
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+        child: Container(
+          margin: EdgeInsets.all(12),
+          width: 320,
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              fco.purpleText(
+                "Editor Access\n",
+                fontSize: 24,
+                family: 'Merriweather',
+              ),
+
+              StringOrNumberEditor(
+                inputType: String,
+                prompt: () => 'password',
+                originalS: '',
+                onTextChangedF: (String s) async {
+                  if (!fco.appInfo.editorPasswords.contains(s)) {
+                    return;
+                  }
+                  // if (!kDebugMode && !(fco.editorPasswords.contains(s))) return;
+                  fco.dismiss(cid_EditorPassword);
+                  fco.capiBloc.add(
+                    CAPIEvent.signedIn(asGuestEditor: s == "GUEST"),
+                  );
+                },
+                onEscapedF: (_) {
+                  fco.dismiss(cid_EditorPassword);
+                },
+                dontAutoFocus: false,
+                isPassword: true,
+                onEditingCompleteF: (s) {
+                  // if (s == "lakebeachocean") {
+                  //   FCO.om.remove("TrainerPassword".hashCode);
+                  //   setState(() {
+                  //     HydratedBloc.storage.write("trainerIsSignedIn", true);
+                  //   });
+                  // }
+                },
+              ),
+              Text.rich(
+                TextSpan(
+                  text: '\n\nAnonymous Users:\n',
+                  style: TextStyle(
+                    fontWeight: FontWeight.bold,
+                    color: Colors.black,
+                  ),
+                  children: [
+                    TextSpan(
+                      text:
+                          'If you\'d like to see how editing works in an\n'
+                          'app built with our ',
+                      style: TextStyle(fontWeight: FontWeight.normal),
+                    ),
+                    TextSpan(
+                      text: 'flutter_content',
+                      style: TextStyle(fontWeight: FontWeight.bold),
+                    ),
+                    TextSpan(
+                      text:
+                          ' package,\nuse password "GUEST".\n'
+                          'Any changes you make will be discarded when\n'
+                              'you leave this browser tab, or sign out.',
+                      style: TextStyle(fontWeight: FontWeight.normal),
+                    ),
+                  ],
+                ),
+              ),
+            ],
           ),
-        ],
+        ),
       ),
       calloutConfig: CalloutConfig(
         cId: cid_EditorPassword,
@@ -732,11 +772,11 @@ class EditablePageState extends State<EditablePage> {
             fco.dismiss(cid_EditorPassword);
           },
         ),
-        initialCalloutW: 240,
-        initialCalloutH: 150,
-        decorationBorderRadius: 12,
-        // arrowType: ArrowTypeEnumModel.THIN_REVERSED,
-        decorationFillColors: ColorOrGradient.color(Colors.white),
+        // initialCalloutW: 300,
+        // initialCalloutH: 240,
+        // decorationBorderRadius: 12,
+        // // arrowType: ArrowTypeEnumModel.THIN_REVERSED,
+        // decorationFillColors: ColorOrGradient.color(Colors.white),
         scrollControllerName: widget.routePath,
         onDismissedF: () {
           fco.removeKeystrokeHandler(cid_EditorPassword);
@@ -749,7 +789,7 @@ class EditablePageState extends State<EditablePage> {
 
   static final String cid_editablePageName = "user-editable-page-name";
 
-  void pageNameDialog() {
+  void showPageNameDialog() {
     fco.registerKeystrokeHandler(cid_editablePageName, (KeyEvent event) {
       if (event.logicalKey == LogicalKeyboardKey.escape) {
         fco.dismiss(cid_editablePageName);
@@ -891,8 +931,8 @@ class EditablePageState extends State<EditablePage> {
       if (revertedVersion != null) {
         final newTreeC = SnippetTreeController(
           roots: [revertedVersion],
-          childrenProvider: Node.snippetTreeChildrenProvider,
-          parentProvider: Node.snippetTreeParentProvider,
+          childrenProvider: SNode.childrenProvider,
+          parentProvider: SNode.parentProvider,
         );
 
         newTreeC.roots.first.validateTree();

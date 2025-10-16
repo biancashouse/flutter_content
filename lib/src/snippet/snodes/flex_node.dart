@@ -24,48 +24,49 @@ abstract class FlexNode extends MC with FlexNodeMappable {
   });
 
   @override
-  List<PNode> propertyNodes(BuildContext context, SNode? parentSNode) =>
-      [
-        FlutterDocPNode(
-            buttonLabel: 'Flex',
-            webLink:
-            'https://api.flutter.dev/flutter/widgets/Flex-class.html',
-            snode: this,
-            name: 'fyi'),
-        EnumPNode<MainAxisAlignmentEnumModel?>(
-          snode: this,
-          name: 'mainAxisAlignment',
-          valueIndex: mainAxisAlignment?.index,
-          onIndexChange: (newValue) =>
-              refreshWithUpdate(context,
-                      () =>
-                  mainAxisAlignment = MainAxisAlignmentEnumModel.of(newValue)),
-        ),
-        EnumPNode<MainAxisSizeEnum?>(
-          snode: this,
-          name: 'mainAxisSize',
-          valueIndex: mainAxisSize?.index,
-          onIndexChange: (newValue) =>
-              refreshWithUpdate(
-                  context, () => mainAxisSize = MainAxisSizeEnum.of(newValue)),
-        ),
-        EnumPNode<CrossAxisAlignmentEnumModel?>(
-          snode: this,
-          name: 'crossAxisAlignment',
-          valueIndex: crossAxisAlignment?.index,
-          onIndexChange: (newValue) =>
-              refreshWithUpdate(context,
-                      () =>
-                  crossAxisAlignment =
-                      CrossAxisAlignmentEnumModel.of(newValue)),
-        ),
-      ];
+  List<PNode> propertyNodes(BuildContext context, SNode? parentSNode) => [
+    FlutterDocPNode(
+      buttonLabel: 'Flex',
+      webLink: 'https://api.flutter.dev/flutter/widgets/Flex-class.html',
+      snode: this,
+      name: 'fyi',
+    ),
+    EnumPNode<MainAxisAlignmentEnumModel?>(
+      snode: this,
+      name: 'mainAxisAlignment',
+      valueIndex: mainAxisAlignment?.index,
+      onIndexChange: (newValue) => refreshWithUpdate(
+        context,
+        () => mainAxisAlignment = MainAxisAlignmentEnumModel.of(newValue),
+      ),
+    ),
+    EnumPNode<MainAxisSizeEnum?>(
+      snode: this,
+      name: 'mainAxisSize',
+      valueIndex: mainAxisSize?.index,
+      onIndexChange: (newValue) => refreshWithUpdate(
+        context,
+        () => mainAxisSize = MainAxisSizeEnum.of(newValue),
+      ),
+    ),
+    EnumPNode<CrossAxisAlignmentEnumModel?>(
+      snode: this,
+      name: 'crossAxisAlignment',
+      valueIndex: crossAxisAlignment?.index,
+      onIndexChange: (newValue) => refreshWithUpdate(
+        context,
+        () => crossAxisAlignment = CrossAxisAlignmentEnumModel.of(newValue),
+      ),
+    ),
+  ];
 
   @override
-  List<Widget> menuAnchorWidgets_WrapWith(BuildContext context,
-      NodeAction action,
-      bool? skipHeading,
-      ScrollControllerName? scName,) {
+  List<Widget> menuAnchorWidgets_WrapWith(
+    BuildContext context,
+    NodeAction action,
+    bool? skipHeading,
+    ScrollControllerName? scName,
+  ) {
     return [
       ...super.menuAnchorWidgets_Heading(context, action, scName),
       menuItemButton(context, "Expanded", ExpandedNode, action, scName),
@@ -80,139 +81,120 @@ abstract class FlexNode extends MC with FlexNodeMappable {
       setParent(parentNode);
       //ScrollControllerName? scName = EditablePage.name(context);
       //possiblyHighlightSelectedNode(scName);
-      late Widget w;
-      bool needsIntrinsicWidth = false;
-      bool needsIntrinsicHeight = false;
-      try {
-        w = LayoutBuilder(builder: (context, constraints) {
-          if (false&&this is RowNode && constraints.maxWidth == double.infinity) {
-            return Error(
-                key: createNodeWidgetGK(),
-                FLUTTER_TYPE,
-                color: Colors.red,
-                size: 16,
-                errorMsg: "This ${this.toString()} has an infinite max Constraints Error!");
-          } else
-          if (false&&this is ColumnNode && constraints.maxHeight == double.infinity) {
-            return Error(
-                key: createNodeWidgetGK(),
-                FLUTTER_TYPE,
-                color: Colors.pink,
-                size: 16,
-                errorMsg: "This ${this.toString()} has an infinite max Constraints Error!");
-          }
-          return Flex(
-            direction: this is RowNode ? Axis.horizontal : Axis.vertical,
-            key: createNodeWidgetGK(),
-            mainAxisAlignment:
-            mainAxisAlignment?.flutterValue ?? MainAxisAlignment.start,
-            mainAxisSize: mainAxisSize?.flutterValue ?? MainAxisSize.max,
-            crossAxisAlignment:
-            crossAxisAlignment?.flutterValue ?? CrossAxisAlignment.center,
-            textBaseline: TextBaseline.alphabetic,
-            children:
-            children.map((childNode) {
-              // enforce a wrapper for each child
-              if (childNode is! ExpandedNode && childNode is! FlexibleNode) {
-                return Flexible(fit: FlexFit.loose,
-                    child: childNode.buildFlutterWidget(context, this));
-              } else {
-                return childNode.buildFlutterWidget(context, this);
-              }
-            }).toList(),
-          );
-        });
-      } catch (e) {
-        w = _Error();
-        fco.logger.i(
-            'Flex() failed to render properly. ===============================================');
-      }
-
-      return w;
+      return LayoutBuilder(
+        builder: (context, constraints) {
+          bool rowConstraintError =
+              (this is RowNode && constraints.maxWidth == double.infinity);
+          bool columnConstraintError =
+              (this is ColumnNode && constraints.maxHeight == double.infinity);
+          return rowConstraintError || columnConstraintError
+              ? Error(
+                  key: createNodeWidgetGK(),
+                  "${toString()} ${uid}",
+                  color: Colors.red,
+                  size: 16,
+                  errorMsg:
+                      "${toString()} Parent has an infinite ${this is RowNode ? 'maxWidth' : 'maxHeight'} Constraints Error!",
+                )
+              : Flex(
+                  direction: this is RowNode ? Axis.horizontal : Axis.vertical,
+                  key: createNodeWidgetGK(),
+                  mainAxisAlignment:
+                      mainAxisAlignment?.flutterValue ??
+                      MainAxisAlignment.start,
+                  mainAxisSize: mainAxisSize?.flutterValue ?? MainAxisSize.min,
+                  crossAxisAlignment:
+                      crossAxisAlignment?.flutterValue ??
+                      CrossAxisAlignment.center,
+                  textBaseline: TextBaseline.alphabetic,
+                  children: children
+                      .map(
+                        (childNode) =>
+                            childNode.buildFlutterWidget(context, this),
+                      )
+                      .toList(),
+                );
+        },
+      );
     } catch (e) {
       return Error(
-          key: createNodeWidgetGK(),
-          FLUTTER_TYPE,
-          color: Colors.red,
-          size: 16,
-          errorMsg: e.toString());
+        key: createNodeWidgetGK(),
+        toString(),
+        color: Colors.red,
+        size: 16,
+        errorMsg: e.toString(),
+      );
     }
   }
 
-  Widget _Error() =>
-      SizedBox(width: 20, height: 20,
-        child: const Row(
-          children: [
-            Icon(
-              Icons.error,
-              color: Colors.red,
-            ),
-            Gap(10),
-            Text('Row has infinite maxWidth constraint!'),
-          ],
-        ),
-      );
+  @override
+  List<Type> wrapWithRecommendations() => [
+    ExpandedNode,
+    FlexibleNode,
+    // PositionedNode,
+    // AlignNode,
+  ];
 
-  // @override
+  @override
   List<Type> addChildRecommendations() => [ExpandedNode, FlexibleNode];
 
-// bool get isRow {
-//   throw UnimplementedError('FlexNode.isRow !');
-// }
+  // bool get isRow {
+  //   throw UnimplementedError('FlexNode.isRow !');
+  // }
 
-// @override
-// List<Widget> nodePropertyEditors(BuildContext context, {bool allowButtonCallouts = false}) => [
-//       NodePropertyButtonEnum(
-//         label: 'mainAxisAlignment',
-//         menuItems: MainAxisAlignmentEnumModel.values.map((e) => e.toMenuItem(isRow)).toList(),
-//         originalEnumIndex: mainAxisAlignment?.index,
-//         onChangeF: (newOption) {
-//           mainAxisAlignment = MainAxisAlignmentEnumModel.values[newOption];
-//           bloc.add(const CAPIEvent.forceRefresh());
-//         },
-//         wrap: !isRow,
-//         calloutSize: MainAxisAlignmentEnumModel.calloutSize(isRow: isRow),
-//       ),
-//       const SizedBox(width: 10, height: 10),
-//       Container(
-//         color: Colors.purple,
-//         padding: const EdgeInsets.all(8.0),
-//         child: Column(
-//           children: [
-//             Text('mainAxisSize:'),
-//             const SizedBox(width: 10),
-//             MainAxisSizeEditor(
-//               originalValue: mainAxisSize,
-//               onChangedF: (newValue) {
-//                 mainAxisSize = newValue;
-//                 bloc.add(const CAPIEvent.forceRefresh());
-//               },
-//             ),
-//           ],
-//         ),
-//       ),
-//       // NodePropertyButtonRadioMenu(
-//       //   label: 'mainAxisSize',
-//       //   menuItems: NodeMainAxisSize.values.map((e) => e.toMenuItem()).toList(),
-//       //   originalOption: mainAxisSize?.index,
-//       //   onChangeF: (newOption) {
-//       //     mainAxisSize = NodeMainAxisSize.values[newOption];
-//       //     bloc.add(const CAPIEvent.forceRefresh());
-//       //   },
-//       //   calloutSize: NodeMainAxisSize.calloutSize,
-//       // ),
-//       NodePropertyButtonEnum(
-//         label: 'crossAxisAlignment',
-//         menuItems: CrossAxisAlignmentEnumModel.values.map((e) => e.toMenuItem(isRow)).toList(),
-//         originalEnumIndex: crossAxisAlignment?.index,
-//         onChangeF: (newOption) {
-//           crossAxisAlignment = CrossAxisAlignmentEnumModel.values[newOption];
-//           bloc.add(const CAPIEvent.forceRefresh());
-//         },
-//         wrap: !isRow,
-//         calloutSize: CrossAxisAlignmentEnumModel.calloutSize(isRow: isRow),
-//       ),
-//     ];
+  // @override
+  // List<Widget> nodePropertyEditors(BuildContext context, {bool allowButtonCallouts = false}) => [
+  //       NodePropertyButtonEnum(
+  //         label: 'mainAxisAlignment',
+  //         menuItems: MainAxisAlignmentEnumModel.values.map((e) => e.toMenuItem(isRow)).toList(),
+  //         originalEnumIndex: mainAxisAlignment?.index,
+  //         onChangeF: (newOption) {
+  //           mainAxisAlignment = MainAxisAlignmentEnumModel.values[newOption];
+  //           bloc.add(const CAPIEvent.forceRefresh());
+  //         },
+  //         wrap: !isRow,
+  //         calloutSize: MainAxisAlignmentEnumModel.calloutSize(isRow: isRow),
+  //       ),
+  //       const SizedBox(width: 10, height: 10),
+  //       Container(
+  //         color: Colors.purple,
+  //         padding: const EdgeInsets.all(8.0),
+  //         child: Column(
+  //           children: [
+  //             Text('mainAxisSize:'),
+  //             const SizedBox(width: 10),
+  //             MainAxisSizeEditor(
+  //               originalValue: mainAxisSize,
+  //               onChangedF: (newValue) {
+  //                 mainAxisSize = newValue;
+  //                 bloc.add(const CAPIEvent.forceRefresh());
+  //               },
+  //             ),
+  //           ],
+  //         ),
+  //       ),
+  //       // NodePropertyButtonRadioMenu(
+  //       //   label: 'mainAxisSize',
+  //       //   menuItems: NodeMainAxisSize.values.map((e) => e.toMenuItem()).toList(),
+  //       //   originalOption: mainAxisSize?.index,
+  //       //   onChangeF: (newOption) {
+  //       //     mainAxisSize = NodeMainAxisSize.values[newOption];
+  //       //     bloc.add(const CAPIEvent.forceRefresh());
+  //       //   },
+  //       //   calloutSize: NodeMainAxisSize.calloutSize,
+  //       // ),
+  //       NodePropertyButtonEnum(
+  //         label: 'crossAxisAlignment',
+  //         menuItems: CrossAxisAlignmentEnumModel.values.map((e) => e.toMenuItem(isRow)).toList(),
+  //         originalEnumIndex: crossAxisAlignment?.index,
+  //         onChangeF: (newOption) {
+  //           crossAxisAlignment = CrossAxisAlignmentEnumModel.values[newOption];
+  //           bloc.add(const CAPIEvent.forceRefresh());
+  //         },
+  //         wrap: !isRow,
+  //         calloutSize: CrossAxisAlignmentEnumModel.calloutSize(isRow: isRow),
+  //       ),
+  //     ];
 
   @override
   String toString() => FLUTTER_TYPE;

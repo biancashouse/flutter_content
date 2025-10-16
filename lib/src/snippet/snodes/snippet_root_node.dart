@@ -7,25 +7,23 @@ import 'package:flutter_content/src/snippet/pnodes/string_pnode.dart';
 
 part 'snippet_root_node.mapper.dart';
 
-class SnippetRootNodeHook extends MappingHook {
-  const SnippetRootNodeHook();
+// class SnippetRootNodeHook extends MappingHook {
+//   const SnippetRootNodeHook();
+//
+//   @override
+//   Object? beforeDecode(Object? value) {
+//     // fco.logger.i('before');
+//     return value;
+//   }
+//
+//   @override
+//   Object? afterDecode(Object? value) {
+//     // fco.logger.i('after');
+//     return value;
+//   }
+// }
 
-  @override
-  Object? beforeDecode(Object? value) {
-    // fco.logger.i('before');
-    return value;
-  }
-
-  @override
-  Object? afterDecode(Object? value) {
-    // fco.logger.i('after');
-    return value;
-  }
-}
-
-@MappableClass(
-  hook: SnippetRootNodeHook(),
-) //discriminatorKey: 'sr', includeSubClasses: [TitleSnippetRootNode, SubtitleSnippetRootNode, ContentSnippetRootNode])
+@MappableClass() //discriminatorKey: 'sr', includeSubClasses: [TitleSnippetRootNode, SubtitleSnippetRootNode, ContentSnippetRootNode])
 class SnippetRootNode extends SC with SnippetRootNodeMappable {
   SnippetName name;
 
@@ -97,7 +95,9 @@ class SnippetRootNode extends SC with SnippetRootNodeMappable {
 
   @override
   Widget buildFlutterWidget(BuildContext context, SNode? parentNode) {
-    try {
+    if (SnippetInfoModel.cachedSnippetInfo(name)?.hide ?? false) return const Offstage();
+
+      try {
       // fco.logger.i("SnippetRootNode.toWidget($name)...");
       // if (findDescendant(SnippetRootNode) != null) {}
       setParent(parentNode);
@@ -117,7 +117,7 @@ class SnippetRootNode extends SC with SnippetRootNodeMappable {
               Widget snippetWidget =
                   snippet == null
                       ? Error(key: createNodeWidgetGK(), FLUTTER_TYPE, color: Colors.red, size: 16, errorMsg: "null snippet!")
-                      : snippet.child?.buildFlutterWidget(futureContext, this) ?? const Placeholder();
+                      : snippet.child?.buildFlutterWidget(futureContext, this) ?? const FlexibleSpaceBar(background: Placeholder());
               snippet?.validateTree();
               if (!(snippet?.isValid()??false)) {
                 return const Offstage();
@@ -176,6 +176,8 @@ class SnippetRootNode extends SC with SnippetRootNodeMappable {
       fco.capiBloc.add(CAPIEvent.forceRefresh());
       await fco.saveNewVersion(snippet: templateSnippetRootNode);
       // await fco.cacheAndSaveANewSnippetVersion(snippetName: snippetName, rootNode: snippetRootNode);
+      print('loadSnippetFromCacheOrFromFBOrCreateFromTemplate() created a brand new snippet from a template ($snippetName');
+      fco.forceRefresh();
       return templateSnippetRootNode;
     }
 

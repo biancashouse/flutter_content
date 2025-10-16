@@ -1,5 +1,6 @@
 // coverage:ignore-file
 // GENERATED CODE - DO NOT MODIFY BY HAND
+// dart format off
 // ignore_for_file: type=lint
 // ignore_for_file: unused_element, unnecessary_cast, override_on_non_overriding_member
 // ignore_for_file: strict_raw_type, inference_failure_on_untyped_parameter
@@ -14,7 +15,7 @@ class StepNodeMapper extends SubClassMapperBase<StepNode> {
     if (_instance == null) {
       MapperContainer.globals.use(_instance = StepNodeMapper._());
       CLMapper.ensureInitialized().addSubMapper(_instance!);
-      GenericSingleChildNodeMapper.ensureInitialized();
+      NamedSCMapper.ensureInitialized();
     }
     return _instance!;
   }
@@ -22,30 +23,58 @@ class StepNodeMapper extends SubClassMapperBase<StepNode> {
   @override
   final String id = 'StepNode';
 
-  static GenericSingleChildNode _$title(StepNode v) => v.title;
-  static const Field<StepNode, GenericSingleChildNode> _f$title =
-      Field('title', _$title);
-  static GenericSingleChildNode? _$subtitle(StepNode v) => v.subtitle;
-  static const Field<StepNode, GenericSingleChildNode> _f$subtitle =
-      Field('subtitle', _$subtitle, opt: true);
-  static GenericSingleChildNode _$content(StepNode v) => v.content;
-  static const Field<StepNode, GenericSingleChildNode> _f$content =
-      Field('content', _$content);
+  static NamedSC _$title(StepNode v) => v.title;
+  static const Field<StepNode, NamedSC> _f$title = Field('title', _$title);
+  static NamedSC? _$subtitle(StepNode v) => v.subtitle;
+  static const Field<StepNode, NamedSC> _f$subtitle = Field(
+    'subtitle',
+    _$subtitle,
+    opt: true,
+  );
+  static NamedSC _$content(StepNode v) => v.content;
+  static const Field<StepNode, NamedSC> _f$content = Field(
+    'content',
+    _$content,
+  );
   static String _$uid(StepNode v) => v.uid;
-  static const Field<StepNode, String> _f$uid =
-      Field('uid', _$uid, mode: FieldMode.member);
+  static const Field<StepNode, String> _f$uid = Field(
+    'uid',
+    _$uid,
+    mode: FieldMode.member,
+  );
   static GlobalKey<State<StatefulWidget>>? _$treeNodeGK(StepNode v) =>
       v.treeNodeGK;
   static const Field<StepNode, GlobalKey<State<StatefulWidget>>> _f$treeNodeGK =
       Field('treeNodeGK', _$treeNodeGK, mode: FieldMode.member);
   static bool _$isExpanded(StepNode v) => v.isExpanded;
-  static const Field<StepNode, bool> _f$isExpanded =
-      Field('isExpanded', _$isExpanded, mode: FieldMode.member);
+  static const Field<StepNode, bool> _f$isExpanded = Field(
+    'isExpanded',
+    _$isExpanded,
+    mode: FieldMode.member,
+  );
   static bool? _$hidePropertiesWhileDragging(StepNode v) =>
       v.hidePropertiesWhileDragging;
   static const Field<StepNode, bool> _f$hidePropertiesWhileDragging = Field(
-      'hidePropertiesWhileDragging', _$hidePropertiesWhileDragging,
-      mode: FieldMode.member);
+    'hidePropertiesWhileDragging',
+    _$hidePropertiesWhileDragging,
+    mode: FieldMode.member,
+  );
+  static bool _$canShowTappableNodeWidgetOverlay(StepNode v) =>
+      v.canShowTappableNodeWidgetOverlay;
+  static const Field<StepNode, bool> _f$canShowTappableNodeWidgetOverlay =
+      Field(
+        'canShowTappableNodeWidgetOverlay',
+        _$canShowTappableNodeWidgetOverlay,
+        mode: FieldMode.member,
+      );
+  static GlobalKey<State<StatefulWidget>>? _$nodeWidgetGK(StepNode v) =>
+      v.nodeWidgetGK;
+  static const Field<StepNode, GlobalKey<State<StatefulWidget>>>
+  _f$nodeWidgetGK = Field(
+    'nodeWidgetGK',
+    _$nodeWidgetGK,
+    mode: FieldMode.member,
+  );
 
   @override
   final MappableFields<StepNode> fields = const {
@@ -56,6 +85,8 @@ class StepNodeMapper extends SubClassMapperBase<StepNode> {
     #treeNodeGK: _f$treeNodeGK,
     #isExpanded: _f$isExpanded,
     #hidePropertiesWhileDragging: _f$hidePropertiesWhileDragging,
+    #canShowTappableNodeWidgetOverlay: _f$canShowTappableNodeWidgetOverlay,
+    #nodeWidgetGK: _f$nodeWidgetGK,
   };
 
   @override
@@ -67,9 +98,10 @@ class StepNodeMapper extends SubClassMapperBase<StepNode> {
 
   static StepNode _instantiate(DecodingData data) {
     return StepNode(
-        title: data.dec(_f$title),
-        subtitle: data.dec(_f$subtitle),
-        content: data.dec(_f$content));
+      title: data.dec(_f$title),
+      subtitle: data.dec(_f$subtitle),
+      content: data.dec(_f$content),
+    );
   }
 
   @override
@@ -86,18 +118,23 @@ class StepNodeMapper extends SubClassMapperBase<StepNode> {
 
 mixin StepNodeMappable {
   String toJson() {
-    return StepNodeMapper.ensureInitialized()
-        .encodeJson<StepNode>(this as StepNode);
+    return StepNodeMapper.ensureInitialized().encodeJson<StepNode>(
+      this as StepNode,
+    );
   }
 
   Map<String, dynamic> toMap() {
-    return StepNodeMapper.ensureInitialized()
-        .encodeMap<StepNode>(this as StepNode);
+    return StepNodeMapper.ensureInitialized().encodeMap<StepNode>(
+      this as StepNode,
+    );
   }
 
   StepNodeCopyWith<StepNode, StepNode, StepNode> get copyWith =>
       _StepNodeCopyWithImpl<StepNode, StepNode>(
-          this as StepNode, $identity, $identity);
+        this as StepNode,
+        $identity,
+        $identity,
+      );
   @override
   String toString() {
     return StepNodeMapper.ensureInitialized().stringifyValue(this as StepNode);
@@ -105,8 +142,10 @@ mixin StepNodeMappable {
 
   @override
   bool operator ==(Object other) {
-    return StepNodeMapper.ensureInitialized()
-        .equalsValue(this as StepNode, other);
+    return StepNodeMapper.ensureInitialized().equalsValue(
+      this as StepNode,
+      other,
+    );
   }
 
   @override
@@ -122,17 +161,11 @@ extension StepNodeValueCopy<$R, $Out> on ObjectCopyWith<$R, StepNode, $Out> {
 
 abstract class StepNodeCopyWith<$R, $In extends StepNode, $Out>
     implements CLCopyWith<$R, $In, $Out> {
-  GenericSingleChildNodeCopyWith<$R, GenericSingleChildNode,
-      GenericSingleChildNode> get title;
-  GenericSingleChildNodeCopyWith<$R, GenericSingleChildNode,
-      GenericSingleChildNode>? get subtitle;
-  GenericSingleChildNodeCopyWith<$R, GenericSingleChildNode,
-      GenericSingleChildNode> get content;
+  NamedSCCopyWith<$R, NamedSC, NamedSC> get title;
+  NamedSCCopyWith<$R, NamedSC, NamedSC>? get subtitle;
+  NamedSCCopyWith<$R, NamedSC, NamedSC> get content;
   @override
-  $R call(
-      {GenericSingleChildNode? title,
-      GenericSingleChildNode? subtitle,
-      GenericSingleChildNode? content});
+  $R call({NamedSC? title, NamedSC? subtitle, NamedSC? content});
   StepNodeCopyWith<$R2, $In, $Out2> $chain<$R2, $Out2>(Then<$Out2, $R2> t);
 }
 
@@ -145,36 +178,33 @@ class _StepNodeCopyWithImpl<$R, $Out>
   late final ClassMapperBase<StepNode> $mapper =
       StepNodeMapper.ensureInitialized();
   @override
-  GenericSingleChildNodeCopyWith<$R, GenericSingleChildNode,
-          GenericSingleChildNode>
-      get title => $value.title.copyWith.$chain((v) => call(title: v));
+  NamedSCCopyWith<$R, NamedSC, NamedSC> get title =>
+      $value.title.copyWith.$chain((v) => call(title: v));
   @override
-  GenericSingleChildNodeCopyWith<$R, GenericSingleChildNode,
-          GenericSingleChildNode>?
-      get subtitle =>
-          $value.subtitle?.copyWith.$chain((v) => call(subtitle: v));
+  NamedSCCopyWith<$R, NamedSC, NamedSC>? get subtitle =>
+      $value.subtitle?.copyWith.$chain((v) => call(subtitle: v));
   @override
-  GenericSingleChildNodeCopyWith<$R, GenericSingleChildNode,
-          GenericSingleChildNode>
-      get content => $value.content.copyWith.$chain((v) => call(content: v));
+  NamedSCCopyWith<$R, NamedSC, NamedSC> get content =>
+      $value.content.copyWith.$chain((v) => call(content: v));
   @override
-  $R call(
-          {GenericSingleChildNode? title,
-          Object? subtitle = $none,
-          GenericSingleChildNode? content}) =>
-      $apply(FieldCopyWithData({
-        if (title != null) #title: title,
-        if (subtitle != $none) #subtitle: subtitle,
-        if (content != null) #content: content
-      }));
+  $R call({NamedSC? title, Object? subtitle = $none, NamedSC? content}) =>
+      $apply(
+        FieldCopyWithData({
+          if (title != null) #title: title,
+          if (subtitle != $none) #subtitle: subtitle,
+          if (content != null) #content: content,
+        }),
+      );
   @override
   StepNode $make(CopyWithData data) => StepNode(
-      title: data.get(#title, or: $value.title),
-      subtitle: data.get(#subtitle, or: $value.subtitle),
-      content: data.get(#content, or: $value.content));
+    title: data.get(#title, or: $value.title),
+    subtitle: data.get(#subtitle, or: $value.subtitle),
+    content: data.get(#content, or: $value.content),
+  );
 
   @override
   StepNodeCopyWith<$R2, StepNode, $Out2> $chain<$R2, $Out2>(
-          Then<$Out2, $R2> t) =>
-      _StepNodeCopyWithImpl<$R2, $Out2>($value, $cast, t);
+    Then<$Out2, $R2> t,
+  ) => _StepNodeCopyWithImpl<$R2, $Out2>($value, $cast, t);
 }
+

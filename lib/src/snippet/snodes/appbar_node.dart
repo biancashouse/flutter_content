@@ -2,65 +2,76 @@
 import 'package:dart_mappable/dart_mappable.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_content/flutter_content.dart';
+import 'package:flutter_content/src/snippet/pnodes/bool_pnode.dart';
 import 'package:flutter_content/src/snippet/pnodes/color_pnode.dart';
 import 'package:flutter_content/src/snippet/pnodes/decimal_pnode.dart';
 import 'package:flutter_content/src/snippet/pnodes/fyi_pnodes.dart';
-import 'package:flutter_content/src/snippet/pnodes/string_pnode.dart';
+import 'package:flutter_content/src/snippet/pnodes/text_style_pnodes.dart';
+import 'package:flutter_content/src/snippet/snodes/text_style_hook.dart';
 
 part 'appbar_node.mapper.dart';
 
-@MappableClass()
-class AppBarNode extends SNode with AppBarNodeMappable {
-  String? tabBarName;
+@MappableClass(
+  discriminatorKey: 'appbar',
+  includeSubClasses: [SliverAppBarNode],
+)
+class AppBarNode extends CL with AppBarNodeMappable {
+  // String? tabBarName;
   ColorModel? bgColor;
   ColorModel? fgColor;
   double? toolbarHeight;
-  GenericSingleChildNode? leading;
-  GenericSingleChildNode? title;
-  GenericSingleChildNode? bottom;
-  GenericMultiChildNode? actions;
+  NamedSC leading;
+  NamedSC title;
+  bool? centerTitle;
+  NamedPS bottom;
+  NamedMC actions;
+  @MappableField(hook: TextStyleHook2())
+  TextStyleProperties titleTextStyle;
 
   AppBarNode({
-    this.tabBarName,
+    // this.tabBarName,
     this.bgColor,
     this.fgColor,
     this.toolbarHeight,
-    this.leading,
-    this.title,
-    this.bottom,
-    this.actions,
+    required this.titleTextStyle,
+    this.centerTitle,
+    required this.leading,
+    required this.title,
+    required this.bottom,
+    required this.actions,
   });
 
-  bool hasTabBar() => tabBarName != null && bottom?.child is TabBarNode;
+  bool hasTabBar() => bottom.child is TabBarNode;
 
-  bool hasMenuBar() => bottom?.child is MenuBarNode;
+  bool hasMenuBar() => bottom.child is MenuBarNode;
 
   @override
   List<PNode> propertyNodes(BuildContext context, SNode? parentSNode) {
     // fco.logger.i("ContainerNode.properties()...");
     return [
       FlutterDocPNode(
-          buttonLabel: 'AppBar',
-          webLink: 'https://api.flutter.dev/flutter/material/AppBar-class.html',
-          snode: this,
-          name: 'fyi'),
-      StringPNode(
+        buttonLabel: 'AppBar',
+        webLink: 'https://api.flutter.dev/flutter/material/AppBar-class.html',
         snode: this,
-        name: 'TabBar name',
-        stringValue: tabBarName,
-        skipHelperText: true,
-        onStringChange: (newValue) =>
-            refreshWithUpdate(context,() => tabBarName = newValue!),
-        calloutButtonSize: const Size(280, 70),
-        calloutWidth: 400,
-        numLines: 1,
+        name: 'fyi',
       ),
+      // StringPNode(
+      //   snode: this,
+      //   name: 'TabBar name',
+      //   stringValue: tabBarName,
+      //   skipHelperText: true,
+      //   onStringChange: (newValue) =>
+      //       refreshWithUpdate(context, () => tabBarName = newValue!),
+      //   calloutButtonSize: const Size(280, 70),
+      //   calloutWidth: 400,
+      //   numLines: 1,
+      // ),
       DecimalPNode(
         snode: this,
         name: 'toolbarHeight',
         decimalValue: toolbarHeight,
         onDoubleChange: (newValue) =>
-            refreshWithUpdate(context,() => toolbarHeight = newValue),
+            refreshWithUpdate(context, () => toolbarHeight = newValue),
         calloutButtonSize: const Size(130, 20),
       ),
       ColorPNode(
@@ -69,7 +80,7 @@ class AppBarNode extends SNode with AppBarNodeMappable {
         tooltip: "The fill color to use for an app bar's Material.",
         color: bgColor,
         onColorChange: (newValue) =>
-            refreshWithUpdate(context,() => bgColor = newValue),
+            refreshWithUpdate(context, () => bgColor = newValue),
         calloutButtonSize: const Size(130, 20),
       ),
       ColorPNode(
@@ -78,8 +89,30 @@ class AppBarNode extends SNode with AppBarNodeMappable {
         tooltip: 'The default color for Text and Icons within the app bar.',
         color: fgColor,
         onColorChange: (newValue) =>
-            refreshWithUpdate(context,() => fgColor = newValue),
+            refreshWithUpdate(context, () => fgColor = newValue),
         calloutButtonSize: const Size(130, 20),
+      ),
+      BoolPNode(
+        snode: this,
+        name: 'centerTitle',
+        boolValue: centerTitle,
+        onBoolChange: (newValue) => refreshWithUpdate(
+          context,
+              () => centerTitle = newValue,
+        ),
+      ),
+      TextStylePNode /*Group*/ (
+        snode: this,
+        name: 'titleTextStyle',
+        textStyleProperties: titleTextStyle,
+        onGroupChange: (newValue, refreshPTree) {
+          refreshWithUpdate(context, () {
+            titleTextStyle = newValue;
+            if (refreshPTree) {
+              forcePropertyTreeRefresh(context);
+            }
+          });
+        },
       ),
     ];
   }
@@ -90,24 +123,26 @@ class AppBarNode extends SNode with AppBarNodeMappable {
     try {
       setParent(parentNode); // propagating parents down from root
 
-      var actionWidgets = actions?.toWidgetProperty(context, this);
-      var titleWidget = title?.toWidgetProperty(context, this);
+      var actionWidgets = actions.toWidgetProperty(context, this);
+      var leadingWidget = leading.buildFlutterWidget(context, this);
+      var titleWidget = title.buildFlutterWidget(context, this);
 
       if (hasTabBar()) {
         toolbarHeight = kToolbarHeight;
-      } else if (hasMenuBar()) toolbarHeight = kToolbarHeight;
-
+      } else if (hasMenuBar()) {
+        toolbarHeight = kToolbarHeight;
+      }
       PreferredSizeWidget? bottomWidget;
       if (toolbarHeight != null) {
-        bottomWidget = bottom?.toPreferredSizeWidgetProperty(
-            context, 80, this);
+        bottomWidget = bottom.buildPreferredSizeFlutterWidget(context, this);
       }
 
       try {
         var appBar = AppBar(
           key: createNodeWidgetGK(),
           title: titleWidget,
-          // centerTitle: true,
+          leading: leadingWidget,
+          centerTitle: centerTitle??false,
           toolbarHeight: toolbarHeight,
           actions: actionWidgets,
           backgroundColor: bgColor?.flutterValue,
@@ -133,40 +168,25 @@ class AppBarNode extends SNode with AppBarNodeMappable {
       }
     } catch (e) {
       return Error(
-          key: createNodeWidgetGK(),
-          FLUTTER_TYPE,
-          color: Colors.red,
-          size: 16,
-          errorMsg: e.toString());
+        key: createNodeWidgetGK(),
+        FLUTTER_TYPE,
+        color: Colors.red,
+        size: 16,
+        errorMsg: e.toString(),
+      );
     }
   }
 
   @override
-  bool canBeDeleted() =>
-      (leading == null && title == null && bottom == null && actions == null);
-
-  @override
-  List<Widget> menuAnchorWidgets_WrapWith(BuildContext context,
-    NodeAction action,
-    bool? skipHeading,
-    ScrollControllerName? scName,
-  ) {
-    return [
-      if (getParent() is! ScaffoldNode)
-        ...super.menuAnchorWidgets_Heading(context, action, scName),
-      if (getParent() is! ScaffoldNode)
-        menuItemButton(context, "Scaffold", ScaffoldNode, action, scName),
-    ];
-  }
+  bool canRemove() =>
+      (leading.child == null &&
+      title.child == null &&
+      bottom.child == null &&
+      actions.children.isEmpty &&
+      bottom.child == null);
 
   @override
   List<Type> replaceWithOnly() => [AppBarNode];
-
-  @override
-  List<Type> wrapCandidates() => [ScaffoldNode];
-
-  @override
-  List<Type> wrapWithOnly() => [ScaffoldNode];
 
   @override
   String toString() => FLUTTER_TYPE;

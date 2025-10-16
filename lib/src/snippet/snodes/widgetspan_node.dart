@@ -54,6 +54,9 @@ class WidgetSpanNode extends InlineSpanNode with WidgetSpanNodeMappable {
   }
 
   @override
+  bool canAppendAChild() => child == null;
+
+  @override
   List<Widget> menuAnchorWidgets_WrapWith(BuildContext context,
     NodeAction action,
     bool? skipHeading,

@@ -1,5 +1,6 @@
 // coverage:ignore-file
 // GENERATED CODE - DO NOT MODIFY BY HAND
+// dart format off
 // ignore_for_file: type=lint
 // ignore_for_file: unused_element, unnecessary_cast, override_on_non_overriding_member
 // ignore_for_file: strict_raw_type, inference_failure_on_untyped_parameter
@@ -14,7 +15,8 @@ class SCMapper extends SubClassMapperBase<SC> {
     if (_instance == null) {
       MapperContainer.globals.use(_instance = SCMapper._());
       SNodeMapper.ensureInitialized().addSubMapper(_instance!);
-      GenericSingleChildNodeMapper.ensureInitialized();
+      NamedSCMapper.ensureInitialized();
+      NamedPSMapper.ensureInitialized();
       AlignNodeMapper.ensureInitialized();
       AspectRatioNodeMapper.ensureInitialized();
       ButtonNodeMapper.ensureInitialized();
@@ -23,10 +25,16 @@ class SCMapper extends SubClassMapperBase<SC> {
       DefaultTextStyleNodeMapper.ensureInitialized();
       ExpandedNodeMapper.ensureInitialized();
       FlexibleNodeMapper.ensureInitialized();
+      IntrinsicWidthNodeMapper.ensureInitialized();
+      IntrinsicHeightNodeMapper.ensureInitialized();
       PaddingNodeMapper.ensureInitialized();
+      PinnedHeaderSliverNodeMapper.ensureInitialized();
       PositionedNodeMapper.ensureInitialized();
       SingleChildScrollViewNodeMapper.ensureInitialized();
       SizedBoxNodeMapper.ensureInitialized();
+      SliverFloatingHeaderNodeMapper.ensureInitialized();
+      SliverResizingHeaderNodeMapper.ensureInitialized();
+      SliverToBoxAdapterNodeMapper.ensureInitialized();
       SnippetRootNodeMapper.ensureInitialized();
       TabNodeMapper.ensureInitialized();
       TargetsWrapperNodeMapper.ensureInitialized();
@@ -42,9 +50,7 @@ class SCMapper extends SubClassMapperBase<SC> {
   static const Field<SC, SNode> _f$child = Field('child', _$child, opt: true);
 
   @override
-  final MappableFields<SC> fields = const {
-    #child: _f$child,
-  };
+  final MappableFields<SC> fields = const {#child: _f$child};
 
   @override
   final String discriminatorKey = 'snode';
@@ -82,3 +88,4 @@ abstract class SCCopyWith<$R, $In extends SC, $Out>
   $R call({SNode? child});
   SCCopyWith<$R2, $In, $Out2> $chain<$R2, $Out2>(Then<$Out2, $R2> t);
 }
+

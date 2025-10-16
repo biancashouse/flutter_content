@@ -22,37 +22,7 @@ class PropertyButtonMarkdown extends StatelessWidget {
   Widget build(BuildContext context) {
     return  InkWell(
             onTap: () {
-              CalloutConfig teCC = CalloutConfig(
-                cId: 'markdown-te',
-                scrollControllerName: null,
-                // containsTextField: true,
-                barrier: CalloutBarrierConfig(
-                    opacity: .25,
-                    onTappedF: () {
-                      fco.dismiss('markdown-te');
-                    }),
-                decorationFillColors: ColorOrGradient.color(Colors.purpleAccent),
-                initialCalloutW: fco.scrW * .8,
-                initialCalloutH: fco.scrH * .8,
-                onDismissedF: () {},
-                onAcceptedF: () {},
-                resizeableH: true,
-                resizeableV: true,
-                onResizeF: (Size newSize) {},
-                onDragF: (Offset newOffset) {},
-                draggable: false,
-                notUsingHydratedStorage: true,
-              );
-
-              Widget calloutContent = MarkdownMSV(
-                originalMD: originalMarkdown,
-                onChangeF: onChangeF,
-              );
-
-              fco.showOverlay(
-                calloutConfig: teCC,
-                calloutContent: calloutContent,
-              );
+              showMarkdownEditor(originalMarkdown, onChangeF);
             },
             child: fco.coloredText('tap here to edit the markdown', color: Colors.white),
             // child: Container(
@@ -64,4 +34,39 @@ class PropertyButtonMarkdown extends StatelessWidget {
             // ),
           );
   }
+
+  static void showMarkdownEditor(String originalMarkdown, ValueChanged<String> onChangeF) {
+  CalloutConfig teCC = CalloutConfig(
+    cId: 'markdown-te',
+    scrollControllerName: null,
+    // containsTextField: true,
+    barrier: CalloutBarrierConfig(
+        opacity: .25,
+        onTappedF: () {
+          fco.dismiss('markdown-te');
+        }),
+    decorationFillColors: ColorOrGradient.color(Colors.purpleAccent),
+    initialCalloutW: fco.scrW * .8,
+    initialCalloutH: fco.scrH * .8,
+    onDismissedF: () {},
+    onAcceptedF: () {},
+    resizeableH: true,
+    resizeableV: true,
+    onResizeF: (Size newSize) {},
+    onDragF: (Offset newOffset) {},
+    draggable: false,
+    notUsingHydratedStorage: true,
+  );
+
+  Widget calloutContent = MarkdownMSV(
+    originalMD: originalMarkdown,
+    onChangeF: onChangeF,
+  );
+
+  fco.showOverlay(
+  calloutConfig: teCC,
+  calloutContent: calloutContent,
+  );
+
+}
 }

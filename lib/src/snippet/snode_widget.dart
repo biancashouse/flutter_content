@@ -36,7 +36,7 @@ class SNodeWidget extends StatelessWidget {
 
     Color boxColor = fco.snippetBeingEdited!.nodeBeingDeleted == entry.node
         ? Colors.red
-        : entry.node is GenericSingleChildNode
+        : entry.node is NamedSC || entry.node is NamedPS || entry.node is NamedMC
         ? Colors.transparent
         : entry.node is SnippetRootNode
         ? Colors.black
@@ -60,14 +60,15 @@ class SNodeWidget extends StatelessWidget {
                   border: Border.all(color: Colors.grey, width: 1),
                   borderRadius: BorderRadius.all(
                     Radius.circular(
-                      entry.node is GenericSingleChildNode ? 4 : 30,
+                      entry.node is NamedSC || entry.node is NamedPS || entry.node is NamedMC
+                          ? 4 : 30,
                     ),
                   ),
                 ),
           alignment: Alignment.center,
           child: Row(
             children: [
-              if (entry.node is! GenericSingleChildNode &&
+              if (entry.node is! NamedSC && entry.node is! NamedPS && entry.node is! NamedMC &&
                   entry.node is! SnippetRootNode)
                 entry.node.widgetLogo() ?? Icon(Icons.error, color: Colors.red),
               Gap(8),
@@ -103,21 +104,22 @@ class SNodeWidget extends StatelessWidget {
                       var umlImageNode = entry.node as UMLImageNode;
                       final teC = TextEditingController();
                       final originalUMLRecord = (
-                      text: umlImageNode.umlText,
-                      encodedText: umlImageNode.encodedText,
-                      bytes: umlImageNode.cachedPngBytes,
-                      width: umlImageNode.width,
-                      height: umlImageNode.height,
+                        text: umlImageNode.umlText,
+                        encodedText: umlImageNode.encodedText,
+                        bytes: umlImageNode.cachedPngBytes,
+                        width: umlImageNode.width,
+                        height: umlImageNode.height,
                       );
                       // make sure start and end are present for viewing, but they don't get sent to the encoder
-                      teC.text = !(originalUMLRecord.text ?? '').contains('@startuml')
+                      teC.text =
+                          !(originalUMLRecord.text ?? '').contains('@startuml')
                           ? "@startuml\n${originalUMLRecord.text ?? ''}\n@enduml"
                           : originalUMLRecord.text ?? '';
                       PropertyButtonUML.showUMLEditor(
                         context,
                         originalUMLRecord,
                         teC,
-                            (UMLRecord newValue) {
+                        (UMLRecord newValue) {
                           umlImageNode.refreshWithUpdate(context, () {
                             umlImageNode.umlText = newValue.text;
                             umlImageNode.encodedText = newValue.encodedText;
@@ -141,7 +143,15 @@ class SNodeWidget extends StatelessWidget {
                     _tappedNode(context);
                     fco.afterNextBuildDo(() {
                       var markdownNode = entry.node as MarkdownNode;
-                      // PropertyButtonMarkdown.showMarkdownEditor();
+                      PropertyButtonMarkdown.showMarkdownEditor(
+                        markdownNode.data??markdownNode.SAMPLE_MD,
+                        (String? newValue) {
+                          markdownNode.refreshWithUpdate(
+                            context,
+                            () => markdownNode.data = newValue ?? '',
+                          );
+                        },
+                      );
                     });
                   },
                   child: Icon(Icons.edit, size: 20),
@@ -171,7 +181,7 @@ class SNodeWidget extends StatelessWidget {
     // });
   }
 
-  Widget _name(context) {
+  Widget _name(BuildContext context) {
     final isRootNode = entry.node is SnippetRootNode;
     return Tooltip(
       message: isRootNode && entry.node.getParent() != null
@@ -271,9 +281,9 @@ class SNodeWidget extends StatelessWidget {
         fco.unhide("floating-clipboard");
       }
 
-      // Rect? borderRect = entry.node.calcBborderRect();
-      EditablePageState? eps = EditablePage.of(context);
-      eps?.dismissAllNodeWidgetOverlays();
+      // // Rect? borderRect = entry.node.calcBborderRect();
+      // EditablePageState? eps = EditablePage.of(context);
+      // eps?.dismissAllNodeWidgetOverlays();
 
       fco.capiBloc.add(
         CAPIEvent.selectNode(
@@ -285,31 +295,29 @@ class SNodeWidget extends StatelessWidget {
       );
     }
 
-    fco.afterNextBuildDo(() {
-      fco.afterMsDelayDo(1000, () {
-        SnippetRootNode? rootNode = entry.node.rootNodeOfSnippet();
-        var ctx = rootNode?.child?.nodeWidgetGK?.currentContext;
-        if (ctx != null) {
-          EditablePageState? eps = EditablePage.of(ctx);
-          eps?.showNodeWidgetOverlays();
-        }
-      });
-    });
+    // fco.afterNextBuildDo(() {
+    //   fco.afterMsDelayDo(1000, () {
+    //     SnippetRootNode? rootNode = entry.node.rootNodeOfSnippet();
+    //     var ctx = rootNode?.child?.nodeWidgetGK?.currentContext;
+    //     if (ctx != null) {
+    //       EditablePageState? eps = EditablePage.of(ctx);
+    //       eps?.showNodeWidgetOverlays();
+    //     }
+    //   });
+    // });
   }
 
   void _longPressedNode(BuildContext context, Offset tapPos, SNode node) {
     // clear sel
-    EditablePageState? eps = EditablePage.of(context);
-    eps?.dismissAllNodeWidgetOverlays();
-    // fco.dismiss(SELECTED_NODE_BORDER_CALLOUT);
+    // EditablePageState? eps = EditablePage.of(context);
+    // eps?.dismissAllNodeWidgetOverlays();
+    // // fco.dismiss(SELECTED_NODE_BORDER_CALLOUT);
     fco.hide("floating-clipboard");
 
     fco.capiBloc.add(CAPIEvent.selectNode(node: node));
-    fco.afterNextBuildDo(() {
-      fco.afterMsDelayDo(1000, () {
-        _showNodeWidgetMenu(context, tapPos, node);
-      });
-    });
+    // fco.afterMsDelayDo(1000, () {
+      _showNodeWidgetMenu(context, tapPos, node);
+    // });
   }
 
   void _showNodeWidgetMenu(BuildContext context, Offset tapPos, SNode node) {
@@ -401,10 +409,10 @@ class SNodeWidget extends StatelessWidget {
       key: node.treeNodeGK = GlobalKey(),
       displayedNodeName,
       textScaler: TextScaler.linear(
-        entry.node is GenericSingleChildNode ? .9 : 1.0,
+        entry.node is NamedSC || entry.node is NamedPS || entry.node is NamedMC ? .9 : 1.0,
       ),
       style: TextStyle(
-        color: node is SnippetRootNode || node is GenericSingleChildNode
+        color: node is SnippetRootNode || entry.node is NamedSC || entry.node is NamedPS || entry.node is NamedMC
             ? Colors.white
             : textColor,
         fontSize: 12.0,
@@ -416,13 +424,24 @@ class SNodeWidget extends StatelessWidget {
     );
   }
 
-  Widget nodeButtons(context, scName, SNode node) {
+  Widget nodeButtons(BuildContext context, scName, SNode node) {
     var gc = node.getParent(); // may be genericchildnode
+
+    double trashButtonOpacity = !fco.aNodeIsSelected ||
+        !node.canRemove() ||
+        (node is SnippetRootNode &&
+            node.getParent() == null) ||
+        (gc is NamedSC? &&
+            gc?.getParent() is StepNode &&
+            (gc?.propertyName == 'title' ||
+                gc?.propertyName == 'content'))
+        ? .5
+        : 1.0;
     return Container(
       color: Colors.black,
       child: Column(
         children: [
-          if (node is! GenericSingleChildNode && node is! GenericMultiChildNode)
+          if (node is! NamedSC && node is! NamedMC)
             Row(
               mainAxisSize: MainAxisSize.max,
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
@@ -431,7 +450,7 @@ class SNodeWidget extends StatelessWidget {
                   hoverColor: Colors.white30,
                   onPressed: () {
                     // some properties cannot be deleted
-                    if (gc is GenericSingleChildNode? &&
+                    if (gc is NamedSC? &&
                         gc?.getParent() is StepNode &&
                         (gc?.propertyName == 'title' ||
                             gc?.propertyName == 'content')) {
@@ -454,7 +473,7 @@ class SNodeWidget extends StatelessWidget {
                       alpha:
                           !fco.aNodeIsSelected ||
                               node is SnippetRootNode ||
-                              gc is GenericSingleChildNode? &&
+                              gc is NamedSC? &&
                                   gc?.getParent() is StepNode &&
                                   (gc?.propertyName == 'title' ||
                                       gc?.propertyName == 'content')
@@ -496,7 +515,7 @@ class SNodeWidget extends StatelessWidget {
                   onPressed: () async {
                     // some properties cannot be deleted!selectedNode.canBeDeleted()
                     // some properties cannot be deleted
-                    if (!node.canBeDeleted()) return;
+                    if (!node.canRemove()) return;
                     // bool wasShowingAsRoot = selectedNode == snippetBloc.treeC.roots.first;
                     // STreeNode? parentNode = selectedNode.getParent() as STreeNode?;
                     EditablePageState? eps = EditablePage.of(context);
@@ -527,17 +546,7 @@ class SNodeWidget extends StatelessWidget {
                   icon: Icon(
                     Icons.delete,
                     color: Colors.red.withValues(
-                      alpha:
-                          !fco.aNodeIsSelected ||
-                              !node.canBeDeleted() ||
-                              (node is SnippetRootNode &&
-                                  node.getParent() == null) ||
-                              (gc is GenericSingleChildNode? &&
-                                  gc?.getParent() is StepNode &&
-                                  (gc?.propertyName == 'title' ||
-                                      gc?.propertyName == 'content'))
-                          ? .5
-                          : 1.0,
+                      alpha:trashButtonOpacity,
                     ),
                   ),
                   tooltip: 'Remove',
@@ -603,7 +612,7 @@ class SNodeWidget extends StatelessWidget {
             ),
           // tree structure icon buttons
           // replace button
-          if (node is! GenericSingleChildNode && _canReplace(node))
+          if (node.canReplace())
             Padding(
               padding: const EdgeInsets.only(top: 8.0),
               child: node.insertItemMenuAnchor(
@@ -620,31 +629,17 @@ class SNodeWidget extends StatelessWidget {
     );
   }
 
-  bool _canReplace(SNode? selectNode) => selectNode?.getParent() != null;
 
-  bool _canAddSiblng(SNode? selectNodeParent) =>
-      (selectNodeParent is MC ||
-      selectNodeParent is TextSpanNode ||
-      selectNodeParent is WidgetSpanNode);
-
-  bool _canWrap(SNode selectedNode) =>
-      (selectedNode is! GenericSingleChildNode &&
-      selectedNode is! GenericMultiChildNode &&
-      selectedNode is! InlineSpanNode &&
-      (selectedNode is! SnippetRootNode || selectedNode.getParent() != null) &&
-      selectedNode is! FileNode &&
-      selectedNode is! PollOptionNode &&
-      selectedNode is! StepNode);
-
-  bool _canAddChld(SNode selectedNode) =>
-      selectedNode is ScaffoldNode && selectedNode.appBar == null ||
-      ((selectedNode is SnippetRootNode && selectedNode.child == null) ||
-          // || (selectedNode is! ChildlessNode && !entry.hasChildren))
-          // (selectedNode is RichTextNode && selectedNode.text == null) ||
-          (selectedNode is SC && selectedNode.child == null) ||
-          (selectedNode is MC ||
-              selectedNode is TextSpanNode ||
-              selectedNode is WidgetSpanNode));
+  // bool _canAddChld(SNode selectedNode) =>
+  //     selectedNode is ScaffoldNode && selectedNode.appBar == null ||
+  //         (selectedNode is SnippetRootNode && selectedNode.child == null) ||
+  //             (selectedNode is SliverAppBarNode && selectedNode.flexibleSpace == null) ||
+  //         // || (selectedNode is! ChildlessNode && !entry.hasChildren))
+  //         // (selectedNode is RichTextNode && selectedNode.text == null) ||
+  //         (selectedNode is SC && selectedNode.child == null) ||
+  //         (selectedNode is MC ||
+  //             selectedNode is TextSpanNode ||
+  //             selectedNode is WidgetSpanNode);
 
   Widget _editTreeStructureIconButtons(
     BuildContext context,
@@ -676,7 +671,7 @@ class SNodeWidget extends StatelessWidget {
                     ),
                   ),
                   if (selectedNode is! RowNode &&
-                      _canAddSiblng(selectedNode.getParent() as SNode?))
+                      selectedNode.canAddASibling())
                     Center(
                       child: Column(
                         mainAxisSize: MainAxisSize.min,
@@ -700,7 +695,7 @@ class SNodeWidget extends StatelessWidget {
                         ],
                       ),
                     ),
-                  if (_canWrap(selectedNode))
+                  if (selectedNode.canWrap())
                     Positioned(
                       top: 10,
                       left: 10,
@@ -711,7 +706,7 @@ class SNodeWidget extends StatelessWidget {
                         bgColor: Colors.blue,
                       ),
                     ),
-                  if (_canAddChld(selectedNode))
+                  if (selectedNode.canAppendAChild())
                     Positioned(
                       bottom: 10,
                       right: 10,
@@ -727,7 +722,7 @@ class SNodeWidget extends StatelessWidget {
             ),
           ),
           if (selectedNode is RowNode &&
-              _canAddSiblng(selectedNode.getParent() as SNode?))
+              selectedNode.canAddASibling())
             Align(
               alignment: Alignment.center,
               child: Container(

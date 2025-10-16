@@ -111,7 +111,7 @@ class TargetsWrapperNode extends SC with TargetsWrapperNodeMappable {
   }
 
   @override
-  bool canBeDeleted() => targets.isEmpty;
+  bool canRemove() => targets.isEmpty;
 
   @override
   Widget? widgetLogo() => Image.asset(

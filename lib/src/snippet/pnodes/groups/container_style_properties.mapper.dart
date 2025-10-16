@@ -1,5 +1,6 @@
 // coverage:ignore-file
 // GENERATED CODE - DO NOT MODIFY BY HAND
+// dart format off
 // ignore_for_file: type=lint
 // ignore_for_file: unused_element, unnecessary_cast, override_on_non_overriding_member
 // ignore_for_file: strict_raw_type, inference_failure_on_untyped_parameter
@@ -13,8 +14,9 @@ class ContainerStylePropertiesMapper
   static ContainerStylePropertiesMapper? _instance;
   static ContainerStylePropertiesMapper ensureInitialized() {
     if (_instance == null) {
-      MapperContainer.globals
-          .use(_instance = ContainerStylePropertiesMapper._());
+      MapperContainer.globals.use(
+        _instance = ContainerStylePropertiesMapper._(),
+      );
       UpTo6ColorsMapper.ensureInitialized();
       EdgeInsetsValueMapper.ensureInitialized();
       AlignmentEnumMapper.ensureInitialized();
@@ -34,11 +36,18 @@ class ContainerStylePropertiesMapper
   static UpTo6Colors? _$fillColorValues(ContainerStyleProperties v) =>
       v.fillColorValues;
   static const Field<ContainerStyleProperties, UpTo6Colors> _f$fillColorValues =
-      Field('fillColorValues', _$fillColorValues,
-          opt: true, hook: UpTo6ColorsHook());
+      Field(
+        'fillColorValues',
+        _$fillColorValues,
+        opt: true,
+        hook: UpTo6ColorsHook(),
+      );
   static bool? _$radialGradient(ContainerStyleProperties v) => v.radialGradient;
-  static const Field<ContainerStyleProperties, bool> _f$radialGradient =
-      Field('radialGradient', _$radialGradient, opt: true);
+  static const Field<ContainerStyleProperties, bool> _f$radialGradient = Field(
+    'radialGradient',
+    _$radialGradient,
+    opt: true,
+  );
   static EdgeInsetsValue? _$margin(ContainerStyleProperties v) => v.margin;
   static const Field<ContainerStyleProperties, EdgeInsetsValue> _f$margin =
       Field('margin', _$margin, opt: true);
@@ -46,20 +55,29 @@ class ContainerStylePropertiesMapper
   static const Field<ContainerStyleProperties, EdgeInsetsValue> _f$padding =
       Field('padding', _$padding, opt: true);
   static double? _$width(ContainerStyleProperties v) => v.width;
-  static const Field<ContainerStyleProperties, double> _f$width =
-      Field('width', _$width, opt: true);
+  static const Field<ContainerStyleProperties, double> _f$width = Field(
+    'width',
+    _$width,
+    opt: true,
+  );
   static double? _$height(ContainerStyleProperties v) => v.height;
-  static const Field<ContainerStyleProperties, double> _f$height =
-      Field('height', _$height, opt: true);
+  static const Field<ContainerStyleProperties, double> _f$height = Field(
+    'height',
+    _$height,
+    opt: true,
+  );
   static AlignmentEnum? _$alignment(ContainerStyleProperties v) => v.alignment;
   static const Field<ContainerStyleProperties, AlignmentEnum> _f$alignment =
       Field('alignment', _$alignment, opt: true);
   static DecorationShapeEnum? _$decorationShapeEnum(
-          ContainerStyleProperties v) =>
-      v.decorationShapeEnum;
+    ContainerStyleProperties v,
+  ) => v.decorationShapeEnum;
   static const Field<ContainerStyleProperties, DecorationShapeEnum>
-      _f$decorationShapeEnum =
-      Field('decorationShapeEnum', _$decorationShapeEnum, opt: true);
+  _f$decorationShapeEnum = Field(
+    'decorationShapeEnum',
+    _$decorationShapeEnum,
+    opt: true,
+  );
   static double? _$borderThickness(ContainerStyleProperties v) =>
       v.borderThickness;
   static const Field<ContainerStyleProperties, double> _f$borderThickness =
@@ -71,49 +89,85 @@ class ContainerStylePropertiesMapper
   static UpTo6Colors? _$borderColorValues(ContainerStyleProperties v) =>
       v.borderColorValues;
   static const Field<ContainerStyleProperties, UpTo6Colors>
-      _f$borderColorValues = Field('borderColorValues', _$borderColorValues,
-          opt: true, hook: UpTo6ColorsHook());
+  _f$borderColorValues = Field(
+    'borderColorValues',
+    _$borderColorValues,
+    opt: true,
+    hook: UpTo6ColorsHook(),
+  );
   static double? _$borderRadius(ContainerStyleProperties v) => v.borderRadius;
-  static const Field<ContainerStyleProperties, double> _f$borderRadius =
-      Field('borderRadius', _$borderRadius, opt: true);
+  static const Field<ContainerStyleProperties, double> _f$borderRadius = Field(
+    'borderRadius',
+    _$borderRadius,
+    opt: true,
+  );
   static int? _$starPoints(ContainerStyleProperties v) => v.starPoints;
-  static const Field<ContainerStyleProperties, int> _f$starPoints =
-      Field('starPoints', _$starPoints, opt: true);
+  static const Field<ContainerStyleProperties, int> _f$starPoints = Field(
+    'starPoints',
+    _$starPoints,
+    opt: true,
+  );
   static int? _$dash(ContainerStyleProperties v) => v.dash;
-  static const Field<ContainerStyleProperties, int> _f$dash =
-      Field('dash', _$dash, opt: true);
+  static const Field<ContainerStyleProperties, int> _f$dash = Field(
+    'dash',
+    _$dash,
+    opt: true,
+  );
   static int? _$gap(ContainerStyleProperties v) => v.gap;
-  static const Field<ContainerStyleProperties, int> _f$gap =
-      Field('gap', _$gap, opt: true);
+  static const Field<ContainerStyleProperties, int> _f$gap = Field(
+    'gap',
+    _$gap,
+    opt: true,
+  );
   static double? _$badgeWidth(ContainerStyleProperties v) => v.badgeWidth;
-  static const Field<ContainerStyleProperties, double> _f$badgeWidth =
-      Field('badgeWidth', _$badgeWidth, opt: true);
+  static const Field<ContainerStyleProperties, double> _f$badgeWidth = Field(
+    'badgeWidth',
+    _$badgeWidth,
+    opt: true,
+  );
   static double? _$badgeHeight(ContainerStyleProperties v) => v.badgeHeight;
-  static const Field<ContainerStyleProperties, double> _f$badgeHeight =
-      Field('badgeHeight', _$badgeHeight, opt: true);
+  static const Field<ContainerStyleProperties, double> _f$badgeHeight = Field(
+    'badgeHeight',
+    _$badgeHeight,
+    opt: true,
+  );
   static BadgePositionEnum? _$badgeCorner(ContainerStyleProperties v) =>
       v.badgeCorner;
   static const Field<ContainerStyleProperties, BadgePositionEnum>
-      _f$badgeCorner = Field('badgeCorner', _$badgeCorner, opt: true);
+  _f$badgeCorner = Field('badgeCorner', _$badgeCorner, opt: true);
   static String? _$badgeText(ContainerStyleProperties v) => v.badgeText;
-  static const Field<ContainerStyleProperties, String> _f$badgeText =
-      Field('badgeText', _$badgeText, opt: true);
+  static const Field<ContainerStyleProperties, String> _f$badgeText = Field(
+    'badgeText',
+    _$badgeText,
+    opt: true,
+  );
   static OutlinedBorderProperties? _$outlinedBorderGroup(
-          ContainerStyleProperties v) =>
-      v.outlinedBorderGroup;
+    ContainerStyleProperties v,
+  ) => v.outlinedBorderGroup;
   static const Field<ContainerStyleProperties, OutlinedBorderProperties>
-      _f$outlinedBorderGroup =
-      Field('outlinedBorderGroup', _$outlinedBorderGroup, opt: true);
+  _f$outlinedBorderGroup = Field(
+    'outlinedBorderGroup',
+    _$outlinedBorderGroup,
+    opt: true,
+  );
   static String? _$lastHoveredSuggestion(ContainerStyleProperties v) =>
       v.lastHoveredSuggestion;
   static const Field<ContainerStyleProperties, String>
-      _f$lastHoveredSuggestion = Field(
-          'lastHoveredSuggestion', _$lastHoveredSuggestion,
-          mode: FieldMode.member);
+  _f$lastHoveredSuggestion = Field(
+    'lastHoveredSuggestion',
+    _$lastHoveredSuggestion,
+    mode: FieldMode.member,
+  );
   static String? _$lastSearchString(ContainerStyleProperties v) =>
       v.lastSearchString;
   static const Field<ContainerStyleProperties, String> _f$lastSearchString =
       Field('lastSearchString', _$lastSearchString, mode: FieldMode.member);
+  static int _$hashCode(ContainerStyleProperties v) => v.hashCode;
+  static const Field<ContainerStyleProperties, int> _f$hashCode = Field(
+    'hashCode',
+    _$hashCode,
+    mode: FieldMode.member,
+  );
 
   @override
   final MappableFields<ContainerStyleProperties> fields = const {
@@ -140,31 +194,33 @@ class ContainerStylePropertiesMapper
     #outlinedBorderGroup: _f$outlinedBorderGroup,
     #lastHoveredSuggestion: _f$lastHoveredSuggestion,
     #lastSearchString: _f$lastSearchString,
+    #hashCode: _f$hashCode,
   };
 
   static ContainerStyleProperties _instantiate(DecodingData data) {
     return ContainerStyleProperties(
-        fillColors: data.dec(_f$fillColors),
-        fillColorValues: data.dec(_f$fillColorValues),
-        radialGradient: data.dec(_f$radialGradient),
-        margin: data.dec(_f$margin),
-        padding: data.dec(_f$padding),
-        width: data.dec(_f$width),
-        height: data.dec(_f$height),
-        alignment: data.dec(_f$alignment),
-        decorationShapeEnum: data.dec(_f$decorationShapeEnum),
-        borderThickness: data.dec(_f$borderThickness),
-        borderColors: data.dec(_f$borderColors),
-        borderColorValues: data.dec(_f$borderColorValues),
-        borderRadius: data.dec(_f$borderRadius),
-        starPoints: data.dec(_f$starPoints),
-        dash: data.dec(_f$dash),
-        gap: data.dec(_f$gap),
-        badgeWidth: data.dec(_f$badgeWidth),
-        badgeHeight: data.dec(_f$badgeHeight),
-        badgeCorner: data.dec(_f$badgeCorner),
-        badgeText: data.dec(_f$badgeText),
-        outlinedBorderGroup: data.dec(_f$outlinedBorderGroup));
+      fillColors: data.dec(_f$fillColors),
+      fillColorValues: data.dec(_f$fillColorValues),
+      radialGradient: data.dec(_f$radialGradient),
+      margin: data.dec(_f$margin),
+      padding: data.dec(_f$padding),
+      width: data.dec(_f$width),
+      height: data.dec(_f$height),
+      alignment: data.dec(_f$alignment),
+      decorationShapeEnum: data.dec(_f$decorationShapeEnum),
+      borderThickness: data.dec(_f$borderThickness),
+      borderColors: data.dec(_f$borderColors),
+      borderColorValues: data.dec(_f$borderColorValues),
+      borderRadius: data.dec(_f$borderRadius),
+      starPoints: data.dec(_f$starPoints),
+      dash: data.dec(_f$dash),
+      gap: data.dec(_f$gap),
+      badgeWidth: data.dec(_f$badgeWidth),
+      badgeHeight: data.dec(_f$badgeHeight),
+      badgeCorner: data.dec(_f$badgeCorner),
+      badgeText: data.dec(_f$badgeText),
+      outlinedBorderGroup: data.dec(_f$outlinedBorderGroup),
+    );
   }
 
   @override
@@ -190,73 +246,91 @@ mixin ContainerStylePropertiesMappable {
         .encodeMap<ContainerStyleProperties>(this as ContainerStyleProperties);
   }
 
-  ContainerStylePropertiesCopyWith<ContainerStyleProperties,
-          ContainerStyleProperties, ContainerStyleProperties>
-      get copyWith => _ContainerStylePropertiesCopyWithImpl<
-              ContainerStyleProperties, ContainerStyleProperties>(
-          this as ContainerStyleProperties, $identity, $identity);
+  ContainerStylePropertiesCopyWith<
+    ContainerStyleProperties,
+    ContainerStyleProperties,
+    ContainerStyleProperties
+  >
+  get copyWith =>
+      _ContainerStylePropertiesCopyWithImpl<
+        ContainerStyleProperties,
+        ContainerStyleProperties
+      >(this as ContainerStyleProperties, $identity, $identity);
   @override
   String toString() {
-    return ContainerStylePropertiesMapper.ensureInitialized()
-        .stringifyValue(this as ContainerStyleProperties);
+    return ContainerStylePropertiesMapper.ensureInitialized().stringifyValue(
+      this as ContainerStyleProperties,
+    );
   }
 
   @override
   bool operator ==(Object other) {
-    return ContainerStylePropertiesMapper.ensureInitialized()
-        .equalsValue(this as ContainerStyleProperties, other);
+    return ContainerStylePropertiesMapper.ensureInitialized().equalsValue(
+      this as ContainerStyleProperties,
+      other,
+    );
   }
 
   @override
   int get hashCode {
-    return ContainerStylePropertiesMapper.ensureInitialized()
-        .hashValue(this as ContainerStyleProperties);
+    return ContainerStylePropertiesMapper.ensureInitialized().hashValue(
+      this as ContainerStyleProperties,
+    );
   }
 }
 
 extension ContainerStylePropertiesValueCopy<$R, $Out>
     on ObjectCopyWith<$R, ContainerStyleProperties, $Out> {
   ContainerStylePropertiesCopyWith<$R, ContainerStyleProperties, $Out>
-      get $asContainerStyleProperties => $base.as((v, t, t2) =>
-          _ContainerStylePropertiesCopyWithImpl<$R, $Out>(v, t, t2));
+  get $asContainerStyleProperties => $base.as(
+    (v, t, t2) => _ContainerStylePropertiesCopyWithImpl<$R, $Out>(v, t, t2),
+  );
 }
 
 abstract class ContainerStylePropertiesCopyWith<
-    $R,
-    $In extends ContainerStyleProperties,
-    $Out> implements ClassCopyWith<$R, $In, $Out> {
+  $R,
+  $In extends ContainerStyleProperties,
+  $Out
+>
+    implements ClassCopyWith<$R, $In, $Out> {
   UpTo6ColorsCopyWith<$R, UpTo6Colors, UpTo6Colors>? get fillColors;
   UpTo6ColorsCopyWith<$R, UpTo6Colors, UpTo6Colors>? get fillColorValues;
   EdgeInsetsValueCopyWith<$R, EdgeInsetsValue, EdgeInsetsValue>? get margin;
   EdgeInsetsValueCopyWith<$R, EdgeInsetsValue, EdgeInsetsValue>? get padding;
   UpTo6ColorsCopyWith<$R, UpTo6Colors, UpTo6Colors>? get borderColors;
   UpTo6ColorsCopyWith<$R, UpTo6Colors, UpTo6Colors>? get borderColorValues;
-  OutlinedBorderPropertiesCopyWith<$R, OutlinedBorderProperties,
-      OutlinedBorderProperties>? get outlinedBorderGroup;
-  $R call(
-      {UpTo6Colors? fillColors,
-      UpTo6Colors? fillColorValues,
-      bool? radialGradient,
-      EdgeInsetsValue? margin,
-      EdgeInsetsValue? padding,
-      double? width,
-      double? height,
-      AlignmentEnum? alignment,
-      DecorationShapeEnum? decorationShapeEnum,
-      double? borderThickness,
-      UpTo6Colors? borderColors,
-      UpTo6Colors? borderColorValues,
-      double? borderRadius,
-      int? starPoints,
-      int? dash,
-      int? gap,
-      double? badgeWidth,
-      double? badgeHeight,
-      BadgePositionEnum? badgeCorner,
-      String? badgeText,
-      OutlinedBorderProperties? outlinedBorderGroup});
+  OutlinedBorderPropertiesCopyWith<
+    $R,
+    OutlinedBorderProperties,
+    OutlinedBorderProperties
+  >?
+  get outlinedBorderGroup;
+  $R call({
+    UpTo6Colors? fillColors,
+    UpTo6Colors? fillColorValues,
+    bool? radialGradient,
+    EdgeInsetsValue? margin,
+    EdgeInsetsValue? padding,
+    double? width,
+    double? height,
+    AlignmentEnum? alignment,
+    DecorationShapeEnum? decorationShapeEnum,
+    double? borderThickness,
+    UpTo6Colors? borderColors,
+    UpTo6Colors? borderColorValues,
+    double? borderRadius,
+    int? starPoints,
+    int? dash,
+    int? gap,
+    double? badgeWidth,
+    double? badgeHeight,
+    BadgePositionEnum? badgeCorner,
+    String? badgeText,
+    OutlinedBorderProperties? outlinedBorderGroup,
+  });
   ContainerStylePropertiesCopyWith<$R2, $In, $Out2> $chain<$R2, $Out2>(
-      Then<$Out2, $R2> t);
+    Then<$Out2, $R2> t,
+  );
 }
 
 class _ContainerStylePropertiesCopyWithImpl<$R, $Out>
@@ -285,90 +359,105 @@ class _ContainerStylePropertiesCopyWithImpl<$R, $Out>
       $value.borderColors?.copyWith.$chain((v) => call(borderColors: v));
   @override
   UpTo6ColorsCopyWith<$R, UpTo6Colors, UpTo6Colors>? get borderColorValues =>
-      $value.borderColorValues?.copyWith
-          .$chain((v) => call(borderColorValues: v));
+      $value.borderColorValues?.copyWith.$chain(
+        (v) => call(borderColorValues: v),
+      );
   @override
-  OutlinedBorderPropertiesCopyWith<$R, OutlinedBorderProperties,
-          OutlinedBorderProperties>?
-      get outlinedBorderGroup => $value.outlinedBorderGroup?.copyWith
-          .$chain((v) => call(outlinedBorderGroup: v));
+  OutlinedBorderPropertiesCopyWith<
+    $R,
+    OutlinedBorderProperties,
+    OutlinedBorderProperties
+  >?
+  get outlinedBorderGroup => $value.outlinedBorderGroup?.copyWith.$chain(
+    (v) => call(outlinedBorderGroup: v),
+  );
   @override
-  $R call(
-          {Object? fillColors = $none,
-          Object? fillColorValues = $none,
-          Object? radialGradient = $none,
-          Object? margin = $none,
-          Object? padding = $none,
-          Object? width = $none,
-          Object? height = $none,
-          Object? alignment = $none,
-          Object? decorationShapeEnum = $none,
-          Object? borderThickness = $none,
-          Object? borderColors = $none,
-          Object? borderColorValues = $none,
-          Object? borderRadius = $none,
-          Object? starPoints = $none,
-          Object? dash = $none,
-          Object? gap = $none,
-          Object? badgeWidth = $none,
-          Object? badgeHeight = $none,
-          Object? badgeCorner = $none,
-          Object? badgeText = $none,
-          Object? outlinedBorderGroup = $none}) =>
-      $apply(FieldCopyWithData({
-        if (fillColors != $none) #fillColors: fillColors,
-        if (fillColorValues != $none) #fillColorValues: fillColorValues,
-        if (radialGradient != $none) #radialGradient: radialGradient,
-        if (margin != $none) #margin: margin,
-        if (padding != $none) #padding: padding,
-        if (width != $none) #width: width,
-        if (height != $none) #height: height,
-        if (alignment != $none) #alignment: alignment,
-        if (decorationShapeEnum != $none)
-          #decorationShapeEnum: decorationShapeEnum,
-        if (borderThickness != $none) #borderThickness: borderThickness,
-        if (borderColors != $none) #borderColors: borderColors,
-        if (borderColorValues != $none) #borderColorValues: borderColorValues,
-        if (borderRadius != $none) #borderRadius: borderRadius,
-        if (starPoints != $none) #starPoints: starPoints,
-        if (dash != $none) #dash: dash,
-        if (gap != $none) #gap: gap,
-        if (badgeWidth != $none) #badgeWidth: badgeWidth,
-        if (badgeHeight != $none) #badgeHeight: badgeHeight,
-        if (badgeCorner != $none) #badgeCorner: badgeCorner,
-        if (badgeText != $none) #badgeText: badgeText,
-        if (outlinedBorderGroup != $none)
-          #outlinedBorderGroup: outlinedBorderGroup
-      }));
+  $R call({
+    Object? fillColors = $none,
+    Object? fillColorValues = $none,
+    Object? radialGradient = $none,
+    Object? margin = $none,
+    Object? padding = $none,
+    Object? width = $none,
+    Object? height = $none,
+    Object? alignment = $none,
+    Object? decorationShapeEnum = $none,
+    Object? borderThickness = $none,
+    Object? borderColors = $none,
+    Object? borderColorValues = $none,
+    Object? borderRadius = $none,
+    Object? starPoints = $none,
+    Object? dash = $none,
+    Object? gap = $none,
+    Object? badgeWidth = $none,
+    Object? badgeHeight = $none,
+    Object? badgeCorner = $none,
+    Object? badgeText = $none,
+    Object? outlinedBorderGroup = $none,
+  }) => $apply(
+    FieldCopyWithData({
+      if (fillColors != $none) #fillColors: fillColors,
+      if (fillColorValues != $none) #fillColorValues: fillColorValues,
+      if (radialGradient != $none) #radialGradient: radialGradient,
+      if (margin != $none) #margin: margin,
+      if (padding != $none) #padding: padding,
+      if (width != $none) #width: width,
+      if (height != $none) #height: height,
+      if (alignment != $none) #alignment: alignment,
+      if (decorationShapeEnum != $none)
+        #decorationShapeEnum: decorationShapeEnum,
+      if (borderThickness != $none) #borderThickness: borderThickness,
+      if (borderColors != $none) #borderColors: borderColors,
+      if (borderColorValues != $none) #borderColorValues: borderColorValues,
+      if (borderRadius != $none) #borderRadius: borderRadius,
+      if (starPoints != $none) #starPoints: starPoints,
+      if (dash != $none) #dash: dash,
+      if (gap != $none) #gap: gap,
+      if (badgeWidth != $none) #badgeWidth: badgeWidth,
+      if (badgeHeight != $none) #badgeHeight: badgeHeight,
+      if (badgeCorner != $none) #badgeCorner: badgeCorner,
+      if (badgeText != $none) #badgeText: badgeText,
+      if (outlinedBorderGroup != $none)
+        #outlinedBorderGroup: outlinedBorderGroup,
+    }),
+  );
   @override
   ContainerStyleProperties $make(CopyWithData data) => ContainerStyleProperties(
-      fillColors: data.get(#fillColors, or: $value.fillColors),
-      fillColorValues: data.get(#fillColorValues, or: $value.fillColorValues),
-      radialGradient: data.get(#radialGradient, or: $value.radialGradient),
-      margin: data.get(#margin, or: $value.margin),
-      padding: data.get(#padding, or: $value.padding),
-      width: data.get(#width, or: $value.width),
-      height: data.get(#height, or: $value.height),
-      alignment: data.get(#alignment, or: $value.alignment),
-      decorationShapeEnum:
-          data.get(#decorationShapeEnum, or: $value.decorationShapeEnum),
-      borderThickness: data.get(#borderThickness, or: $value.borderThickness),
-      borderColors: data.get(#borderColors, or: $value.borderColors),
-      borderColorValues:
-          data.get(#borderColorValues, or: $value.borderColorValues),
-      borderRadius: data.get(#borderRadius, or: $value.borderRadius),
-      starPoints: data.get(#starPoints, or: $value.starPoints),
-      dash: data.get(#dash, or: $value.dash),
-      gap: data.get(#gap, or: $value.gap),
-      badgeWidth: data.get(#badgeWidth, or: $value.badgeWidth),
-      badgeHeight: data.get(#badgeHeight, or: $value.badgeHeight),
-      badgeCorner: data.get(#badgeCorner, or: $value.badgeCorner),
-      badgeText: data.get(#badgeText, or: $value.badgeText),
-      outlinedBorderGroup:
-          data.get(#outlinedBorderGroup, or: $value.outlinedBorderGroup));
+    fillColors: data.get(#fillColors, or: $value.fillColors),
+    fillColorValues: data.get(#fillColorValues, or: $value.fillColorValues),
+    radialGradient: data.get(#radialGradient, or: $value.radialGradient),
+    margin: data.get(#margin, or: $value.margin),
+    padding: data.get(#padding, or: $value.padding),
+    width: data.get(#width, or: $value.width),
+    height: data.get(#height, or: $value.height),
+    alignment: data.get(#alignment, or: $value.alignment),
+    decorationShapeEnum: data.get(
+      #decorationShapeEnum,
+      or: $value.decorationShapeEnum,
+    ),
+    borderThickness: data.get(#borderThickness, or: $value.borderThickness),
+    borderColors: data.get(#borderColors, or: $value.borderColors),
+    borderColorValues: data.get(
+      #borderColorValues,
+      or: $value.borderColorValues,
+    ),
+    borderRadius: data.get(#borderRadius, or: $value.borderRadius),
+    starPoints: data.get(#starPoints, or: $value.starPoints),
+    dash: data.get(#dash, or: $value.dash),
+    gap: data.get(#gap, or: $value.gap),
+    badgeWidth: data.get(#badgeWidth, or: $value.badgeWidth),
+    badgeHeight: data.get(#badgeHeight, or: $value.badgeHeight),
+    badgeCorner: data.get(#badgeCorner, or: $value.badgeCorner),
+    badgeText: data.get(#badgeText, or: $value.badgeText),
+    outlinedBorderGroup: data.get(
+      #outlinedBorderGroup,
+      or: $value.outlinedBorderGroup,
+    ),
+  );
 
   @override
   ContainerStylePropertiesCopyWith<$R2, ContainerStyleProperties, $Out2>
-      $chain<$R2, $Out2>(Then<$Out2, $R2> t) =>
-          _ContainerStylePropertiesCopyWithImpl<$R2, $Out2>($value, $cast, t);
+  $chain<$R2, $Out2>(Then<$Out2, $R2> t) =>
+      _ContainerStylePropertiesCopyWithImpl<$R2, $Out2>($value, $cast, t);
 }
+

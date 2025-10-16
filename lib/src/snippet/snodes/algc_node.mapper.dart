@@ -1,5 +1,6 @@
 // coverage:ignore-file
 // GENERATED CODE - DO NOT MODIFY BY HAND
+// dart format off
 // ignore_for_file: type=lint
 // ignore_for_file: unused_element, unnecessary_cast, override_on_non_overriding_member
 // ignore_for_file: strict_raw_type, inference_failure_on_untyped_parameter
@@ -22,28 +23,58 @@ class AlgCNodeMapper extends SubClassMapperBase<AlgCNode> {
   final String id = 'AlgCNode';
 
   static String? _$fbUid(AlgCNode v) => v.fbUid;
-  static const Field<AlgCNode, String> _f$fbUid =
-      Field('fbUid', _$fbUid, opt: true);
+  static const Field<AlgCNode, String> _f$fbUid = Field(
+    'fbUid',
+    _$fbUid,
+    opt: true,
+  );
   static String? _$fId(AlgCNode v) => v.fId;
   static const Field<AlgCNode, String> _f$fId = Field('fId', _$fId, opt: true);
   static String? _$flowchartJsonString(AlgCNode v) => v.flowchartJsonString;
-  static const Field<AlgCNode, String> _f$flowchartJsonString =
-      Field('flowchartJsonString', _$flowchartJsonString, opt: true);
+  static const Field<AlgCNode, String> _f$flowchartJsonString = Field(
+    'flowchartJsonString',
+    _$flowchartJsonString,
+    opt: true,
+  );
   static String _$uid(AlgCNode v) => v.uid;
-  static const Field<AlgCNode, String> _f$uid =
-      Field('uid', _$uid, mode: FieldMode.member);
+  static const Field<AlgCNode, String> _f$uid = Field(
+    'uid',
+    _$uid,
+    mode: FieldMode.member,
+  );
   static GlobalKey<State<StatefulWidget>>? _$treeNodeGK(AlgCNode v) =>
       v.treeNodeGK;
   static const Field<AlgCNode, GlobalKey<State<StatefulWidget>>> _f$treeNodeGK =
       Field('treeNodeGK', _$treeNodeGK, mode: FieldMode.member);
   static bool _$isExpanded(AlgCNode v) => v.isExpanded;
-  static const Field<AlgCNode, bool> _f$isExpanded =
-      Field('isExpanded', _$isExpanded, mode: FieldMode.member);
+  static const Field<AlgCNode, bool> _f$isExpanded = Field(
+    'isExpanded',
+    _$isExpanded,
+    mode: FieldMode.member,
+  );
   static bool? _$hidePropertiesWhileDragging(AlgCNode v) =>
       v.hidePropertiesWhileDragging;
   static const Field<AlgCNode, bool> _f$hidePropertiesWhileDragging = Field(
-      'hidePropertiesWhileDragging', _$hidePropertiesWhileDragging,
-      mode: FieldMode.member);
+    'hidePropertiesWhileDragging',
+    _$hidePropertiesWhileDragging,
+    mode: FieldMode.member,
+  );
+  static bool _$canShowTappableNodeWidgetOverlay(AlgCNode v) =>
+      v.canShowTappableNodeWidgetOverlay;
+  static const Field<AlgCNode, bool> _f$canShowTappableNodeWidgetOverlay =
+      Field(
+        'canShowTappableNodeWidgetOverlay',
+        _$canShowTappableNodeWidgetOverlay,
+        mode: FieldMode.member,
+      );
+  static GlobalKey<State<StatefulWidget>>? _$nodeWidgetGK(AlgCNode v) =>
+      v.nodeWidgetGK;
+  static const Field<AlgCNode, GlobalKey<State<StatefulWidget>>>
+  _f$nodeWidgetGK = Field(
+    'nodeWidgetGK',
+    _$nodeWidgetGK,
+    mode: FieldMode.member,
+  );
 
   @override
   final MappableFields<AlgCNode> fields = const {
@@ -54,6 +85,8 @@ class AlgCNodeMapper extends SubClassMapperBase<AlgCNode> {
     #treeNodeGK: _f$treeNodeGK,
     #isExpanded: _f$isExpanded,
     #hidePropertiesWhileDragging: _f$hidePropertiesWhileDragging,
+    #canShowTappableNodeWidgetOverlay: _f$canShowTappableNodeWidgetOverlay,
+    #nodeWidgetGK: _f$nodeWidgetGK,
   };
 
   @override
@@ -65,9 +98,10 @@ class AlgCNodeMapper extends SubClassMapperBase<AlgCNode> {
 
   static AlgCNode _instantiate(DecodingData data) {
     return AlgCNode(
-        fbUid: data.dec(_f$fbUid),
-        fId: data.dec(_f$fId),
-        flowchartJsonString: data.dec(_f$flowchartJsonString));
+      fbUid: data.dec(_f$fbUid),
+      fId: data.dec(_f$fId),
+      flowchartJsonString: data.dec(_f$flowchartJsonString),
+    );
   }
 
   @override
@@ -84,18 +118,23 @@ class AlgCNodeMapper extends SubClassMapperBase<AlgCNode> {
 
 mixin AlgCNodeMappable {
   String toJson() {
-    return AlgCNodeMapper.ensureInitialized()
-        .encodeJson<AlgCNode>(this as AlgCNode);
+    return AlgCNodeMapper.ensureInitialized().encodeJson<AlgCNode>(
+      this as AlgCNode,
+    );
   }
 
   Map<String, dynamic> toMap() {
-    return AlgCNodeMapper.ensureInitialized()
-        .encodeMap<AlgCNode>(this as AlgCNode);
+    return AlgCNodeMapper.ensureInitialized().encodeMap<AlgCNode>(
+      this as AlgCNode,
+    );
   }
 
   AlgCNodeCopyWith<AlgCNode, AlgCNode, AlgCNode> get copyWith =>
       _AlgCNodeCopyWithImpl<AlgCNode, AlgCNode>(
-          this as AlgCNode, $identity, $identity);
+        this as AlgCNode,
+        $identity,
+        $identity,
+      );
   @override
   String toString() {
     return AlgCNodeMapper.ensureInitialized().stringifyValue(this as AlgCNode);
@@ -103,8 +142,10 @@ mixin AlgCNodeMappable {
 
   @override
   bool operator ==(Object other) {
-    return AlgCNodeMapper.ensureInitialized()
-        .equalsValue(this as AlgCNode, other);
+    return AlgCNodeMapper.ensureInitialized().equalsValue(
+      this as AlgCNode,
+      other,
+    );
   }
 
   @override
@@ -134,25 +175,31 @@ class _AlgCNodeCopyWithImpl<$R, $Out>
   late final ClassMapperBase<AlgCNode> $mapper =
       AlgCNodeMapper.ensureInitialized();
   @override
-  $R call(
-          {Object? fbUid = $none,
-          Object? fId = $none,
-          Object? flowchartJsonString = $none}) =>
-      $apply(FieldCopyWithData({
-        if (fbUid != $none) #fbUid: fbUid,
-        if (fId != $none) #fId: fId,
-        if (flowchartJsonString != $none)
-          #flowchartJsonString: flowchartJsonString
-      }));
+  $R call({
+    Object? fbUid = $none,
+    Object? fId = $none,
+    Object? flowchartJsonString = $none,
+  }) => $apply(
+    FieldCopyWithData({
+      if (fbUid != $none) #fbUid: fbUid,
+      if (fId != $none) #fId: fId,
+      if (flowchartJsonString != $none)
+        #flowchartJsonString: flowchartJsonString,
+    }),
+  );
   @override
   AlgCNode $make(CopyWithData data) => AlgCNode(
-      fbUid: data.get(#fbUid, or: $value.fbUid),
-      fId: data.get(#fId, or: $value.fId),
-      flowchartJsonString:
-          data.get(#flowchartJsonString, or: $value.flowchartJsonString));
+    fbUid: data.get(#fbUid, or: $value.fbUid),
+    fId: data.get(#fId, or: $value.fId),
+    flowchartJsonString: data.get(
+      #flowchartJsonString,
+      or: $value.flowchartJsonString,
+    ),
+  );
 
   @override
   AlgCNodeCopyWith<$R2, AlgCNode, $Out2> $chain<$R2, $Out2>(
-          Then<$Out2, $R2> t) =>
-      _AlgCNodeCopyWithImpl<$R2, $Out2>($value, $cast, t);
+    Then<$Out2, $R2> t,
+  ) => _AlgCNodeCopyWithImpl<$R2, $Out2>($value, $cast, t);
 }
+

@@ -18,7 +18,7 @@ class TextSpanNode extends InlineSpanNode with TextSpanNodeMappable {
   TargetModel? calloutTargetConfig;
 
   // bool isRootTextSpan;
-  @MappableField(hook: TextStyleHook())
+  @MappableField(hook: TextStyleHook1())
   TextStyleProperties tsPropGroup;
   List<InlineSpanNode>? children;
 
@@ -288,7 +288,25 @@ class TextSpanNode extends InlineSpanNode with TextSpanNodeMappable {
   // }
 
   @override
-  bool canBeDeleted() => children == null || children!.isEmpty;
+  bool canAppendAChild() => true;
+
+  @override
+  bool canRemove() => children?.isEmpty??false;
+
+  @override
+  List<Widget> menuAnchorWidgets_Append(
+      BuildContext context,
+      NodeAction action,
+      bool? skipHeading,
+      ScrollControllerName? scName,
+      ) {
+    return [
+      if (!(skipHeading ?? false))
+        ...menuAnchorWidgets_Heading(context, action, scName),
+      menuItemButton(context, "TextSpan", TextSpanNode, action, scName),
+      menuItemButton(context, "WidgetSpan", WidgetSpanNode, action, scName),
+    ];
+  }
 
   @override
   List<Widget> menuAnchorWidgets_WrapWith(BuildContext context,NodeAction action,

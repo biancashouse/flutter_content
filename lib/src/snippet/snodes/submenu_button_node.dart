@@ -84,9 +84,6 @@ class SubmenuButtonNode extends MC with SubmenuButtonNodeMappable {
   }
 
   @override
-  bool canBeDeleted() => children.isEmpty;
-
-  @override
   List<Widget> menuAnchorWidgets_WrapWith(BuildContext context,
     NodeAction action,
     bool? skipHeading,

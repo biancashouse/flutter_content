@@ -8,11 +8,12 @@ part 'snippet_info_model.mapper.dart';
 
 @MappableClass()
 class SnippetInfoModel with SnippetInfoModelMappable {
-  final SnippetName name; // snippet name == route name
-  final RoutePath? routePath; // route path
+  final SnippetName name; // snippet name == route name if starts with a /
+  // final RoutePath? routePath; // route path
   VersionId editingVersionId;
   VersionId publishedVersionId;
   bool? autoPublish;
+  bool? hide;
 
   // not final and nullable, because previous model did not contain the list of versionIds
   List<VersionId>? versionIds;
@@ -30,7 +31,8 @@ class SnippetInfoModel with SnippetInfoModelMappable {
 
   static List<String> cachedSnippetNames() => _snippetInfoCache.keys.toList();
 
-  static void removeFromCache(String snippetName) => _snippetInfoCache.remove(snippetName);
+  static void removeFromCache(String snippetName) =>
+      _snippetInfoCache.remove(snippetName);
 
   // static void debug() {
   //   var snippetInfoCache = SnippetInfoModel._snippetInfoCache;
@@ -53,27 +55,31 @@ class SnippetInfoModel with SnippetInfoModelMappable {
     required this.editingVersionId,
     required this.publishedVersionId,
     this.autoPublish,
-    this.routePath,
+    this.hide = false,
+    // this.routePath,
     this.versionIds = const [],
   }) {
     autoPublish ??= fco.appInfo.autoPublishDefault;
   }
 
-  bool get isAPageSnippet => routePath != null;
+  // bool get isAPageSnippet => name.startsWith("/");
 
-  VersionId? currentVersionId() => fco.canEditContent() ? editingVersionId : publishedVersionId;
+  VersionId? currentVersionId() =>
+      fco.canEditContent() ? editingVersionId : publishedVersionId;
 
   Future<SnippetRootNode?> currentVersionFromCacheOrFB() async {
     SnippetRootNode? rootNode;
     VersionId? versionId = currentVersionId();
     if (versionId != null) {
       // pull version from cachedVersions[] or from FB
-      rootNode = cachedVersions[versionId] ??= await fco.modelRepo.loadVersionFromFBIntoCache(snippetInfo: this, versionId: versionId);
+      rootNode = cachedVersions[versionId] ??= await fco.modelRepo
+          .loadVersionFromFBIntoCache(snippetInfo: this, versionId: versionId);
     }
     return rootNode?..validateTree();
   }
 
-  SnippetRootNode? currentVersionFromCache() => cachedVersions[currentVersionId()];
+  SnippetRootNode? currentVersionFromCache() =>
+      cachedVersions[currentVersionId()];
 
   VersionId? previousVersionId() {
     List<VersionId> ids = versionIds ?? [];

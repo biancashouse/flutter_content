@@ -1,6 +1,6 @@
 name: flutter_content
 description: Point stuff out for your users => Target, Transform, Configure Callouts, Record to JSON in Dev, and Play in Producton
-version: 3.11.3
+version: 4.0.0
 maintainer: Ian White
 homepage: https://github.com/biancashouse/flutter_content
 issue_tracker: https://github.com/flutter/flutter/issues?q=is%3Aissue+is%3Aopen+label%3A%22p%3A+flutter_adaptive_scaffold%22
@@ -26,10 +26,8 @@ dependencies:
   #path_provider: ^2.0.11
   logger: ^2.6.0
   cupertino_icons: ^1.0.2
-  freezed: ^3.1.0
+  freezed: ^3.2.3
   freezed_annotation: ^3.1.0
-  freezed_lint: ^0.0.10
-  custom_lint: ^0.7.5
   transparent_pointer: ^1.0.1
   dotted_border: ^3.1.0
   image_network: ^2.5.6
@@ -92,7 +90,7 @@ dependencies:
 
 #    path: ../flutter_callouts
 
-  dart_mappable: ^4.2.2
+  dart_mappable: ^4.6.1
   built_collection: ^5.1.1
   built_value: ^8.9.3
   calendar_date_picker2: ^2.0.1
@@ -134,8 +132,8 @@ dependencies:
   file_picker: ^10.2.0
   flutter_callouts: #^8.3.1
     path: ../flutter_callouts
-  flutter_quill: #^11.4.2
-    path: ../flutter_quill
+  flutter_quill: ^11.4.2
+#    path: ../flutter_quill
 
 #dependency_overrides:
 #  web: ^0.5.0 # latest version as of now
@@ -143,15 +141,17 @@ dependencies:
 dev_dependencies:
   flutter_test:
     sdk: flutter
-  test: ^1.25.7
+  test: any
   text_editor: ^0.7.0
   bloc_test: ^10.0.0
   flutter_lints: any
+  freezed_lint: any
+  custom_lint: any
   build_runner: ^2.5.4
   built_value_generator: ^8.9.2
-  dart_mappable_builder: 4.5.0
-  json_serializable: ^6.5.3
-  analyzer: ^7.0.0
+  dart_mappable_builder: any
+  json_serializable: any
+  analyzer: any
 
 false_secrets:
   - /example_using_go_router/lib/bh-apps.firebase_options.dart

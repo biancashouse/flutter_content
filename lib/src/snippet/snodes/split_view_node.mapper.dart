@@ -1,5 +1,6 @@
 // coverage:ignore-file
 // GENERATED CODE - DO NOT MODIFY BY HAND
+// dart format off
 // ignore_for_file: type=lint
 // ignore_for_file: unused_element, unnecessary_cast, override_on_non_overriding_member
 // ignore_for_file: strict_raw_type, inference_failure_on_untyped_parameter
@@ -24,29 +25,64 @@ class SplitViewNodeMapper extends SubClassMapperBase<SplitViewNode> {
   final String id = 'SplitViewNode';
 
   static AxisEnum _$axis(SplitViewNode v) => v.axis;
-  static const Field<SplitViewNode, AxisEnum> _f$axis =
-      Field('axis', _$axis, opt: true, def: AxisEnum.horizontal);
+  static const Field<SplitViewNode, AxisEnum> _f$axis = Field(
+    'axis',
+    _$axis,
+    opt: true,
+    def: AxisEnum.horizontal,
+  );
   static bool _$resizeable(SplitViewNode v) => v.resizeable;
-  static const Field<SplitViewNode, bool> _f$resizeable =
-      Field('resizeable', _$resizeable, opt: true, def: true);
+  static const Field<SplitViewNode, bool> _f$resizeable = Field(
+    'resizeable',
+    _$resizeable,
+    opt: true,
+    def: true,
+  );
   static List<SNode> _$children(SplitViewNode v) => v.children;
-  static const Field<SplitViewNode, List<SNode>> _f$children =
-      Field('children', _$children);
+  static const Field<SplitViewNode, List<SNode>> _f$children = Field(
+    'children',
+    _$children,
+  );
   static String _$uid(SplitViewNode v) => v.uid;
-  static const Field<SplitViewNode, String> _f$uid =
-      Field('uid', _$uid, mode: FieldMode.member);
+  static const Field<SplitViewNode, String> _f$uid = Field(
+    'uid',
+    _$uid,
+    mode: FieldMode.member,
+  );
   static GlobalKey<State<StatefulWidget>>? _$treeNodeGK(SplitViewNode v) =>
       v.treeNodeGK;
   static const Field<SplitViewNode, GlobalKey<State<StatefulWidget>>>
-      _f$treeNodeGK = Field('treeNodeGK', _$treeNodeGK, mode: FieldMode.member);
+  _f$treeNodeGK = Field('treeNodeGK', _$treeNodeGK, mode: FieldMode.member);
   static bool _$isExpanded(SplitViewNode v) => v.isExpanded;
-  static const Field<SplitViewNode, bool> _f$isExpanded =
-      Field('isExpanded', _$isExpanded, mode: FieldMode.member);
+  static const Field<SplitViewNode, bool> _f$isExpanded = Field(
+    'isExpanded',
+    _$isExpanded,
+    mode: FieldMode.member,
+  );
   static bool? _$hidePropertiesWhileDragging(SplitViewNode v) =>
       v.hidePropertiesWhileDragging;
   static const Field<SplitViewNode, bool> _f$hidePropertiesWhileDragging =
-      Field('hidePropertiesWhileDragging', _$hidePropertiesWhileDragging,
-          mode: FieldMode.member);
+      Field(
+        'hidePropertiesWhileDragging',
+        _$hidePropertiesWhileDragging,
+        mode: FieldMode.member,
+      );
+  static bool _$canShowTappableNodeWidgetOverlay(SplitViewNode v) =>
+      v.canShowTappableNodeWidgetOverlay;
+  static const Field<SplitViewNode, bool> _f$canShowTappableNodeWidgetOverlay =
+      Field(
+        'canShowTappableNodeWidgetOverlay',
+        _$canShowTappableNodeWidgetOverlay,
+        mode: FieldMode.member,
+      );
+  static GlobalKey<State<StatefulWidget>>? _$nodeWidgetGK(SplitViewNode v) =>
+      v.nodeWidgetGK;
+  static const Field<SplitViewNode, GlobalKey<State<StatefulWidget>>>
+  _f$nodeWidgetGK = Field(
+    'nodeWidgetGK',
+    _$nodeWidgetGK,
+    mode: FieldMode.member,
+  );
 
   @override
   final MappableFields<SplitViewNode> fields = const {
@@ -57,6 +93,8 @@ class SplitViewNodeMapper extends SubClassMapperBase<SplitViewNode> {
     #treeNodeGK: _f$treeNodeGK,
     #isExpanded: _f$isExpanded,
     #hidePropertiesWhileDragging: _f$hidePropertiesWhileDragging,
+    #canShowTappableNodeWidgetOverlay: _f$canShowTappableNodeWidgetOverlay,
+    #nodeWidgetGK: _f$nodeWidgetGK,
   };
 
   @override
@@ -68,9 +106,10 @@ class SplitViewNodeMapper extends SubClassMapperBase<SplitViewNode> {
 
   static SplitViewNode _instantiate(DecodingData data) {
     return SplitViewNode(
-        axis: data.dec(_f$axis),
-        resizeable: data.dec(_f$resizeable),
-        children: data.dec(_f$children));
+      axis: data.dec(_f$axis),
+      resizeable: data.dec(_f$resizeable),
+      children: data.dec(_f$children),
+    );
   }
 
   @override
@@ -87,34 +126,43 @@ class SplitViewNodeMapper extends SubClassMapperBase<SplitViewNode> {
 
 mixin SplitViewNodeMappable {
   String toJson() {
-    return SplitViewNodeMapper.ensureInitialized()
-        .encodeJson<SplitViewNode>(this as SplitViewNode);
+    return SplitViewNodeMapper.ensureInitialized().encodeJson<SplitViewNode>(
+      this as SplitViewNode,
+    );
   }
 
   Map<String, dynamic> toMap() {
-    return SplitViewNodeMapper.ensureInitialized()
-        .encodeMap<SplitViewNode>(this as SplitViewNode);
+    return SplitViewNodeMapper.ensureInitialized().encodeMap<SplitViewNode>(
+      this as SplitViewNode,
+    );
   }
 
   SplitViewNodeCopyWith<SplitViewNode, SplitViewNode, SplitViewNode>
-      get copyWith => _SplitViewNodeCopyWithImpl<SplitViewNode, SplitViewNode>(
-          this as SplitViewNode, $identity, $identity);
+  get copyWith => _SplitViewNodeCopyWithImpl<SplitViewNode, SplitViewNode>(
+    this as SplitViewNode,
+    $identity,
+    $identity,
+  );
   @override
   String toString() {
-    return SplitViewNodeMapper.ensureInitialized()
-        .stringifyValue(this as SplitViewNode);
+    return SplitViewNodeMapper.ensureInitialized().stringifyValue(
+      this as SplitViewNode,
+    );
   }
 
   @override
   bool operator ==(Object other) {
-    return SplitViewNodeMapper.ensureInitialized()
-        .equalsValue(this as SplitViewNode, other);
+    return SplitViewNodeMapper.ensureInitialized().equalsValue(
+      this as SplitViewNode,
+      other,
+    );
   }
 
   @override
   int get hashCode {
-    return SplitViewNodeMapper.ensureInitialized()
-        .hashValue(this as SplitViewNode);
+    return SplitViewNodeMapper.ensureInitialized().hashValue(
+      this as SplitViewNode,
+    );
   }
 }
 
@@ -143,23 +191,29 @@ class _SplitViewNodeCopyWithImpl<$R, $Out>
       SplitViewNodeMapper.ensureInitialized();
   @override
   ListCopyWith<$R, SNode, SNodeCopyWith<$R, SNode, SNode>> get children =>
-      ListCopyWith($value.children, (v, t) => v.copyWith.$chain(t),
-          (v) => call(children: v));
+      ListCopyWith(
+        $value.children,
+        (v, t) => v.copyWith.$chain(t),
+        (v) => call(children: v),
+      );
   @override
-  $R call({AxisEnum? axis, bool? resizeable, List<SNode>? children}) =>
-      $apply(FieldCopyWithData({
-        if (axis != null) #axis: axis,
-        if (resizeable != null) #resizeable: resizeable,
-        if (children != null) #children: children
-      }));
+  $R call({AxisEnum? axis, bool? resizeable, List<SNode>? children}) => $apply(
+    FieldCopyWithData({
+      if (axis != null) #axis: axis,
+      if (resizeable != null) #resizeable: resizeable,
+      if (children != null) #children: children,
+    }),
+  );
   @override
   SplitViewNode $make(CopyWithData data) => SplitViewNode(
-      axis: data.get(#axis, or: $value.axis),
-      resizeable: data.get(#resizeable, or: $value.resizeable),
-      children: data.get(#children, or: $value.children));
+    axis: data.get(#axis, or: $value.axis),
+    resizeable: data.get(#resizeable, or: $value.resizeable),
+    children: data.get(#children, or: $value.children),
+  );
 
   @override
   SplitViewNodeCopyWith<$R2, SplitViewNode, $Out2> $chain<$R2, $Out2>(
-          Then<$Out2, $R2> t) =>
-      _SplitViewNodeCopyWithImpl<$R2, $Out2>($value, $cast, t);
+    Then<$Out2, $R2> t,
+  ) => _SplitViewNodeCopyWithImpl<$R2, $Out2>($value, $cast, t);
 }
+

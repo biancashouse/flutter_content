@@ -81,14 +81,17 @@ class _Page_HomeState extends State<Page_Home> {
       snippetRootNode: SnippetRootNode(
         name: 'home-scaffold-with-tabs',
         child: ScaffoldNode(
-          appBar: AppBarNode(
-            tabBarName: uniqueTabBarName,
+          appBar: NamedPS(propertyName: 'appBar', child: AppBarNode(
+            // tabBarName: uniqueTabBarName,
             bgColor: ColorModel.grey(),
-            title: GenericSingleChildNode(
+            title: NamedSC(
               propertyName: 'title',
               child: TextNode(text: 'my title', tsPropGroup: TextStyleProperties()),
             ),
-            bottom: GenericSingleChildNode(
+            titleTextStyle: TextStyleProperties(),
+            actions: NamedMC(propertyName: 'actions', children: []),
+            leading: NamedSC(propertyName: 'leading'),
+            bottom: NamedPS(
               propertyName: 'bottom',
               child: TabBarNode(
                 name: uniqueTabBarName,
@@ -99,8 +102,8 @@ class _Page_HomeState extends State<Page_Home> {
                 ],
               ),
             ),
-          ),
-          body: GenericSingleChildNode(
+          ),),
+          body: NamedSC(
             propertyName: 'body',
             child: TabBarViewNode(tabBarName: uniqueTabBarName, children: [PlaceholderNode(), PlaceholderNode()]),
           ),

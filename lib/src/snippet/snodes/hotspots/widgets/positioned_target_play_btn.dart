@@ -52,7 +52,7 @@ class TargetPlayBtn extends StatelessWidget {
               num: index + 1,
               bgColor: tc.calloutFillColors?.color1?.flutterValue??Colors.black,
               //tc.calloutFillColor!.decorationShapeEnum,
-              radius: fco.capiBloc.state.CAPI_TARGET_BTN_RADIUS,
+              radius: TargetsWrapper.CAPI_TARGET_BTN_RADIUS,
               fontSize: 14,
             ),
           )
@@ -66,7 +66,7 @@ class TargetPlayBtn extends StatelessWidget {
                     num: index + 1,
                     bgColor: tc.bgColor(),
                     radius:
-                        fco.capiBloc.state.CAPI_TARGET_BTN_RADIUS,
+                    TargetsWrapper.CAPI_TARGET_BTN_RADIUS,
                     fontSize: 14,
                   ),
             // onDragUpdate: (DragUpdateDetails details) {
@@ -152,7 +152,7 @@ class TargetPlayBtn extends StatelessWidget {
                 tc,
                 num: index + 1,
                 bgColor: tc.bgColor(),
-                radius: fco.capiBloc.state.CAPI_TARGET_BTN_RADIUS,
+                radius: TargetsWrapper.CAPI_TARGET_BTN_RADIUS,
                 fontSize: 14,
               ),
             ),

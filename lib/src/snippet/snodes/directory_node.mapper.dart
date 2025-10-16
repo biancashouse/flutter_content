@@ -1,5 +1,6 @@
 // coverage:ignore-file
 // GENERATED CODE - DO NOT MODIFY BY HAND
+// dart format off
 // ignore_for_file: type=lint
 // ignore_for_file: unused_element, unnecessary_cast, override_on_non_overriding_member
 // ignore_for_file: strict_raw_type, inference_failure_on_untyped_parameter
@@ -23,26 +24,62 @@ class DirectoryNodeMapper extends SubClassMapperBase<DirectoryNode> {
   final String id = 'DirectoryNode';
 
   static String? _$name(DirectoryNode v) => v.name;
-  static const Field<DirectoryNode, String> _f$name =
-      Field('name', _$name, opt: true);
+  static const Field<DirectoryNode, String> _f$name = Field(
+    'name',
+    _$name,
+    opt: true,
+  );
   static List<SNode> _$children(DirectoryNode v) => v.children;
-  static const Field<DirectoryNode, List<SNode>> _f$children =
-      Field('children', _$children);
+  static const Field<DirectoryNode, List<SNode>> _f$children = Field(
+    'children',
+    _$children,
+  );
   static String _$uid(DirectoryNode v) => v.uid;
-  static const Field<DirectoryNode, String> _f$uid =
-      Field('uid', _$uid, mode: FieldMode.member);
+  static const Field<DirectoryNode, String> _f$uid = Field(
+    'uid',
+    _$uid,
+    mode: FieldMode.member,
+  );
   static GlobalKey<State<StatefulWidget>>? _$treeNodeGK(DirectoryNode v) =>
       v.treeNodeGK;
   static const Field<DirectoryNode, GlobalKey<State<StatefulWidget>>>
-      _f$treeNodeGK = Field('treeNodeGK', _$treeNodeGK, mode: FieldMode.member);
+  _f$treeNodeGK = Field('treeNodeGK', _$treeNodeGK, mode: FieldMode.member);
   static bool _$isExpanded(DirectoryNode v) => v.isExpanded;
-  static const Field<DirectoryNode, bool> _f$isExpanded =
-      Field('isExpanded', _$isExpanded, mode: FieldMode.member);
+  static const Field<DirectoryNode, bool> _f$isExpanded = Field(
+    'isExpanded',
+    _$isExpanded,
+    mode: FieldMode.member,
+  );
   static bool? _$hidePropertiesWhileDragging(DirectoryNode v) =>
       v.hidePropertiesWhileDragging;
   static const Field<DirectoryNode, bool> _f$hidePropertiesWhileDragging =
-      Field('hidePropertiesWhileDragging', _$hidePropertiesWhileDragging,
-          mode: FieldMode.member);
+      Field(
+        'hidePropertiesWhileDragging',
+        _$hidePropertiesWhileDragging,
+        mode: FieldMode.member,
+      );
+  static bool _$canShowTappableNodeWidgetOverlay(DirectoryNode v) =>
+      v.canShowTappableNodeWidgetOverlay;
+  static const Field<DirectoryNode, bool> _f$canShowTappableNodeWidgetOverlay =
+      Field(
+        'canShowTappableNodeWidgetOverlay',
+        _$canShowTappableNodeWidgetOverlay,
+        mode: FieldMode.member,
+      );
+  static GlobalKey<State<StatefulWidget>>? _$nodeWidgetGK(DirectoryNode v) =>
+      v.nodeWidgetGK;
+  static const Field<DirectoryNode, GlobalKey<State<StatefulWidget>>>
+  _f$nodeWidgetGK = Field(
+    'nodeWidgetGK',
+    _$nodeWidgetGK,
+    mode: FieldMode.member,
+  );
+  static bool _$is3rdParty(DirectoryNode v) => v.is3rdParty;
+  static const Field<DirectoryNode, bool> _f$is3rdParty = Field(
+    'is3rdParty',
+    _$is3rdParty,
+    mode: FieldMode.member,
+  );
 
   @override
   final MappableFields<DirectoryNode> fields = const {
@@ -52,6 +89,9 @@ class DirectoryNodeMapper extends SubClassMapperBase<DirectoryNode> {
     #treeNodeGK: _f$treeNodeGK,
     #isExpanded: _f$isExpanded,
     #hidePropertiesWhileDragging: _f$hidePropertiesWhileDragging,
+    #canShowTappableNodeWidgetOverlay: _f$canShowTappableNodeWidgetOverlay,
+    #nodeWidgetGK: _f$nodeWidgetGK,
+    #is3rdParty: _f$is3rdParty,
   };
 
   @override
@@ -63,7 +103,9 @@ class DirectoryNodeMapper extends SubClassMapperBase<DirectoryNode> {
 
   static DirectoryNode _instantiate(DecodingData data) {
     return DirectoryNode(
-        name: data.dec(_f$name), children: data.dec(_f$children));
+      name: data.dec(_f$name),
+      children: data.dec(_f$children),
+    );
   }
 
   @override
@@ -80,34 +122,43 @@ class DirectoryNodeMapper extends SubClassMapperBase<DirectoryNode> {
 
 mixin DirectoryNodeMappable {
   String toJson() {
-    return DirectoryNodeMapper.ensureInitialized()
-        .encodeJson<DirectoryNode>(this as DirectoryNode);
+    return DirectoryNodeMapper.ensureInitialized().encodeJson<DirectoryNode>(
+      this as DirectoryNode,
+    );
   }
 
   Map<String, dynamic> toMap() {
-    return DirectoryNodeMapper.ensureInitialized()
-        .encodeMap<DirectoryNode>(this as DirectoryNode);
+    return DirectoryNodeMapper.ensureInitialized().encodeMap<DirectoryNode>(
+      this as DirectoryNode,
+    );
   }
 
   DirectoryNodeCopyWith<DirectoryNode, DirectoryNode, DirectoryNode>
-      get copyWith => _DirectoryNodeCopyWithImpl<DirectoryNode, DirectoryNode>(
-          this as DirectoryNode, $identity, $identity);
+  get copyWith => _DirectoryNodeCopyWithImpl<DirectoryNode, DirectoryNode>(
+    this as DirectoryNode,
+    $identity,
+    $identity,
+  );
   @override
   String toString() {
-    return DirectoryNodeMapper.ensureInitialized()
-        .stringifyValue(this as DirectoryNode);
+    return DirectoryNodeMapper.ensureInitialized().stringifyValue(
+      this as DirectoryNode,
+    );
   }
 
   @override
   bool operator ==(Object other) {
-    return DirectoryNodeMapper.ensureInitialized()
-        .equalsValue(this as DirectoryNode, other);
+    return DirectoryNodeMapper.ensureInitialized().equalsValue(
+      this as DirectoryNode,
+      other,
+    );
   }
 
   @override
   int get hashCode {
-    return DirectoryNodeMapper.ensureInitialized()
-        .hashValue(this as DirectoryNode);
+    return DirectoryNodeMapper.ensureInitialized().hashValue(
+      this as DirectoryNode,
+    );
   }
 }
 
@@ -136,21 +187,27 @@ class _DirectoryNodeCopyWithImpl<$R, $Out>
       DirectoryNodeMapper.ensureInitialized();
   @override
   ListCopyWith<$R, SNode, SNodeCopyWith<$R, SNode, SNode>> get children =>
-      ListCopyWith($value.children, (v, t) => v.copyWith.$chain(t),
-          (v) => call(children: v));
+      ListCopyWith(
+        $value.children,
+        (v, t) => v.copyWith.$chain(t),
+        (v) => call(children: v),
+      );
   @override
-  $R call({Object? name = $none, List<SNode>? children}) =>
-      $apply(FieldCopyWithData({
-        if (name != $none) #name: name,
-        if (children != null) #children: children
-      }));
+  $R call({Object? name = $none, List<SNode>? children}) => $apply(
+    FieldCopyWithData({
+      if (name != $none) #name: name,
+      if (children != null) #children: children,
+    }),
+  );
   @override
   DirectoryNode $make(CopyWithData data) => DirectoryNode(
-      name: data.get(#name, or: $value.name),
-      children: data.get(#children, or: $value.children));
+    name: data.get(#name, or: $value.name),
+    children: data.get(#children, or: $value.children),
+  );
 
   @override
   DirectoryNodeCopyWith<$R2, DirectoryNode, $Out2> $chain<$R2, $Out2>(
-          Then<$Out2, $R2> t) =>
-      _DirectoryNodeCopyWithImpl<$R2, $Out2>($value, $cast, t);
+    Then<$Out2, $R2> t,
+  ) => _DirectoryNodeCopyWithImpl<$R2, $Out2>($value, $cast, t);
 }
+

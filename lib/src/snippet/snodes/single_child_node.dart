@@ -9,4 +9,7 @@ abstract class SC extends SNode with SCMappable {
   SNode? child;
 
   SC({this.child});
+
+  @override
+  bool canAppendAChild() => child == null;
 }

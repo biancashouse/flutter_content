@@ -8,15 +8,13 @@ import 'package:flutter_content/src/bloc/snippet_being_edited.dart';
 import 'package:flutter_content/src/snippet/pnodes/enums/enum_decoration_shape.dart';
 import 'package:flutter_content/src/snippet/pnodes/enums/enum_main_axis_size.dart';
 import 'package:flutter_content/src/snippet/pnodes/groups/button_style_properties.dart';
-import 'package:flutter_content/src/snippet/snodes/algc_node.dart';
 import 'package:flutter_content/src/snippet/snodes/fs_image_node.dart';
-import 'package:flutter_content/src/snippet/snodes/quill_text_node.dart';
-import 'package:flutter_content/src/snippet/snodes/tab_node.dart';
 
 class CAPIBloC extends Bloc<CAPIEvent, CAPIState> {
   // late SnippetUndoRedoStack _ur;
 
   final IModelRepository modelRepo;
+  final bool authenticated;
 
   // void clearUR() => _ur.clear();
   //
@@ -36,21 +34,20 @@ class CAPIBloC extends Bloc<CAPIEvent, CAPIState> {
 
   CAPIBloC({
     required this.modelRepo,
+    required this.authenticated,
     SnippetBeingEdited? mockSnippetBeingEdited, // for testing
-    Offset? snippetTreeCalloutInitialPos,
-    double? snippetTreeCalloutW,
-    double? snippetTreeCalloutH,
   }) : super(
          CAPIState(
            snippetBeingEdited: mockSnippetBeingEdited, // testing usage only
-           snippetTreeCalloutW: snippetTreeCalloutW,
-           snippetTreeCalloutH: snippetTreeCalloutH,
+           isSignedIn: authenticated,
          ),
        ) {
     // _ur = SnippetUndoRedoStack(this);
 
+    on<SignedIn>((event, emit) => _signedIn(event, emit));
+    on<SignedOut>((event, emit) => _signedOut(event, emit));
     on<ForceRefresh>((event, emit) => _forceRefresh(event, emit));
-    on<SelectPanel>((event, emit) => _selectPanel(event, emit));
+    // on<SelectPanel>((event, emit) => _selectPanel(event, emit));
     on<PublishSnippet>((event, emit) => _publishSnippet(event, emit));
     on<RevertSnippet>((event, emit) => _revertSnippet(event, emit));
     on<ToggleAutoPublishingOfSnippet>(
@@ -99,10 +96,28 @@ class CAPIBloC extends Bloc<CAPIEvent, CAPIState> {
     on<ReplaceSnippetFromJson>(
       (event, emit) => _replaceSnippetFromJson(event, emit),
     );
+    on<ToggleSnippetVisibility>(
+      (event, emit) => _toggleSnippetVisibility(event, emit),
+    );
     // on<PageAdded>((event, emit) => _pageAdded(event, emit));
     // on<CreateUndo>((event, emit) => _createUndo(event, emit));
     // on<Undo>((event, emit) => _undo(event, emit));
     // on<Redo>((event, emit) => _redo(event, emit));
+  }
+
+  void _signedIn(SignedIn event, emit) async {
+    await fco.localStorage.write("signed-in", true);
+    emit(
+      state.copyWith(
+        isSignedIn: true,
+        signedInAsGuestEditor: event.asGuestEditor,
+      ),
+    );
+  }
+
+  void _signedOut(event, emit) async {
+    await fco.localStorage.write("signed-in", false);
+    emit(state.copyWith(isSignedIn: false, signedInAsGuestEditor: false));
   }
 
   Future<void> _revertSnippet(RevertSnippet event, emit) async {
@@ -257,16 +272,32 @@ class CAPIBloC extends Bloc<CAPIEvent, CAPIState> {
     // ));
   }
 
+  Future<void> _toggleSnippetVisibility(
+    ToggleSnippetVisibility event,
+    emit,
+  ) async {
+    SnippetInfoModel? snippetInfo = SnippetInfoModel.cachedSnippetInfo(
+      event.snippetName!,
+    );
+    if (snippetInfo == null) {
+      return;
+    }
+
+    snippetInfo.hide = !(snippetInfo.hide ?? false);
+
+    await modelRepo.updateSnippetInfo(
+      snippetName: event.snippetName!,
+      newAutoPublish: snippetInfo.autoPublish,
+    );
+
+    emit(state.copyWith(force: state.force + 1));
+  }
+
   void _forceRefresh(ForceRefresh event, emit) {
     fco.logger.i(
       "forceRefresh --------------------------------------------------------",
     );
-    emit(
-      state.copyWith(
-        force: state.force + 1,
-        onlyTargetsWrappers: event.onlyTargetsWrappers,
-      ),
-    );
+    emit(state.copyWith(force: state.force + 1));
     // if ForceRefresh was set, emit again to reset it in the bloc state
     if (event.onlyTargetsWrappers) {
       emit(state.copyWith(force: state.force, onlyTargetsWrappers: false));
@@ -304,7 +335,7 @@ class CAPIBloC extends Bloc<CAPIEvent, CAPIState> {
   }
 
   Future<void> _updateClipboard(UpdateClipboard event, emit) async {
-    fco.appInfo.clipboard = event.newContent;
+    fco.appInfo.clipboard = event.newContent?.clone();
     emit(state.copyWith(force: state.force + 1));
     if (event.skipSave) return;
     fco.modelRepo.saveAppInfo();
@@ -317,18 +348,18 @@ class CAPIBloC extends Bloc<CAPIEvent, CAPIState> {
     }
   }
 
-  void _selectPanel(SelectPanel event, emit) {
-    // null clears selection
-    emit(
-      state.copyWith(selectedPanel: event.panelName, force: state.force + 1),
-    );
-  }
+  // void _selectPanel(SelectPanel event, emit) {
+  //   // null clears selection
+  //   emit(
+  //     state.copyWith(selectedPanel: event.panelName, force: state.force + 1),
+  //   );
+  // }
 
   void _pushSnippetEditor(PushSnippetEditor event, emit) {
     SnippetTreeController newTreeC() => SnippetTreeController(
       roots: [event.rootNode],
-      childrenProvider: Node.snippetTreeChildrenProvider,
-      parentProvider: Node.snippetTreeParentProvider,
+      childrenProvider: SNode.childrenProvider,
+      parentProvider: SNode.parentProvider,
     );
 
     SnippetBeingEdited snippetBeingEdited = SnippetBeingEdited(
@@ -343,9 +374,9 @@ class CAPIBloC extends Bloc<CAPIEvent, CAPIState> {
       state.copyWith(
         // hideAllTargetGroupPlayBtns: true,
         // hideTargetsExcept: null,
-        snippetNameShowingPinkOverlaysFor: null,
+        snippetNameShowingTappableOverlaysFor: null,
         snippetBeingEdited: snippetBeingEdited,
-        hideSnippetPencilIcons: true,
+        // hideSnippetPencilIcons: true,
         onlyTargetsWrappers: true,
       ),
     );
@@ -362,20 +393,24 @@ class CAPIBloC extends Bloc<CAPIEvent, CAPIState> {
     emit(
       state.copyWith(
         snippetBeingEdited: null,
-        hideIframes: false,
-        hideSnippetPencilIcons: false,
-        snippetNameShowingPinkOverlaysFor: null,
+        // hideIframes: false,
+        // hideSnippetPencilIcons: false,
+        showOnlySnippet: null,
       ),
     );
   }
 
-  void _enterSelectWidgetMode(EnterSelectWidgetMode event, emit) {
-    emit(state.copyWith(snippetNameShowingPinkOverlaysFor: event.snippetName));
+  void _enterSelectWidgetMode(EnterSelectWidgetMode event, emit) async {
+    emit(state.copyWith(showOnlySnippet: event.snippetName));
+    // then after rendering only the named snippet, trigger bloc listener
+    emit(
+      state.copyWith(snippetNameShowingTappableOverlaysFor: event.snippetName),
+    );
   }
 
   void _exitSelectWidgetMode(ExitSelectWidgetMode event, emit) {
     fco.dismissAll();
-    emit(state.copyWith(snippetNameShowingPinkOverlaysFor: null));
+    emit(state.copyWith(showOnlySnippet: null));
   }
 
   // void _setPanelOrPlaceholderSnippet(SetPanelSnippet event, emit) {
@@ -394,6 +429,9 @@ class CAPIBloC extends Bloc<CAPIEvent, CAPIState> {
   }
 
   void _selectNode(SelectNode event, emit) {
+    // ignore repeated selection
+    if (state.snippetBeingEdited?.selectedNode == event.node) return;
+
     // if new selection is a node above this tree root, reset the tree's root to it
     // bool resetTree = !state.snippetBeingEdited!.treeC.nodeIsADescendantOf(
     //   state.snippetBeingEdited!.treeC.roots.first,
@@ -522,6 +560,9 @@ class CAPIBloC extends Bloc<CAPIEvent, CAPIState> {
         }
       }
       newSel = selParent;
+    } else if (sel is SliverAppBarNode) {
+      (selParent as MC).children.remove(sel);
+      newSel = selParent;
     } else if (sel is StepNode && selParent is StepperNode) {
       selParent.children.remove(sel);
       newSel = selParent;
@@ -583,15 +624,13 @@ class CAPIBloC extends Bloc<CAPIEvent, CAPIState> {
     } else if (selParent is TextSpanNode) {
       selParent.children!.remove(sel);
       newSel = selParent;
-    } else if (selParent is GenericSingleChildNode &&
-        selParent.propertyName == 'title') {
+    } else if (selParent is NamedSC && selParent.propertyName == 'title') {
       selParent.child = TextNode(
         text: 'must have a title widget!',
         tsPropGroup: TextStyleProperties(),
       )..setParent(selParent);
       newSel = selParent;
-    } else if (selParent is GenericSingleChildNode &&
-        selParent.propertyName == 'content') {
+    } else if (selParent is NamedSC && selParent.propertyName == 'content') {
       selParent.child = TextNode(
         text: 'must have a content widget!',
         tsPropGroup: TextStyleProperties(),
@@ -687,13 +726,17 @@ class CAPIBloC extends Bloc<CAPIEvent, CAPIState> {
       //         propertyName: 'bottom', child: MenuBarNode(children: [])),
       //   ),
       const (AppBarNode) => AppBarNode(
-        title: GenericSingleChildNode(
+        title: NamedSC(
           propertyName: 'title',
           child: TextNode(
             text: 'appbar title',
             tsPropGroup: TextStyleProperties(),
           ),
         ),
+        titleTextStyle: TextStyleProperties(),
+        actions: NamedMC(propertyName: 'actions', children: []),
+        leading: NamedSC(propertyName: 'leading'),
+        bottom: NamedPS(propertyName: 'bottom'),
       ),
       const (UMLImageNode) => UMLImageNode(),
       const (FSImageNode) => FSImageNode(),
@@ -720,6 +763,7 @@ class CAPIBloC extends Bloc<CAPIEvent, CAPIState> {
                 child: childNode,
               ),
       // const (ContentSnippetRootNode) => ContentSnippetRootNode(name: 'content', child: childNode),
+      const (CustomScrollViewNode) => CustomScrollViewNode(children: []),
       const (DefaultTextStyleNode) => DefaultTextStyleNode(
         child: childNode,
         tsPropGroup: TextStyleProperties(
@@ -751,6 +795,9 @@ class CAPIBloC extends Bloc<CAPIEvent, CAPIState> {
         bsPropGroup: ButtonStyleProperties(tsPropGroup: TextStyleProperties()),
       ),
       const (IFrameNode) => IFrameNode(),
+      const (IntrinsicWidthNode) => IntrinsicWidthNode(child: childNode),
+      const (IntrinsicHeightNode) => IntrinsicHeightNode(child: childNode),
+      const (ListViewNode) => ListViewNode(children: []),
       const (MarkdownNode) => MarkdownNode(),
       const (MenuBarNode) => MenuBarNode(children: []),
       const (MenuItemButtonNode) => MenuItemButtonNode(
@@ -765,6 +812,7 @@ class CAPIBloC extends Bloc<CAPIEvent, CAPIState> {
         child: childNode,
       ),
       const (PlaceholderNode) => PlaceholderNode(),
+      const (PinnedHeaderSliverNode) => PinnedHeaderSliverNode(),
       const (PollNode) => PollNode(
         name: 'sample-poll',
         title: 'Sample Poll',
@@ -798,12 +846,46 @@ class CAPIBloC extends Bloc<CAPIEvent, CAPIState> {
         children: childNode != null ? [childNode] : [],
       ),
       const (ScaffoldNode) => ScaffoldNode(
-        body: GenericSingleChildNode(propertyName: 'body', child: childNode),
+        appBar: NamedPS(propertyName: 'appBar'),
+        body: NamedSC(propertyName: 'body', child: childNode),
       ),
       const (SingleChildScrollViewNode) => SingleChildScrollViewNode(
         child: childNode,
       ),
       const (SizedBoxNode) => SizedBoxNode(child: childNode),
+      const (SliverAppBarNode) => SliverAppBarNode(
+        title: NamedSC(
+          propertyName: 'title',
+          child: TextNode(
+            text: 'sliver appbar title',
+            tsPropGroup: TextStyleProperties(),
+          ),
+        ),
+        titleTextStyle: TextStyleProperties(),
+        leading: NamedSC(propertyName: 'leading'),
+        actions: NamedMC(propertyName: 'actions', children: []),
+        bottom: NamedPS(propertyName: 'bottom'),
+        flexibleSpace: NamedSC(
+          propertyName: 'flexibleSpace',
+          child: FlexibleSpaceBarNode(
+            title: NamedSC(
+              propertyName: 'title',
+              child: TextNode(
+                text: 'sliver appbar flexible space bar title',
+                tsPropGroup: TextStyleProperties(),
+              ),
+            ),
+            background: NamedSC(
+              propertyName: 'background',
+              child: PlaceholderNode(),
+            ),
+          ),
+        ),
+      ),
+      const (SliverListListNode) => SliverListListNode(children: []),
+      const (SliverToBoxAdapterNode) => SliverToBoxAdapterNode(),
+      const (SliverFloatingHeaderNode) => SliverFloatingHeaderNode(),
+      const (SliverResizingHeaderNode) => SliverResizingHeaderNode(),
       const (SnippetRootNode) => SnippetRootNode(name: snippetName!),
       const (SplitViewNode) => SplitViewNode(
         children: childNode != null
@@ -833,18 +915,18 @@ class CAPIBloC extends Bloc<CAPIEvent, CAPIState> {
         children: childNode != null ? [childNode] : [],
       ),
       const (StepNode) => StepNode(
-        title: GenericSingleChildNode(
+        title: NamedSC(
           propertyName: 'title',
           child: TextNode(
             text: 'step title',
             tsPropGroup: TextStyleProperties(),
           ),
         ),
-        subtitle: GenericSingleChildNode(
+        subtitle: NamedSC(
           propertyName: 'subtitle',
           child: TextNode(text: 'subtitle', tsPropGroup: TextStyleProperties()),
         ),
-        content: GenericSingleChildNode(
+        content: NamedSC(
           propertyName: 'content',
           child: TextNode(text: 'content', tsPropGroup: TextStyleProperties()),
         ),
@@ -852,21 +934,21 @@ class CAPIBloC extends Bloc<CAPIEvent, CAPIState> {
       const (StepperNode) => StepperNode(
         children: [
           StepNode(
-            title: GenericSingleChildNode(
+            title: NamedSC(
               propertyName: 'title',
               child: TextNode(
                 text: 'step 1 title',
                 tsPropGroup: TextStyleProperties(),
               ),
             ),
-            subtitle: GenericSingleChildNode(
+            subtitle: NamedSC(
               propertyName: 'subtitle',
               child: TextNode(
                 text: 'subtitle',
                 tsPropGroup: TextStyleProperties(),
               ),
             ),
-            content: GenericSingleChildNode(
+            content: NamedSC(
               propertyName: 'content',
               child: TextNode(
                 text: 'my content 1',
@@ -875,21 +957,21 @@ class CAPIBloC extends Bloc<CAPIEvent, CAPIState> {
             ),
           ),
           StepNode(
-            title: GenericSingleChildNode(
+            title: NamedSC(
               propertyName: 'title',
               child: TextNode(
                 text: 'step 2 title',
                 tsPropGroup: TextStyleProperties(),
               ),
             ),
-            subtitle: GenericSingleChildNode(
+            subtitle: NamedSC(
               propertyName: 'subtitle',
               child: TextNode(
                 text: 'subtitle',
                 tsPropGroup: TextStyleProperties(),
               ),
             ),
-            content: GenericSingleChildNode(
+            content: NamedSC(
               propertyName: 'content',
               child: TextNode(
                 text: 'my content 2',
@@ -898,21 +980,21 @@ class CAPIBloC extends Bloc<CAPIEvent, CAPIState> {
             ),
           ),
           StepNode(
-            title: GenericSingleChildNode(
+            title: NamedSC(
               propertyName: 'title',
               child: TextNode(
                 text: 'step 3 title',
                 tsPropGroup: TextStyleProperties(),
               ),
             ),
-            subtitle: GenericSingleChildNode(
+            subtitle: NamedSC(
               propertyName: 'subtitle',
               child: TextNode(
                 text: 'subtitle',
                 tsPropGroup: TextStyleProperties(),
               ),
             ),
-            content: GenericSingleChildNode(
+            content: NamedSC(
               propertyName: 'content',
               child: TextNode(
                 text: 'my content 3',
@@ -1045,8 +1127,8 @@ class CAPIBloC extends Bloc<CAPIEvent, CAPIState> {
       if (parent is SnippetRootNode) {
         possiblyNewTreeC = SnippetTreeController(
           roots: [parent],
-          childrenProvider: Node.snippetTreeChildrenProvider,
-          parentProvider: Node.snippetTreeParentProvider,
+          childrenProvider: SNode.childrenProvider,
+          parentProvider: SNode.parentProvider,
         );
       }
 
@@ -1139,8 +1221,8 @@ class CAPIBloC extends Bloc<CAPIEvent, CAPIState> {
     if (parent is SnippetRootNode) {
       possiblyNewTreeC = SnippetTreeController(
         roots: [parent],
-        childrenProvider: Node.snippetTreeChildrenProvider,
-        parentProvider: Node.snippetTreeParentProvider,
+        childrenProvider: SNode.childrenProvider,
+        parentProvider: SNode.parentProvider,
       );
       // if snippet is inside another snippet, then must update it's cached snippet entry
       if (parent.getParent() != null) {
@@ -1243,8 +1325,8 @@ class CAPIBloC extends Bloc<CAPIEvent, CAPIState> {
       selectedNode.children!.add(newNode);
     } else if (selectedNode is WidgetSpanNode) {
       selectedNode.child = newNode;
-    } else if (selectedNode is ScaffoldNode && newNode is AppBarNode) {
-      selectedNode.appBar = newNode;
+      // } else if (selectedNode is ScaffoldNode && newNode is AppBarNode) {
+      //   selectedNode.appBar = newNode;
     }
     // newNode.setParent(selectedNode);
 

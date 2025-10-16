@@ -60,7 +60,7 @@ class MenuBarNode extends MC with MenuBarNodeMappable {
   }
 
   @override
-  bool canBeDeleted() => false;
+  bool canRemove() => false;
 
   @override
   String toString() => FLUTTER_TYPE;

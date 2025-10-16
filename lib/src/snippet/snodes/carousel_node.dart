@@ -176,7 +176,7 @@ class CarouselNode extends MC with CarouselNodeMappable {
   }
 
   @override
-  bool canBeDeleted() => children.isEmpty;
+  bool canRemove() => children.isEmpty;
 
   // @override
   // List<Type> addChildOnly() => [AssetImageNode, FSImageNode];

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_content/flutter_content.dart';
+import 'package:flutter_content/src/api/snippet_builder/context_extension.dart';
 import 'package:pointer_interceptor/pointer_interceptor.dart';
 
 import 'tr_triangle_painter.dart' show TRTriangle;
@@ -28,7 +29,9 @@ class SnippetMenuAnchor extends StatelessWidget {
                     message: 'show Snippet menu\n"${snippetInfo.name}"',
                     child: InkWell(
                       onDoubleTap: () {
-                       snippetInfo.currentVersionFromCache()?.tappedToEditSnippetNode(context, null);
+                        snippetInfo
+                            .currentVersionFromCache()
+                            ?.tappedToEditSnippetNode(context, null);
                       },
                       onTap: () {
                         if (controller.isOpen) {
@@ -45,7 +48,9 @@ class SnippetMenuAnchor extends StatelessWidget {
                   )
                 : InkWell(
                     onDoubleTap: () {
-                      snippetInfo.currentVersionFromCache()?.tappedToEditSnippetNode(context, null);
+                      snippetInfo
+                          .currentVersionFromCache()
+                          ?.tappedToEditSnippetNode(context, null);
                     },
                     onTap: () {
                       if (controller.isOpen) {
@@ -89,6 +94,11 @@ class SnippetMenuAnchor extends StatelessWidget {
             fco.capiBloc.add(
               CAPIEvent.enterSelectWidgetMode(snippetName: snippetInfo.name),
             );
+            // // after rendering just this snippet, show its tappable overlays
+            // fco.afterNextBuildDo((){
+            //   var snippet = snippetInfo.currentVersionFromCache();
+            //   context.showSnippetNodeWidgetTappableOverlays();
+            // });
           },
           child: Row(
             children: [
@@ -146,6 +156,12 @@ class SnippetMenuAnchor extends StatelessWidget {
             fco.capiBloc.add(const CAPIEvent.replaceSnippetFromJson());
           },
           child: const Text('save snippet JSON from clipboard'),
+        ),
+        _menuItemButtonWithPI(
+          onPressed: () async {
+            fco.capiBloc.add(CAPIEvent.toggleSnippetVisibility(snippetName: snippetInfo.name));
+          },
+          child:  Text('${snippetInfo.hide??false ? 'show' : 'hide'} snippet'),
         ),
       ],
     );

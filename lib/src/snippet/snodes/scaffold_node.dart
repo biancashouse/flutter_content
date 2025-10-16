@@ -4,26 +4,29 @@ import 'package:flutter_content/flutter_content.dart';
 import 'package:flutter_content/src/snippet/pnodes/color_pnode.dart';
 import 'package:flutter_content/src/snippet/pnodes/fyi_pnodes.dart';
 
+import 'appbar_hook.dart';
+
 // import 'package:flutter_content/src/snippet/snodes/appbar_with_menubar_node.dart';
 // import 'package:flutter_content/src/snippet/snodes/appbar_with_tabbar_node.dart';
 
 part 'scaffold_node.mapper.dart';
 
-@MappableClass(discriminatorKey: 'sc')
-class ScaffoldNode extends SNode with ScaffoldNodeMappable {
+@MappableClass()
+class ScaffoldNode extends CL with ScaffoldNodeMappable {
   ColorModel? bgColor;
-  AppBarNode? appBar;
-  GenericSingleChildNode? body;
-  bool canShowEditorLoginBtn;
+  @MappableField(hook: AppBarHook())
+  NamedPS appBar;
+  NamedSC body;
+  bool? canShowEditorLoginBtn;
 
   // int numTabs;
 
   ScaffoldNode({
     this.bgColor,
-    this.appBar,
+    required this.appBar,
     required this.body,
     // this.numTabs = 0,
-    this.canShowEditorLoginBtn = false,
+    this.canShowEditorLoginBtn,
   });
 
   @override
@@ -61,16 +64,17 @@ class ScaffoldNode extends SNode with ScaffoldNodeMappable {
     //ScrollControllerName? scName = EditablePage.name(context);
     //possiblyHighlightSelectedNode(scName);
 
-    Widget? bodyWidget() =>
-        body?.toWidgetProperty(context, this) ?? const Placeholder();
+
+    var appBarProp = appBar.buildPreferredSizeFlutterWidget(context, parentNode);
+    var bodyProp = body.buildFlutterWidget(context, parentNode);
 
     // bool usingTabs = appBar?.bottom?.child is TabBarNode;
     Widget scaffold = Scaffold(
       key: createNodeWidgetGK(),
       backgroundColor: bgColor?.flutterValue,
-      appBar: appBar?.buildFlutterWidget(context, this) as PreferredSizeWidget?,
+      appBar: appBarProp,
       // guaranteed the widget is actually an AppBar
-      body: bodyWidget(),
+      body: bodyProp,
     );
 
     try {
@@ -78,7 +82,7 @@ class ScaffoldNode extends SNode with ScaffoldNodeMappable {
       return Stack(
         children: [
           scaffold,
-          if (showPencil && canShowEditorLoginBtn)
+          if (showPencil && (canShowEditorLoginBtn??false))
             Align(
               alignment: Alignment.topRight,
               child: IconButton(
@@ -101,9 +105,6 @@ class ScaffoldNode extends SNode with ScaffoldNodeMappable {
       );
     }
   }
-
-  @override
-  bool canBeDeleted() => appBar == null && body == null;
 
   @override
   List<Widget> menuAnchorWidgets_Append(

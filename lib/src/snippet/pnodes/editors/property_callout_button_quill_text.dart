@@ -2,6 +2,7 @@ import 'dart:convert';
 import 'dart:math';
 
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 
 import 'package:flutter_content/flutter_content.dart';
 import 'package:flutter_quill/flutter_quill.dart';
@@ -25,11 +26,11 @@ class PropertyButtonQuillText extends StatelessWidget {
     required this.scName,
     super.key,
   });
-  
+
   @override
   Widget build(BuildContext context) {
     return InkWell(
-      onTap: ()=>showQuillEditor(originalDelta, onChangeF, scName),
+      onTap: () => showQuillEditor(originalDelta, onChangeF, scName),
       child: fco.coloredText(
         'tap here to edit the Quill text',
         color: Colors.white,
@@ -37,11 +38,13 @@ class PropertyButtonQuillText extends StatelessWidget {
     );
   }
 
-  static void showQuillEditor(String originalDelta, ValueChanged<String> onChangeF, ScrollControllerName? scName) {
+  static void showQuillEditor(
+    String originalDelta,
+    ValueChanged<String> onChangeF,
+    ScrollControllerName? scName,
+  ) {
     final QuillController controller = QuillController.basic();
-    controller.document = Document.fromJson(
-      jsonDecode(originalDelta),
-    );
+    controller.document = Document.fromJson(jsonDecode(originalDelta));
     CalloutConfig teCC = CalloutConfig(
       cId: 'quill-te',
       scrollControllerName: scName,
@@ -49,15 +52,13 @@ class PropertyButtonQuillText extends StatelessWidget {
       barrier: CalloutBarrierConfig(
         opacity: .25,
         onTappedF: () {
-          onChangeF(
-            jsonEncode(controller.document.toDelta().toJson()),
-          );
+          onChangeF(jsonEncode(controller.document.toDelta().toJson()));
           fco.dismiss('quill-te');
         },
       ),
       decorationFillColors: ColorOrGradient.color(Colors.purpleAccent),
       targetPointerType: TargetPointerType.none(),
-      initialCalloutW: min(1024,fco.scrW * .8),
+      initialCalloutW: min(1024, fco.scrW * .8),
       initialCalloutH: fco.scrH * .8,
       onDismissedF: () {
         print('wtf');
@@ -82,6 +83,7 @@ class PropertyButtonQuillText extends StatelessWidget {
               showSubscript: false,
               showSuperscript: false,
               showStrikeThrough: false,
+              showLink: false,
               customButtons: [
                 QuillToolbarCustomButtonOptions(
                   icon: const Icon(
@@ -124,9 +126,7 @@ class PropertyButtonQuillText extends StatelessWidget {
                           }
                           var hex = fco.colorToHex(newColor);
                           hex = '#$hex';
-                          controller.formatSelection(
-                            BackgroundAttribute(hex),
-                          );
+                          controller.formatSelection(BackgroundAttribute(hex));
                         },
                       ),
                     );
@@ -169,12 +169,25 @@ class PropertyButtonQuillText extends StatelessWidget {
                           }
                           var hex = fco.colorToHex(newColor);
                           hex = '#$hex';
-                          controller.formatSelection(
-                            ColorAttribute(hex),
-                          );
+                          controller.formatSelection(ColorAttribute(hex));
                         },
                       ),
                     );
+                  },
+                ),
+                QuillToolbarCustomButtonOptions(
+                  icon: const Icon(Icons.link, color: Colors.black),
+                  onPressed: () {
+                    Color? selectedColor;
+                    if (_isToggledColor(controller)) {
+                      Color selectedColor = fco.hexToColor(
+                        controller
+                            .getSelectionStyle()
+                            .attributes['link']
+                            ?.value,
+                      );
+                    }
+                    showLinkDialog(controller, scName);
                   },
                 ),
               ],
@@ -205,5 +218,72 @@ class PropertyButtonQuillText extends StatelessWidget {
   static bool _isToggledBackground(controller) {
     var attrs = controller.getSelectionStyle().attributes;
     return attrs.containsKey(Attribute.background.key);
+  }
+
+  static const cid_linkEditor = 'link-editor';
+
+  static void showLinkDialog(controller, scName) {
+    fco.registerKeystrokeHandler(cid_linkEditor, (KeyEvent event) {
+      if (event.logicalKey == LogicalKeyboardKey.escape) {
+        fco.dismiss(cid_linkEditor);
+      }
+      if (event.logicalKey == LogicalKeyboardKey.enter) {
+        return true;
+      }
+      return false;
+    });
+    fco.showOverlay(
+      calloutContent: Column(
+        mainAxisSize: MainAxisSize.max,
+        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+        crossAxisAlignment: CrossAxisAlignment.center,
+        children: [
+          fco.purpleText('Create a link', fontSize: 24, family: 'Merriweather'),
+          Container(
+            padding: const EdgeInsets.symmetric(horizontal: 12),
+            width: 480,
+            height: 100,
+            child: StringOrNumberEditor(
+              inputType: String,
+              prompt: () => 'page address',
+              originalS: '',
+              onTextChangedF: (String s) async {},
+              onEscapedF: (_) {
+                fco.dismiss(cid_linkEditor);
+              },
+              dontAutoFocus: false,
+              onEditingCompleteF: (s) async {
+                // if (!s.startsWith('http://')) return;
+                String uri = s.replaceAll(' ', '-').toLowerCase();
+                controller.formatSelection(LinkAttribute(uri));
+                fco.dismiss(cid_linkEditor);
+                return;
+              },
+            ),
+          ),
+        ],
+      ),
+      calloutConfig: CalloutConfig(
+        cId: cid_linkEditor,
+        // initialTargetAlignment: Alignment.bottomLeft,
+        // initialCalloutAlignment: Alignment.topRight,
+        // finalSeparation: 200,
+        barrier: CalloutBarrierConfig(
+          opacity: .5,
+          onTappedF: () async {
+            fco.dismiss(cid_linkEditor);
+          },
+        ),
+        initialCalloutW: 500,
+        initialCalloutH: 180,
+        decorationBorderRadius: 12,
+        decorationFillColors: ColorOrGradient.color(Colors.white),
+        scrollControllerName: scName,
+        onDismissedF: () {
+          fco.removeKeystrokeHandler(cid_linkEditor);
+        },
+      ),
+      // targetGkF: ()=> fco.authIconGK,
+    );
   }
 }

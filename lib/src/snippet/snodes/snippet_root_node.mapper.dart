@@ -1,5 +1,6 @@
 // coverage:ignore-file
 // GENERATED CODE - DO NOT MODIFY BY HAND
+// dart format off
 // ignore_for_file: type=lint
 // ignore_for_file: unused_element, unnecessary_cast, override_on_non_overriding_member
 // ignore_for_file: strict_raw_type, inference_failure_on_untyped_parameter
@@ -25,26 +26,58 @@ class SnippetRootNodeMapper extends SubClassMapperBase<SnippetRootNode> {
   static String _$name(SnippetRootNode v) => v.name;
   static const Field<SnippetRootNode, String> _f$name = Field('name', _$name);
   static String _$tags(SnippetRootNode v) => v.tags;
-  static const Field<SnippetRootNode, String> _f$tags =
-      Field('tags', _$tags, opt: true, def: '');
+  static const Field<SnippetRootNode, String> _f$tags = Field(
+    'tags',
+    _$tags,
+    opt: true,
+    def: '',
+  );
   static SNode? _$child(SnippetRootNode v) => v.child;
-  static const Field<SnippetRootNode, SNode> _f$child =
-      Field('child', _$child, opt: true);
+  static const Field<SnippetRootNode, SNode> _f$child = Field(
+    'child',
+    _$child,
+    opt: true,
+  );
   static String _$uid(SnippetRootNode v) => v.uid;
-  static const Field<SnippetRootNode, String> _f$uid =
-      Field('uid', _$uid, mode: FieldMode.member);
+  static const Field<SnippetRootNode, String> _f$uid = Field(
+    'uid',
+    _$uid,
+    mode: FieldMode.member,
+  );
   static GlobalKey<State<StatefulWidget>>? _$treeNodeGK(SnippetRootNode v) =>
       v.treeNodeGK;
   static const Field<SnippetRootNode, GlobalKey<State<StatefulWidget>>>
-      _f$treeNodeGK = Field('treeNodeGK', _$treeNodeGK, mode: FieldMode.member);
+  _f$treeNodeGK = Field('treeNodeGK', _$treeNodeGK, mode: FieldMode.member);
   static bool _$isExpanded(SnippetRootNode v) => v.isExpanded;
-  static const Field<SnippetRootNode, bool> _f$isExpanded =
-      Field('isExpanded', _$isExpanded, mode: FieldMode.member);
+  static const Field<SnippetRootNode, bool> _f$isExpanded = Field(
+    'isExpanded',
+    _$isExpanded,
+    mode: FieldMode.member,
+  );
   static bool? _$hidePropertiesWhileDragging(SnippetRootNode v) =>
       v.hidePropertiesWhileDragging;
   static const Field<SnippetRootNode, bool> _f$hidePropertiesWhileDragging =
-      Field('hidePropertiesWhileDragging', _$hidePropertiesWhileDragging,
-          mode: FieldMode.member);
+      Field(
+        'hidePropertiesWhileDragging',
+        _$hidePropertiesWhileDragging,
+        mode: FieldMode.member,
+      );
+  static bool _$canShowTappableNodeWidgetOverlay(SnippetRootNode v) =>
+      v.canShowTappableNodeWidgetOverlay;
+  static const Field<SnippetRootNode, bool>
+  _f$canShowTappableNodeWidgetOverlay = Field(
+    'canShowTappableNodeWidgetOverlay',
+    _$canShowTappableNodeWidgetOverlay,
+    mode: FieldMode.member,
+  );
+  static GlobalKey<State<StatefulWidget>>? _$nodeWidgetGK(SnippetRootNode v) =>
+      v.nodeWidgetGK;
+  static const Field<SnippetRootNode, GlobalKey<State<StatefulWidget>>>
+  _f$nodeWidgetGK = Field(
+    'nodeWidgetGK',
+    _$nodeWidgetGK,
+    mode: FieldMode.member,
+  );
 
   @override
   final MappableFields<SnippetRootNode> fields = const {
@@ -55,6 +88,8 @@ class SnippetRootNodeMapper extends SubClassMapperBase<SnippetRootNode> {
     #treeNodeGK: _f$treeNodeGK,
     #isExpanded: _f$isExpanded,
     #hidePropertiesWhileDragging: _f$hidePropertiesWhileDragging,
+    #canShowTappableNodeWidgetOverlay: _f$canShowTappableNodeWidgetOverlay,
+    #nodeWidgetGK: _f$nodeWidgetGK,
   };
 
   @override
@@ -64,13 +99,12 @@ class SnippetRootNodeMapper extends SubClassMapperBase<SnippetRootNode> {
   @override
   late final ClassMapperBase superMapper = SCMapper.ensureInitialized();
 
-  @override
-  final MappingHook hook = const SnippetRootNodeHook();
   static SnippetRootNode _instantiate(DecodingData data) {
     return SnippetRootNode(
-        name: data.dec(_f$name),
-        tags: data.dec(_f$tags),
-        child: data.dec(_f$child));
+      name: data.dec(_f$name),
+      tags: data.dec(_f$tags),
+      child: data.dec(_f$child),
+    );
   }
 
   @override
@@ -92,30 +126,38 @@ mixin SnippetRootNodeMappable {
   }
 
   Map<String, dynamic> toMap() {
-    return SnippetRootNodeMapper.ensureInitialized()
-        .encodeMap<SnippetRootNode>(this as SnippetRootNode);
+    return SnippetRootNodeMapper.ensureInitialized().encodeMap<SnippetRootNode>(
+      this as SnippetRootNode,
+    );
   }
 
   SnippetRootNodeCopyWith<SnippetRootNode, SnippetRootNode, SnippetRootNode>
-      get copyWith =>
-          _SnippetRootNodeCopyWithImpl<SnippetRootNode, SnippetRootNode>(
-              this as SnippetRootNode, $identity, $identity);
+  get copyWith =>
+      _SnippetRootNodeCopyWithImpl<SnippetRootNode, SnippetRootNode>(
+        this as SnippetRootNode,
+        $identity,
+        $identity,
+      );
   @override
   String toString() {
-    return SnippetRootNodeMapper.ensureInitialized()
-        .stringifyValue(this as SnippetRootNode);
+    return SnippetRootNodeMapper.ensureInitialized().stringifyValue(
+      this as SnippetRootNode,
+    );
   }
 
   @override
   bool operator ==(Object other) {
-    return SnippetRootNodeMapper.ensureInitialized()
-        .equalsValue(this as SnippetRootNode, other);
+    return SnippetRootNodeMapper.ensureInitialized().equalsValue(
+      this as SnippetRootNode,
+      other,
+    );
   }
 
   @override
   int get hashCode {
-    return SnippetRootNodeMapper.ensureInitialized()
-        .hashValue(this as SnippetRootNode);
+    return SnippetRootNodeMapper.ensureInitialized().hashValue(
+      this as SnippetRootNode,
+    );
   }
 }
 
@@ -132,7 +174,8 @@ abstract class SnippetRootNodeCopyWith<$R, $In extends SnippetRootNode, $Out>
   @override
   $R call({String? name, String? tags, SNode? child});
   SnippetRootNodeCopyWith<$R2, $In, $Out2> $chain<$R2, $Out2>(
-      Then<$Out2, $R2> t);
+    Then<$Out2, $R2> t,
+  );
 }
 
 class _SnippetRootNodeCopyWithImpl<$R, $Out>
@@ -147,20 +190,23 @@ class _SnippetRootNodeCopyWithImpl<$R, $Out>
   SNodeCopyWith<$R, SNode, SNode>? get child =>
       $value.child?.copyWith.$chain((v) => call(child: v));
   @override
-  $R call({String? name, String? tags, Object? child = $none}) =>
-      $apply(FieldCopyWithData({
-        if (name != null) #name: name,
-        if (tags != null) #tags: tags,
-        if (child != $none) #child: child
-      }));
+  $R call({String? name, String? tags, Object? child = $none}) => $apply(
+    FieldCopyWithData({
+      if (name != null) #name: name,
+      if (tags != null) #tags: tags,
+      if (child != $none) #child: child,
+    }),
+  );
   @override
   SnippetRootNode $make(CopyWithData data) => SnippetRootNode(
-      name: data.get(#name, or: $value.name),
-      tags: data.get(#tags, or: $value.tags),
-      child: data.get(#child, or: $value.child));
+    name: data.get(#name, or: $value.name),
+    tags: data.get(#tags, or: $value.tags),
+    child: data.get(#child, or: $value.child),
+  );
 
   @override
   SnippetRootNodeCopyWith<$R2, SnippetRootNode, $Out2> $chain<$R2, $Out2>(
-          Then<$Out2, $R2> t) =>
-      _SnippetRootNodeCopyWithImpl<$R2, $Out2>($value, $cast, t);
+    Then<$Out2, $R2> t,
+  ) => _SnippetRootNodeCopyWithImpl<$R2, $Out2>($value, $cast, t);
 }
+

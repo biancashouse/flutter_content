@@ -84,9 +84,6 @@ class StepperNode extends MC with StepperNodeMappable {
   }
 
   @override
-  bool canBeDeleted() => children.isEmpty;
-
-  @override
   List<Widget> menuAnchorWidgets_Append(BuildContext context,
     NodeAction action,
     bool? skipHeading,

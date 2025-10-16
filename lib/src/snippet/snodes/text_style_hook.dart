@@ -4,11 +4,20 @@ import 'package:dart_mappable/dart_mappable.dart';
 
 import '../pnodes/groups/text_style_properties.dart';
 
-class TextStyleHook extends MappingHook {
-  const TextStyleHook();
+class TextStyleHook1 extends MappingHook {
+  const TextStyleHook1();
 
   @override
   Object? beforeDecode(Object? value) {
     return value ?? {'tsPropGroup': TextStyleProperties().toJson()};
+  }
+}
+
+class TextStyleHook2 extends MappingHook {
+  const TextStyleHook2();
+
+  @override
+  Object? beforeDecode(Object? value) {
+    return value ?? {'titleTextStyle': TextStyleProperties().toJson()};
   }
 }

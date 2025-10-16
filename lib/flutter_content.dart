@@ -11,18 +11,87 @@ import 'package:firebase_storage/firebase_storage.dart'
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_callouts/flutter_callouts.dart';
+import 'package:flutter_content/src/bloc/capi_state.dart';
 import 'package:flutter_content/src/bloc/snippet_being_edited.dart';
 import 'package:flutter_content/src/model/firestore_model_repo.dart';
 import 'package:flutter_content/src/snippet/fancy_tree/tree_controller.dart';
 import 'package:flutter_content/src/snippet/pnodes/groups/button_style_properties.dart';
 import 'package:flutter_content/src/snippet/pnodes/groups/container_style_properties.dart';
 import 'package:flutter_content/src/snippet/pnodes/groups/text_style_properties.dart';
+import 'package:flutter_content/src/snippet/snodes/algc_node.dart';
+import 'package:flutter_content/src/snippet/snodes/align_node.dart';
+import 'package:flutter_content/src/snippet/snodes/appbar_node.dart';
+import 'package:flutter_content/src/snippet/snodes/aspect_ratio_node.dart';
+import 'package:flutter_content/src/snippet/snodes/asset_image_node.dart';
+import 'package:flutter_content/src/snippet/snodes/button_node.dart';
+import 'package:flutter_content/src/snippet/snodes/carousel_node.dart';
 
 // import 'package:flutter_content/src/snippet/pnodes/groups/text_style_properties.dart';
 import 'package:flutter_content/src/snippet/snodes/center_node.dart';
+import 'package:flutter_content/src/snippet/snodes/childless_node.dart';
+import 'package:flutter_content/src/snippet/snodes/chip_node.dart';
+import 'package:flutter_content/src/snippet/snodes/column_node.dart';
+import 'package:flutter_content/src/snippet/snodes/container_node.dart';
+import 'package:flutter_content/src/snippet/snodes/custom_scroll_view_node.dart';
+import 'package:flutter_content/src/snippet/snodes/default_text_style_node.dart';
+import 'package:flutter_content/src/snippet/snodes/directory_node.dart';
+import 'package:flutter_content/src/snippet/snodes/elevated_button_node.dart';
+import 'package:flutter_content/src/snippet/snodes/expanded_node.dart';
+import 'package:flutter_content/src/snippet/snodes/file_node.dart';
+import 'package:flutter_content/src/snippet/snodes/filled_button_node.dart';
+import 'package:flutter_content/src/snippet/snodes/flex_node.dart';
+import 'package:flutter_content/src/snippet/snodes/flexible_node.dart';
+import 'package:flutter_content/src/snippet/snodes/flexible_space_bar_node.dart';
+import 'package:flutter_content/src/snippet/snodes/fs_image_node.dart';
+import 'package:flutter_content/src/snippet/snodes/gap_node.dart';
+import 'package:flutter_content/src/snippet/snodes/generic_multi_child_node.dart';
+import 'package:flutter_content/src/snippet/snodes/named_preferredsize_single_child_node.dart';
+import 'package:flutter_content/src/snippet/snodes/named_single_child_node.dart';
+import 'package:flutter_content/src/snippet/snodes/google_drive_iframe_node.dart';
+import 'package:flutter_content/src/snippet/snodes/hotspots/hotspots_node.dart';
+import 'package:flutter_content/src/snippet/snodes/icon_button_node.dart';
+import 'package:flutter_content/src/snippet/snodes/iframe_node.dart';
+import 'package:flutter_content/src/snippet/snodes/inlinespan_node.dart';
+import 'package:flutter_content/src/snippet/snodes/intrinsic_height_node.dart';
+import 'package:flutter_content/src/snippet/snodes/intrinsic_width_node.dart';
+import 'package:flutter_content/src/snippet/snodes/listview_node.dart';
+import 'package:flutter_content/src/snippet/snodes/markdown_node.dart';
+import 'package:flutter_content/src/snippet/snodes/menu_bar_node.dart';
+import 'package:flutter_content/src/snippet/snodes/menu_item_button_node.dart';
+import 'package:flutter_content/src/snippet/snodes/multi_child_node.dart';
+import 'package:flutter_content/src/snippet/snodes/outlined_button_node.dart';
+import 'package:flutter_content/src/snippet/snodes/padding_node.dart';
+import 'package:flutter_content/src/snippet/snodes/pinned_header_sliver_node.dart';
+import 'package:flutter_content/src/snippet/snodes/placeholder_node.dart';
+import 'package:flutter_content/src/snippet/snodes/poll_node.dart';
+import 'package:flutter_content/src/snippet/snodes/poll_option_node.dart';
+import 'package:flutter_content/src/snippet/snodes/positioned_node.dart';
+import 'package:flutter_content/src/snippet/snodes/quill_text_node.dart';
+import 'package:flutter_content/src/snippet/snodes/rich_text_node.dart';
+import 'package:flutter_content/src/snippet/snodes/row_node.dart';
+import 'package:flutter_content/src/snippet/snodes/scaffold_node.dart';
+import 'package:flutter_content/src/snippet/snodes/single_child_node.dart';
+import 'package:flutter_content/src/snippet/snodes/singlechildscrollview_node.dart';
+import 'package:flutter_content/src/snippet/snodes/sizedbox_node.dart';
+import 'package:flutter_content/src/snippet/snodes/sliver_floating_header_node.dart';
+import 'package:flutter_content/src/snippet/snodes/sliver_resizing_header_node.dart';
+import 'package:flutter_content/src/snippet/snodes/sliver_to_box_adapter_node.dart';
+import 'package:flutter_content/src/snippet/snodes/sliverlist_list_node.dart';
+import 'package:flutter_content/src/snippet/snodes/split_view_node.dart';
+import 'package:flutter_content/src/snippet/snodes/stack_node.dart';
+import 'package:flutter_content/src/snippet/snodes/step_node.dart';
+import 'package:flutter_content/src/snippet/snodes/stepper_node.dart';
+import 'package:flutter_content/src/snippet/snodes/submenu_button_node.dart';
+import 'package:flutter_content/src/snippet/snodes/tab_node.dart';
+import 'package:flutter_content/src/snippet/snodes/tabbar_node.dart';
+import 'package:flutter_content/src/snippet/snodes/tabbarview_node.dart';
+import 'package:flutter_content/src/snippet/snodes/text_button_node.dart';
 import 'package:flutter_content/src/snippet/snodes/text_node.dart';
+import 'package:flutter_content/src/snippet/snodes/uml_image_node.dart';
 // import 'package:flutter_content/src/snippet/snodes/quill_text_node.dart';
 import 'package:flutter_content/src/snippet/snodes/widget/fs_folder_node.dart';
+import 'package:flutter_content/src/snippet/snodes/wrap_node.dart';
+import 'package:flutter_content/src/snippet/snodes/yt_node.dart';
 import 'package:flutter_content/src/text_styles/button_style_search_anchor.dart';
 import 'package:flutter_content/src/text_styles/container_style_search_anchor.dart';
 import 'package:flutter_content/src/text_styles/text_style_search_anchor.dart';
@@ -129,6 +198,13 @@ export 'src/snippet/pnodes/enums/enum_material3_text_size.dart';
 export 'src/snippet/snode.dart';
 export 'src/snippet/snodes/align_node.dart';
 export 'src/snippet/snodes/appbar_node.dart';
+export 'src/snippet/snodes/sliver_appbar_node.dart';
+export 'src/snippet/snodes/flexible_space_bar_node.dart';
+export 'src/snippet/snodes/sliverlist_list_node.dart';
+export 'src/snippet/snodes/pinned_header_sliver_node.dart';
+export 'src/snippet/snodes/sliver_resizing_header_node.dart';
+export 'src/snippet/snodes/sliver_floating_header_node.dart';
+export 'src/snippet/snodes/sliver_to_box_adapter_node.dart';
 export 'src/snippet/snodes/aspect_ratio_node.dart';
 export 'src/snippet/snodes/asset_image_node.dart';
 export 'src/snippet/snodes/button_node.dart';
@@ -148,11 +224,15 @@ export 'src/snippet/snodes/filled_button_node.dart';
 export 'src/snippet/snodes/firebase_storage_image_node.dart';
 export 'src/snippet/snodes/flex_node.dart';
 export 'src/snippet/snodes/flexible_node.dart';
+export 'src/snippet/snodes/algc_node.dart';
+export 'src/snippet/snodes/tab_node.dart';
+export 'src/snippet/snodes/custom_scroll_view_node.dart';
 
 // export 'src/snippet/snodes/fs_folder_node.dart';
 export 'src/snippet/snodes/gap_node.dart';
 export 'src/snippet/snodes/generic_multi_child_node.dart';
-export 'src/snippet/snodes/generic_single_child_node.dart';
+export 'src/snippet/snodes/named_single_child_node.dart';
+export 'src/snippet/snodes/named_preferredsize_single_child_node.dart';
 export 'src/snippet/snodes/google_drive_iframe_node.dart';
 export 'src/snippet/snodes/hotspots/hotspots_node.dart';
 export 'src/snippet/snodes/hotspots/widgets/callout_snippet_content.dart';
@@ -178,8 +258,11 @@ export 'src/snippet/snodes/rich_text_node.dart';
 export 'src/snippet/snodes/row_node.dart';
 export 'src/snippet/snodes/scaffold_node.dart';
 export 'src/snippet/snodes/single_child_node.dart';
+export 'src/snippet/snodes/listview_node.dart';
 export 'src/snippet/snodes/singlechildscrollview_node.dart';
 export 'src/snippet/snodes/sizedbox_node.dart';
+export 'src/snippet/snodes/intrinsic_width_node.dart';
+export 'src/snippet/snodes/intrinsic_height_node.dart';
 export 'src/snippet/snodes/snippet_root_node.dart';
 export 'src/snippet/snodes/split_view_node.dart';
 export 'src/snippet/snodes/stack_node.dart';
@@ -203,6 +286,8 @@ export 'src/snippet/snodes/upto6colors.dart';
 export 'src/model/alignment_enum_model.dart';
 export 'src/model/color_model.dart';
 export 'src/model/offset_model.dart';
+export 'src/api/editable_page/snippet_tree_controller.dart';
+export 'src/api/editable_page/properties_tree_controller.dart';
 
 // export 'src/snippet/snodes/fs_bucket_node.dart';
 // export 'src/snippet/snodes/fs_directory_node.dart';
@@ -355,8 +440,6 @@ class FlutterContentMixins
     // await initLocalStorage();
     // fco.logger.i('init 6. ${fco.stopwatch.elapsedMilliseconds}');
 
-    _authenticated = localStorage.read("canEditContent") ?? false;
-
     if (useFBStorage) {
       // traverse all nodes starting at root
       final fsRootFolderNode = await modelRepo.createAndPopulateFolderTree(
@@ -373,8 +456,10 @@ class FlutterContentMixins
 
     // fco.logger.i('init 7. ${fco.stopwatch.elapsedMilliseconds}');
 
+    bool authenticated = localStorage.read("signed-in") ?? false;
+
     // FutureBuilder requires this return
-    return CAPIBloC(modelRepo: modelRepo);
+    return CAPIBloC(modelRepo: modelRepo, authenticated: authenticated);
   }
 
   late bool logging;
@@ -404,19 +489,20 @@ class FlutterContentMixins
   late ValueNotifier<RoutingConfig> routingConfigVN;
   var themeModeNotifier = ValueNotifier<ThemeMode>(ThemeMode.light);
 
-  late bool _authenticated;
-
   bool canEditContent() {
     String? currentPagePath = fco.currentEditablePagePath;
     bool isGuestPage = fco.appInfo.anonymousUserEditablePages.contains(
       currentPagePath,
     );
-    return _authenticated || isGuestPage;
+    return capiBloc.state.isSignedIn || isGuestPage;
   }
+
+  bool isGuestEditor() => capiBloc.state.signedInAsGuestEditor;
 
   GlobalKey authIconGK = GlobalKey();
 
   final snippetTreeTC = TransformationController();
+  final propertiesTreeTC = TransformationController();
 
   GoRouter? router;
 
@@ -431,7 +517,7 @@ class FlutterContentMixins
 
   bool get aNodeIsSelected => snippetBeingEdited?.selectedNode != null;
 
-  bool get inSelectWidgetMode => capiBloc.state.inSelectWidgetMode;
+  bool get inSelectWidgetMode => capiBloc.state.inSelectWidgetMode();
 
   SNode? get selectedNode => snippetBeingEdited?.selectedNode;
 
@@ -528,7 +614,7 @@ class FlutterContentMixins
   // create new snippet version in cache, then write through to FB
   Future<void> _cacheAndSaveANewSnippetVersion({
     required SnippetName snippetName,
-    String? pagePath,
+    // String? pagePath,
     required SnippetRootNode rootNode,
     // bool? publish,
   }) async {
@@ -555,7 +641,7 @@ class FlutterContentMixins
         snippetName,
         editingVersionId: newVersionId,
         publishedVersionId: newVersionId,
-        routePath: pagePath,
+        // routePath: pagePath,
         autoPublish: appInfo.autoPublishDefault,
         versionIds: [],
       );
@@ -635,10 +721,6 @@ class FlutterContentMixins
   void forceRefresh({bool onlyTargetsWrappers = false}) => fco.capiBloc.add(
     CAPIEvent.forceRefresh(onlyTargetsWrappers: onlyTargetsWrappers),
   );
-
-  Future<void> setCanEditContent(bool b) async {
-    return await localStorage.write("canEditContent", _authenticated = b);
-  }
 
   Offset calloutConfigToolbarPos() =>
       _calloutConfigToolbarPos ??
@@ -775,5 +857,91 @@ class FlutterContentMixins
         '${blue.toRadixString(16).padLeft(2, '0')}'
         .toUpperCase();
   }
+
+
+  void initializeMappers() {
+    // This function just needs to exist. Its primary purpose is to force the
+    // dart analyzer to process all the imports. Inside each .mapper.dart file,
+    // there is code that self-registers the mapper.
+    SNodeMapper.ensureInitialized();
+    CLMapper.ensureInitialized();
+    SCMapper.ensureInitialized();
+    MCMapper.ensureInitialized();
+    InlineSpanNodeMapper.ensureInitialized();
+    // CL
+    AlgCNodeMapper.ensureInitialized();
+    AppBarNodeMapper.ensureInitialized();
+    AssetImageNodeMapper.ensureInitialized();
+    ChipNodeMapper.ensureInitialized();
+    FileNodeMapper.ensureInitialized();
+    FlexibleSpaceBarNodeMapper.ensureInitialized();
+    FSImageNodeMapper.ensureInitialized();
+    GapNodeMapper.ensureInitialized();
+    GoogleDriveIFrameNodeMapper.ensureInitialized();
+    IFrameNodeMapper.ensureInitialized();
+    MarkdownNodeMapper.ensureInitialized();
+    PlaceholderNodeMapper.ensureInitialized();
+    PollOptionNodeMapper.ensureInitialized();
+    QuillTextNodeMapper.ensureInitialized();
+    RichTextNodeMapper.ensureInitialized();
+    ScaffoldNodeMapper.ensureInitialized();
+    StepNodeMapper.ensureInitialized();
+    TextNodeMapper.ensureInitialized();
+    UMLImageNodeMapper.ensureInitialized();
+    YTNodeMapper.ensureInitialized();
+  // SC
+    AlignNodeMapper.ensureInitialized();
+    AspectRatioNodeMapper.ensureInitialized();
+    ButtonNodeMapper.ensureInitialized();
+    CenterNodeMapper.ensureInitialized();
+    ContainerNodeMapper.ensureInitialized();
+    DefaultTextStyleNodeMapper.ensureInitialized();
+    ExpandedNodeMapper.ensureInitialized();
+    FlexibleNodeMapper.ensureInitialized();
+    NamedSCMapper.ensureInitialized();
+    NamedPSMapper.ensureInitialized();
+    IntrinsicWidthNodeMapper.ensureInitialized();
+    IntrinsicHeightNodeMapper.ensureInitialized();
+    PaddingNodeMapper.ensureInitialized();
+    PinnedHeaderSliverNodeMapper.ensureInitialized();
+    PositionedNodeMapper.ensureInitialized();
+    SingleChildScrollViewNodeMapper.ensureInitialized();
+    SizedBoxNodeMapper.ensureInitialized();
+    SliverFloatingHeaderNodeMapper.ensureInitialized();
+    SliverResizingHeaderNodeMapper.ensureInitialized();
+    SliverToBoxAdapterNodeMapper.ensureInitialized();
+    SnippetRootNodeMapper.ensureInitialized();
+    TabNodeMapper.ensureInitialized();
+    TargetsWrapperNodeMapper.ensureInitialized();
+    // MC
+    CarouselNodeMapper.ensureInitialized();
+    CustomScrollViewNodeMapper.ensureInitialized();
+    DirectoryNodeMapper.ensureInitialized();
+    FlexNodeMapper.ensureInitialized();
+    NamedMCMapper.ensureInitialized();
+    ListViewNodeMapper.ensureInitialized();
+    MenuBarNodeMapper.ensureInitialized();
+    PollNodeMapper.ensureInitialized();
+    SliverListListNodeMapper.ensureInitialized();
+    SplitViewNodeMapper.ensureInitialized();
+    StackNodeMapper.ensureInitialized();
+    StepperNodeMapper.ensureInitialized();
+    SubmenuButtonNodeMapper.ensureInitialized();
+    TabBarNodeMapper.ensureInitialized();
+    TabBarViewNodeMapper.ensureInitialized();
+    WrapNodeMapper.ensureInitialized();
+    // Buttons
+    ElevatedButtonNodeMapper.ensureInitialized();
+    OutlinedButtonNodeMapper.ensureInitialized();
+    TextButtonNodeMapper.ensureInitialized();
+    FilledButtonNodeMapper.ensureInitialized();
+    IconButtonNodeMapper.ensureInitialized();
+    MenuItemButtonNodeMapper.ensureInitialized();
+    // Flex
+    RowNodeMapper.ensureInitialized();
+    ColumnNodeMapper.ensureInitialized();
+  }
+
+// lib/src/init.dart
 
 }

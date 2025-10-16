@@ -19,9 +19,15 @@ class CAPIEvent with _$CAPIEvent {
   //   required TargetModel tc,
   // }) = DeleteTarget;
 
-  const factory CAPIEvent.selectPanel({
-    required String? panelName,
-  }) = SelectPanel;
+  const factory CAPIEvent.signedIn({
+    @Default(false) bool asGuestEditor,
+  }) = SignedIn;
+  const factory CAPIEvent.signedOut() = SignedOut;
+
+
+  // const factory CAPIEvent.selectPanel({
+  //   required String? panelName,
+  // }) = SelectPanel;
 
   // const factory CAPIEvent.selectTarget({
   //   required TargetModel tc,
@@ -109,6 +115,10 @@ class CAPIEvent with _$CAPIEvent {
     @Default(false) bool onlyTargetsWrappers,
   }) = ForceRefresh;
 
+  const factory CAPIEvent.toggleSnippetVisibility({
+    SnippetName? snippetName,
+}) = ToggleSnippetVisibility;
+
   const factory CAPIEvent.updateClipboard({
     required SNode? newContent,
     required ScrollControllerName? scName,
@@ -173,7 +183,7 @@ class CAPIEvent with _$CAPIEvent {
 //   required String newName,
 // }) = ChangedSnippetName;
 
-  const factory CAPIEvent.hideIframes({required bool hide}) = HideIframes;
+  // const factory CAPIEvent.hideIframes({required bool hide}) = HideIframes;
 
   const factory CAPIEvent.setPanelOrPlaceholderSnippet({
     required SnippetName snippetName,

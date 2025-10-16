@@ -46,4 +46,34 @@ class PNode extends Node {
   // static late Callout _selectedPropertyWidget;
   static final GlobalKey _selectedPropertyGK =
       GlobalKey(debugLabel: "PTreeNode.selectionGK");
+
+  static Iterable<PNode> propertyTreeChildrenProvider(PNode node) {
+    // // custom logic to hide style props when a named style prop is not null
+    // if (node.snode is TextSpanNode) {
+    //   TextSpanNode tsNode = node.snode as TextSpanNode;
+    //   if (tsNode.textStyleProperties?.namedTextStyle != null)
+    //     return [tsNode.textStyleProperties.];
+    // }
+
+    if (node.children != null /*Group*/ ) {
+      // named text style hides individual text style properties
+      // if (node is TextStylePropertyGroup) {
+      //   var namedTextStyleNode = node.children.toList().firstWhere((tsgNode){return tsgNode.name == 'namedTextStyle';});
+      //   if (namedTextStyleNode is StringPNode && namedTextStyleNode.stringValue != null) {
+      //     return [namedTextStyleNode];
+      //   }
+      // }
+      // ditto for button styles
+      // if (node is ButtonStylePNode/*Group*/) {
+      //   var namedButtonStyleNode = node.children!.toList().firstWhere((tsgNode){return tsgNode.name == 'namedButtonStyle';});
+      //   if (namedButtonStyleNode is StringPNode && namedButtonStyleNode.stringValue != null) {
+      //     return [namedButtonStyleNode];
+      //   }
+      // }
+      return node.children!;
+    }
+
+    return [];
+  }
+
 }

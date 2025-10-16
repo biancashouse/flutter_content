@@ -63,59 +63,45 @@ class StringOrNumberEditorState extends State<StringOrNumberEditor> {
 
     _focusNode = FocusNode(
       onKeyEvent: (node, event) {
-        final enterPressedWithoutShift = event is KeyDownEvent &&
-            event.physicalKey == PhysicalKeyboardKey.enter &&
-            !HardwareKeyboard.instance.physicalKeysPressed.any(
-                  (key) => <PhysicalKeyboardKey>{
-                PhysicalKeyboardKey.shiftLeft,
-                PhysicalKeyboardKey.shiftRight,
-              }.contains(key),
-            );
+        final isEnterPressed = event.physicalKey == PhysicalKeyboardKey.enter;
 
-        final enterPressedWithShift = event is KeyDownEvent &&
-            event.physicalKey == PhysicalKeyboardKey.enter &&
-            HardwareKeyboard.instance.physicalKeysPressed.any(
-                  (key) => <PhysicalKeyboardKey>{
-                PhysicalKeyboardKey.shiftLeft,
-                PhysicalKeyboardKey.shiftRight,
-              }.contains(key),
-            );
+        // We only want to act on the key press (down event), not the release.
+        if (event is! KeyUpEvent) {
+          final isShiftPressed = HardwareKeyboard.instance.physicalKeysPressed.any(
+                (key) => <PhysicalKeyboardKey>{
+              PhysicalKeyboardKey.shiftLeft,
+              PhysicalKeyboardKey.shiftRight,
+            }.contains(key),
+          );
 
-        // when maxLines != 1, shift-enter accepts text
-        if ((widget.maxLines > 1 && enterPressedWithShift) ||
-            (widget.maxLines < 2 &&
-                (enterPressedWithShift || enterPressedWithoutShift))) {
-          widget.onEditingCompleteF.call(_txtController.text);
-          // CalloutState? state = Callout.of(context);
-          // if (state != null) {
-          //   state.hideOP();
-          // } else {
-          //   Callout.removeParentCallout(context);
-          // }
-          return KeyEventResult.handled;
+          // --- Core Logic ---
+
+          // 1. Handle Shift + Enter for multi-line fields
+          if (widget.maxLines > 1 && isEnterPressed && isShiftPressed) {
+            // Let Flutter handle this to insert a newline. This works for down and repeat events.
+            return KeyEventResult.ignored;
+          }
+
+          // 2. Handle Enter (without Shift) but ONLY on the initial key down.
+          // This prevents repeated submissions if the user holds down the Enter key.
+          if (isEnterPressed && !isShiftPressed && event is KeyDownEvent) {
+            widget.onEditingCompleteF.call(_txtController.text);
+            // We handled the event, stop further processing.
+            return KeyEventResult.handled;
+          }
+
+          // 3. Handle Escape key, but again, only on the initial key down.
+          if (event.physicalKey == PhysicalKeyboardKey.escape && event is KeyDownEvent) {
+            widget.onEscapedF?.call(widget.originalS);
+            return KeyEventResult.handled;
+          }
         }
 
-        // esc key
-        if (event.physicalKey == PhysicalKeyboardKey.escape) {
-          widget.onEscapedF?.call(widget.originalS);
-          // CalloutState? state = Callout.of(context);
-          // if (state != null) {
-          //   state.hideOP();
-          // } else {
-          //   Callout.removeParentCallout(context);
-          // }
-          return KeyEventResult.handled;
-        }
-
-        // Disable holding enter
-        if (event is KeyRepeatEvent) {
-          return KeyEventResult.handled;
-        }
-
-        // just ignore anything else
+        // For any other key press (including repeats of normal characters), let Flutter handle it.
         return KeyEventResult.ignored;
       },
     );
+
 
     _txtController = TextEditingController();
     _txtController.text = widget.originalS;

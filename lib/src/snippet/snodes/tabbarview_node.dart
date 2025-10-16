@@ -12,35 +12,31 @@ part 'tabbarview_node.mapper.dart';
 class TabBarViewNode extends MC with TabBarViewNodeMappable {
   String tabBarName;
 
-  TabBarViewNode({
-    required this.tabBarName,
-    required super.children,
-  });
+  TabBarViewNode({required this.tabBarName, required super.children});
 
   @override
   List<PNode> propertyNodes(BuildContext context, SNode? parentSNode) => [
-        FlutterDocPNode(
-            buttonLabel: 'TabBarView',
-            webLink:
-                'https://api.flutter.dev/flutter/material/TabBarView-class.html',
-            snode: this,
-            name: 'fyi'),
-        StringPNode(
-          snode: this,
-          name: 'TabBar name',
-          stringValue: tabBarName,
-          skipHelperText: true,
-          onStringChange: (newValue) =>
-              refreshWithUpdate(context, () => tabBarName = newValue!),
-          calloutButtonSize: const Size(280, 70),
-          calloutWidth: 400,
-          numLines: 1,
-        ),
-      ];
+    FlutterDocPNode(
+      buttonLabel: 'TabBarView',
+      webLink: 'https://api.flutter.dev/flutter/material/TabBarView-class.html',
+      snode: this,
+      name: 'fyi',
+    ),
+    StringPNode(
+      snode: this,
+      name: 'TabBar name',
+      stringValue: tabBarName,
+      skipHelperText: true,
+      onStringChange: (newValue) =>
+          refreshWithUpdate(context, () => tabBarName = newValue!),
+      calloutButtonSize: const Size(280, 70),
+      calloutWidth: 400,
+      numLines: 1,
+    ),
+  ];
 
   @override
-  Widget buildFlutterWidget(BuildContext context, SNode? parentNode,
-      ) {
+  Widget buildFlutterWidget(BuildContext context, SNode? parentNode) {
     try {
       setParent(parentNode);
       //ScrollControllerName? scName = EditablePage.name(context);
@@ -58,7 +54,8 @@ class TabBarViewNode extends MC with TabBarViewNodeMappable {
       try {
         if (numTabNodes != children.length) {
           throw Exception(
-              'TabBar and TabBarView do not have matching number of children!');
+            'TabBar and TabBarView do not have matching number of children!',
+          );
         } else {
           return TabBarView(
             key: createNodeWidgetGK(),
@@ -69,20 +66,21 @@ class TabBarViewNode extends MC with TabBarViewNodeMappable {
       } catch (e) {
         fco.logger.i('TabBarViewNode.toWidget() failed!');
         return Error(
-            key: createNodeWidgetGK(), FLUTTER_TYPE, errorMsg: e.toString());
+          key: createNodeWidgetGK(),
+          FLUTTER_TYPE,
+          errorMsg: e.toString(),
+        );
       }
     } catch (e) {
       return Error(
-          key: createNodeWidgetGK(),
-          FLUTTER_TYPE,
-          color: Colors.red,
-          size: 16,
-          errorMsg: e.toString());
+        key: createNodeWidgetGK(),
+        FLUTTER_TYPE,
+        color: Colors.red,
+        size: 16,
+        errorMsg: e.toString(),
+      );
     }
   }
-
-  @override
-  bool canBeDeleted() => children.isEmpty;
 
   @override
   List<Type> replaceWithOnly() => [TabBarViewNode];

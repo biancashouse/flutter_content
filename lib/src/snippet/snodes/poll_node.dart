@@ -150,7 +150,7 @@ class PollNode extends MC with PollNodeMappable {
   }
 
   @override
-  bool canBeDeleted() => children.isEmpty;
+  bool canRemove() => children.isEmpty;
 
   @override
   List<Widget> menuAnchorWidgets_Append(BuildContext context,

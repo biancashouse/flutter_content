@@ -1,14 +1,18 @@
 import 'package:dart_mappable/dart_mappable.dart';
-import 'package:flutter_content/flutter_content.dart';
+import 'package:flutter_content/src/snippet/snodes/edgeinsets_node_value.dart';
 import 'package:flutter_content/src/snippet/pnodes/enums/enum_corner.dart';
 import 'package:flutter_content/src/snippet/pnodes/enums/enum_decoration_shape.dart';
 import 'package:flutter_content/src/snippet/pnodes/groups/outlined_border_properties.dart';
+import 'package:flutter_content/src/snippet/snodes/upto6colors.dart';
 import 'package:flutter_content/src/snippet/pnodes/groups/up_to_6_colors_hook.dart';
+import 'package:flutter_content/src/model/alignment_enum_model.dart';
+import 'package:flutter_content/src/typedefs.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
+
 
 part 'container_style_properties.mapper.dart';
 
-@MappableClass(discriminatorKey: 'cprops', includeSubClasses: [])
+@MappableClass()
 class ContainerStyleProperties with ContainerStylePropertiesMappable {
   UpTo6Colors? fillColors;
 
@@ -75,7 +79,7 @@ class ContainerStyleProperties with ContainerStylePropertiesMappable {
     // handle name change
     if (fillColorValues != null) {
       fillColors = fillColorValues;
-      decorationShapeEnum ?? DecorationShape.rectangle();
+      decorationShapeEnum ?? DecorationShapeEnum.rectangle;
     }
     if (borderColorValues != null) {
       borderColors = borderColorValues;

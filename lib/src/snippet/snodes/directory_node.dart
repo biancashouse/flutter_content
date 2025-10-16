@@ -133,8 +133,5 @@ class DirectoryNode extends MC with DirectoryNodeMappable {
   @override
   bool get is3rdParty => true;
 
-  @override
-  bool canBeDeleted() => children.isEmpty;
-
   static const String FLUTTER_TYPE = "Directory";
 }

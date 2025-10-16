@@ -1,19 +1,19 @@
 // coverage:ignore-file
 // GENERATED CODE - DO NOT MODIFY BY HAND
+// dart format off
 // ignore_for_file: type=lint
 // ignore_for_file: unused_element, unnecessary_cast, override_on_non_overriding_member
 // ignore_for_file: strict_raw_type, inference_failure_on_untyped_parameter
 
 part of 'generic_multi_child_node.dart';
 
-class GenericMultiChildNodeMapper
-    extends SubClassMapperBase<GenericMultiChildNode> {
-  GenericMultiChildNodeMapper._();
+class NamedMCMapper extends SubClassMapperBase<NamedMC> {
+  NamedMCMapper._();
 
-  static GenericMultiChildNodeMapper? _instance;
-  static GenericMultiChildNodeMapper ensureInitialized() {
+  static NamedMCMapper? _instance;
+  static NamedMCMapper ensureInitialized() {
     if (_instance == null) {
-      MapperContainer.globals.use(_instance = GenericMultiChildNodeMapper._());
+      MapperContainer.globals.use(_instance = NamedMCMapper._());
       MCMapper.ensureInitialized().addSubMapper(_instance!);
       SNodeMapper.ensureInitialized();
     }
@@ -21,145 +21,177 @@ class GenericMultiChildNodeMapper
   }
 
   @override
-  final String id = 'GenericMultiChildNode';
+  final String id = 'NamedMC';
 
-  static String _$propertyName(GenericMultiChildNode v) => v.propertyName;
-  static const Field<GenericMultiChildNode, String> _f$propertyName =
-      Field('propertyName', _$propertyName);
-  static List<SNode> _$children(GenericMultiChildNode v) => v.children;
-  static const Field<GenericMultiChildNode, List<SNode>> _f$children =
-      Field('children', _$children);
-  static String _$uid(GenericMultiChildNode v) => v.uid;
-  static const Field<GenericMultiChildNode, String> _f$uid =
-      Field('uid', _$uid, mode: FieldMode.member);
-  static GlobalKey<State<StatefulWidget>>? _$treeNodeGK(
-          GenericMultiChildNode v) =>
+  static String _$propertyName(NamedMC v) => v.propertyName;
+  static const Field<NamedMC, String> _f$propertyName = Field(
+    'propertyName',
+    _$propertyName,
+  );
+  static List<SNode> _$children(NamedMC v) => v.children;
+  static const Field<NamedMC, List<SNode>> _f$children = Field(
+    'children',
+    _$children,
+  );
+  static String _$uid(NamedMC v) => v.uid;
+  static const Field<NamedMC, String> _f$uid = Field(
+    'uid',
+    _$uid,
+    mode: FieldMode.member,
+  );
+  static GlobalKey<State<StatefulWidget>>? _$treeNodeGK(NamedMC v) =>
       v.treeNodeGK;
-  static const Field<GenericMultiChildNode, GlobalKey<State<StatefulWidget>>>
-      _f$treeNodeGK = Field('treeNodeGK', _$treeNodeGK, mode: FieldMode.member);
-  static bool _$isExpanded(GenericMultiChildNode v) => v.isExpanded;
-  static const Field<GenericMultiChildNode, bool> _f$isExpanded =
-      Field('isExpanded', _$isExpanded, mode: FieldMode.member);
-  static bool? _$hidePropertiesWhileDragging(GenericMultiChildNode v) =>
+  static const Field<NamedMC, GlobalKey<State<StatefulWidget>>> _f$treeNodeGK =
+      Field('treeNodeGK', _$treeNodeGK, mode: FieldMode.member);
+  static bool _$isExpanded(NamedMC v) => v.isExpanded;
+  static const Field<NamedMC, bool> _f$isExpanded = Field(
+    'isExpanded',
+    _$isExpanded,
+    mode: FieldMode.member,
+  );
+  static bool? _$hidePropertiesWhileDragging(NamedMC v) =>
       v.hidePropertiesWhileDragging;
-  static const Field<GenericMultiChildNode, bool>
-      _f$hidePropertiesWhileDragging = Field(
-          'hidePropertiesWhileDragging', _$hidePropertiesWhileDragging,
-          mode: FieldMode.member);
+  static const Field<NamedMC, bool> _f$hidePropertiesWhileDragging = Field(
+    'hidePropertiesWhileDragging',
+    _$hidePropertiesWhileDragging,
+    mode: FieldMode.member,
+  );
+  static bool _$canShowTappableNodeWidgetOverlay(NamedMC v) =>
+      v.canShowTappableNodeWidgetOverlay;
+  static const Field<NamedMC, bool> _f$canShowTappableNodeWidgetOverlay = Field(
+    'canShowTappableNodeWidgetOverlay',
+    _$canShowTappableNodeWidgetOverlay,
+    mode: FieldMode.member,
+  );
+  static GlobalKey<State<StatefulWidget>>? _$nodeWidgetGK(NamedMC v) =>
+      v.nodeWidgetGK;
+  static const Field<NamedMC, GlobalKey<State<StatefulWidget>>>
+  _f$nodeWidgetGK = Field(
+    'nodeWidgetGK',
+    _$nodeWidgetGK,
+    mode: FieldMode.member,
+  );
 
   @override
-  final MappableFields<GenericMultiChildNode> fields = const {
+  final MappableFields<NamedMC> fields = const {
     #propertyName: _f$propertyName,
     #children: _f$children,
     #uid: _f$uid,
     #treeNodeGK: _f$treeNodeGK,
     #isExpanded: _f$isExpanded,
     #hidePropertiesWhileDragging: _f$hidePropertiesWhileDragging,
+    #canShowTappableNodeWidgetOverlay: _f$canShowTappableNodeWidgetOverlay,
+    #nodeWidgetGK: _f$nodeWidgetGK,
   };
 
   @override
   final String discriminatorKey = 'mc';
   @override
-  final dynamic discriminatorValue = 'GenericMultiChildNode';
+  final dynamic discriminatorValue = 'NamedMC';
   @override
   late final ClassMapperBase superMapper = MCMapper.ensureInitialized();
 
-  static GenericMultiChildNode _instantiate(DecodingData data) {
-    return GenericMultiChildNode(
-        propertyName: data.dec(_f$propertyName),
-        children: data.dec(_f$children));
+  static NamedMC _instantiate(DecodingData data) {
+    return NamedMC(
+      propertyName: data.dec(_f$propertyName),
+      children: data.dec(_f$children),
+    );
   }
 
   @override
   final Function instantiate = _instantiate;
 
-  static GenericMultiChildNode fromMap(Map<String, dynamic> map) {
-    return ensureInitialized().decodeMap<GenericMultiChildNode>(map);
+  static NamedMC fromMap(Map<String, dynamic> map) {
+    return ensureInitialized().decodeMap<NamedMC>(map);
   }
 
-  static GenericMultiChildNode fromJson(String json) {
-    return ensureInitialized().decodeJson<GenericMultiChildNode>(json);
+  static NamedMC fromJson(String json) {
+    return ensureInitialized().decodeJson<NamedMC>(json);
   }
 }
 
-mixin GenericMultiChildNodeMappable {
+mixin NamedMCMappable {
   String toJson() {
-    return GenericMultiChildNodeMapper.ensureInitialized()
-        .encodeJson<GenericMultiChildNode>(this as GenericMultiChildNode);
+    return NamedMCMapper.ensureInitialized().encodeJson<NamedMC>(
+      this as NamedMC,
+    );
   }
 
   Map<String, dynamic> toMap() {
-    return GenericMultiChildNodeMapper.ensureInitialized()
-        .encodeMap<GenericMultiChildNode>(this as GenericMultiChildNode);
+    return NamedMCMapper.ensureInitialized().encodeMap<NamedMC>(
+      this as NamedMC,
+    );
   }
 
-  GenericMultiChildNodeCopyWith<GenericMultiChildNode, GenericMultiChildNode,
-      GenericMultiChildNode> get copyWith => _GenericMultiChildNodeCopyWithImpl<
-          GenericMultiChildNode, GenericMultiChildNode>(
-      this as GenericMultiChildNode, $identity, $identity);
+  NamedMCCopyWith<NamedMC, NamedMC, NamedMC> get copyWith =>
+      _NamedMCCopyWithImpl<NamedMC, NamedMC>(
+        this as NamedMC,
+        $identity,
+        $identity,
+      );
   @override
   String toString() {
-    return GenericMultiChildNodeMapper.ensureInitialized()
-        .stringifyValue(this as GenericMultiChildNode);
+    return NamedMCMapper.ensureInitialized().stringifyValue(this as NamedMC);
   }
 
   @override
   bool operator ==(Object other) {
-    return GenericMultiChildNodeMapper.ensureInitialized()
-        .equalsValue(this as GenericMultiChildNode, other);
+    return NamedMCMapper.ensureInitialized().equalsValue(
+      this as NamedMC,
+      other,
+    );
   }
 
   @override
   int get hashCode {
-    return GenericMultiChildNodeMapper.ensureInitialized()
-        .hashValue(this as GenericMultiChildNode);
+    return NamedMCMapper.ensureInitialized().hashValue(this as NamedMC);
   }
 }
 
-extension GenericMultiChildNodeValueCopy<$R, $Out>
-    on ObjectCopyWith<$R, GenericMultiChildNode, $Out> {
-  GenericMultiChildNodeCopyWith<$R, GenericMultiChildNode, $Out>
-      get $asGenericMultiChildNode => $base.as(
-          (v, t, t2) => _GenericMultiChildNodeCopyWithImpl<$R, $Out>(v, t, t2));
+extension NamedMCValueCopy<$R, $Out> on ObjectCopyWith<$R, NamedMC, $Out> {
+  NamedMCCopyWith<$R, NamedMC, $Out> get $asNamedMC =>
+      $base.as((v, t, t2) => _NamedMCCopyWithImpl<$R, $Out>(v, t, t2));
 }
 
-abstract class GenericMultiChildNodeCopyWith<
-    $R,
-    $In extends GenericMultiChildNode,
-    $Out> implements MCCopyWith<$R, $In, $Out> {
+abstract class NamedMCCopyWith<$R, $In extends NamedMC, $Out>
+    implements MCCopyWith<$R, $In, $Out> {
   @override
   ListCopyWith<$R, SNode, SNodeCopyWith<$R, SNode, SNode>> get children;
   @override
   $R call({String? propertyName, List<SNode>? children});
-  GenericMultiChildNodeCopyWith<$R2, $In, $Out2> $chain<$R2, $Out2>(
-      Then<$Out2, $R2> t);
+  NamedMCCopyWith<$R2, $In, $Out2> $chain<$R2, $Out2>(Then<$Out2, $R2> t);
 }
 
-class _GenericMultiChildNodeCopyWithImpl<$R, $Out>
-    extends ClassCopyWithBase<$R, GenericMultiChildNode, $Out>
-    implements GenericMultiChildNodeCopyWith<$R, GenericMultiChildNode, $Out> {
-  _GenericMultiChildNodeCopyWithImpl(super.value, super.then, super.then2);
+class _NamedMCCopyWithImpl<$R, $Out>
+    extends ClassCopyWithBase<$R, NamedMC, $Out>
+    implements NamedMCCopyWith<$R, NamedMC, $Out> {
+  _NamedMCCopyWithImpl(super.value, super.then, super.then2);
 
   @override
-  late final ClassMapperBase<GenericMultiChildNode> $mapper =
-      GenericMultiChildNodeMapper.ensureInitialized();
+  late final ClassMapperBase<NamedMC> $mapper =
+      NamedMCMapper.ensureInitialized();
   @override
   ListCopyWith<$R, SNode, SNodeCopyWith<$R, SNode, SNode>> get children =>
-      ListCopyWith($value.children, (v, t) => v.copyWith.$chain(t),
-          (v) => call(children: v));
+      ListCopyWith(
+        $value.children,
+        (v, t) => v.copyWith.$chain(t),
+        (v) => call(children: v),
+      );
   @override
-  $R call({String? propertyName, List<SNode>? children}) =>
-      $apply(FieldCopyWithData({
-        if (propertyName != null) #propertyName: propertyName,
-        if (children != null) #children: children
-      }));
+  $R call({String? propertyName, List<SNode>? children}) => $apply(
+    FieldCopyWithData({
+      if (propertyName != null) #propertyName: propertyName,
+      if (children != null) #children: children,
+    }),
+  );
   @override
-  GenericMultiChildNode $make(CopyWithData data) => GenericMultiChildNode(
-      propertyName: data.get(#propertyName, or: $value.propertyName),
-      children: data.get(#children, or: $value.children));
+  NamedMC $make(CopyWithData data) => NamedMC(
+    propertyName: data.get(#propertyName, or: $value.propertyName),
+    children: data.get(#children, or: $value.children),
+  );
 
   @override
-  GenericMultiChildNodeCopyWith<$R2, GenericMultiChildNode, $Out2>
-      $chain<$R2, $Out2>(Then<$Out2, $R2> t) =>
-          _GenericMultiChildNodeCopyWithImpl<$R2, $Out2>($value, $cast, t);
+  NamedMCCopyWith<$R2, NamedMC, $Out2> $chain<$R2, $Out2>(Then<$Out2, $R2> t) =>
+      _NamedMCCopyWithImpl<$R2, $Out2>($value, $cast, t);
 }
+

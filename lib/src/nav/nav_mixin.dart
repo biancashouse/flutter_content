@@ -54,7 +54,7 @@ mixin NavMixin {
                       break;
                     default:
                       if (fco.router != null) {
-                        EditablePage.of(context)?.pageNameDialog();
+                        EditablePage.of(context)?.showPageNameDialog();
                       }
                       break;
                   }
@@ -88,20 +88,24 @@ mixin NavMixin {
             }
             for (String pagePath in fco.pageList) {
               // skip currentPath
-              final String currentPath = GoRouterState.of(
-                context,
-              ).uri.toString();
-              if (pagePath != currentPath) {
-                String sandboxIndicator =
-                    (fco.appInfo.anonymousUserEditablePages.contains(pagePath))
-                    ? ' *'
-                    : "";
-                dropdownItems.add(
-                  _dropdownItemWithPI(
-                    value: pagePath,
-                    child: _pageNavBtn(context, pagePath, sandboxIndicator),
-                  ),
-                );
+              try {
+                final String currentPath = GoRouterState.of(
+                                context,
+                              ).uri.toString();
+                if (pagePath != currentPath) {
+                                String sandboxIndicator =
+                                    (fco.appInfo.anonymousUserEditablePages.contains(pagePath))
+                                    ? ' *'
+                                    : "";
+                                dropdownItems.add(
+                                  _dropdownItemWithPI(
+                                    value: pagePath,
+                                    child: _pageNavBtn(context, pagePath, sandboxIndicator),
+                                  ),
+                                );
+                              }
+              } catch (e) {
+                print(e);
               }
             }
             addBrightnessItem(dropdownItems);
@@ -116,7 +120,7 @@ mixin NavMixin {
                   if (fco.router != null) {
                     switch (value) {
                       case 'create-editable-page':
-                        EditablePage.of(context)?.pageNameDialog();
+                        EditablePage.of(context)?.showPageNameDialog();
                         break;
                       default:
                         break;
@@ -174,8 +178,7 @@ mixin NavMixin {
   Widget _signOutBtn() => TextButton(
     onPressed: () {
       if (!fco.anyPresent([CalloutConfigToolbar.CID])) {
-        fco.setCanEditContent(false);
-        fco.forceRefresh();
+        fco.capiBloc.add(CAPIEvent.signedOut());
       }
     },
     child: fco.coloredText('Sign Out', color: Colors.red),

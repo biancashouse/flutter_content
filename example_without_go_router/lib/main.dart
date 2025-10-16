@@ -1,11 +1,14 @@
 import 'dart:async';
 
+import 'package:example_without_go_router/page_home.dart';
 import 'package:example_without_go_router/page_iframe_test.dart';
+import 'package:example_without_go_router/page_quill_test.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_content/flutter_content.dart'
     show fco, FlutterContentApp;
 import 'package:window_manager/window_manager.dart';
 import 'bh-apps.firebase_options.dart';
+import 'mapper_tests.dart';
 // import 'page_home.dart';
 
 void disableOverflowErrors() {
@@ -28,6 +31,7 @@ void disableOverflowErrors() {
 void main({bool useEmulator = false}) {
   runZonedGuarded<Future<void>>(
     () async {
+      fco.initializeMappers();
       WidgetsFlutterBinding.ensureInitialized();
 
       if (fco.isMac || fco.isWindows) {
@@ -56,21 +60,25 @@ void main({bool useEmulator = false}) {
 
       disableOverflowErrors();
 
-      runApp(
-        FlutterContentApp(
-          appName: 'flutter-content-example-without-go-router',
-          home: Page_IframeTest(),
-          materialAppThemeF: () => ThemeData(
-            colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
-            primaryColor: fco.FUCHSIA_X,
-            primarySwatch: Colors.purple,
+      if (testSNodeSerialization()) {
+        runApp(
+          FlutterContentApp(
+            appName: 'flutter-content-example-without-go-router',
+            home: Page_Home(),
+            materialAppThemeF: () => ThemeData(
+              colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
+              primaryColor: fco.FUCHSIA_X,
+              primarySwatch: Colors.purple,
+            ),
+            fbOptions: BH_APPS_DefaultFirebaseOptions.currentPlatform,
+            useEmulator: useEmulator,
+            useFBStorage: true,
+            // onReadyF: () {},
           ),
-          fbOptions: BH_APPS_DefaultFirebaseOptions.currentPlatform,
-          useEmulator: useEmulator,
-          useFBStorage: true,
-          // onReadyF: () {},
-        ),
-      );
+        );
+      } else {
+        print('dud serialisation !');
+      }
     },
     (Object error, StackTrace stack) {
       // Handle the error here, e.g., log it, show a dialog, etc.

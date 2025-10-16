@@ -1,5 +1,6 @@
 // coverage:ignore-file
 // GENERATED CODE - DO NOT MODIFY BY HAND
+// dart format off
 // ignore_for_file: type=lint
 // ignore_for_file: unused_element, unnecessary_cast, override_on_non_overriding_member
 // ignore_for_file: strict_raw_type, inference_failure_on_untyped_parameter
@@ -24,32 +25,69 @@ class TextNodeMapper extends SubClassMapperBase<TextNode> {
   final String id = 'TextNode';
 
   static String _$text(TextNode v) => v.text;
-  static const Field<TextNode, String> _f$text =
-      Field('text', _$text, opt: true, def: '');
+  static const Field<TextNode, String> _f$text = Field(
+    'text',
+    _$text,
+    opt: true,
+    def: '',
+  );
   static String? _$webLink(TextNode v) => v.webLink;
-  static const Field<TextNode, String> _f$webLink =
-      Field('webLink', _$webLink, opt: true);
+  static const Field<TextNode, String> _f$webLink = Field(
+    'webLink',
+    _$webLink,
+    opt: true,
+  );
   static TextStyleProperties _$tsPropGroup(TextNode v) => v.tsPropGroup;
-  static const Field<TextNode, TextStyleProperties> _f$tsPropGroup =
-      Field('tsPropGroup', _$tsPropGroup, hook: TextStyleHook());
+  static const Field<TextNode, TextStyleProperties> _f$tsPropGroup = Field(
+    'tsPropGroup',
+    _$tsPropGroup,
+    hook: TextStyleHook1(),
+  );
   static TextAlignEnum? _$textAlign(TextNode v) => v.textAlign;
-  static const Field<TextNode, TextAlignEnum> _f$textAlign =
-      Field('textAlign', _$textAlign, opt: true);
+  static const Field<TextNode, TextAlignEnum> _f$textAlign = Field(
+    'textAlign',
+    _$textAlign,
+    opt: true,
+  );
   static String _$uid(TextNode v) => v.uid;
-  static const Field<TextNode, String> _f$uid =
-      Field('uid', _$uid, mode: FieldMode.member);
+  static const Field<TextNode, String> _f$uid = Field(
+    'uid',
+    _$uid,
+    mode: FieldMode.member,
+  );
   static GlobalKey<State<StatefulWidget>>? _$treeNodeGK(TextNode v) =>
       v.treeNodeGK;
   static const Field<TextNode, GlobalKey<State<StatefulWidget>>> _f$treeNodeGK =
       Field('treeNodeGK', _$treeNodeGK, mode: FieldMode.member);
   static bool _$isExpanded(TextNode v) => v.isExpanded;
-  static const Field<TextNode, bool> _f$isExpanded =
-      Field('isExpanded', _$isExpanded, mode: FieldMode.member);
+  static const Field<TextNode, bool> _f$isExpanded = Field(
+    'isExpanded',
+    _$isExpanded,
+    mode: FieldMode.member,
+  );
   static bool? _$hidePropertiesWhileDragging(TextNode v) =>
       v.hidePropertiesWhileDragging;
   static const Field<TextNode, bool> _f$hidePropertiesWhileDragging = Field(
-      'hidePropertiesWhileDragging', _$hidePropertiesWhileDragging,
-      mode: FieldMode.member);
+    'hidePropertiesWhileDragging',
+    _$hidePropertiesWhileDragging,
+    mode: FieldMode.member,
+  );
+  static bool _$canShowTappableNodeWidgetOverlay(TextNode v) =>
+      v.canShowTappableNodeWidgetOverlay;
+  static const Field<TextNode, bool> _f$canShowTappableNodeWidgetOverlay =
+      Field(
+        'canShowTappableNodeWidgetOverlay',
+        _$canShowTappableNodeWidgetOverlay,
+        mode: FieldMode.member,
+      );
+  static GlobalKey<State<StatefulWidget>>? _$nodeWidgetGK(TextNode v) =>
+      v.nodeWidgetGK;
+  static const Field<TextNode, GlobalKey<State<StatefulWidget>>>
+  _f$nodeWidgetGK = Field(
+    'nodeWidgetGK',
+    _$nodeWidgetGK,
+    mode: FieldMode.member,
+  );
 
   @override
   final MappableFields<TextNode> fields = const {
@@ -61,6 +99,8 @@ class TextNodeMapper extends SubClassMapperBase<TextNode> {
     #treeNodeGK: _f$treeNodeGK,
     #isExpanded: _f$isExpanded,
     #hidePropertiesWhileDragging: _f$hidePropertiesWhileDragging,
+    #canShowTappableNodeWidgetOverlay: _f$canShowTappableNodeWidgetOverlay,
+    #nodeWidgetGK: _f$nodeWidgetGK,
   };
 
   @override
@@ -72,10 +112,11 @@ class TextNodeMapper extends SubClassMapperBase<TextNode> {
 
   static TextNode _instantiate(DecodingData data) {
     return TextNode(
-        text: data.dec(_f$text),
-        webLink: data.dec(_f$webLink),
-        tsPropGroup: data.dec(_f$tsPropGroup),
-        textAlign: data.dec(_f$textAlign));
+      text: data.dec(_f$text),
+      webLink: data.dec(_f$webLink),
+      tsPropGroup: data.dec(_f$tsPropGroup),
+      textAlign: data.dec(_f$textAlign),
+    );
   }
 
   @override
@@ -92,18 +133,23 @@ class TextNodeMapper extends SubClassMapperBase<TextNode> {
 
 mixin TextNodeMappable {
   String toJson() {
-    return TextNodeMapper.ensureInitialized()
-        .encodeJson<TextNode>(this as TextNode);
+    return TextNodeMapper.ensureInitialized().encodeJson<TextNode>(
+      this as TextNode,
+    );
   }
 
   Map<String, dynamic> toMap() {
-    return TextNodeMapper.ensureInitialized()
-        .encodeMap<TextNode>(this as TextNode);
+    return TextNodeMapper.ensureInitialized().encodeMap<TextNode>(
+      this as TextNode,
+    );
   }
 
   TextNodeCopyWith<TextNode, TextNode, TextNode> get copyWith =>
       _TextNodeCopyWithImpl<TextNode, TextNode>(
-          this as TextNode, $identity, $identity);
+        this as TextNode,
+        $identity,
+        $identity,
+      );
   @override
   String toString() {
     return TextNodeMapper.ensureInitialized().stringifyValue(this as TextNode);
@@ -111,8 +157,10 @@ mixin TextNodeMappable {
 
   @override
   bool operator ==(Object other) {
-    return TextNodeMapper.ensureInitialized()
-        .equalsValue(this as TextNode, other);
+    return TextNodeMapper.ensureInitialized().equalsValue(
+      this as TextNode,
+      other,
+    );
   }
 
   @override
@@ -129,13 +177,14 @@ extension TextNodeValueCopy<$R, $Out> on ObjectCopyWith<$R, TextNode, $Out> {
 abstract class TextNodeCopyWith<$R, $In extends TextNode, $Out>
     implements CLCopyWith<$R, $In, $Out> {
   TextStylePropertiesCopyWith<$R, TextStyleProperties, TextStyleProperties>
-      get tsPropGroup;
+  get tsPropGroup;
   @override
-  $R call(
-      {String? text,
-      String? webLink,
-      TextStyleProperties? tsPropGroup,
-      TextAlignEnum? textAlign});
+  $R call({
+    String? text,
+    String? webLink,
+    TextStyleProperties? tsPropGroup,
+    TextAlignEnum? textAlign,
+  });
   TextNodeCopyWith<$R2, $In, $Out2> $chain<$R2, $Out2>(Then<$Out2, $R2> t);
 }
 
@@ -149,29 +198,33 @@ class _TextNodeCopyWithImpl<$R, $Out>
       TextNodeMapper.ensureInitialized();
   @override
   TextStylePropertiesCopyWith<$R, TextStyleProperties, TextStyleProperties>
-      get tsPropGroup =>
-          $value.tsPropGroup.copyWith.$chain((v) => call(tsPropGroup: v));
+  get tsPropGroup =>
+      $value.tsPropGroup.copyWith.$chain((v) => call(tsPropGroup: v));
   @override
-  $R call(
-          {String? text,
-          Object? webLink = $none,
-          TextStyleProperties? tsPropGroup,
-          Object? textAlign = $none}) =>
-      $apply(FieldCopyWithData({
-        if (text != null) #text: text,
-        if (webLink != $none) #webLink: webLink,
-        if (tsPropGroup != null) #tsPropGroup: tsPropGroup,
-        if (textAlign != $none) #textAlign: textAlign
-      }));
+  $R call({
+    String? text,
+    Object? webLink = $none,
+    TextStyleProperties? tsPropGroup,
+    Object? textAlign = $none,
+  }) => $apply(
+    FieldCopyWithData({
+      if (text != null) #text: text,
+      if (webLink != $none) #webLink: webLink,
+      if (tsPropGroup != null) #tsPropGroup: tsPropGroup,
+      if (textAlign != $none) #textAlign: textAlign,
+    }),
+  );
   @override
   TextNode $make(CopyWithData data) => TextNode(
-      text: data.get(#text, or: $value.text),
-      webLink: data.get(#webLink, or: $value.webLink),
-      tsPropGroup: data.get(#tsPropGroup, or: $value.tsPropGroup),
-      textAlign: data.get(#textAlign, or: $value.textAlign));
+    text: data.get(#text, or: $value.text),
+    webLink: data.get(#webLink, or: $value.webLink),
+    tsPropGroup: data.get(#tsPropGroup, or: $value.tsPropGroup),
+    textAlign: data.get(#textAlign, or: $value.textAlign),
+  );
 
   @override
   TextNodeCopyWith<$R2, TextNode, $Out2> $chain<$R2, $Out2>(
-          Then<$Out2, $R2> t) =>
-      _TextNodeCopyWithImpl<$R2, $Out2>($value, $cast, t);
+    Then<$Out2, $R2> t,
+  ) => _TextNodeCopyWithImpl<$R2, $Out2>($value, $cast, t);
 }
+

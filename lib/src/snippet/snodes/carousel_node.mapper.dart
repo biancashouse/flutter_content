@@ -1,5 +1,6 @@
 // coverage:ignore-file
 // GENERATED CODE - DO NOT MODIFY BY HAND
+// dart format off
 // ignore_for_file: type=lint
 // ignore_for_file: unused_element, unnecessary_cast, override_on_non_overriding_member
 // ignore_for_file: strict_raw_type, inference_failure_on_untyped_parameter
@@ -24,41 +25,90 @@ class CarouselNodeMapper extends SubClassMapperBase<CarouselNode> {
   final String id = 'CarouselNode';
 
   static bool _$autoPlay(CarouselNode v) => v.autoPlay;
-  static const Field<CarouselNode, bool> _f$autoPlay =
-      Field('autoPlay', _$autoPlay, opt: true, def: true);
+  static const Field<CarouselNode, bool> _f$autoPlay = Field(
+    'autoPlay',
+    _$autoPlay,
+    opt: true,
+    def: true,
+  );
   static int _$autoPlayIntervalSecs(CarouselNode v) => v.autoPlayIntervalSecs;
-  static const Field<CarouselNode, int> _f$autoPlayIntervalSecs =
-      Field('autoPlayIntervalSecs', _$autoPlayIntervalSecs, opt: true, def: 2);
+  static const Field<CarouselNode, int> _f$autoPlayIntervalSecs = Field(
+    'autoPlayIntervalSecs',
+    _$autoPlayIntervalSecs,
+    opt: true,
+    def: 2,
+  );
   static bool _$enlargeCenterPage(CarouselNode v) => v.enlargeCenterPage;
-  static const Field<CarouselNode, bool> _f$enlargeCenterPage =
-      Field('enlargeCenterPage', _$enlargeCenterPage, opt: true, def: true);
+  static const Field<CarouselNode, bool> _f$enlargeCenterPage = Field(
+    'enlargeCenterPage',
+    _$enlargeCenterPage,
+    opt: true,
+    def: true,
+  );
   static double _$aspectRatio(CarouselNode v) => v.aspectRatio;
-  static const Field<CarouselNode, double> _f$aspectRatio =
-      Field('aspectRatio', _$aspectRatio, opt: true, def: 1.0);
+  static const Field<CarouselNode, double> _f$aspectRatio = Field(
+    'aspectRatio',
+    _$aspectRatio,
+    opt: true,
+    def: 1.0,
+  );
   static double? _$height(CarouselNode v) => v.height;
-  static const Field<CarouselNode, double> _f$height =
-      Field('height', _$height, opt: true);
+  static const Field<CarouselNode, double> _f$height = Field(
+    'height',
+    _$height,
+    opt: true,
+  );
   static AxisEnum _$axis(CarouselNode v) => v.axis;
-  static const Field<CarouselNode, AxisEnum> _f$axis =
-      Field('axis', _$axis, opt: true, def: AxisEnum.horizontal);
+  static const Field<CarouselNode, AxisEnum> _f$axis = Field(
+    'axis',
+    _$axis,
+    opt: true,
+    def: AxisEnum.horizontal,
+  );
   static List<SNode> _$children(CarouselNode v) => v.children;
-  static const Field<CarouselNode, List<SNode>> _f$children =
-      Field('children', _$children);
+  static const Field<CarouselNode, List<SNode>> _f$children = Field(
+    'children',
+    _$children,
+  );
   static String _$uid(CarouselNode v) => v.uid;
-  static const Field<CarouselNode, String> _f$uid =
-      Field('uid', _$uid, mode: FieldMode.member);
+  static const Field<CarouselNode, String> _f$uid = Field(
+    'uid',
+    _$uid,
+    mode: FieldMode.member,
+  );
   static GlobalKey<State<StatefulWidget>>? _$treeNodeGK(CarouselNode v) =>
       v.treeNodeGK;
   static const Field<CarouselNode, GlobalKey<State<StatefulWidget>>>
-      _f$treeNodeGK = Field('treeNodeGK', _$treeNodeGK, mode: FieldMode.member);
+  _f$treeNodeGK = Field('treeNodeGK', _$treeNodeGK, mode: FieldMode.member);
   static bool _$isExpanded(CarouselNode v) => v.isExpanded;
-  static const Field<CarouselNode, bool> _f$isExpanded =
-      Field('isExpanded', _$isExpanded, mode: FieldMode.member);
+  static const Field<CarouselNode, bool> _f$isExpanded = Field(
+    'isExpanded',
+    _$isExpanded,
+    mode: FieldMode.member,
+  );
   static bool? _$hidePropertiesWhileDragging(CarouselNode v) =>
       v.hidePropertiesWhileDragging;
   static const Field<CarouselNode, bool> _f$hidePropertiesWhileDragging = Field(
-      'hidePropertiesWhileDragging', _$hidePropertiesWhileDragging,
-      mode: FieldMode.member);
+    'hidePropertiesWhileDragging',
+    _$hidePropertiesWhileDragging,
+    mode: FieldMode.member,
+  );
+  static bool _$canShowTappableNodeWidgetOverlay(CarouselNode v) =>
+      v.canShowTappableNodeWidgetOverlay;
+  static const Field<CarouselNode, bool> _f$canShowTappableNodeWidgetOverlay =
+      Field(
+        'canShowTappableNodeWidgetOverlay',
+        _$canShowTappableNodeWidgetOverlay,
+        mode: FieldMode.member,
+      );
+  static GlobalKey<State<StatefulWidget>>? _$nodeWidgetGK(CarouselNode v) =>
+      v.nodeWidgetGK;
+  static const Field<CarouselNode, GlobalKey<State<StatefulWidget>>>
+  _f$nodeWidgetGK = Field(
+    'nodeWidgetGK',
+    _$nodeWidgetGK,
+    mode: FieldMode.member,
+  );
 
   @override
   final MappableFields<CarouselNode> fields = const {
@@ -73,6 +123,8 @@ class CarouselNodeMapper extends SubClassMapperBase<CarouselNode> {
     #treeNodeGK: _f$treeNodeGK,
     #isExpanded: _f$isExpanded,
     #hidePropertiesWhileDragging: _f$hidePropertiesWhileDragging,
+    #canShowTappableNodeWidgetOverlay: _f$canShowTappableNodeWidgetOverlay,
+    #nodeWidgetGK: _f$nodeWidgetGK,
   };
 
   @override
@@ -84,13 +136,14 @@ class CarouselNodeMapper extends SubClassMapperBase<CarouselNode> {
 
   static CarouselNode _instantiate(DecodingData data) {
     return CarouselNode(
-        autoPlay: data.dec(_f$autoPlay),
-        autoPlayIntervalSecs: data.dec(_f$autoPlayIntervalSecs),
-        enlargeCenterPage: data.dec(_f$enlargeCenterPage),
-        aspectRatio: data.dec(_f$aspectRatio),
-        height: data.dec(_f$height),
-        axis: data.dec(_f$axis),
-        children: data.dec(_f$children));
+      autoPlay: data.dec(_f$autoPlay),
+      autoPlayIntervalSecs: data.dec(_f$autoPlayIntervalSecs),
+      enlargeCenterPage: data.dec(_f$enlargeCenterPage),
+      aspectRatio: data.dec(_f$aspectRatio),
+      height: data.dec(_f$height),
+      axis: data.dec(_f$axis),
+      children: data.dec(_f$children),
+    );
   }
 
   @override
@@ -107,34 +160,43 @@ class CarouselNodeMapper extends SubClassMapperBase<CarouselNode> {
 
 mixin CarouselNodeMappable {
   String toJson() {
-    return CarouselNodeMapper.ensureInitialized()
-        .encodeJson<CarouselNode>(this as CarouselNode);
+    return CarouselNodeMapper.ensureInitialized().encodeJson<CarouselNode>(
+      this as CarouselNode,
+    );
   }
 
   Map<String, dynamic> toMap() {
-    return CarouselNodeMapper.ensureInitialized()
-        .encodeMap<CarouselNode>(this as CarouselNode);
+    return CarouselNodeMapper.ensureInitialized().encodeMap<CarouselNode>(
+      this as CarouselNode,
+    );
   }
 
   CarouselNodeCopyWith<CarouselNode, CarouselNode, CarouselNode> get copyWith =>
       _CarouselNodeCopyWithImpl<CarouselNode, CarouselNode>(
-          this as CarouselNode, $identity, $identity);
+        this as CarouselNode,
+        $identity,
+        $identity,
+      );
   @override
   String toString() {
-    return CarouselNodeMapper.ensureInitialized()
-        .stringifyValue(this as CarouselNode);
+    return CarouselNodeMapper.ensureInitialized().stringifyValue(
+      this as CarouselNode,
+    );
   }
 
   @override
   bool operator ==(Object other) {
-    return CarouselNodeMapper.ensureInitialized()
-        .equalsValue(this as CarouselNode, other);
+    return CarouselNodeMapper.ensureInitialized().equalsValue(
+      this as CarouselNode,
+      other,
+    );
   }
 
   @override
   int get hashCode {
-    return CarouselNodeMapper.ensureInitialized()
-        .hashValue(this as CarouselNode);
+    return CarouselNodeMapper.ensureInitialized().hashValue(
+      this as CarouselNode,
+    );
   }
 }
 
@@ -149,14 +211,15 @@ abstract class CarouselNodeCopyWith<$R, $In extends CarouselNode, $Out>
   @override
   ListCopyWith<$R, SNode, SNodeCopyWith<$R, SNode, SNode>> get children;
   @override
-  $R call(
-      {bool? autoPlay,
-      int? autoPlayIntervalSecs,
-      bool? enlargeCenterPage,
-      double? aspectRatio,
-      double? height,
-      AxisEnum? axis,
-      List<SNode>? children});
+  $R call({
+    bool? autoPlay,
+    int? autoPlayIntervalSecs,
+    bool? enlargeCenterPage,
+    double? aspectRatio,
+    double? height,
+    AxisEnum? axis,
+    List<SNode>? children,
+  });
   CarouselNodeCopyWith<$R2, $In, $Out2> $chain<$R2, $Out2>(Then<$Out2, $R2> t);
 }
 
@@ -170,41 +233,52 @@ class _CarouselNodeCopyWithImpl<$R, $Out>
       CarouselNodeMapper.ensureInitialized();
   @override
   ListCopyWith<$R, SNode, SNodeCopyWith<$R, SNode, SNode>> get children =>
-      ListCopyWith($value.children, (v, t) => v.copyWith.$chain(t),
-          (v) => call(children: v));
+      ListCopyWith(
+        $value.children,
+        (v, t) => v.copyWith.$chain(t),
+        (v) => call(children: v),
+      );
   @override
-  $R call(
-          {bool? autoPlay,
-          int? autoPlayIntervalSecs,
-          bool? enlargeCenterPage,
-          double? aspectRatio,
-          Object? height = $none,
-          AxisEnum? axis,
-          List<SNode>? children}) =>
-      $apply(FieldCopyWithData({
-        if (autoPlay != null) #autoPlay: autoPlay,
-        if (autoPlayIntervalSecs != null)
-          #autoPlayIntervalSecs: autoPlayIntervalSecs,
-        if (enlargeCenterPage != null) #enlargeCenterPage: enlargeCenterPage,
-        if (aspectRatio != null) #aspectRatio: aspectRatio,
-        if (height != $none) #height: height,
-        if (axis != null) #axis: axis,
-        if (children != null) #children: children
-      }));
+  $R call({
+    bool? autoPlay,
+    int? autoPlayIntervalSecs,
+    bool? enlargeCenterPage,
+    double? aspectRatio,
+    Object? height = $none,
+    AxisEnum? axis,
+    List<SNode>? children,
+  }) => $apply(
+    FieldCopyWithData({
+      if (autoPlay != null) #autoPlay: autoPlay,
+      if (autoPlayIntervalSecs != null)
+        #autoPlayIntervalSecs: autoPlayIntervalSecs,
+      if (enlargeCenterPage != null) #enlargeCenterPage: enlargeCenterPage,
+      if (aspectRatio != null) #aspectRatio: aspectRatio,
+      if (height != $none) #height: height,
+      if (axis != null) #axis: axis,
+      if (children != null) #children: children,
+    }),
+  );
   @override
   CarouselNode $make(CopyWithData data) => CarouselNode(
-      autoPlay: data.get(#autoPlay, or: $value.autoPlay),
-      autoPlayIntervalSecs:
-          data.get(#autoPlayIntervalSecs, or: $value.autoPlayIntervalSecs),
-      enlargeCenterPage:
-          data.get(#enlargeCenterPage, or: $value.enlargeCenterPage),
-      aspectRatio: data.get(#aspectRatio, or: $value.aspectRatio),
-      height: data.get(#height, or: $value.height),
-      axis: data.get(#axis, or: $value.axis),
-      children: data.get(#children, or: $value.children));
+    autoPlay: data.get(#autoPlay, or: $value.autoPlay),
+    autoPlayIntervalSecs: data.get(
+      #autoPlayIntervalSecs,
+      or: $value.autoPlayIntervalSecs,
+    ),
+    enlargeCenterPage: data.get(
+      #enlargeCenterPage,
+      or: $value.enlargeCenterPage,
+    ),
+    aspectRatio: data.get(#aspectRatio, or: $value.aspectRatio),
+    height: data.get(#height, or: $value.height),
+    axis: data.get(#axis, or: $value.axis),
+    children: data.get(#children, or: $value.children),
+  );
 
   @override
   CarouselNodeCopyWith<$R2, CarouselNode, $Out2> $chain<$R2, $Out2>(
-          Then<$Out2, $R2> t) =>
-      _CarouselNodeCopyWithImpl<$R2, $Out2>($value, $cast, t);
+    Then<$Out2, $R2> t,
+  ) => _CarouselNodeCopyWithImpl<$R2, $Out2>($value, $cast, t);
 }
+

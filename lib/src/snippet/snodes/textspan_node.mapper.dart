@@ -1,5 +1,6 @@
 // coverage:ignore-file
 // GENERATED CODE - DO NOT MODIFY BY HAND
+// dart format off
 // ignore_for_file: type=lint
 // ignore_for_file: unused_element, unnecessary_cast, override_on_non_overriding_member
 // ignore_for_file: strict_raw_type, inference_failure_on_untyped_parameter
@@ -24,37 +25,75 @@ class TextSpanNodeMapper extends SubClassMapperBase<TextSpanNode> {
   final String id = 'TextSpanNode';
 
   static String? _$text(TextSpanNode v) => v.text;
-  static const Field<TextSpanNode, String> _f$text =
-      Field('text', _$text, opt: true);
+  static const Field<TextSpanNode, String> _f$text = Field(
+    'text',
+    _$text,
+    opt: true,
+  );
   static String? _$webLink(TextSpanNode v) => v.webLink;
-  static const Field<TextSpanNode, String> _f$webLink =
-      Field('webLink', _$webLink, opt: true);
+  static const Field<TextSpanNode, String> _f$webLink = Field(
+    'webLink',
+    _$webLink,
+    opt: true,
+  );
   static TextStyleProperties _$tsPropGroup(TextSpanNode v) => v.tsPropGroup;
-  static const Field<TextSpanNode, TextStyleProperties> _f$tsPropGroup =
-      Field('tsPropGroup', _$tsPropGroup, hook: TextStyleHook());
+  static const Field<TextSpanNode, TextStyleProperties> _f$tsPropGroup = Field(
+    'tsPropGroup',
+    _$tsPropGroup,
+    hook: TextStyleHook1(),
+  );
   static List<InlineSpanNode>? _$children(TextSpanNode v) => v.children;
-  static const Field<TextSpanNode, List<InlineSpanNode>> _f$children =
-      Field('children', _$children, opt: true);
+  static const Field<TextSpanNode, List<InlineSpanNode>> _f$children = Field(
+    'children',
+    _$children,
+    opt: true,
+  );
   static String _$uid(TextSpanNode v) => v.uid;
-  static const Field<TextSpanNode, String> _f$uid =
-      Field('uid', _$uid, mode: FieldMode.member);
+  static const Field<TextSpanNode, String> _f$uid = Field(
+    'uid',
+    _$uid,
+    mode: FieldMode.member,
+  );
   static GlobalKey<State<StatefulWidget>>? _$treeNodeGK(TextSpanNode v) =>
       v.treeNodeGK;
   static const Field<TextSpanNode, GlobalKey<State<StatefulWidget>>>
-      _f$treeNodeGK = Field('treeNodeGK', _$treeNodeGK, mode: FieldMode.member);
+  _f$treeNodeGK = Field('treeNodeGK', _$treeNodeGK, mode: FieldMode.member);
   static bool _$isExpanded(TextSpanNode v) => v.isExpanded;
-  static const Field<TextSpanNode, bool> _f$isExpanded =
-      Field('isExpanded', _$isExpanded, mode: FieldMode.member);
+  static const Field<TextSpanNode, bool> _f$isExpanded = Field(
+    'isExpanded',
+    _$isExpanded,
+    mode: FieldMode.member,
+  );
   static bool? _$hidePropertiesWhileDragging(TextSpanNode v) =>
       v.hidePropertiesWhileDragging;
   static const Field<TextSpanNode, bool> _f$hidePropertiesWhileDragging = Field(
-      'hidePropertiesWhileDragging', _$hidePropertiesWhileDragging,
-      mode: FieldMode.member);
+    'hidePropertiesWhileDragging',
+    _$hidePropertiesWhileDragging,
+    mode: FieldMode.member,
+  );
+  static bool _$canShowTappableNodeWidgetOverlay(TextSpanNode v) =>
+      v.canShowTappableNodeWidgetOverlay;
+  static const Field<TextSpanNode, bool> _f$canShowTappableNodeWidgetOverlay =
+      Field(
+        'canShowTappableNodeWidgetOverlay',
+        _$canShowTappableNodeWidgetOverlay,
+        mode: FieldMode.member,
+      );
+  static GlobalKey<State<StatefulWidget>>? _$nodeWidgetGK(TextSpanNode v) =>
+      v.nodeWidgetGK;
+  static const Field<TextSpanNode, GlobalKey<State<StatefulWidget>>>
+  _f$nodeWidgetGK = Field(
+    'nodeWidgetGK',
+    _$nodeWidgetGK,
+    mode: FieldMode.member,
+  );
   static TargetModel? _$calloutTargetConfig(TextSpanNode v) =>
       v.calloutTargetConfig;
   static const Field<TextSpanNode, TargetModel> _f$calloutTargetConfig = Field(
-      'calloutTargetConfig', _$calloutTargetConfig,
-      mode: FieldMode.member);
+    'calloutTargetConfig',
+    _$calloutTargetConfig,
+    mode: FieldMode.member,
+  );
 
   @override
   final MappableFields<TextSpanNode> fields = const {
@@ -66,6 +105,8 @@ class TextSpanNodeMapper extends SubClassMapperBase<TextSpanNode> {
     #treeNodeGK: _f$treeNodeGK,
     #isExpanded: _f$isExpanded,
     #hidePropertiesWhileDragging: _f$hidePropertiesWhileDragging,
+    #canShowTappableNodeWidgetOverlay: _f$canShowTappableNodeWidgetOverlay,
+    #nodeWidgetGK: _f$nodeWidgetGK,
     #calloutTargetConfig: _f$calloutTargetConfig,
   };
 
@@ -79,10 +120,11 @@ class TextSpanNodeMapper extends SubClassMapperBase<TextSpanNode> {
 
   static TextSpanNode _instantiate(DecodingData data) {
     return TextSpanNode(
-        text: data.dec(_f$text),
-        webLink: data.dec(_f$webLink),
-        tsPropGroup: data.dec(_f$tsPropGroup),
-        children: data.dec(_f$children));
+      text: data.dec(_f$text),
+      webLink: data.dec(_f$webLink),
+      tsPropGroup: data.dec(_f$tsPropGroup),
+      children: data.dec(_f$children),
+    );
   }
 
   @override
@@ -99,34 +141,43 @@ class TextSpanNodeMapper extends SubClassMapperBase<TextSpanNode> {
 
 mixin TextSpanNodeMappable {
   String toJson() {
-    return TextSpanNodeMapper.ensureInitialized()
-        .encodeJson<TextSpanNode>(this as TextSpanNode);
+    return TextSpanNodeMapper.ensureInitialized().encodeJson<TextSpanNode>(
+      this as TextSpanNode,
+    );
   }
 
   Map<String, dynamic> toMap() {
-    return TextSpanNodeMapper.ensureInitialized()
-        .encodeMap<TextSpanNode>(this as TextSpanNode);
+    return TextSpanNodeMapper.ensureInitialized().encodeMap<TextSpanNode>(
+      this as TextSpanNode,
+    );
   }
 
   TextSpanNodeCopyWith<TextSpanNode, TextSpanNode, TextSpanNode> get copyWith =>
       _TextSpanNodeCopyWithImpl<TextSpanNode, TextSpanNode>(
-          this as TextSpanNode, $identity, $identity);
+        this as TextSpanNode,
+        $identity,
+        $identity,
+      );
   @override
   String toString() {
-    return TextSpanNodeMapper.ensureInitialized()
-        .stringifyValue(this as TextSpanNode);
+    return TextSpanNodeMapper.ensureInitialized().stringifyValue(
+      this as TextSpanNode,
+    );
   }
 
   @override
   bool operator ==(Object other) {
-    return TextSpanNodeMapper.ensureInitialized()
-        .equalsValue(this as TextSpanNode, other);
+    return TextSpanNodeMapper.ensureInitialized().equalsValue(
+      this as TextSpanNode,
+      other,
+    );
   }
 
   @override
   int get hashCode {
-    return TextSpanNodeMapper.ensureInitialized()
-        .hashValue(this as TextSpanNode);
+    return TextSpanNodeMapper.ensureInitialized().hashValue(
+      this as TextSpanNode,
+    );
   }
 }
 
@@ -139,15 +190,20 @@ extension TextSpanNodeValueCopy<$R, $Out>
 abstract class TextSpanNodeCopyWith<$R, $In extends TextSpanNode, $Out>
     implements InlineSpanNodeCopyWith<$R, $In, $Out> {
   TextStylePropertiesCopyWith<$R, TextStyleProperties, TextStyleProperties>
-      get tsPropGroup;
-  ListCopyWith<$R, InlineSpanNode,
-      InlineSpanNodeCopyWith<$R, InlineSpanNode, InlineSpanNode>>? get children;
+  get tsPropGroup;
+  ListCopyWith<
+    $R,
+    InlineSpanNode,
+    InlineSpanNodeCopyWith<$R, InlineSpanNode, InlineSpanNode>
+  >?
+  get children;
   @override
-  $R call(
-      {String? text,
-      String? webLink,
-      TextStyleProperties? tsPropGroup,
-      List<InlineSpanNode>? children});
+  $R call({
+    String? text,
+    String? webLink,
+    TextStyleProperties? tsPropGroup,
+    List<InlineSpanNode>? children,
+  });
   TextSpanNodeCopyWith<$R2, $In, $Out2> $chain<$R2, $Out2>(Then<$Out2, $R2> t);
 }
 
@@ -161,36 +217,46 @@ class _TextSpanNodeCopyWithImpl<$R, $Out>
       TextSpanNodeMapper.ensureInitialized();
   @override
   TextStylePropertiesCopyWith<$R, TextStyleProperties, TextStyleProperties>
-      get tsPropGroup =>
-          $value.tsPropGroup.copyWith.$chain((v) => call(tsPropGroup: v));
+  get tsPropGroup =>
+      $value.tsPropGroup.copyWith.$chain((v) => call(tsPropGroup: v));
   @override
-  ListCopyWith<$R, InlineSpanNode,
-          InlineSpanNodeCopyWith<$R, InlineSpanNode, InlineSpanNode>>?
-      get children => $value.children != null
-          ? ListCopyWith($value.children!, (v, t) => v.copyWith.$chain(t),
-              (v) => call(children: v))
-          : null;
+  ListCopyWith<
+    $R,
+    InlineSpanNode,
+    InlineSpanNodeCopyWith<$R, InlineSpanNode, InlineSpanNode>
+  >?
+  get children => $value.children != null
+      ? ListCopyWith(
+          $value.children!,
+          (v, t) => v.copyWith.$chain(t),
+          (v) => call(children: v),
+        )
+      : null;
   @override
-  $R call(
-          {Object? text = $none,
-          Object? webLink = $none,
-          TextStyleProperties? tsPropGroup,
-          Object? children = $none}) =>
-      $apply(FieldCopyWithData({
-        if (text != $none) #text: text,
-        if (webLink != $none) #webLink: webLink,
-        if (tsPropGroup != null) #tsPropGroup: tsPropGroup,
-        if (children != $none) #children: children
-      }));
+  $R call({
+    Object? text = $none,
+    Object? webLink = $none,
+    TextStyleProperties? tsPropGroup,
+    Object? children = $none,
+  }) => $apply(
+    FieldCopyWithData({
+      if (text != $none) #text: text,
+      if (webLink != $none) #webLink: webLink,
+      if (tsPropGroup != null) #tsPropGroup: tsPropGroup,
+      if (children != $none) #children: children,
+    }),
+  );
   @override
   TextSpanNode $make(CopyWithData data) => TextSpanNode(
-      text: data.get(#text, or: $value.text),
-      webLink: data.get(#webLink, or: $value.webLink),
-      tsPropGroup: data.get(#tsPropGroup, or: $value.tsPropGroup),
-      children: data.get(#children, or: $value.children));
+    text: data.get(#text, or: $value.text),
+    webLink: data.get(#webLink, or: $value.webLink),
+    tsPropGroup: data.get(#tsPropGroup, or: $value.tsPropGroup),
+    children: data.get(#children, or: $value.children),
+  );
 
   @override
   TextSpanNodeCopyWith<$R2, TextSpanNode, $Out2> $chain<$R2, $Out2>(
-          Then<$Out2, $R2> t) =>
-      _TextSpanNodeCopyWithImpl<$R2, $Out2>($value, $cast, t);
+    Then<$Out2, $R2> t,
+  ) => _TextSpanNodeCopyWithImpl<$R2, $Out2>($value, $cast, t);
 }
+

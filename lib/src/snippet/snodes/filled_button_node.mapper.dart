@@ -1,5 +1,6 @@
 // coverage:ignore-file
 // GENERATED CODE - DO NOT MODIFY BY HAND
+// dart format off
 // ignore_for_file: type=lint
 // ignore_for_file: unused_element, unnecessary_cast, override_on_non_overriding_member
 // ignore_for_file: strict_raw_type, inference_failure_on_untyped_parameter
@@ -26,34 +27,75 @@ class FilledButtonNodeMapper extends SubClassMapperBase<FilledButtonNode> {
   static String? _$destinationRoutePathSnippetName(FilledButtonNode v) =>
       v.destinationRoutePathSnippetName;
   static const Field<FilledButtonNode, String>
-      _f$destinationRoutePathSnippetName = Field(
-          'destinationRoutePathSnippetName', _$destinationRoutePathSnippetName,
-          opt: true);
+  _f$destinationRoutePathSnippetName = Field(
+    'destinationRoutePathSnippetName',
+    _$destinationRoutePathSnippetName,
+    opt: true,
+  );
   static ButtonStyleProperties _$bsPropGroup(FilledButtonNode v) =>
       v.bsPropGroup;
   static const Field<FilledButtonNode, ButtonStyleProperties> _f$bsPropGroup =
       Field('bsPropGroup', _$bsPropGroup, hook: ButtonStyleHook());
   static String? _$onTapHandlerName(FilledButtonNode v) => v.onTapHandlerName;
-  static const Field<FilledButtonNode, String> _f$onTapHandlerName =
-      Field('onTapHandlerName', _$onTapHandlerName, opt: true);
+  static const Field<FilledButtonNode, String> _f$onTapHandlerName = Field(
+    'onTapHandlerName',
+    _$onTapHandlerName,
+    opt: true,
+  );
   static SNode? _$child(FilledButtonNode v) => v.child;
-  static const Field<FilledButtonNode, SNode> _f$child =
-      Field('child', _$child, opt: true);
+  static const Field<FilledButtonNode, SNode> _f$child = Field(
+    'child',
+    _$child,
+    opt: true,
+  );
   static String _$uid(FilledButtonNode v) => v.uid;
-  static const Field<FilledButtonNode, String> _f$uid =
-      Field('uid', _$uid, mode: FieldMode.member);
+  static const Field<FilledButtonNode, String> _f$uid = Field(
+    'uid',
+    _$uid,
+    mode: FieldMode.member,
+  );
   static GlobalKey<State<StatefulWidget>>? _$treeNodeGK(FilledButtonNode v) =>
       v.treeNodeGK;
   static const Field<FilledButtonNode, GlobalKey<State<StatefulWidget>>>
-      _f$treeNodeGK = Field('treeNodeGK', _$treeNodeGK, mode: FieldMode.member);
+  _f$treeNodeGK = Field('treeNodeGK', _$treeNodeGK, mode: FieldMode.member);
   static bool _$isExpanded(FilledButtonNode v) => v.isExpanded;
-  static const Field<FilledButtonNode, bool> _f$isExpanded =
-      Field('isExpanded', _$isExpanded, mode: FieldMode.member);
+  static const Field<FilledButtonNode, bool> _f$isExpanded = Field(
+    'isExpanded',
+    _$isExpanded,
+    mode: FieldMode.member,
+  );
   static bool? _$hidePropertiesWhileDragging(FilledButtonNode v) =>
       v.hidePropertiesWhileDragging;
   static const Field<FilledButtonNode, bool> _f$hidePropertiesWhileDragging =
-      Field('hidePropertiesWhileDragging', _$hidePropertiesWhileDragging,
-          mode: FieldMode.member);
+      Field(
+        'hidePropertiesWhileDragging',
+        _$hidePropertiesWhileDragging,
+        mode: FieldMode.member,
+      );
+  static bool _$canShowTappableNodeWidgetOverlay(FilledButtonNode v) =>
+      v.canShowTappableNodeWidgetOverlay;
+  static const Field<FilledButtonNode, bool>
+  _f$canShowTappableNodeWidgetOverlay = Field(
+    'canShowTappableNodeWidgetOverlay',
+    _$canShowTappableNodeWidgetOverlay,
+    mode: FieldMode.member,
+  );
+  static GlobalKey<State<StatefulWidget>>? _$nodeWidgetGK(FilledButtonNode v) =>
+      v.nodeWidgetGK;
+  static const Field<FilledButtonNode, GlobalKey<State<StatefulWidget>>>
+  _f$nodeWidgetGK = Field(
+    'nodeWidgetGK',
+    _$nodeWidgetGK,
+    mode: FieldMode.member,
+  );
+  static Size _$nodeAddersAndPropertiesCalloutSize(FilledButtonNode v) =>
+      v.nodeAddersAndPropertiesCalloutSize;
+  static const Field<FilledButtonNode, Size>
+  _f$nodeAddersAndPropertiesCalloutSize = Field(
+    'nodeAddersAndPropertiesCalloutSize',
+    _$nodeAddersAndPropertiesCalloutSize,
+    mode: FieldMode.member,
+  );
 
   @override
   final MappableFields<FilledButtonNode> fields = const {
@@ -65,6 +107,9 @@ class FilledButtonNodeMapper extends SubClassMapperBase<FilledButtonNode> {
     #treeNodeGK: _f$treeNodeGK,
     #isExpanded: _f$isExpanded,
     #hidePropertiesWhileDragging: _f$hidePropertiesWhileDragging,
+    #canShowTappableNodeWidgetOverlay: _f$canShowTappableNodeWidgetOverlay,
+    #nodeWidgetGK: _f$nodeWidgetGK,
+    #nodeAddersAndPropertiesCalloutSize: _f$nodeAddersAndPropertiesCalloutSize,
   };
 
   @override
@@ -76,11 +121,13 @@ class FilledButtonNodeMapper extends SubClassMapperBase<FilledButtonNode> {
 
   static FilledButtonNode _instantiate(DecodingData data) {
     return FilledButtonNode(
-        destinationRoutePathSnippetName:
-            data.dec(_f$destinationRoutePathSnippetName),
-        bsPropGroup: data.dec(_f$bsPropGroup),
-        onTapHandlerName: data.dec(_f$onTapHandlerName),
-        child: data.dec(_f$child));
+      destinationRoutePathSnippetName: data.dec(
+        _f$destinationRoutePathSnippetName,
+      ),
+      bsPropGroup: data.dec(_f$bsPropGroup),
+      onTapHandlerName: data.dec(_f$onTapHandlerName),
+      child: data.dec(_f$child),
+    );
   }
 
   @override
@@ -107,50 +154,63 @@ mixin FilledButtonNodeMappable {
   }
 
   FilledButtonNodeCopyWith<FilledButtonNode, FilledButtonNode, FilledButtonNode>
-      get copyWith =>
-          _FilledButtonNodeCopyWithImpl<FilledButtonNode, FilledButtonNode>(
-              this as FilledButtonNode, $identity, $identity);
+  get copyWith =>
+      _FilledButtonNodeCopyWithImpl<FilledButtonNode, FilledButtonNode>(
+        this as FilledButtonNode,
+        $identity,
+        $identity,
+      );
   @override
   String toString() {
-    return FilledButtonNodeMapper.ensureInitialized()
-        .stringifyValue(this as FilledButtonNode);
+    return FilledButtonNodeMapper.ensureInitialized().stringifyValue(
+      this as FilledButtonNode,
+    );
   }
 
   @override
   bool operator ==(Object other) {
-    return FilledButtonNodeMapper.ensureInitialized()
-        .equalsValue(this as FilledButtonNode, other);
+    return FilledButtonNodeMapper.ensureInitialized().equalsValue(
+      this as FilledButtonNode,
+      other,
+    );
   }
 
   @override
   int get hashCode {
-    return FilledButtonNodeMapper.ensureInitialized()
-        .hashValue(this as FilledButtonNode);
+    return FilledButtonNodeMapper.ensureInitialized().hashValue(
+      this as FilledButtonNode,
+    );
   }
 }
 
 extension FilledButtonNodeValueCopy<$R, $Out>
     on ObjectCopyWith<$R, FilledButtonNode, $Out> {
   FilledButtonNodeCopyWith<$R, FilledButtonNode, $Out>
-      get $asFilledButtonNode => $base
-          .as((v, t, t2) => _FilledButtonNodeCopyWithImpl<$R, $Out>(v, t, t2));
+  get $asFilledButtonNode =>
+      $base.as((v, t, t2) => _FilledButtonNodeCopyWithImpl<$R, $Out>(v, t, t2));
 }
 
 abstract class FilledButtonNodeCopyWith<$R, $In extends FilledButtonNode, $Out>
     implements ButtonNodeCopyWith<$R, $In, $Out> {
   @override
-  ButtonStylePropertiesCopyWith<$R, ButtonStyleProperties,
-      ButtonStyleProperties> get bsPropGroup;
+  ButtonStylePropertiesCopyWith<
+    $R,
+    ButtonStyleProperties,
+    ButtonStyleProperties
+  >
+  get bsPropGroup;
   @override
   SNodeCopyWith<$R, SNode, SNode>? get child;
   @override
-  $R call(
-      {String? destinationRoutePathSnippetName,
-      ButtonStyleProperties? bsPropGroup,
-      String? onTapHandlerName,
-      SNode? child});
+  $R call({
+    String? destinationRoutePathSnippetName,
+    ButtonStyleProperties? bsPropGroup,
+    String? onTapHandlerName,
+    SNode? child,
+  });
   FilledButtonNodeCopyWith<$R2, $In, $Out2> $chain<$R2, $Out2>(
-      Then<$Out2, $R2> t);
+    Then<$Out2, $R2> t,
+  );
 }
 
 class _FilledButtonNodeCopyWithImpl<$R, $Out>
@@ -162,38 +222,45 @@ class _FilledButtonNodeCopyWithImpl<$R, $Out>
   late final ClassMapperBase<FilledButtonNode> $mapper =
       FilledButtonNodeMapper.ensureInitialized();
   @override
-  ButtonStylePropertiesCopyWith<$R, ButtonStyleProperties,
-          ButtonStyleProperties>
-      get bsPropGroup =>
-          $value.bsPropGroup.copyWith.$chain((v) => call(bsPropGroup: v));
+  ButtonStylePropertiesCopyWith<
+    $R,
+    ButtonStyleProperties,
+    ButtonStyleProperties
+  >
+  get bsPropGroup =>
+      $value.bsPropGroup.copyWith.$chain((v) => call(bsPropGroup: v));
   @override
   SNodeCopyWith<$R, SNode, SNode>? get child =>
       $value.child?.copyWith.$chain((v) => call(child: v));
   @override
-  $R call(
-          {Object? destinationRoutePathSnippetName = $none,
-          ButtonStyleProperties? bsPropGroup,
-          Object? onTapHandlerName = $none,
-          Object? child = $none}) =>
-      $apply(FieldCopyWithData({
-        if (destinationRoutePathSnippetName != $none)
-          #destinationRoutePathSnippetName: destinationRoutePathSnippetName,
-        if (bsPropGroup != null) #bsPropGroup: bsPropGroup,
-        if (onTapHandlerName != $none) #onTapHandlerName: onTapHandlerName,
-        if (child != $none) #child: child
-      }));
+  $R call({
+    Object? destinationRoutePathSnippetName = $none,
+    ButtonStyleProperties? bsPropGroup,
+    Object? onTapHandlerName = $none,
+    Object? child = $none,
+  }) => $apply(
+    FieldCopyWithData({
+      if (destinationRoutePathSnippetName != $none)
+        #destinationRoutePathSnippetName: destinationRoutePathSnippetName,
+      if (bsPropGroup != null) #bsPropGroup: bsPropGroup,
+      if (onTapHandlerName != $none) #onTapHandlerName: onTapHandlerName,
+      if (child != $none) #child: child,
+    }),
+  );
   @override
   FilledButtonNode $make(CopyWithData data) => FilledButtonNode(
-      destinationRoutePathSnippetName: data.get(
-          #destinationRoutePathSnippetName,
-          or: $value.destinationRoutePathSnippetName),
-      bsPropGroup: data.get(#bsPropGroup, or: $value.bsPropGroup),
-      onTapHandlerName:
-          data.get(#onTapHandlerName, or: $value.onTapHandlerName),
-      child: data.get(#child, or: $value.child));
+    destinationRoutePathSnippetName: data.get(
+      #destinationRoutePathSnippetName,
+      or: $value.destinationRoutePathSnippetName,
+    ),
+    bsPropGroup: data.get(#bsPropGroup, or: $value.bsPropGroup),
+    onTapHandlerName: data.get(#onTapHandlerName, or: $value.onTapHandlerName),
+    child: data.get(#child, or: $value.child),
+  );
 
   @override
   FilledButtonNodeCopyWith<$R2, FilledButtonNode, $Out2> $chain<$R2, $Out2>(
-          Then<$Out2, $R2> t) =>
-      _FilledButtonNodeCopyWithImpl<$R2, $Out2>($value, $cast, t);
+    Then<$Out2, $R2> t,
+  ) => _FilledButtonNodeCopyWithImpl<$R2, $Out2>($value, $cast, t);
 }
+

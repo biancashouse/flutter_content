@@ -9,6 +9,7 @@ import 'package:flutter_content/src/snippet/pnodes/fyi_pnodes.dart';
 import 'package:flutter_content/src/snippet/pnodes/quill_text_pnode.dart';
 import 'package:flutter_quill/flutter_quill.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
+import 'package:go_router/go_router.dart';
 
 part 'quill_text_node.mapper.dart';
 
@@ -62,7 +63,56 @@ class QuillTextNode extends CL with QuillTextNodeMappable {
     // Create a QuillController and load the document from the JSON
     roQC.document = Document.fromJson(jsonList);
 
-    return IgnorePointer(child: QuillEditor.basic(key: createNodeWidgetGK(), controller: roQC));
+    final linkStyle = DefaultStyles(
+      link: const TextStyle(
+        color: Colors.blue,
+        decoration: TextDecoration.none, // This is the crucial part!
+      ),
+    );
+
+    return LayoutBuilder(builder: (context, constraints) {
+      return QuillEditor.basic(
+        key: createNodeWidgetGK(),
+        config: QuillEditorConfig(
+          customStyles: linkStyle,
+          scrollable: false,
+          onLaunchUrl: (String url) {
+            // quill seems to prepend https:// if not there already
+            String newUrl = url.startsWith('https:///')
+            ? url.substring(9)
+            : url;
+            if (newUrl.startsWith('http')) {
+              launchUrl(Uri.parse(newUrl));
+            } else {
+              context.go(newUrl.startsWith('/') ? newUrl : '/$newUrl');
+            }
+          },
+        ),
+        controller: roQC,
+      );
+    });
+    // quill editor's parent must provide a maxWidth constraiunt  that is not infinite
+    // return parentNode is FlexibleNode || parentNode is ExpandedNode
+    //     ? QuillEditor.basic(
+    //         key: createNodeWidgetGK(),
+    //         config: QuillEditorConfig(
+    //           customStyles: linkStyle,
+    //           scrollable: false,
+    //         ),
+    //         controller: roQC,
+    //       )
+    //     : Error(
+    //         key: createNodeWidgetGK(),
+    //         FLUTTER_TYPE,
+    //         color: Colors.pink,
+    //         size: 14,
+    //         errorMsg:
+    //             "Detected an unconstrained (infinite) cross-axis for this vertically scrolling container.\n\n"
+    //             "This scenario is a common source of layout errors, especially when a TextField or Row "
+    //             "is placed inside another Row or a ListView.\n\n"
+    //             "The cross-axis for a vertically scrolling widget (like an editor) is its width.\n\n"
+    //             "*** You need to wrap your QuillEditor inside a Flexible (or Expanded) widget ***",
+    //       );
   }
 
   @override

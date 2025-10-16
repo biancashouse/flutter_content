@@ -1,5 +1,6 @@
 // coverage:ignore-file
 // GENERATED CODE - DO NOT MODIFY BY HAND
+// dart format off
 // ignore_for_file: type=lint
 // ignore_for_file: unused_element, unnecessary_cast, override_on_non_overriding_member
 // ignore_for_file: strict_raw_type, inference_failure_on_untyped_parameter
@@ -23,23 +24,51 @@ class WidgetSpanNodeMapper extends SubClassMapperBase<WidgetSpanNode> {
   final String id = 'WidgetSpanNode';
 
   static SNode? _$child(WidgetSpanNode v) => v.child;
-  static const Field<WidgetSpanNode, SNode> _f$child =
-      Field('child', _$child, opt: true);
+  static const Field<WidgetSpanNode, SNode> _f$child = Field(
+    'child',
+    _$child,
+    opt: true,
+  );
   static String _$uid(WidgetSpanNode v) => v.uid;
-  static const Field<WidgetSpanNode, String> _f$uid =
-      Field('uid', _$uid, mode: FieldMode.member);
+  static const Field<WidgetSpanNode, String> _f$uid = Field(
+    'uid',
+    _$uid,
+    mode: FieldMode.member,
+  );
   static GlobalKey<State<StatefulWidget>>? _$treeNodeGK(WidgetSpanNode v) =>
       v.treeNodeGK;
   static const Field<WidgetSpanNode, GlobalKey<State<StatefulWidget>>>
-      _f$treeNodeGK = Field('treeNodeGK', _$treeNodeGK, mode: FieldMode.member);
+  _f$treeNodeGK = Field('treeNodeGK', _$treeNodeGK, mode: FieldMode.member);
   static bool _$isExpanded(WidgetSpanNode v) => v.isExpanded;
-  static const Field<WidgetSpanNode, bool> _f$isExpanded =
-      Field('isExpanded', _$isExpanded, mode: FieldMode.member);
+  static const Field<WidgetSpanNode, bool> _f$isExpanded = Field(
+    'isExpanded',
+    _$isExpanded,
+    mode: FieldMode.member,
+  );
   static bool? _$hidePropertiesWhileDragging(WidgetSpanNode v) =>
       v.hidePropertiesWhileDragging;
   static const Field<WidgetSpanNode, bool> _f$hidePropertiesWhileDragging =
-      Field('hidePropertiesWhileDragging', _$hidePropertiesWhileDragging,
-          mode: FieldMode.member);
+      Field(
+        'hidePropertiesWhileDragging',
+        _$hidePropertiesWhileDragging,
+        mode: FieldMode.member,
+      );
+  static bool _$canShowTappableNodeWidgetOverlay(WidgetSpanNode v) =>
+      v.canShowTappableNodeWidgetOverlay;
+  static const Field<WidgetSpanNode, bool> _f$canShowTappableNodeWidgetOverlay =
+      Field(
+        'canShowTappableNodeWidgetOverlay',
+        _$canShowTappableNodeWidgetOverlay,
+        mode: FieldMode.member,
+      );
+  static GlobalKey<State<StatefulWidget>>? _$nodeWidgetGK(WidgetSpanNode v) =>
+      v.nodeWidgetGK;
+  static const Field<WidgetSpanNode, GlobalKey<State<StatefulWidget>>>
+  _f$nodeWidgetGK = Field(
+    'nodeWidgetGK',
+    _$nodeWidgetGK,
+    mode: FieldMode.member,
+  );
 
   @override
   final MappableFields<WidgetSpanNode> fields = const {
@@ -48,6 +77,8 @@ class WidgetSpanNodeMapper extends SubClassMapperBase<WidgetSpanNode> {
     #treeNodeGK: _f$treeNodeGK,
     #isExpanded: _f$isExpanded,
     #hidePropertiesWhileDragging: _f$hidePropertiesWhileDragging,
+    #canShowTappableNodeWidgetOverlay: _f$canShowTappableNodeWidgetOverlay,
+    #nodeWidgetGK: _f$nodeWidgetGK,
   };
 
   @override
@@ -76,35 +107,43 @@ class WidgetSpanNodeMapper extends SubClassMapperBase<WidgetSpanNode> {
 
 mixin WidgetSpanNodeMappable {
   String toJson() {
-    return WidgetSpanNodeMapper.ensureInitialized()
-        .encodeJson<WidgetSpanNode>(this as WidgetSpanNode);
+    return WidgetSpanNodeMapper.ensureInitialized().encodeJson<WidgetSpanNode>(
+      this as WidgetSpanNode,
+    );
   }
 
   Map<String, dynamic> toMap() {
-    return WidgetSpanNodeMapper.ensureInitialized()
-        .encodeMap<WidgetSpanNode>(this as WidgetSpanNode);
+    return WidgetSpanNodeMapper.ensureInitialized().encodeMap<WidgetSpanNode>(
+      this as WidgetSpanNode,
+    );
   }
 
   WidgetSpanNodeCopyWith<WidgetSpanNode, WidgetSpanNode, WidgetSpanNode>
-      get copyWith =>
-          _WidgetSpanNodeCopyWithImpl<WidgetSpanNode, WidgetSpanNode>(
-              this as WidgetSpanNode, $identity, $identity);
+  get copyWith => _WidgetSpanNodeCopyWithImpl<WidgetSpanNode, WidgetSpanNode>(
+    this as WidgetSpanNode,
+    $identity,
+    $identity,
+  );
   @override
   String toString() {
-    return WidgetSpanNodeMapper.ensureInitialized()
-        .stringifyValue(this as WidgetSpanNode);
+    return WidgetSpanNodeMapper.ensureInitialized().stringifyValue(
+      this as WidgetSpanNode,
+    );
   }
 
   @override
   bool operator ==(Object other) {
-    return WidgetSpanNodeMapper.ensureInitialized()
-        .equalsValue(this as WidgetSpanNode, other);
+    return WidgetSpanNodeMapper.ensureInitialized().equalsValue(
+      this as WidgetSpanNode,
+      other,
+    );
   }
 
   @override
   int get hashCode {
-    return WidgetSpanNodeMapper.ensureInitialized()
-        .hashValue(this as WidgetSpanNode);
+    return WidgetSpanNodeMapper.ensureInitialized().hashValue(
+      this as WidgetSpanNode,
+    );
   }
 }
 
@@ -120,7 +159,8 @@ abstract class WidgetSpanNodeCopyWith<$R, $In extends WidgetSpanNode, $Out>
   @override
   $R call({SNode? child});
   WidgetSpanNodeCopyWith<$R2, $In, $Out2> $chain<$R2, $Out2>(
-      Then<$Out2, $R2> t);
+    Then<$Out2, $R2> t,
+  );
 }
 
 class _WidgetSpanNodeCopyWithImpl<$R, $Out>
@@ -143,6 +183,7 @@ class _WidgetSpanNodeCopyWithImpl<$R, $Out>
 
   @override
   WidgetSpanNodeCopyWith<$R2, WidgetSpanNode, $Out2> $chain<$R2, $Out2>(
-          Then<$Out2, $R2> t) =>
-      _WidgetSpanNodeCopyWithImpl<$R2, $Out2>($value, $cast, t);
+    Then<$Out2, $R2> t,
+  ) => _WidgetSpanNodeCopyWithImpl<$R2, $Out2>($value, $cast, t);
 }
+

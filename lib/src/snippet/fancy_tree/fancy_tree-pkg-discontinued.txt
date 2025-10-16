@@ -1,1 +1,4 @@
 # simply copied some of its source into my own flutter lib
+
+# the flutter SliverTree does not provide the same functionality,
+# in particular, the connecting lines !

@@ -21,8 +21,8 @@ class ClipboardView extends StatelessWidget {
     if (clipboard == null) return const Offstage();
     SnippetTreeController clipboardTreeC = SnippetTreeController(
       roots: [clipboard],
-      childrenProvider: Node.snippetTreeChildrenProvider,
-      parentProvider: Node.snippetTreeParentProvider,
+      childrenProvider: SNode.childrenProvider,
+      parentProvider: SNode.parentProvider,
     );
     clipboardTreeC.expandCascading([clipboard]);
 

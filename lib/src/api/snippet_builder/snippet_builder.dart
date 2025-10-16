@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_content/flutter_content.dart';
+import 'package:flutter_content/src/api/snippet_builder/context_extension.dart';
 import 'package:pointer_interceptor/pointer_interceptor.dart';
 import 'versions_menu_anchor_with_edit_menu_item.dart'
     show SnippetMenuAnchor, AnchorWidgetEnum;
@@ -177,17 +178,29 @@ class SnippetBuilderState extends State<SnippetBuilder>
       //         debugLabel: 'Panel[${widget.panelName}]',
       //       )
       //     : null,
-      // show pink overlays if state variable set with this snippet's name
+      //
+      // show tappable overlays if state variable set with this snippet's name
       listenWhen: (context, state) {
+        if (!fco.inSelectWidgetMode) return false;
         var name = snippetName();
-        return state.snippetNameShowingPinkOverlaysFor == name;
+        bool thisSnippetIsInWidgetSelectionMode =
+            state.snippetNameShowingTappableOverlaysFor == name;
+        print(
+          'listening for thisSnippetIsInWidgetSelectionMode on $name - returning $thisSnippetIsInWidgetSelectionMode',
+        );
+        return thisSnippetIsInWidgetSelectionMode;
       },
-      //|| (fco.snippetBeingEdited?.aNodeIsSelected ?? false),
-      listener: (context, state) {
-        // NON-null name means show pink overlays, otherwise ignore (editing ended)
-        if (state.snippetNameShowingPinkOverlaysFor != null) {
-          showSnippetNodeWidgetTappableOverlays(context, widget.scName);
-        }
+      listener: (realContext, state) {
+        // allow some time for rendering - seems too hacky, but works!
+        fco.afterMsDelayDo(500, (){
+          var snippetInfo = SnippetInfoModel.cachedSnippetInfo(snippetName());
+          var snippetChild = snippetInfo?.currentVersionFromCache()?.child;
+          // print('root node for tappable overlays is a ${snippetChild.toString()}');
+          var ctx = snippetChild?.nodeWidgetGK?.currentContext;
+          // print('currentContext is $ctx');
+          ctx?.showSnippetNodeWidgetTappableOverlays();
+        });
+        // showSnippetNodeWidgetTappableOverlays(context, widget.scName);
         // if (state.snippetBeingEdited?.aNodeIsSelected ?? false) {
         //   final selectedNode = state.snippetBeingEdited!.selectedNode;
         //     Rect? borderRect = selectedNode!.calcBborderRect();
@@ -199,11 +212,10 @@ class SnippetBuilderState extends State<SnippetBuilder>
       buildWhen: (previous, current) {
         // fco.logger.i(
         //     'BlocBuilder - current.onlyTargetsWrappers: ${current.onlyTargetsWrappers}');
-        return !current.onlyTargetsWrappers &&
-            current.snippetNameShowingPinkOverlaysFor == null;
+        return !current.onlyTargetsWrappers;
       },
       builder: (blocContext, state) {
-        // fco.logger.d('\nSnippetPanel builder:\n');
+        fco.logger.d('\nSnippetPanel builder:\n');
 
         return FutureBuilder<SnippetRootNode?>(
           future: fEnsureSnippetInCache,
@@ -290,7 +302,7 @@ class SnippetBuilderState extends State<SnippetBuilder>
                   ),
                 if (!playing &&
                     canEdit &&
-                    !state.inSelectWidgetMode &&
+                    !state.inSelectWidgetMode() &&
                     fco.snippetBeingEdited == null)
                   Align(
                     alignment: Alignment.topRight,
@@ -304,7 +316,7 @@ class SnippetBuilderState extends State<SnippetBuilder>
                   ),
                 if (!playing &&
                     canEdit &&
-                    !state.inSelectWidgetMode &&
+                    !state.inSelectWidgetMode() &&
                     fco.snippetBeingEdited == null)
                   Align(
                     alignment: Alignment.topRight,
@@ -329,7 +341,7 @@ class SnippetBuilderState extends State<SnippetBuilder>
               ],
             );
 
-            return canEdit && state.inSelectWidgetMode
+            return canEdit && state.inSelectWidgetMode()
                 ? Banner(
                     message: isPublishedVersion ? 'published' : 'not published',
                     location: BannerLocation.topEnd,
@@ -355,70 +367,6 @@ class SnippetBuilderState extends State<SnippetBuilder>
   //
   //   fco.capiBloc.add(CAPIEvent.enterSelectWidgetMode(snippetName: widget.snippetName ?? widget.snippetRootNode!.name));
   // }
-
-  static void showSnippetNodeWidgetTappableOverlays(
-    BuildContext context,
-    ScrollControllerName? scName,
-  ) {
-    // no need to de-reigister once set up
-    fco.registerKeystrokeHandler('exit-Select-Widget-Mode', (KeyEvent event) {
-      if (event.logicalKey == LogicalKeyboardKey.escape) {
-        if (fco.capiBloc.state.inSelectWidgetMode ?? false) {
-          fco.capiBloc.add(CAPIEvent.exitSelectWidgetMode());
-        }
-      }
-      return false;
-    });
-
-    // bool barrierApplied = false;
-    void traverseAndMeasure(BuildContext el) {
-      if ((fco.nodesByGK.containsKey(el.widget.key))) {
-        // || (el.widget.key != null && gkSTreeNodeMap[el.widget.key]?.rootNodeOfSnippet() == FCO.targetSnippetBeingConfigured)) {
-        GlobalKey gk = el.widget.key as GlobalKey;
-        SNode? node = fco.nodesByGK[gk];
-        // fco.logger.i("traverseAndMeasure: ${node.toString()}");
-        if (node != null && node.canShowTappableNodeWidgetOverlay) {
-          // if (node.rootNodeOfSnippet() == FCO.targetSnippetBeingConfigured) {
-          // fco.logger.i("targetSnippetBeingConfigured: ${node.toString()}");
-          // }
-          // fco.logger.i('Rect? r = gk.globalPaintBounds...');
-          // measure node
-          Rect? r = gk.globalPaintBounds(
-            skipWidthConstraintWarning: true,
-            skipHeightConstraintWarning: true,
-          );
-          // if (node is PlaceholderNode) {
-          //   fco.logger.i('PlaceholderNode');
-          // }
-          if (r != null) {
-            // node.measuredRect = Rect.fromLTWH(r.left, r.top, r.width, r.height);
-            r = fco.restrictRectToScreen(r);
-            // fco.logger.i("========>  r restricted to ${r.toString()}");
-            // fco.logger.i('${node.runtimeType.toString()} - size: (${r != null ? r.size.toString() : ""})');
-            // node.setParent(parent);
-            // parent = node;
-            // fco.logger.i('_showNodeWidgetOverlay...');
-            // removeAllNodeWidgetOverlays();
-            // pass possible ancestor scrollcontroller to overlay
-            node.showTappableNodeWidgetOverlay(
-              context,
-              //whiteBarrier: !barrierApplied,
-              scName: scName,
-            );
-            // barrierApplied = true;
-          }
-        }
-      }
-      el.visitChildElements((innerEl) {
-        traverseAndMeasure(innerEl);
-      });
-    }
-
-    var pageContext = context;
-    traverseAndMeasure(pageContext); // root node overlay must have barrier
-    // fco.showingNodeBoundaryOverlays = true;
-    // fco.logger.i('traverseAndMeasure(context) finished.');
-  }
 
   // _renderSnippet(context) {
   //   return FutureBuilder<void>(

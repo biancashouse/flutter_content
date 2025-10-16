@@ -26,7 +26,7 @@ part 'text_node.mapper.dart';
 class TextNode extends CL with TextNodeMappable {
   String text;
   String? webLink;
-  @MappableField(hook: TextStyleHook())
+  @MappableField(hook: TextStyleHook1())
   TextStyleProperties tsPropGroup;
 
   // always store group, even if its props are all null

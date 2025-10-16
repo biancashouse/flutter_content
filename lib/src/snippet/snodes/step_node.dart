@@ -9,9 +9,9 @@ part 'step_node.mapper.dart';
 
 @MappableClass()
 class StepNode extends CL with StepNodeMappable {
-  GenericSingleChildNode title;
-  GenericSingleChildNode? subtitle;
-  GenericSingleChildNode content;
+  NamedSC title;
+  NamedSC? subtitle;
+  NamedSC content;
 
   StepNode({
     required this.title,
@@ -28,10 +28,10 @@ class StepNode extends CL with StepNodeMappable {
     //possiblyHighlightSelectedNode(scName);
     return Step(
       isActive: parent.currentStep >= index,
-      title: title.toWidgetProperty(context, this) ??
+      title: title.buildFlutterWidget(context, this) ??
           fco.coloredText('must have a title', color: Colors.red),
-      subtitle: subtitle?.toWidgetProperty(context, this),
-      content: content.toWidgetProperty(context, this) ??
+      subtitle: subtitle?.buildFlutterWidget(context, this),
+      content: content.buildFlutterWidget(context, this) ??
           fco.coloredText('must have content', color: Colors.red),
     );
   }
@@ -52,9 +52,6 @@ class StepNode extends CL with StepNodeMappable {
         menuItemButton(context, "Stepper", StepperNode, action, scName),
     ];
   }
-
-  @override
-  bool canBeDeleted() => true;
 
   @override
   List<Type> replaceWithOnly() => [StepNode];

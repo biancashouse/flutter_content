@@ -76,33 +76,56 @@ class _Page_HomeState extends State<Page_Home> {
     // );
 
     final uniqueTabBarName = DateTime.now().millisecondsSinceEpoch.toString();
-    SnippetBuilder sp = SnippetBuilder.fromNodes(
+    SnippetBuilder snippet1 = SnippetBuilder.fromNodes(
+      snippetRootNode: SnippetRootNode(
+        name: 'home-scaffold-with-tabs',
+        child: ContainerNode(csPropGroup: ContainerStyleProperties(
+          width: 200, height: 300, fillColors: UpTo6Colors(color1: ColorModel.red())
+        )),),
+        scName: null, //sC.name, because no scrolling used
+    );
+    SnippetBuilder snippet2 = SnippetBuilder.fromNodes(
       // panelName: 'demo-buttons',
       snippetRootNode: SnippetRootNode(
         name: 'home-scaffold-with-tabs',
         child: ScaffoldNode(
-          appBar: AppBarNode(
-            tabBarName: uniqueTabBarName,
-            bgColor: ColorModel.grey(),
-            title: GenericSingleChildNode(
-              propertyName: 'title',
-              child: TextNode(text: 'my title', tsPropGroup: TextStyleProperties()),
-            ),
-            bottom: GenericSingleChildNode(
-              propertyName: 'bottom',
-              child: TabBarNode(
-                name: uniqueTabBarName,
-                labelTSPropGroup: TextStyleProperties(),
-                children: [
-                  TextNode(text: 'tab 1', tsPropGroup: TextStyleProperties()),
-                  TextNode(text: 'Tab 2', tsPropGroup: TextStyleProperties()),
-                ],
+          appBar: NamedPS(
+            propertyName: 'appBar',
+            child: AppBarNode(
+              // tabBarName: uniqueTabBarName,
+              bgColor: ColorModel.grey(),
+              title: NamedSC(
+                propertyName: 'title',
+                child: TextNode(
+                  text: 'my title',
+                  tsPropGroup: TextStyleProperties(),
+                ),
+              ),
+              titleTextStyle: TextStyleProperties(),
+              actions: NamedMC(
+                propertyName: 'actions',
+                children: [],
+              ),
+              leading: NamedSC(propertyName: 'leading'),
+              bottom: NamedPS(
+                propertyName: 'bottom',
+                child: TabBarNode(
+                  name: uniqueTabBarName,
+                  labelTSPropGroup: TextStyleProperties(),
+                  children: [
+                    TextNode(text: 'tab 1', tsPropGroup: TextStyleProperties()),
+                    TextNode(text: 'Tab 2', tsPropGroup: TextStyleProperties()),
+                  ],
+                ),
               ),
             ),
           ),
-          body: GenericSingleChildNode(
+          body: NamedSC(
             propertyName: 'body',
-            child: TabBarViewNode(tabBarName: uniqueTabBarName, children: [PlaceholderNode(), PlaceholderNode()]),
+            child: TabBarViewNode(
+              tabBarName: uniqueTabBarName,
+              children: [PlaceholderNode(), PlaceholderNode()],
+            ),
           ),
         ),
       ),
@@ -138,7 +161,8 @@ class _Page_HomeState extends State<Page_Home> {
                   ],
                 ),
               ),
-              Flexible(flex: 4, child: sp),
+              Flexible(flex: 4, child: snippet1),
+              Flexible(flex: 4, child: snippet2),
             ],
           ),
         ),

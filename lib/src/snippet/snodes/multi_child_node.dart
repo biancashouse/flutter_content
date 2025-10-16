@@ -8,4 +8,11 @@ abstract class MC extends SNode with MCMappable {
   List<SNode> children;
 
   MC({required this.children});
+
+  @override
+  bool canRemove() => children.length < 2;
+
+  @override
+  bool canAppendAChild() => true;
+
 }
