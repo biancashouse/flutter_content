@@ -11,10 +11,12 @@ add GUEST sign in option for sandpit editing
 - fix creation, deletion, and navigating dynamic pages
 - fix dynamic page and navigation
 
-## Unreleased
+## 4.0.0 - 2025-10-16
 ### Changed
 - breaking changes and fixes
 - major breaking changes and fixes
+- breaking changes and fixes
+- breaking api changes and fixes
 
 ## 3.11.1 - 2025-08-05
 ### Fixed
@@ -23,15 +25,6 @@ add GUEST sign in option for sandpit editing
 ## 3.11.0 - 2025-08-05
 ### Fixed
 - fix EditablePage s.t. SnippetBeingEdited rendered via a SnippetPanel
-
-## 5.0.0 - 2025-08-02
-### Fixed
-- dart fix
-- dart fix
-
-## 4.0.0 - 2025-08-02
-### Added
-- no longer need to initWithContext + other fca improvements
 
 ## 3.10.0 - 2025-08-02
 ### Changed
