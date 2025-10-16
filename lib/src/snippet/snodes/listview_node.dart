@@ -36,7 +36,7 @@ class ListViewNode extends MC with ListViewNodeMappable {
           return constraintError
               ? Error(
             key: createNodeWidgetGK(),
-            "${toString()} ${uid}",
+            "${toString()} $uid",
             color: Colors.red,
             size: 16,
             errorMsg:

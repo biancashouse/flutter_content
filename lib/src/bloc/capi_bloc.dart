@@ -542,8 +542,8 @@ class CAPIBloC extends Bloc<CAPIEvent, CAPIState> {
       selParent.children.remove(sel);
       ScaffoldNode? scaffold =
           selParent.getParent()?.getParent()?.getParent() as ScaffoldNode?;
-      if (scaffold?.body?.child is TabBarViewNode?) {
-        (scaffold!.body?.child as TabBarViewNode).children.removeAt(index);
+      if (scaffold?.body.child is TabBarViewNode?) {
+        (scaffold!.body.child as TabBarViewNode).children.removeAt(index);
       }
       newSel = selParent;
       // tabView-related
@@ -554,7 +554,7 @@ class CAPIBloC extends Bloc<CAPIEvent, CAPIState> {
           selParent.getParent()?.getParent() as ScaffoldNode?;
       if (scaffold?.appBar is AppBarNode) {
         AppBarNode appbar = scaffold?.appBar as AppBarNode;
-        SNode? bottomChild = appbar.bottom?.child;
+        SNode? bottomChild = appbar.bottom.child;
         if (bottomChild is TabBarNode) {
           bottomChild.children.removeAt(index);
         }

@@ -90,7 +90,7 @@ abstract class FlexNode extends MC with FlexNodeMappable {
           return rowConstraintError || columnConstraintError
               ? Error(
                   key: createNodeWidgetGK(),
-                  "${toString()} ${uid}",
+                  "${toString()} $uid",
                   color: Colors.red,
                   size: 16,
                   errorMsg:

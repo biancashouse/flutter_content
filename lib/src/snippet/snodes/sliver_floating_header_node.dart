@@ -34,7 +34,7 @@ class SliverFloatingHeaderNode extends SC with SliverFloatingHeaderNodeMappable 
             key: createNodeWidgetGK(),
             child: child?.buildFlutterWidget(context, this) ?? Error(
               key: createNodeWidgetGK(),
-              "${toString()} ${uid}",
+              "${toString()} $uid",
               color: Colors.red,
               size: 16,
               errorMsg:

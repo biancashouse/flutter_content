@@ -3,7 +3,6 @@
 import 'package:dart_mappable/dart_mappable.dart';
 import 'package:flutter_content/flutter_content.dart';
 
-import '../pnodes/groups/text_style_properties.dart';
 
 class AppBarHook extends MappingHook {
   const AppBarHook();

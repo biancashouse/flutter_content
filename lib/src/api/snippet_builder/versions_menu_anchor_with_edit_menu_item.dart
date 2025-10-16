@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_content/flutter_content.dart';
-import 'package:flutter_content/src/api/snippet_builder/context_extension.dart';
 import 'package:pointer_interceptor/pointer_interceptor.dart';
 
 import 'tr_triangle_painter.dart' show TRTriangle;

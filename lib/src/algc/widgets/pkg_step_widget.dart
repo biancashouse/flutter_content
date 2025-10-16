@@ -5,7 +5,6 @@ import 'package:flutter_content/src/algc/model/m/step_m.dart';
 import 'package:flutter_content/src/algc/widgets/flowchart_widget.dart';
 import 'package:flutter_content/src/algc/widgets/painters/step_painter.dart';
 import 'package:flutter_content/src/algc/widgets/pkg_tappable_comment_btn.dart';
-import 'package:flutter_content/src/snippet/snodes/algc_node.dart';
 
 import 'step_text.dart';
 

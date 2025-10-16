@@ -2,7 +2,6 @@ import 'dart:math';
 
 import 'package:dart_mappable/dart_mappable.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:flutter_content/flutter_content.dart';
 import 'package:flutter_content/src/snippet/pnodes/groups/button_style_properties.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
@@ -1232,7 +1231,7 @@ abstract class SNode extends Node with SNodeMappable {
       this is! NamedSC &&
       this is! NamedMC &&
       this is! InlineSpanNode &&
-      (this is! SnippetRootNode || this.getParent() != null) &&
+      (this is! SnippetRootNode || getParent() != null) &&
       this is! FileNode &&
       this is! PollOptionNode &&
       this is! StepNode;
@@ -2306,7 +2305,7 @@ abstract class SNode extends Node with SNodeMappable {
       ];
     } else if (node is SliverAppBarNode) {
       children = [
-        if (node.title != null) node.title!,
+        node.title,
         if (node.flexibleSpace != null) node.flexibleSpace!,
       ];
     } else if (node is AppBarNode) {
