@@ -35,6 +35,12 @@ class SizedBoxNodeMapper extends SubClassMapperBase<SizedBoxNode> {
     _$height,
     opt: true,
   );
+  static bool? _$expand(SizedBoxNode v) => v.expand;
+  static const Field<SizedBoxNode, bool> _f$expand = Field(
+    'expand',
+    _$expand,
+    opt: true,
+  );
   static SNode? _$child(SizedBoxNode v) => v.child;
   static const Field<SizedBoxNode, SNode> _f$child = Field(
     'child',
@@ -85,6 +91,7 @@ class SizedBoxNodeMapper extends SubClassMapperBase<SizedBoxNode> {
   final MappableFields<SizedBoxNode> fields = const {
     #width: _f$width,
     #height: _f$height,
+    #expand: _f$expand,
     #child: _f$child,
     #uid: _f$uid,
     #treeNodeGK: _f$treeNodeGK,
@@ -95,16 +102,23 @@ class SizedBoxNodeMapper extends SubClassMapperBase<SizedBoxNode> {
   };
 
   @override
-  final String discriminatorKey = 'sc';
+  final String discriminatorKey = 'DK:sc';
   @override
   final dynamic discriminatorValue = 'SizedBoxNode';
   @override
   late final ClassMapperBase superMapper = SCMapper.ensureInitialized();
 
+  @override
+  final MappingHook superHook = ChainedHook([
+    PropertyRenameHook('sc', 'DK:sc'),
+    PropertyRenameHook('snode', 'DK:snode'),
+  ]);
+
   static SizedBoxNode _instantiate(DecodingData data) {
     return SizedBoxNode(
       width: data.dec(_f$width),
       height: data.dec(_f$height),
+      expand: data.dec(_f$expand),
       child: data.dec(_f$child),
     );
   }
@@ -174,7 +188,7 @@ abstract class SizedBoxNodeCopyWith<$R, $In extends SizedBoxNode, $Out>
   @override
   SNodeCopyWith<$R, SNode, SNode>? get child;
   @override
-  $R call({double? width, double? height, SNode? child});
+  $R call({double? width, double? height, bool? expand, SNode? child});
   SizedBoxNodeCopyWith<$R2, $In, $Out2> $chain<$R2, $Out2>(Then<$Out2, $R2> t);
 }
 
@@ -193,11 +207,13 @@ class _SizedBoxNodeCopyWithImpl<$R, $Out>
   $R call({
     Object? width = $none,
     Object? height = $none,
+    Object? expand = $none,
     Object? child = $none,
   }) => $apply(
     FieldCopyWithData({
       if (width != $none) #width: width,
       if (height != $none) #height: height,
+      if (expand != $none) #expand: expand,
       if (child != $none) #child: child,
     }),
   );
@@ -205,6 +221,7 @@ class _SizedBoxNodeCopyWithImpl<$R, $Out>
   SizedBoxNode $make(CopyWithData data) => SizedBoxNode(
     width: data.get(#width, or: $value.width),
     height: data.get(#height, or: $value.height),
+    expand: data.get(#expand, or: $value.expand),
     child: data.get(#child, or: $value.child),
   );
 

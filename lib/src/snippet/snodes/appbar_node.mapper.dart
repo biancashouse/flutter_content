@@ -72,6 +72,19 @@ class AppBarNodeMapper extends SubClassMapperBase<AppBarNode> {
     'actions',
     _$actions,
   );
+  static ColorModel? _$shadowColor(AppBarNode v) => v.shadowColor;
+  static const Field<AppBarNode, ColorModel> _f$shadowColor = Field(
+    'shadowColor',
+    _$shadowColor,
+    opt: true,
+  );
+  static double? _$scrolledUnderElevation(AppBarNode v) =>
+      v.scrolledUnderElevation;
+  static const Field<AppBarNode, double> _f$scrolledUnderElevation = Field(
+    'scrolledUnderElevation',
+    _$scrolledUnderElevation,
+    opt: true,
+  );
   static String _$uid(AppBarNode v) => v.uid;
   static const Field<AppBarNode, String> _f$uid = Field(
     'uid',
@@ -123,6 +136,8 @@ class AppBarNodeMapper extends SubClassMapperBase<AppBarNode> {
     #title: _f$title,
     #bottom: _f$bottom,
     #actions: _f$actions,
+    #shadowColor: _f$shadowColor,
+    #scrolledUnderElevation: _f$scrolledUnderElevation,
     #uid: _f$uid,
     #treeNodeGK: _f$treeNodeGK,
     #isExpanded: _f$isExpanded,
@@ -132,11 +147,19 @@ class AppBarNodeMapper extends SubClassMapperBase<AppBarNode> {
   };
 
   @override
-  final String discriminatorKey = 'cl';
+  final String discriminatorKey = 'DK:cl';
   @override
   final dynamic discriminatorValue = 'AppBarNode';
   @override
   late final ClassMapperBase superMapper = CLMapper.ensureInitialized();
+
+  @override
+  final MappingHook hook = const PropertyRenameHook('appbar', 'DK:appbar');
+  @override
+  final MappingHook superHook = ChainedHook([
+    PropertyRenameHook('cl', 'DK:cl'),
+    PropertyRenameHook('snode', 'DK:snode'),
+  ]);
 
   static AppBarNode _instantiate(DecodingData data) {
     return AppBarNode(
@@ -149,6 +172,8 @@ class AppBarNodeMapper extends SubClassMapperBase<AppBarNode> {
       title: data.dec(_f$title),
       bottom: data.dec(_f$bottom),
       actions: data.dec(_f$actions),
+      shadowColor: data.dec(_f$shadowColor),
+      scrolledUnderElevation: data.dec(_f$scrolledUnderElevation),
     );
   }
 
@@ -297,6 +322,11 @@ class _AppBarNodeCopyWithImpl<$R, $Out>
     title: data.get(#title, or: $value.title),
     bottom: data.get(#bottom, or: $value.bottom),
     actions: data.get(#actions, or: $value.actions),
+    shadowColor: data.get(#shadowColor, or: $value.shadowColor),
+    scrolledUnderElevation: data.get(
+      #scrolledUnderElevation,
+      or: $value.scrolledUnderElevation,
+    ),
   );
 
   @override

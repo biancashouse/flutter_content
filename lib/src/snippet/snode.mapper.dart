@@ -70,11 +70,13 @@ class SNodeMapper extends ClassMapperBase<SNode> {
     #nodeWidgetGK: _f$nodeWidgetGK,
   };
 
+  @override
+  final MappingHook hook = const PropertyRenameHook('snode', 'DK:snode');
   static SNode _instantiate(DecodingData data) {
     throw MapperException.missingSubclass(
       'SNode',
-      'snode',
-      '${data.value['snode']}',
+      'DK:snode',
+      '${data.value['DK:snode']}',
     );
   }
 

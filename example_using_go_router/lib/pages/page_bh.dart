@@ -146,48 +146,80 @@ class Page_BHState extends State<Page_BH> with TickerProviderStateMixin {
     }
 
     final scaffold = Scaffold(
-      backgroundColor: Colors.black,
-      body: Stack(
-        children: [
-          SingleChildScrollView(
-            // key: const PageStorageKey('bh'),
-            controller: namedSC(context),
-            child: Column(
-              key: ValueKey(99),
-              mainAxisSize: MainAxisSize.max,
-              crossAxisAlignment: CrossAxisAlignment.center,
-              children: [
-                const Gap(20),
-                _welcomeTxt(),
-                const Gap(20),
-                _whatWeDoSnippet(),
-                const Gap(20),
-                _aboutHotspotsSnippet(),
-                const Gap(20),
-                _aboutAlgCSnippet(),
-                const Gap(20),
-                Container(
-                  color: Colors.black,
-                  height: 20,
-                  child: Align(
-                    alignment: Alignment.bottomRight,
-                    child: FutureBuilder<String>(
-                      future: fco.versionAndBuild,
-                      builder:
-                          (context, snap) => Offstage(
-                            offstage: !snap.hasData,
-                            child: fco.coloredText(
-                              'v.${snap.data}  ',
-                              color: Colors.white,
-                            ),
-                          ),
-                    ),
-                  ),
+      body: SafeArea(
+        child: SingleChildScrollView(
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              Container(
+                color: Colors.blue,
+                height: 100,
+              ),
+              Container(
+                color: Colors.yellow,
+                height: 100,
+              ),
+              Container(
+                color: Colors.green,
+                height: 100,
+              ),
+              Container(
+                color: Colors.pink,
+                height: 100,
+              ),
+              // comment out these four containers to demonstrate issue
+              Container(
+                color: Colors.blue,
+                height: 100,
+              ),
+              Container(
+                color: Colors.yellow,
+                height: 100,
+              ),
+              Container(
+                color: Colors.green,
+                height: 100,
+              ),
+              Container(
+                color: Colors.pink,
+                height: 100,
+              ),Container(
+                color: Colors.green,
+                height: 100,
+              ),
+              Container(
+                color: Colors.pink,
+                height: 100,
+              ),
+              // comment out these four containers to demonstrate issue
+              Container(
+                color: Colors.blue,
+                height: 100,
+              ),
+              Container(
+                color: Colors.yellow,
+                height: 100,
+              ),
+              Container(
+                color: Colors.green,
+                height: 100,
+              ),
+              Container(
+                color: Colors.pink,
+                height: 100,
+              ),
+              // SingleChildScrollView won't allow the Spacer
+              //const Spacer(),
+              Flexible(
+                child: Container(
+                  color: Colors.blue,
+                  height: 800,
+                  child: Text("I'm always fixed to the bottom of the screen!"),
                 ),
-              ],
-            ),
+              ),
+            ],
           ),
-        ],
+        ),
       ),
     );
 

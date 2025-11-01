@@ -78,6 +78,7 @@ class _ResizeSliderState extends State<ResizeSlider> {
           ),
         ),
         if (widget.showValue) Text(_value.toStringAsFixed(1), style: TextStyle(color: widget.color ?? Colors.white)),
+        Gap(10),
       ],
     );
   }

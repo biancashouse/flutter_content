@@ -5,7 +5,7 @@
 // ignore_for_file: unused_element, unnecessary_cast, override_on_non_overriding_member
 // ignore_for_file: strict_raw_type, inference_failure_on_untyped_parameter
 
-part of 'multi_child_node.dart';
+part of 'abstract_mc_node.dart';
 
 class MCMapper extends SubClassMapperBase<MC> {
   MCMapper._();
@@ -17,11 +17,10 @@ class MCMapper extends SubClassMapperBase<MC> {
       SNodeMapper.ensureInitialized().addSubMapper(_instance!);
       NamedMCMapper.ensureInitialized();
       CarouselNodeMapper.ensureInitialized();
-      CustomScrollViewNodeMapper.ensureInitialized();
       DirectoryNodeMapper.ensureInitialized();
       FlexNodeMapper.ensureInitialized();
-      ListViewNodeMapper.ensureInitialized();
       MenuBarNodeMapper.ensureInitialized();
+      PageViewNodeMapper.ensureInitialized();
       PollNodeMapper.ensureInitialized();
       SliverListListNodeMapper.ensureInitialized();
       SplitViewNodeMapper.ensureInitialized();
@@ -49,14 +48,23 @@ class MCMapper extends SubClassMapperBase<MC> {
   final MappableFields<MC> fields = const {#children: _f$children};
 
   @override
-  final String discriminatorKey = 'snode';
+  final String discriminatorKey = 'DK:snode';
   @override
   final dynamic discriminatorValue = 'MC';
   @override
   late final ClassMapperBase superMapper = SNodeMapper.ensureInitialized();
 
+  @override
+  final MappingHook hook = const PropertyRenameHook('mc', 'DK:mc');
+  @override
+  final MappingHook superHook = const PropertyRenameHook('snode', 'DK:snode');
+
   static MC _instantiate(DecodingData data) {
-    throw MapperException.missingSubclass('MC', 'mc', '${data.value['mc']}');
+    throw MapperException.missingSubclass(
+      'MC',
+      'DK:mc',
+      '${data.value['DK:mc']}',
+    );
   }
 
   @override

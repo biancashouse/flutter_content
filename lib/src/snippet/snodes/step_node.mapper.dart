@@ -90,11 +90,17 @@ class StepNodeMapper extends SubClassMapperBase<StepNode> {
   };
 
   @override
-  final String discriminatorKey = 'cl';
+  final String discriminatorKey = 'DK:cl';
   @override
   final dynamic discriminatorValue = 'StepNode';
   @override
   late final ClassMapperBase superMapper = CLMapper.ensureInitialized();
+
+  @override
+  final MappingHook superHook = ChainedHook([
+    PropertyRenameHook('cl', 'DK:cl'),
+    PropertyRenameHook('snode', 'DK:snode'),
+  ]);
 
   static StepNode _instantiate(DecodingData data) {
     return StepNode(

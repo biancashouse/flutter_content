@@ -32,11 +32,15 @@ class TargetModel with TargetModelMappable {
 
   double? targetLocalPosLeftPc;
   double? targetLocalPosTopPc;
-  double? radiusPc;
+  double? radiusPc; // target cover radius (not nutton)
   double? btnLocalTopPc;
   double? btnLocalLeftPc;
   double? calloutTopPc;
   double? calloutLeftPc;
+  // target alignment gets set when the config toolbar is closed
+  // it is used when playing the callout to align the callout with the target
+  double? targetAlignmentX;
+  double? targetAlignmentY;
   @JsonKey(includeFromJson: false, includeToJson: false)
   bool showCover;
   @JsonKey(includeFromJson: false, includeToJson: false)
@@ -79,6 +83,8 @@ class TargetModel with TargetModelMappable {
     this.calloutHeight = 85,
     this.calloutTopPc,
     this.calloutLeftPc,
+    this.targetAlignmentX,
+    this.targetAlignmentY,
     this.btnLocalTopPc, // initially shown directly over target
     this.btnLocalLeftPc,
     this.targetLocalPosLeftPc,
@@ -193,32 +199,32 @@ class TargetModel with TargetModelMappable {
 
   void setCalloutStarPoints(int? newValue) => starPoints = newValue;
 
-  Offset targetGlobalPos({
-    required Size wrapperSize,
-    required Offset wrapperPos,
-  }) {
-    // iv rect should always be measured
-    Offset ivTopLeft = wrapperPos;
-    Size ivSize = wrapperSize;
-
-    // calc from matrix
-    double scale = getScale();
-    // Offset translate = getTranslate(state);
-
-    double globalPosX =
-        ivTopLeft.dx + /* translate.dx + */
-        ((targetLocalPosLeftPc ?? 0.0) * ivSize.width * scale);
-    double globalPosY =
-        ivTopLeft.dy + /* translate.dy + */
-        ((targetLocalPosTopPc ?? 0.0) * ivSize.height * scale);
-
-    // in prod, target callout will be much smaller
-    // if (bloc.state.isPlaying(name)) {
-    //   globalPosX += bloc.state.CC_TARGET_SIZE_OUTER(!bloc.state.isPlaying(name), ivSize) * scale / 2 - bloc.state.CC_TARGET_SIZE(bloc.state.isPlaying(name), ivSize) * scale / 2;
-    //   globalPosY += bloc.state.CC_TARGET_SIZE_OUTER(!bloc.state.isPlaying(name), ivSize) * scale / 2 - bloc.state.CC_TARGET_SIZE(bloc.state.isPlaying(name), ivSize) * scale / 2;
-    // }
-    return Offset(globalPosX, globalPosY);
-  }
+  // Offset targetGlobalPos({
+  //   required Size wrapperSize,
+  //   required Offset wrapperPos,
+  // }) {
+  //   // iv rect should always be measured
+  //   Offset ivTopLeft = wrapperPos;
+  //   Size ivSize = wrapperSize;
+  //
+  //   // calc from matrix
+  //   double scale = getScale();
+  //   // Offset translate = getTranslate(state);
+  //
+  //   double globalPosX =
+  //       ivTopLeft.dx + /* translate.dx + */
+  //       ((targetLocalPosLeftPc ?? 0.0) * ivSize.width * scale);
+  //   double globalPosY =
+  //       ivTopLeft.dy + /* translate.dy + */
+  //       ((targetLocalPosTopPc ?? 0.0) * ivSize.height * scale);
+  //
+  //   // in prod, target callout will be much smaller
+  //   // if (bloc.state.isPlaying(name)) {
+  //   //   globalPosX += bloc.state.CC_TARGET_SIZE_OUTER(!bloc.state.isPlaying(name), ivSize) * scale / 2 - bloc.state.CC_TARGET_SIZE(bloc.state.isPlaying(name), ivSize) * scale / 2;
+  //   //   globalPosY += bloc.state.CC_TARGET_SIZE_OUTER(!bloc.state.isPlaying(name), ivSize) * scale / 2 - bloc.state.CC_TARGET_SIZE(bloc.state.isPlaying(name), ivSize) * scale / 2;
+  //   // }
+  //   return Offset(globalPosX, globalPosY);
+  // }
 
   Offset btnStackPos() {
     // iv rect should always be measured

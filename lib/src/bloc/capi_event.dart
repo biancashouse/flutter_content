@@ -15,6 +15,7 @@ class CAPIEvent with _$CAPIEvent {
   //   required Offset newGlobalPos,
   // }) = NewTarget;
 
+
   // const factory CAPIEvent.deleteTarget({
   //   required TargetModel tc,
   // }) = DeleteTarget;
@@ -119,11 +120,7 @@ class CAPIEvent with _$CAPIEvent {
     SnippetName? snippetName,
 }) = ToggleSnippetVisibility;
 
-  const factory CAPIEvent.updateClipboard({
-    required SNode? newContent,
-    required ScrollControllerName? scName,
-    @Default(false) skipSave,
-  }) = UpdateClipboard;
+  const factory CAPIEvent.clearClipboard() = ClearClipboard;
 
   // const factory CAPIEvent.createdSnippet({
   //   required SnippetRootNode newSnippetNode,
@@ -252,7 +249,6 @@ class CAPIEvent with _$CAPIEvent {
   }) = SelectNode;
 
   const factory CAPIEvent.clearNodeSelection(
-      // ScrollControllerName? scName,
       ) = ClearNodeSelection;
 
   const factory CAPIEvent.saveNodeAsSnippet({
@@ -349,14 +345,10 @@ class CAPIEvent with _$CAPIEvent {
 
   const factory CAPIEvent.copyNode({
     required SNode node,
-    required ScrollControllerName? scName,
-    @Default(false) skipSave,
   }) = CopyNode;
 
   const factory CAPIEvent.cutNode({
     required SNode node,
-    required ScrollControllerName? scName,
-    @Default(false) skipSave,
   }) = CutNode;
 
   // const factory CAPIEvent.pasteNode({

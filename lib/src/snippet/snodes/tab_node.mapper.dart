@@ -110,11 +110,17 @@ class TabNodeMapper extends SubClassMapperBase<TabNode> {
   };
 
   @override
-  final String discriminatorKey = 'sc';
+  final String discriminatorKey = 'DK:sc';
   @override
   final dynamic discriminatorValue = 'TabNode';
   @override
   late final ClassMapperBase superMapper = SCMapper.ensureInitialized();
+
+  @override
+  final MappingHook superHook = ChainedHook([
+    PropertyRenameHook('sc', 'DK:sc'),
+    PropertyRenameHook('snode', 'DK:snode'),
+  ]);
 
   static TabNode _instantiate(DecodingData data) {
     return TabNode(

@@ -105,11 +105,17 @@ class YTNodeMapper extends SubClassMapperBase<YTNode> {
   };
 
   @override
-  final String discriminatorKey = 'cl';
+  final String discriminatorKey = 'DK:cl';
   @override
   final dynamic discriminatorValue = 'YTNode';
   @override
   late final ClassMapperBase superMapper = CLMapper.ensureInitialized();
+
+  @override
+  final MappingHook superHook = ChainedHook([
+    PropertyRenameHook('cl', 'DK:cl'),
+    PropertyRenameHook('snode', 'DK:snode'),
+  ]);
 
   static YTNode _instantiate(DecodingData data) {
     return YTNode(

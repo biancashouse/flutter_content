@@ -45,6 +45,7 @@ class EditablePage extends StatefulWidget {
   State<EditablePage> createState() => EditablePageState();
 }
 
+/// every EditablePage creates a ScrollController (not necc used)
 class EditablePageState extends State<EditablePage> {
   late MultiSplitViewController msvC;
   late NamedScrollController namedSC;
@@ -74,12 +75,6 @@ class EditablePageState extends State<EditablePage> {
     // });
   }
 
-  // ScrollControllerName? scName(ctx) => EditablePage.name(ctx);
-  //
-  // NamedScrollController? sC(ctx) => scName(ctx) != null
-  //   ? NamedScrollController(scName(ctx)!, Axis.vertical)
-  //   : null;
-
   @override
   void dispose() {
     if (!mounted) return;
@@ -89,23 +84,6 @@ class EditablePageState extends State<EditablePage> {
 
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<CAPIBloC, CAPIState>(
-      // buildWhen: (previous, current) {
-      //   return true || current.isSignedIn != current.isSignedIn;
-      // },
-      builder: (context, state) {
-        bool isGuest = !fco.canEditContent();
-        return isGuest
-            ? buildWhenNotSignedIn(context)
-            : buildWhenSignedIn(context);
-      },
-    );
-  }
-
-  Widget buildWhenNotSignedIn(BuildContext context) => _guestPage();
-
-  Widget buildWhenSignedIn(BuildContext context) {
-    print('EditablePageState.buildWhenSignedIn ${widget.routePath}');
     return BlocConsumer<CAPIBloC, CAPIState>(
       listenWhen: (context, state) => fco.aNodeIsSelected,
       listener: (context, state) {
@@ -133,16 +111,14 @@ class EditablePageState extends State<EditablePage> {
           });
         });
       },
-      buildWhen: (previous, current) {
-        // bool  nodeChanged = current.snippetBeingEdited != previous.snippetBeingEdited;
-        // bool selectionChanged = current.snippetBeingEdited?.selectedNode !=
-        //     previous.snippetBeingEdited?.selectedNode;
-        // return true || nodeChanged || selectionChanged;
-        return !current.onlyTargetsWrappers
-        // && current.snippetNameShowingTappableOverlaysFor == null
-        ;
+      buildWhen: (previous, current) => !current.onlyTargetsWrappers,
+      builder: (context, state) {
+        // check snippet
+        bool isGuest = !fco.canEditContent();
+        return isGuest
+            ? _guestPage()
+            : _signedInPage();
       },
-      builder: (context, state) => _signedInPage(),
     );
   }
 
@@ -160,7 +136,7 @@ class EditablePageState extends State<EditablePage> {
       areas.add(
         Area(
           builder: (ctx, area) => LayoutBuilder(
-            builder: (context, BoxConstraints constraints) {
+            builder: (_, BoxConstraints constraints) {
               sNodeTreeAreaMaxWidth = constraints.maxWidth;
               return _sNodeTreeArea();
             },
@@ -173,7 +149,7 @@ class EditablePageState extends State<EditablePage> {
       areas.add(
         Area(
           builder: (ctx, area) => LayoutBuilder(
-            builder: (context, BoxConstraints constraints) {
+            builder: (_, BoxConstraints constraints) {
               pNodeTreeAreaMaxWidth = constraints.maxWidth;
               return _propertiesPanel();
             },
@@ -256,7 +232,7 @@ class EditablePageState extends State<EditablePage> {
         : builtWidget;
   }
 
-  Widget _pageContentArea(content) {
+  Widget _pageContentArea(BuildContext areaContext) {
     GlobalKey zoomerGk = GlobalKey();
 
     // set widgetToShow when in select widget mode
@@ -267,7 +243,7 @@ class EditablePageState extends State<EditablePage> {
         snippetName,
       );
       widgetToShow = snippetInfo?.currentVersionFromCache()?.buildFlutterWidget(
-        context,
+        areaContext,
         null,
       );
     }
@@ -310,66 +286,87 @@ class EditablePageState extends State<EditablePage> {
             //   });
             // });
           },
-          child: Material(
-            animateColor: true,
-            child: Stack(
-              fit: StackFit.loose,
-              children: [
-                if (aSnippetIsBeingEdited)
-                  // show just that snippet
-                  Scaffold(
-                    appBar: AppBar(
-                      backgroundColor: Colors.purple,
-                      title: fco.coloredText("preview", color: Colors.white),
-                    ),
-                    body: SnippetBuilder.fromNodes(
-                      // panelName: 'demo-buttons',
-                      snippetRootNode: snippetBeingEdited!.getRootNode(),
-                      // snippetRootNode: SnippetRootNode(
-                      //   name: 'we-create-flutter-apps-and-packages',
-                      //   child: PlaceholderNode()
-                      // ),
-                      scName: null, //sC.name, because no scrolling used
-                    ),
-                  ),
-                if (!aSnippetIsBeingEdited)
-                  // normal user view, wrapped in a Zoomer
-                  Zoomer(
-                    key: zoomerGk,
-                    child: widgetToShow ?? widget.child,
-                    // child: BlocBuilder<CAPIBloC, CAPIState>(
-                    //     builder: (blocContext, state) {
-                    //   return widget.child;
-                    // }),
-                  ),
-                if (aSnippetIsBeingEdited &&
-                    fco.selectedNode != null &&
-                    mounted)
-                  // show a cutout barrier for selected snode
-                  ModalBarrierWithCutout(
-                    cutoutRect:
-                        (fco.selectedNode?.calcBorderRect() ?? Rect.zero)
-                            .translate(
-                              -sNodeTreeAreaMaxWidth -
-                                  pNodeTreeAreaMaxWidth -
-                                  kDividerThickness * 2,
-                              0,
-                            ),
-                    color: Colors.purple,
-                    opacity: .75,
-                  ),
-                if (!aSnippetIsBeingEdited)
-                  // show pencil signin icon button
-                  Align(
-                    alignment: Alignment.topRight,
-                    child: Padding(
-                      padding: EdgeInsets.only(
-                        right: fco.canEditContent() ? 68 : 8.0,
+          child: DevGrid(
+            // showGuides: true,
+            horizontalSpacing: 100.0,
+            verticalSpacing: 100.0,
+            lineColor: Colors.red.withAlpha(70), // 0.15 * 255
+            lineThickness: 1.0,
+
+            // Enable keyboard toggle with Ctrl+G
+            toggleKeySet: LogicalKeySet(
+              LogicalKeyboardKey.control,
+              LogicalKeyboardKey.keyG,
+            ),
+
+            // Show additional guides
+            // showSafeArea: true,
+            // showRuler: true,
+            marginWidth: 0.0,
+
+            // Responsive breakpoints
+            // breakpoints: const [600, 900, 1200],
+            child: Material(
+              animateColor: true,
+              child: Stack(
+                fit: StackFit.loose,
+                children: [
+                  if (aSnippetIsBeingEdited)
+                    // show just that snippet
+                    Scaffold(
+                      appBar: AppBar(
+                        backgroundColor: Colors.purple,
+                        title: fco.coloredText("preview", color: Colors.white),
                       ),
-                      child: fco.NavigationDD(pencilIconColor: Colors.red),
+                      body: SnippetBuilder.fromNodes(
+                        // panelName: 'demo-buttons',
+                        snippetRootNode: snippetBeingEdited!.getRootNode(),
+                        // snippetRootNode: SnippetRootNode(
+                        //   name: 'we-create-flutter-apps-and-packages',
+                        //   child: PlaceholderNode()
+                        // ),
+                        scName: null, //sC.name, because no scrolling used
+                      ),
                     ),
-                  ),
-              ],
+                  if (!aSnippetIsBeingEdited)
+                    // normal user view, wrapped in a Zoomer
+                    Zoomer(
+                      key: zoomerGk,
+                      child: widgetToShow ?? widget.child,
+                      // child: BlocBuilder<CAPIBloC, CAPIState>(
+                      //     builder: (blocContext, state) {
+                      //   return widget.child;
+                      // }),
+                    ),
+                  if (aSnippetIsBeingEdited &&
+                      fco.selectedNode != null &&
+                      mounted)
+                    // show a cutout barrier for selected snode
+                    ModalBarrierWithCutout(
+                      cutoutRect:
+                          (fco.selectedNode?.calcBorderRect() ?? Rect.zero)
+                              .translate(
+                                -sNodeTreeAreaMaxWidth -
+                                    pNodeTreeAreaMaxWidth -
+                                    kDividerThickness * 2,
+                                0,
+                              ),
+                      color: Colors.purple,
+                      opacity: .75,
+                    ),
+                  if (!aSnippetIsBeingEdited)
+                    // show pencil signin icon button
+                    Align(
+                      alignment: Alignment.topRight,
+                      child: Padding(
+                        padding: EdgeInsets.only(
+                          right: fco.canEditContent() ? 68 : 8.0,
+                        ),
+                        child: fco.NavigationDD(pencilIconColor: Colors.red),
+                      ),
+                    ),
+                ],
+              ),
             ),
           ),
           // ),
@@ -474,10 +471,7 @@ class EditablePageState extends State<EditablePage> {
                         fco.appInfo.hideClipboard();
                       }
                       fco.capiBloc.add(const CAPIEvent.popSnippetEditor());
-                      // fco.afterNextBuildDo(() {
-                      //   NamedScrollController.restoreOffset(scName);
-                      // });
-                    },
+                     },
                     icon: Icon(Icons.close),
                   ),
                 ],
@@ -541,7 +535,7 @@ class EditablePageState extends State<EditablePage> {
                   alignment: Alignment.topLeft,
                   constrained: false,
                   child: SizedBox(
-                    width: 330,
+                    width: pNodeTreeAreaMaxWidth,
                     height: 1000,
                     child: PropertiesTreeView(
                       treeC: pTreeC!,
@@ -682,6 +676,8 @@ class EditablePageState extends State<EditablePage> {
 
       return false;
     });
+    // give the callout a gk so it can be measured
+    final gk = GlobalKey();
     fco.showOverlay(
       calloutContent: Card(
         color: Colors.white,
@@ -784,6 +780,7 @@ class EditablePageState extends State<EditablePage> {
       ),
       // targetGkF: ()=> fco.authIconGK,
       wrapInPointerInterceptor: true,
+      targetGkF: ()=>gk,
     );
   }
 

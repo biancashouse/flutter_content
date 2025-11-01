@@ -38,6 +38,7 @@ class SnippetBeingEdited {
   }
 
   bool get aNodeIsSelected => selectedNode != null;
+  bool get aNodeIsNotSelected => selectedNode == null;
 
   // SnippetRootNode newVersion() {
   //   SnippetRootNode clonedSnippet = getRootNode().clone(cloneName: getRootNode().name);  // same name

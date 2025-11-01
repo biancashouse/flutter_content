@@ -89,11 +89,17 @@ class PaddingNodeMapper extends SubClassMapperBase<PaddingNode> {
   };
 
   @override
-  final String discriminatorKey = 'sc';
+  final String discriminatorKey = 'DK:sc';
   @override
   final dynamic discriminatorValue = 'PaddingNode';
   @override
   late final ClassMapperBase superMapper = SCMapper.ensureInitialized();
+
+  @override
+  final MappingHook superHook = ChainedHook([
+    PropertyRenameHook('sc', 'DK:sc'),
+    PropertyRenameHook('snode', 'DK:snode'),
+  ]);
 
   static PaddingNode _instantiate(DecodingData data) {
     return PaddingNode(

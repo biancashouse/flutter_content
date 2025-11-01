@@ -91,9 +91,6 @@ class WrapNode extends MC with WrapNodeMappable {
   }
 
   @override
-  List<Type> addChildRecommendations() => [ExpandedNode, FlexibleNode];
-
-  @override
   String toString() => FLUTTER_TYPE;
 
   static const String FLUTTER_TYPE = "Wrap";

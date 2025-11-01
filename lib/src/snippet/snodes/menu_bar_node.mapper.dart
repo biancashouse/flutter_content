@@ -94,11 +94,17 @@ class MenuBarNodeMapper extends SubClassMapperBase<MenuBarNode> {
   };
 
   @override
-  final String discriminatorKey = 'mc';
+  final String discriminatorKey = 'DK:mc';
   @override
   final dynamic discriminatorValue = 'MenuBarNode';
   @override
   late final ClassMapperBase superMapper = MCMapper.ensureInitialized();
+
+  @override
+  final MappingHook superHook = ChainedHook([
+    PropertyRenameHook('mc', 'DK:mc'),
+    PropertyRenameHook('snode', 'DK:snode'),
+  ]);
 
   static MenuBarNode _instantiate(DecodingData data) {
     return MenuBarNode(

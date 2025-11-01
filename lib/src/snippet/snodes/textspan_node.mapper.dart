@@ -111,12 +111,18 @@ class TextSpanNodeMapper extends SubClassMapperBase<TextSpanNode> {
   };
 
   @override
-  final String discriminatorKey = 'is';
+  final String discriminatorKey = 'DK:is';
   @override
   final dynamic discriminatorValue = 'TextSpanNode';
   @override
   late final ClassMapperBase superMapper =
       InlineSpanNodeMapper.ensureInitialized();
+
+  @override
+  final MappingHook superHook = ChainedHook([
+    PropertyRenameHook('is', 'DK:is'),
+    PropertyRenameHook('snode', 'DK:snode'),
+  ]);
 
   static TextSpanNode _instantiate(DecodingData data) {
     return TextSpanNode(

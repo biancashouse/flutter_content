@@ -128,11 +128,17 @@ class CarouselNodeMapper extends SubClassMapperBase<CarouselNode> {
   };
 
   @override
-  final String discriminatorKey = 'mc';
+  final String discriminatorKey = 'DK:mc';
   @override
   final dynamic discriminatorValue = 'CarouselNode';
   @override
   late final ClassMapperBase superMapper = MCMapper.ensureInitialized();
+
+  @override
+  final MappingHook superHook = ChainedHook([
+    PropertyRenameHook('mc', 'DK:mc'),
+    PropertyRenameHook('snode', 'DK:snode'),
+  ]);
 
   static CarouselNode _instantiate(DecodingData data) {
     return CarouselNode(

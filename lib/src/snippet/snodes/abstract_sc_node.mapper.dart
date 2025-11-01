@@ -5,7 +5,7 @@
 // ignore_for_file: unused_element, unnecessary_cast, override_on_non_overriding_member
 // ignore_for_file: strict_raw_type, inference_failure_on_untyped_parameter
 
-part of 'single_child_node.dart';
+part of 'abstract_sc_node.dart';
 
 class SCMapper extends SubClassMapperBase<SC> {
   SCMapper._();
@@ -21,10 +21,11 @@ class SCMapper extends SubClassMapperBase<SC> {
       AspectRatioNodeMapper.ensureInitialized();
       ButtonNodeMapper.ensureInitialized();
       CenterNodeMapper.ensureInitialized();
+      ConstrainedBoxNodeMapper.ensureInitialized();
       ContainerNodeMapper.ensureInitialized();
       DefaultTextStyleNodeMapper.ensureInitialized();
-      ExpandedNodeMapper.ensureInitialized();
       FlexibleNodeMapper.ensureInitialized();
+      InteractiveViewerNodeMapper.ensureInitialized();
       IntrinsicWidthNodeMapper.ensureInitialized();
       IntrinsicHeightNodeMapper.ensureInitialized();
       PaddingNodeMapper.ensureInitialized();
@@ -53,14 +54,23 @@ class SCMapper extends SubClassMapperBase<SC> {
   final MappableFields<SC> fields = const {#child: _f$child};
 
   @override
-  final String discriminatorKey = 'snode';
+  final String discriminatorKey = 'DK:snode';
   @override
   final dynamic discriminatorValue = 'SC';
   @override
   late final ClassMapperBase superMapper = SNodeMapper.ensureInitialized();
 
+  @override
+  final MappingHook hook = const PropertyRenameHook('sc', 'DK:sc');
+  @override
+  final MappingHook superHook = const PropertyRenameHook('snode', 'DK:snode');
+
   static SC _instantiate(DecodingData data) {
-    throw MapperException.missingSubclass('SC', 'sc', '${data.value['sc']}');
+    throw MapperException.missingSubclass(
+      'SC',
+      'DK:sc',
+      '${data.value['DK:sc']}',
+    );
   }
 
   @override

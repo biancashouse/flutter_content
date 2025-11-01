@@ -73,6 +73,18 @@ class TargetModelMapper extends ClassMapperBase<TargetModel> {
     _$calloutLeftPc,
     opt: true,
   );
+  static double? _$targetAlignmentX(TargetModel v) => v.targetAlignmentX;
+  static const Field<TargetModel, double> _f$targetAlignmentX = Field(
+    'targetAlignmentX',
+    _$targetAlignmentX,
+    opt: true,
+  );
+  static double? _$targetAlignmentY(TargetModel v) => v.targetAlignmentY;
+  static const Field<TargetModel, double> _f$targetAlignmentY = Field(
+    'targetAlignmentY',
+    _$targetAlignmentY,
+    opt: true,
+  );
   static double? _$btnLocalTopPc(TargetModel v) => v.btnLocalTopPc;
   static const Field<TargetModel, double> _f$btnLocalTopPc = Field(
     'btnLocalTopPc',
@@ -250,6 +262,8 @@ class TargetModelMapper extends ClassMapperBase<TargetModel> {
     #calloutHeight: _f$calloutHeight,
     #calloutTopPc: _f$calloutTopPc,
     #calloutLeftPc: _f$calloutLeftPc,
+    #targetAlignmentX: _f$targetAlignmentX,
+    #targetAlignmentY: _f$targetAlignmentY,
     #btnLocalTopPc: _f$btnLocalTopPc,
     #btnLocalLeftPc: _f$btnLocalLeftPc,
     #targetLocalPosLeftPc: _f$targetLocalPosLeftPc,
@@ -286,6 +300,8 @@ class TargetModelMapper extends ClassMapperBase<TargetModel> {
       calloutHeight: data.dec(_f$calloutHeight),
       calloutTopPc: data.dec(_f$calloutTopPc),
       calloutLeftPc: data.dec(_f$calloutLeftPc),
+      targetAlignmentX: data.dec(_f$targetAlignmentX),
+      targetAlignmentY: data.dec(_f$targetAlignmentY),
       btnLocalTopPc: data.dec(_f$btnLocalTopPc),
       btnLocalLeftPc: data.dec(_f$btnLocalLeftPc),
       targetLocalPosLeftPc: data.dec(_f$targetLocalPosLeftPc),
@@ -381,6 +397,8 @@ abstract class TargetModelCopyWith<$R, $In extends TargetModel, $Out>
     double? calloutHeight,
     double? calloutTopPc,
     double? calloutLeftPc,
+    double? targetAlignmentX,
+    double? targetAlignmentY,
     double? btnLocalTopPc,
     double? btnLocalLeftPc,
     double? targetLocalPosLeftPc,
@@ -436,6 +454,8 @@ class _TargetModelCopyWithImpl<$R, $Out>
     double? calloutHeight,
     Object? calloutTopPc = $none,
     Object? calloutLeftPc = $none,
+    Object? targetAlignmentX = $none,
+    Object? targetAlignmentY = $none,
     Object? btnLocalTopPc = $none,
     Object? btnLocalLeftPc = $none,
     Object? targetLocalPosLeftPc = $none,
@@ -465,6 +485,8 @@ class _TargetModelCopyWithImpl<$R, $Out>
       if (calloutHeight != null) #calloutHeight: calloutHeight,
       if (calloutTopPc != $none) #calloutTopPc: calloutTopPc,
       if (calloutLeftPc != $none) #calloutLeftPc: calloutLeftPc,
+      if (targetAlignmentX != $none) #targetAlignmentX: targetAlignmentX,
+      if (targetAlignmentY != $none) #targetAlignmentY: targetAlignmentY,
       if (btnLocalTopPc != $none) #btnLocalTopPc: btnLocalTopPc,
       if (btnLocalLeftPc != $none) #btnLocalLeftPc: btnLocalLeftPc,
       if (targetLocalPosLeftPc != $none)
@@ -507,6 +529,8 @@ class _TargetModelCopyWithImpl<$R, $Out>
     calloutHeight: data.get(#calloutHeight, or: $value.calloutHeight),
     calloutTopPc: data.get(#calloutTopPc, or: $value.calloutTopPc),
     calloutLeftPc: data.get(#calloutLeftPc, or: $value.calloutLeftPc),
+    targetAlignmentX: data.get(#targetAlignmentX, or: $value.targetAlignmentX),
+    targetAlignmentY: data.get(#targetAlignmentY, or: $value.targetAlignmentY),
     btnLocalTopPc: data.get(#btnLocalTopPc, or: $value.btnLocalTopPc),
     btnLocalLeftPc: data.get(#btnLocalLeftPc, or: $value.btnLocalLeftPc),
     targetLocalPosLeftPc: data.get(

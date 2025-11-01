@@ -93,11 +93,17 @@ class SnippetRootNodeMapper extends SubClassMapperBase<SnippetRootNode> {
   };
 
   @override
-  final String discriminatorKey = 'sc';
+  final String discriminatorKey = 'DK:sc';
   @override
   final dynamic discriminatorValue = 'SnippetRootNode';
   @override
   late final ClassMapperBase superMapper = SCMapper.ensureInitialized();
+
+  @override
+  final MappingHook superHook = ChainedHook([
+    PropertyRenameHook('sc', 'DK:sc'),
+    PropertyRenameHook('snode', 'DK:snode'),
+  ]);
 
   static SnippetRootNode _instantiate(DecodingData data) {
     return SnippetRootNode(

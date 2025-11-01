@@ -6,7 +6,9 @@ part 'inlinespan_node.mapper.dart';
 
 const List<Type> inlinespanSubClasses = [TextSpanNode, WidgetSpanNode];
 
-@MappableClass(discriminatorKey: 'is', includeSubClasses: inlinespanSubClasses)
+@MappableClass(discriminatorKey: 'DK:is', includeSubClasses: inlinespanSubClasses,
+  hook: PropertyRenameHook('is', 'DK:is'), // 'first_name' -> JSON key, 'firstName' -> Dart field name
+)
 abstract class InlineSpanNode extends SNode with InlineSpanNodeMappable {
   InlineSpanNode();
 

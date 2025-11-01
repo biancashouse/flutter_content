@@ -6,7 +6,7 @@ import 'border_side_properties.dart';
 
 part 'outlined_border_properties.mapper.dart';
 
-@MappableClass(discriminatorKey: 'outlinedBorder', includeSubClasses: [])
+@MappableClass()
 class OutlinedBorderProperties with OutlinedBorderPropertiesMappable {
   OutlinedBorderEnum? outlinedBorderType;
   BorderSideProperties? side;

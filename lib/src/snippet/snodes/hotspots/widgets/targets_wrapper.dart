@@ -93,7 +93,7 @@ class TargetsWrapper extends StatefulWidget {
         tc.transformScale,
         ta,
         afterTransformF: () {
-          showSnippetContentCallout(
+          showHotspotSnippetContentCallout(
             tc: tc,
             justPlaying: false,
             wrapperRect: wrapperRect,
@@ -104,7 +104,7 @@ class TargetsWrapper extends StatefulWidget {
         quickly: quickly,
       );
     } else {
-      showSnippetContentCallout(
+      showHotspotSnippetContentCallout(
         tc: tc,
         justPlaying: false,
         wrapperRect: wrapperRect,
@@ -123,7 +123,7 @@ class TargetsWrapper extends StatefulWidget {
       cId: CalloutConfigToolbar.CID,
       scrollControllerName: scName,
       decorationFillColors: ColorOrGradient.color(Colors.purpleAccent),
-      initialCalloutW: 820,
+      initialCalloutW: 920,
       initialCalloutH: 80,
       decorationShape: DecorationShape.rounded_rectangle(),
       decorationBorderRadius: 16,
@@ -207,7 +207,7 @@ class TargetsWrapperState extends State<TargetsWrapper> {
 
   TargetModel? get playingTc => _playingOrEditingTc;
 
-  double? scrollOffset;
+  // double? scrollOffset;
 
   // Orientation? _lastO;
 
@@ -253,6 +253,9 @@ class TargetsWrapperState extends State<TargetsWrapper> {
       // if (zoomer?.widget.ancestorVScrollController != null) {
       //   FCO.registerScrollController(zoomer!.widget.ancestorVScrollController!);
       // }
+
+      // look for enclosing scrollcontroller
+      var surroundingSC = fco.findScrollController(context);
 
       fco.afterMsDelayDo(1000, () {
         if (mounted) {
@@ -330,13 +333,13 @@ class TargetsWrapperState extends State<TargetsWrapper> {
       return _childBuild();
     }
 
-    String? editablePageName = EditablePage.maybeScrollControllerName(context);
-    double hScrollOffset = NamedScrollController.hScrollOffset(
-      editablePageName,
-    );
-    double vScrollOffset = NamedScrollController.vScrollOffset(
-      editablePageName,
-    );
+    // String? editablePageName = EditablePage.maybeScrollControllerName(context);
+    // double hScrollOffset = NamedScrollController.hScrollOffset(
+    //   editablePageName,
+    // );
+    // double vScrollOffset = NamedScrollController.vScrollOffset(
+    //   editablePageName,
+    // );
 
     // when dragging a btn or cover ends
     void droppedBtnOrCover(DragTargetDetails<(TargetId, bool)> details) {
@@ -352,6 +355,9 @@ class TargetsWrapperState extends State<TargetsWrapper> {
         TargetId uid = data.$1;
         TargetModel? foundTc = widget.parentNode.findTarget(uid);
         // $2 true means target btn rather than target cover
+        // NamedScrollController? sc = widget.scName != null
+        //     ? NamedScrollController.instance(widget.scName!)
+        //     : null;
         if (foundTc != null && data.$2) {
           foundTc.setBtnStackPosPc(
             details.offset
@@ -359,14 +365,20 @@ class TargetsWrapperState extends State<TargetsWrapper> {
                   TargetsWrapper.CAPI_TARGET_BTN_RADIUS,
                   TargetsWrapper.CAPI_TARGET_BTN_RADIUS,
                 )
-                .translate(hScrollOffset, vScrollOffset),
+                .translate(
+                  NamedScrollController.hScrollOffset(widget.scName),
+                  NamedScrollController.vScrollOffset(widget.scName),
+                ),
           );
           foundTc.changed_saveRootSnippet();
         } else if (foundTc != null) {
           foundTc.setTargetStackPosPc(
             details.offset
                 .translate(foundTc.radius, foundTc.radius)
-                .translate(hScrollOffset, vScrollOffset),
+                .translate(
+                  NamedScrollController.hScrollOffset(widget.scName),
+                  NamedScrollController.vScrollOffset(widget.scName),
+                ),
           );
           foundTc.changed_saveRootSnippet();
         }
@@ -489,11 +501,9 @@ class TargetsWrapperState extends State<TargetsWrapper> {
             if (playingTc == null && tc.hasAHotspot())
               Positioned(
                 top:
-                    tc.btnStackPos().dy -
-                        TargetsWrapper.CAPI_TARGET_BTN_RADIUS,
+                    tc.btnStackPos().dy - TargetsWrapper.CAPI_TARGET_BTN_RADIUS,
                 left:
-                    tc.btnStackPos().dx -
-                        TargetsWrapper.CAPI_TARGET_BTN_RADIUS,
+                    tc.btnStackPos().dx - TargetsWrapper.CAPI_TARGET_BTN_RADIUS,
                 child: TargetPlayBtn(
                   initialTC: tc,
                   index: _targetIndex(tc),

@@ -31,50 +31,54 @@ class ContainerStylePNode /*Group*/ extends PNode /*Group*/ {
 
     super.children = [
       ContainerStyleSearchPNode(
-          snode: super.snode,
-          name: 'Container style search',
-          containerStyleProps: containerStyleProperties,
-          onAnyContainerStylePropertyChangeF: (newProps) {
-            // containerStyleGroup.fillColors = newProps.fillColors;
-            // containerStyleGroup.borderColors = newProps.borderColors;
-            onGroupChange.call(newProps, true);
-            return;
-          }),
+        snode: super.snode,
+        name: 'Container style search',
+        containerStyleProps: containerStyleProperties,
+        onAnyContainerStylePropertyChangeF: (newProps) {
+          // containerStyleGroup.fillColors = newProps.fillColors;
+          // containerStyleGroup.borderColors = newProps.borderColors;
+          onGroupChange.call(newProps, true);
+          return;
+        },
+      ),
       if (containerStyleProperties.width != null ||
           containerStyleProperties.height != null)
         FYIPNode(
-            label: "about constraints...",
-            msg:
-                "If you find the width or\nheight being ignored,\ntap this button",
-            webLink: 'https://docs.flutter.dev/ui/layout/constraints',
-            snode: snode,
-            name: 'fyi'),
+          label: "about constraints...",
+          msg:
+              "If you find the width or\nheight being ignored,\ntap this button",
+          webLink: 'https://docs.flutter.dev/ui/layout/constraints',
+          snode: snode,
+          name: 'fyi',
+        ),
       SizePNode(
-          snode: super.snode,
-          name: 'size',
-          widthValue: containerStyleProperties.width,
-          heightValue: containerStyleProperties.height,
-          onSizeChange: (newValues) {
-            if (newValues.$1 != containerStyleProperties.width) {
-              containerStyleProperties.width = newValues.$1;
-            }
-            if (newValues.$2 != containerStyleProperties.height) {
-              containerStyleProperties.height = newValues.$2;
-            }
-            onGroupChange.call(containerStyleProperties, true);
-          }),
+        snode: super.snode,
+        name: 'size',
+        widthValue: containerStyleProperties.width,
+        heightValue: containerStyleProperties.height,
+        onSizeChange: (newValues) {
+          if (newValues.$1 != containerStyleProperties.width) {
+            containerStyleProperties.width = newValues.$1;
+          }
+          if (newValues.$2 != containerStyleProperties.height) {
+            containerStyleProperties.height = newValues.$2;
+          }
+          onGroupChange.call(containerStyleProperties, true);
+        },
+      ),
       PNode /*Group*/ (
         snode: super.snode,
         name: marginLabel,
         children: [
           EdgeInsetsPNode(
-              snode: super.snode,
-              name: 'margin',
-              eiValue: containerStyleProperties.margin,
-              onEIChangedF: (newValue) {
-                containerStyleProperties.margin = newValue;
-                onGroupChange.call(containerStyleProperties, true);
-              }),
+            snode: super.snode,
+            name: 'margin',
+            eiValue: containerStyleProperties.margin,
+            onEIChangedF: (newValue) {
+              containerStyleProperties.margin = newValue;
+              onGroupChange.call(containerStyleProperties, true);
+            },
+          ),
         ],
       ),
       PNode /*Group*/ (
@@ -82,13 +86,14 @@ class ContainerStylePNode /*Group*/ extends PNode /*Group*/ {
         name: paddingLabel,
         children: [
           EdgeInsetsPNode(
-              snode: super.snode,
-              name: 'padding',
-              eiValue: containerStyleProperties.padding,
-              onEIChangedF: (newValue) {
-                containerStyleProperties.padding = newValue;
-                onGroupChange.call(containerStyleProperties, true);
-              }),
+            snode: super.snode,
+            name: 'padding',
+            eiValue: containerStyleProperties.padding,
+            onEIChangedF: (newValue) {
+              containerStyleProperties.padding = newValue;
+              onGroupChange.call(containerStyleProperties, true);
+            },
+          ),
         ],
       ),
       PNode /*Group*/ (
@@ -97,44 +102,56 @@ class ContainerStylePNode /*Group*/ extends PNode /*Group*/ {
         children: [
           // SHAPE
           // FILL COLOR(s)
+          FYIPNode(
+            label:
+                "Fills the parent's size to draw a <b>BoxDecoration</b> (like a background color or border) across the entire available area.",
+            msg: "The decoration covers the full bounds defined by its parent.",
+            snode: super.snode,
+            name: 'fyi',
+          ),
           ColorOrGradientPNode(
-              snode: super.snode,
-              name: 'fill color(s)',
-              colors: containerStyleProperties.fillColors,
-              onColorChange: (newValues) {
-                containerStyleProperties.fillColors = newValues;
-                if (newValues != null && !newValues.isEmpty()) {
-                  containerStyleProperties.decorationShapeEnum ??= DecorationShapeEnum.rectangle;
-                }
-                onGroupChange.call(containerStyleProperties, true);
-              }),
+            snode: super.snode,
+            name: 'fill color(s)',
+            colors: containerStyleProperties.fillColors,
+            onColorChange: (newValues) {
+              containerStyleProperties.fillColors = newValues;
+              if (newValues != null && !newValues.isEmpty()) {
+                containerStyleProperties.decorationShapeEnum ??=
+                    DecorationShapeEnum.rectangle;
+              }
+              onGroupChange.call(containerStyleProperties, true);
+            },
+          ),
           if (containerStyleProperties.fillColors?.isAGradient() ?? false)
             BoolPNode(
-                snode: super.snode,
-                name: 'radial Gradient ?',
-                boolValue: containerStyleProperties.radialGradient,
-                onBoolChange: (newValue) {
-                  containerStyleProperties.radialGradient = newValue;
-                  onGroupChange.call(containerStyleProperties, true);
-                }), // BORDER COLOR(s)
+              snode: super.snode,
+              name: 'radial Gradient ?',
+              boolValue: containerStyleProperties.radialGradient,
+              onBoolChange: (newValue) {
+                containerStyleProperties.radialGradient = newValue;
+                onGroupChange.call(containerStyleProperties, true);
+              },
+            ), // BORDER COLOR(s)
           ColorOrGradientPNode(
-              snode: super.snode,
-              name: 'border color(s)',
-              colors: containerStyleProperties.borderColors,
-              onColorChange: (newValues) {
-                containerStyleProperties.borderColors = newValues;
-                onGroupChange.call(containerStyleProperties, true);
-              }),
+            snode: super.snode,
+            name: 'border color(s)',
+            colors: containerStyleProperties.borderColors,
+            onColorChange: (newValues) {
+              containerStyleProperties.borderColors = newValues;
+              onGroupChange.call(containerStyleProperties, true);
+            },
+          ),
           EnumPNode<DecorationShapeEnum?>(
-              snode: super.snode,
-              name: 'shape',
-              valueIndex: containerStyleProperties.decorationShapeEnum?.index,
-              onIndexChange: (newValue) {
-                containerStyleProperties.decorationShapeEnum =
-                    DecorationShapeEnum.of(newValue) ??
-                        DecorationShapeEnum.rectangle;
-                onGroupChange.call(containerStyleProperties, true);
-              }),
+            snode: super.snode,
+            name: 'shape',
+            valueIndex: containerStyleProperties.decorationShapeEnum?.index,
+            onIndexChange: (newValue) {
+              containerStyleProperties.decorationShapeEnum =
+                  DecorationShapeEnum.of(newValue) ??
+                  DecorationShapeEnum.rectangle;
+              onGroupChange.call(containerStyleProperties, true);
+            },
+          ),
           DecimalPNode(
             snode: super.snode,
             name: 'thickness',
@@ -170,13 +187,16 @@ class ContainerStylePNode /*Group*/ extends PNode /*Group*/ {
         snode: super.snode,
         name: 'save Container style',
         onGroupChange: onGroupChange,
-      )
+      ),
     ];
   }
 
   @override
   String propertyLabel() {
-    var containerStyleName = fco.findContainerStyleName(fco.appInfo, containerStyleProperties);
+    var containerStyleName = fco.findContainerStyleName(
+      fco.appInfo,
+      containerStyleProperties,
+    );
     return containerStyleName != null ? '$name: $containerStyleName' : name;
   }
 }
@@ -184,7 +204,7 @@ class ContainerStylePNode /*Group*/ extends PNode /*Group*/ {
 class ContainerStyleSearchPNode extends PNode {
   final ContainerStyleProperties containerStyleProps;
   final ValueChanged<ContainerStyleProperties>
-      onAnyContainerStylePropertyChangeF;
+  onAnyContainerStylePropertyChangeF;
   final Size calloutButtonSize;
 
   ContainerStyleSearchPNode /*Group*/ ({
@@ -198,21 +218,22 @@ class ContainerStyleSearchPNode extends PNode {
 
   @override
   void revertToOriginalValue() {
-    onAnyContainerStylePropertyChangeF
-        .call(ContainerStyleProperties());
+    onAnyContainerStylePropertyChangeF.call(ContainerStyleProperties());
   }
 
   @override
   Widget toPropertyNodeContents(BuildContext context) {
-    ScrollControllerName? scName = EditablePage.maybeScrollControllerName(context);
+    ScrollControllerName? scName = EditablePage.maybeScrollControllerName(
+      context,
+    );
     return PropertyButtonContainerStyleNameSearch(
       cId: name,
       tooltip: tooltip,
       containerStyle: containerStyleProps,
       onHoveredF: (ContainerStyleProperties newProps) {
         // if (newProps != containerStyleProps) {
-          onAnyContainerStylePropertyChangeF.call(newProps);
-          snode.forcePropertyTreeRefresh(context);
+        onAnyContainerStylePropertyChangeF.call(newProps);
+        snode.forcePropertyTreeRefresh(context);
         // }
       },
       onChangeF: (ContainerStyleProperties newProps) {
@@ -249,8 +270,8 @@ class ContainerStyleSavePNode extends PNode {
         onEditingCompleteF: () async {
           final csName = teC.text;
           if (csName.isNotEmpty) {
-            ContainerStyleProperties? csGroup =
-                snode.containerStyleProperties();
+            ContainerStyleProperties? csGroup = snode
+                .containerStyleProperties();
             if (csGroup != null) {
               fco.namedContainerStyles[csName] = csGroup.clone();
               await fco.modelRepo.saveAppInfo();

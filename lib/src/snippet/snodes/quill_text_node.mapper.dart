@@ -89,11 +89,17 @@ class QuillTextNodeMapper extends SubClassMapperBase<QuillTextNode> {
   };
 
   @override
-  final String discriminatorKey = 'cl';
+  final String discriminatorKey = 'DK:cl';
   @override
   final dynamic discriminatorValue = 'QuillTextNode';
   @override
   late final ClassMapperBase superMapper = CLMapper.ensureInitialized();
+
+  @override
+  final MappingHook superHook = ChainedHook([
+    PropertyRenameHook('cl', 'DK:cl'),
+    PropertyRenameHook('snode', 'DK:snode'),
+  ]);
 
   static QuillTextNode _instantiate(DecodingData data) {
     return QuillTextNode(deltaJsonString: data.dec(_f$deltaJsonString));

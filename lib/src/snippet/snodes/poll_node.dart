@@ -160,7 +160,7 @@ class PollNode extends MC with PollNodeMappable {
   ) {
     return [
       ...super.menuAnchorWidgets_Heading(context, action, scName),
-      menuItemButton(context, "PollOption", PollOptionNode, action, scName),
+      menuItemButton(context, "PollOption", PollNode, action, scName),
     ];
   }
 

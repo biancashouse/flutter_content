@@ -17,6 +17,7 @@ import 'package:flutter_content/src/snippet/pnodes/enums/enum_text_overflow.dart
 import 'package:flutter_content/src/snippet/pnodes/enums/enum_decoration_shape.dart';
 
 import 'enums/enum_target_pointer_type.dart';
+import 'enums/enum_wrap_alignment.dart';
 
 class EnumPNode<T> extends PNode {
   int? valueIndex;
@@ -112,6 +113,17 @@ class EnumPNode<T> extends PNode {
           enumValueIndex: valueIndex,
           onChangedF: (newValueIndex) =>
               onIndexChange(valueIndex = newValueIndex));
+    }
+    // WrapAlignment -------------
+    if (_sameType<T, WrapAlignmentEnumModel?>()) {
+      return WrapAlignmentEnumModel.propertyNodeContents(
+        snode: snode,
+        label: name,
+        enumValueIndex: valueIndex,
+        onChangedF: (newValueIndex) =>
+            onIndexChange(valueIndex = newValueIndex),
+        scName: scName,
+      );
     }
     // MainAxisAlignment -------------
     if (_sameType<T, MainAxisAlignmentEnumModel?>()) {

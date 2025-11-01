@@ -10,44 +10,56 @@ import 'package:flutter_content/src/snippet/pnodes/int_pnode.dart';
 
 part 'flexible_node.mapper.dart';
 
-@MappableClass()
+@MappableClass(
+  discriminatorKey: 'DK:flexible',
+  includeSubClasses: [ExpandedNode],
+  hook: PropertyRenameHook(
+    'flexible',
+    'DK:flexible',
+  ), // 'first_name' -> JSON key, 'firstName' -> Dart field name
+)
 class FlexibleNode extends SC with FlexibleNodeMappable {
   int flex;
   FlexFitEnum fit;
 
-  FlexibleNode({
-    this.flex = 1,
-    this.fit = FlexFitEnum.loose,
-    super.child,
-  });
+  FlexibleNode({this.flex = 1, this.fit = FlexFitEnum.loose, super.child});
 
   @override
   List<PNode> propertyNodes(BuildContext context, SNode? parentSNode) => [
-        FlutterDocPNode(
-            buttonLabel: 'Flexible',
-            webLink: 'https://api.flutter.dev/flutter/widgets/Flexible-class.html',
-            snode: this,
-            name: 'fyi'),
-        IntPNode(
-          snode: this,
-          name: 'flex',
-          intValue: flex,
-          onIntChange: (newValue) =>
-              refreshWithUpdate(context, () => flex = newValue ?? 1),
-          calloutButtonSize: const Size(70, 30),
-        ),
-        EnumPNode<FlexFitEnum?>(
-          snode: this,
-          name: 'fit',
-          valueIndex: fit.index,
-          onIndexChange: (newValue) => refreshWithUpdate(context,
-              () => FlexFitEnum.of(newValue ?? FlexFitEnum.loose.index)),
-        ),
-      ];
+    FlutterDocPNode(
+      buttonLabel: 'Flexible',
+      webLink: 'https://api.flutter.dev/flutter/widgets/Flexible-class.html',
+      snode: this,
+      name: 'fyi',
+    ),
+    FYIPNode(
+      label: "Constraint Imposed on Child: 'Tight' in the main axis.",
+      msg:
+          "Forces the child to take exactly the allocated remaining space in a Row or Column.",
+      snode: this,
+      name: 'fyi',
+    ),
+    IntPNode(
+      snode: this,
+      name: 'flex',
+      intValue: flex,
+      onIntChange: (newValue) =>
+          refreshWithUpdate(context, () => flex = newValue ?? 1),
+      calloutButtonSize: const Size(70, 30),
+    ),
+    EnumPNode<FlexFitEnum?>(
+      snode: this,
+      name: 'fit',
+      valueIndex: fit.index,
+      onIndexChange: (newValue) => refreshWithUpdate(
+        context,
+        () => FlexFitEnum.of(newValue ?? FlexFitEnum.loose.index),
+      ),
+    ),
+  ];
 
   @override
-  Widget buildFlutterWidget(BuildContext context, SNode? parentNode,
-      ) {
+  Widget buildFlutterWidget(BuildContext context, SNode? parentNode) {
     try {
       setParent(parentNode);
       //ScrollControllerName? scName = EditablePage.name(context);
@@ -56,19 +68,18 @@ class FlexibleNode extends SC with FlexibleNodeMappable {
         key: createNodeWidgetGK(),
         flex: flex,
         fit: fit.flutterValue,
-        child: child?.buildFlutterWidget(context, this) ??
-            const Icon(
-              Icons.square,
-              color: Colors.red,
-            ),
+        child:
+            child?.buildFlutterWidget(context, this) ??
+            const Icon(Icons.square, color: Colors.red),
       );
     } catch (e) {
       return Error(
-          key: createNodeWidgetGK(),
-          FLUTTER_TYPE,
-          color: Colors.red,
-          size: 16,
-          errorMsg: e.toString());
+        key: createNodeWidgetGK(),
+        FLUTTER_TYPE,
+        color: Colors.red,
+        size: 16,
+        errorMsg: e.toString(),
+      );
     }
   }
 
@@ -77,10 +88,7 @@ class FlexibleNode extends SC with FlexibleNodeMappable {
     return '''Flexible(
         flex: $flex,
         fit: ${fit.toSource()},
-        child: ${child?.toSource(context) ?? const Icon(
-              Icons.square,
-              color: Colors.red,
-            )},
+        child: ${child?.toSource(context) ?? const Icon(Icons.square, color: Colors.red)},
       )''';
   }
 

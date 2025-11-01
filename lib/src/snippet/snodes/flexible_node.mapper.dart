@@ -15,6 +15,7 @@ class FlexibleNodeMapper extends SubClassMapperBase<FlexibleNode> {
     if (_instance == null) {
       MapperContainer.globals.use(_instance = FlexibleNodeMapper._());
       SCMapper.ensureInitialized().addSubMapper(_instance!);
+      ExpandedNodeMapper.ensureInitialized();
       FlexFitEnumMapper.ensureInitialized();
       SNodeMapper.ensureInitialized();
     }
@@ -98,11 +99,19 @@ class FlexibleNodeMapper extends SubClassMapperBase<FlexibleNode> {
   };
 
   @override
-  final String discriminatorKey = 'sc';
+  final String discriminatorKey = 'DK:sc';
   @override
   final dynamic discriminatorValue = 'FlexibleNode';
   @override
   late final ClassMapperBase superMapper = SCMapper.ensureInitialized();
+
+  @override
+  final MappingHook hook = const PropertyRenameHook('flexible', 'DK:flexible');
+  @override
+  final MappingHook superHook = ChainedHook([
+    PropertyRenameHook('sc', 'DK:sc'),
+    PropertyRenameHook('snode', 'DK:snode'),
+  ]);
 
   static FlexibleNode _instantiate(DecodingData data) {
     return FlexibleNode(
@@ -177,7 +186,7 @@ abstract class FlexibleNodeCopyWith<$R, $In extends FlexibleNode, $Out>
   @override
   SNodeCopyWith<$R, SNode, SNode>? get child;
   @override
-  $R call({int? flex, FlexFitEnum? fit, SNode? child});
+  $R call({int? flex, SNode? child});
   FlexibleNodeCopyWith<$R2, $In, $Out2> $chain<$R2, $Out2>(Then<$Out2, $R2> t);
 }
 
@@ -193,10 +202,9 @@ class _FlexibleNodeCopyWithImpl<$R, $Out>
   SNodeCopyWith<$R, SNode, SNode>? get child =>
       $value.child?.copyWith.$chain((v) => call(child: v));
   @override
-  $R call({int? flex, FlexFitEnum? fit, Object? child = $none}) => $apply(
+  $R call({int? flex, Object? child = $none}) => $apply(
     FieldCopyWithData({
       if (flex != null) #flex: flex,
-      if (fit != null) #fit: fit,
       if (child != $none) #child: child,
     }),
   );

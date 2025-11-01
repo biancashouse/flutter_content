@@ -160,11 +160,17 @@ class ChipNodeMapper extends SubClassMapperBase<ChipNode> {
   };
 
   @override
-  final String discriminatorKey = 'cl';
+  final String discriminatorKey = 'DK:cl';
   @override
   final dynamic discriminatorValue = 'ChipNode';
   @override
   late final ClassMapperBase superMapper = CLMapper.ensureInitialized();
+
+  @override
+  final MappingHook superHook = ChainedHook([
+    PropertyRenameHook('cl', 'DK:cl'),
+    PropertyRenameHook('snode', 'DK:snode'),
+  ]);
 
   static ChipNode _instantiate(DecodingData data) {
     return ChipNode(

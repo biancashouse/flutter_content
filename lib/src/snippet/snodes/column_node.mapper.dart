@@ -92,6 +92,12 @@ class ColumnNodeMapper extends SubClassMapperBase<ColumnNode> {
     _$nodeWidgetGK,
     mode: FieldMode.member,
   );
+  static bool? _$wrapInExpanded(ColumnNode v) => v.wrapInExpanded;
+  static const Field<ColumnNode, bool> _f$wrapInExpanded = Field(
+    'wrapInExpanded',
+    _$wrapInExpanded,
+    mode: FieldMode.member,
+  );
 
   @override
   final MappableFields<ColumnNode> fields = const {
@@ -105,14 +111,22 @@ class ColumnNodeMapper extends SubClassMapperBase<ColumnNode> {
     #hidePropertiesWhileDragging: _f$hidePropertiesWhileDragging,
     #canShowTappableNodeWidgetOverlay: _f$canShowTappableNodeWidgetOverlay,
     #nodeWidgetGK: _f$nodeWidgetGK,
+    #wrapInExpanded: _f$wrapInExpanded,
   };
 
   @override
-  final String discriminatorKey = 'flex';
+  final String discriminatorKey = 'DK:flex';
   @override
   final dynamic discriminatorValue = 'ColumnNode';
   @override
   late final ClassMapperBase superMapper = FlexNodeMapper.ensureInitialized();
+
+  @override
+  final MappingHook superHook = ChainedHook([
+    PropertyRenameHook('flex', 'DK:flex'),
+    PropertyRenameHook('mc', 'DK:mc'),
+    PropertyRenameHook('snode', 'DK:snode'),
+  ]);
 
   static ColumnNode _instantiate(DecodingData data) {
     return ColumnNode(

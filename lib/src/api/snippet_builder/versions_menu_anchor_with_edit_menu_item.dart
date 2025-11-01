@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_content/flutter_content.dart';
+import 'package:flutter_content/src/api/editable_page/versions_menu_anchor.dart';
 import 'package:pointer_interceptor/pointer_interceptor.dart';
 
 import 'tr_triangle_painter.dart' show TRTriangle;
@@ -152,9 +153,9 @@ class SnippetMenuAnchor extends StatelessWidget {
         ),
         _menuItemButtonWithPI(
           onPressed: () async {
-            fco.capiBloc.add(const CAPIEvent.replaceSnippetFromJson());
+            VersionsMenuAnchor.rawSnippetJsonDialog();
           },
-          child: const Text('save snippet JSON from clipboard'),
+          child: const Text('rebuild snippet from JSON...'),
         ),
         _menuItemButtonWithPI(
           onPressed: () async {

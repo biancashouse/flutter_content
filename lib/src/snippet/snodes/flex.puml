@@ -1,0 +1,87 @@
+@startuml
+' Set theme for better readability
+!theme plain
+
+' Define a title for the diagram
+title Flutter Multi-Child Layout Widget Hierarchy
+
+' --- Define Base and Abstract Classes ---
+' Using "abstract" keyword for abstract classes
+abstract class Widget
+abstract class RenderObjectWidget
+abstract class MultiChildRenderObjectWidget
+
+' --- Define Concrete Layout Classes ---
+class Flex
+class Row
+class Column
+class Wrap
+class Stack
+class IndexedStack
+
+' --- Define Inheritance Relationships ---
+' Using "<|--" for inheritance (Child <|-- Parent)
+Widget <|-- RenderObjectWidget
+RenderObjectWidget <|-- MultiChildRenderObjectWidget
+
+' --- LAYOUT HINT ADDED HERE ---
+' Use a layout hint to suggest Wrap should be drawn to the left.
+' PlantUML will try to place Wrap to the left of the next element at the same level (Flex).
+MultiChildRenderObjectWidget -left-|> Wrap
+
+' The rest of the relationships will flow from this starting point.
+MultiChildRenderObjectWidget <|-- Flex
+MultiChildRenderObjectWidget <|-- Stack
+
+' Row and Column are specialized versions of Flex
+Flex <|-- Row
+Flex <|-- Column
+
+' IndexedStack is a specialized version of Stack
+Stack <|-- IndexedStack
+
+
+' --- Add Notes for Key Properties ---
+note left of Flex
+  <b>Key Property:</b>
+  'direction': Axis.horizontal or Axis.vertical
+end note
+
+note right of Row
+  A 'Flex' widget with
+  'direction' set to 'Axis.horizontal'.
+end note
+
+note right of Column
+  A 'Flex' widget with
+  'direction' set to 'Axis.vertical'.
+end note
+
+note top of Wrap
+  <b>Key Property:</b>
+  'direction': Axis.horizontal or Axis.vertical
+  Lays out children and wraps to the
+  next line/column if space runs out.
+end note
+
+note top of Stack
+  Lays out children on top of each other.
+  Use with 'Positioned' for alignment.
+end note
+
+' --- Grouping with Packages (Optional but good for clarity) ---
+package "Abstract Base Widgets" {
+  class RenderObjectWidget
+  class MultiChildRenderObjectWidget
+}
+
+package "Core Layout Implementations" {
+  class Flex
+  class Wrap
+  class Stack
+}
+
+' Hide empty members for a cleaner look
+hide empty members
+
+@enduml

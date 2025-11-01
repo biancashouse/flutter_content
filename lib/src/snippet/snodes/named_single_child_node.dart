@@ -30,6 +30,15 @@ class NamedSC extends SC with NamedSCMappable {
   }
 
   @override
+  bool canWrap() => false;
+
+  @override
+  bool canReplace() => false;
+
+  @override
+  bool canAddASibling() => false;
+
+  @override
   String toString() => propertyName;
 
   static const String FLUTTER_TYPE =

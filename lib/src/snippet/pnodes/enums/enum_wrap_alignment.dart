@@ -60,6 +60,7 @@ enum WrapAlignmentEnumModel {
                 ),
               ),
               child: Wrap(
+                alignment: flutterValue,
                 children: [
                   _box(.7),
                   _box(.7),

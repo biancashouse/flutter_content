@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter_content/flutter_content.dart';
 import 'package:flutter_content/src/snippet/snodes/widget/fs_folder_node.dart';
@@ -176,11 +178,11 @@ class FireStoreModelRepository implements IModelRepository {
           .collection('versions')
           .doc(versionId);
       DocumentSnapshot versionDoc = await versionDocRef.get();
+      late Map<String, dynamic> data;
       if (versionDoc.exists) {
         try {
-          final data = versionDoc.data() as Map<String, dynamic>;
+          data = versionDoc.data() as Map<String, dynamic>;
           var childMap = data['child'];
-          // var scaffoldMap = childMap['appBar'];
           version = SnippetRootNodeMapper.fromMap(data);
           // cache it
           snippetInfo.cachedVersions[versionId] = version;
@@ -188,6 +190,12 @@ class FireStoreModelRepository implements IModelRepository {
           //     '--- ${snippetInfo.name} LOADED---');
         } catch (e) {
           fco.logger.e('', error: e);
+          print(data.toString());
+          print(jsonEncode(data));
+          print('');
+          var decoded = jsonDecode(jsonEncode(data));
+          print(jsonEncode(decoded));
+          print('');
         }
       }
     } catch (e) {

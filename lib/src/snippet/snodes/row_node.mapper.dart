@@ -87,6 +87,12 @@ class RowNodeMapper extends SubClassMapperBase<RowNode> {
     _$nodeWidgetGK,
     mode: FieldMode.member,
   );
+  static bool? _$wrapInExpanded(RowNode v) => v.wrapInExpanded;
+  static const Field<RowNode, bool> _f$wrapInExpanded = Field(
+    'wrapInExpanded',
+    _$wrapInExpanded,
+    mode: FieldMode.member,
+  );
 
   @override
   final MappableFields<RowNode> fields = const {
@@ -100,14 +106,22 @@ class RowNodeMapper extends SubClassMapperBase<RowNode> {
     #hidePropertiesWhileDragging: _f$hidePropertiesWhileDragging,
     #canShowTappableNodeWidgetOverlay: _f$canShowTappableNodeWidgetOverlay,
     #nodeWidgetGK: _f$nodeWidgetGK,
+    #wrapInExpanded: _f$wrapInExpanded,
   };
 
   @override
-  final String discriminatorKey = 'flex';
+  final String discriminatorKey = 'DK:flex';
   @override
   final dynamic discriminatorValue = 'RowNode';
   @override
   late final ClassMapperBase superMapper = FlexNodeMapper.ensureInitialized();
+
+  @override
+  final MappingHook superHook = ChainedHook([
+    PropertyRenameHook('flex', 'DK:flex'),
+    PropertyRenameHook('mc', 'DK:mc'),
+    PropertyRenameHook('snode', 'DK:snode'),
+  ]);
 
   static RowNode _instantiate(DecodingData data) {
     return RowNode(

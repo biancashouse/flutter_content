@@ -68,7 +68,7 @@ class ClipboardView extends StatelessWidget {
               tooltip: 'clear the clipboard',
               onPressed: () {
                 fco.hide("floating-clipboard");
-                bloc.add(CAPIEvent.updateClipboard(newContent: null, scName: scName));
+                bloc.add(CAPIEvent.clearClipboard());
               },
               icon: const Icon(
                 Icons.close,

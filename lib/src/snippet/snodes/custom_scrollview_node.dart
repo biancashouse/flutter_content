@@ -1,21 +1,20 @@
 import 'package:dart_mappable/dart_mappable.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_content/flutter_content.dart';
-import 'package:flutter_content/src/snippet/pnodes/enum_pnode.dart';
+import 'package:flutter_content/src/snippet/snodes/abstract_scrollview_node.dart';
 
 import '../pnodes/fyi_pnodes.dart';
 
-part 'custom_scroll_view_node.mapper.dart';
+part 'custom_scrollview_node.mapper.dart';
 
 @MappableClass()
-class CustomScrollViewNode extends MC with CustomScrollViewNodeMappable {
-  AxisEnum axis;
-  bool? shrinkWrap;
+class CustomScrollViewNode extends ScrollViewNode with CustomScrollViewNodeMappable {
+  List<SNode> slivers;
 
   CustomScrollViewNode({
-    this.axis = AxisEnum.vertical,
-    this.shrinkWrap = false,
-    required super.children,
+    required this.slivers,
+    super.axis,
+    super.shrinkWrap,
   });
 
   @override
@@ -27,15 +26,7 @@ class CustomScrollViewNode extends MC with CustomScrollViewNodeMappable {
       snode: this,
       name: 'fyi',
     ),
-    EnumPNode<AxisEnum?>(
-      snode: this,
-      name: 'axis',
-      valueIndex: axis.index,
-      onIndexChange: (newValue) => refreshWithUpdate(
-        context,
-        () => axis = AxisEnum.of(newValue) ?? AxisEnum.vertical,
-      ),
-    ),
+    ...super.propertyNodes(context, parentSNode),
   ];
 
   @override
@@ -43,7 +34,7 @@ class CustomScrollViewNode extends MC with CustomScrollViewNodeMappable {
     setParent(parentNode);
 
     return CustomScrollView(
-      slivers: children
+      slivers: slivers
           .map((childNode) => childNode.buildFlutterWidget(context, this))
           .toList(),
     );

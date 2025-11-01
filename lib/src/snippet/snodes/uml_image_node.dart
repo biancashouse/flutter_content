@@ -3,6 +3,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_content/flutter_content.dart';
 import 'package:flutter_content/src/snippet/pnodes/editors/plantuml_msv.dart';
+import 'package:flutter_content/src/snippet/pnodes/enum_pnode.dart';
+import 'package:flutter_content/src/snippet/pnodes/enums/enum_boxfit.dart';
 import 'package:flutter_content/src/snippet/pnodes/fyi_pnodes.dart'
     show FlutterDocPNode;
 import 'package:flutter_content/src/snippet/pnodes/string_pnode.dart';
@@ -24,6 +26,7 @@ class UMLImageNode extends CL with UMLImageNodeMappable {
   String? encodedText;
   double? width;
   double? height;
+  BoxFitEnum? fit;
 
   UMLImageNode({
     this.name,
@@ -31,6 +34,7 @@ class UMLImageNode extends CL with UMLImageNodeMappable {
     this.encodedText,
     this.width,
     this.height,
+    this.fit,
   });
 
   @JsonKey(includeFromJson: false, includeToJson: false)
@@ -58,6 +62,13 @@ class UMLImageNode extends CL with UMLImageNodeMappable {
       calloutButtonSize: const Size(280, 70),
       calloutWidth: 400,
       numLines: 1,
+    ),
+    EnumPNode<BoxFitEnum?>(
+      snode: this,
+      name: 'fit',
+      valueIndex: fit?.index,
+      onIndexChange: (newValue) =>
+          refreshWithUpdate(context, () => fit = BoxFitEnum.of(newValue)),
     ),
     UMLStringPNode(
       snode: this,
@@ -117,7 +128,7 @@ class UMLImageNode extends CL with UMLImageNodeMappable {
               key: _gk,
               // scale: 3.0,
               cachedPngBytes ?? Uint8List.fromList(missingPng.codeUnits),
-              fit: BoxFit.fill,
+              fit: fit?.flutterValue,
               errorBuilder: (context, o, stackTrace) {
                 return Error(
                   key: GlobalKey(),

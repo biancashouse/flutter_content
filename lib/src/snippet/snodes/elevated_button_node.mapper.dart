@@ -114,11 +114,18 @@ class ElevatedButtonNodeMapper extends SubClassMapperBase<ElevatedButtonNode> {
   };
 
   @override
-  final String discriminatorKey = 'button';
+  final String discriminatorKey = 'DK:button';
   @override
   final dynamic discriminatorValue = 'ElevatedButtonNode';
   @override
   late final ClassMapperBase superMapper = ButtonNodeMapper.ensureInitialized();
+
+  @override
+  final MappingHook superHook = ChainedHook([
+    PropertyRenameHook('button', 'DK:button'),
+    PropertyRenameHook('sc', 'DK:sc'),
+    PropertyRenameHook('snode', 'DK:snode'),
+  ]);
 
   static ElevatedButtonNode _instantiate(DecodingData data) {
     return ElevatedButtonNode(

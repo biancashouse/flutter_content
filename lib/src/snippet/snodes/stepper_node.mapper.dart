@@ -96,11 +96,17 @@ class StepperNodeMapper extends SubClassMapperBase<StepperNode> {
   };
 
   @override
-  final String discriminatorKey = 'mc';
+  final String discriminatorKey = 'DK:mc';
   @override
   final dynamic discriminatorValue = 'StepperNode';
   @override
   late final ClassMapperBase superMapper = MCMapper.ensureInitialized();
+
+  @override
+  final MappingHook superHook = ChainedHook([
+    PropertyRenameHook('mc', 'DK:mc'),
+    PropertyRenameHook('snode', 'DK:snode'),
+  ]);
 
   static StepperNode _instantiate(DecodingData data) {
     return StepperNode(

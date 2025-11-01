@@ -1,6 +1,7 @@
 import 'dart:math';
 
 import 'package:flutter/material.dart';
+import 'package:flutter_callouts/flutter_callouts.dart';
 
 import 'package:flutter_content/flutter_content.dart';
 import 'package:flutter_content/src/snippet/pnodes/editors/property_button_enum.dart';
@@ -37,7 +38,6 @@ class CalloutConfigToolbar extends StatefulWidget {
   static double CALLOUT_CONFIG_TOOLBAR_H(TargetModel tc) => 60.0;
 
   static void closeThenReopenContentCallout(
-    CalloutConfig cc,
     TargetModel tc,
     Rect wrapperRect,
     ScrollControllerName? scName,
@@ -57,7 +57,7 @@ class CalloutConfigToolbar extends StatefulWidget {
       tc.transformScale,
     );
 
-    showSnippetContentCallout(
+    showHotspotSnippetContentCallout(
       tc: tc,
       justPlaying: false,
       wrapperRect: wrapperRect,
@@ -181,6 +181,28 @@ class CalloutConfigToolbarState extends State<CalloutConfigToolbar> {
             ],
           ),
           const VerticalDivider(color: Colors.white, width: 2),
+          Column(
+            mainAxisSize: MainAxisSize.max,
+            children: [
+              fco.coloredText('align', color: Colors.white70),
+              Center(
+                child: Tooltip(
+                  message: 'target <- callout alignment',
+                  child: Container(
+                    width: 80,
+                    height: 50,
+                    alignment: Alignment.center,
+                    child: Text(
+                      'x: ${tc.targetAlignmentX?.toStringAsFixed(3)},\n'
+                      'y: ${tc.targetAlignmentY?.toStringAsFixed(3)}',
+                      style: const TextStyle(fontSize: 14, color: Colors.white),
+                    ),
+                  ),
+                ),
+              ),
+            ],
+          ),
+          const VerticalDivider(color: Colors.white, width: 2),
           IconButton(
             tooltip: 'edit the callout show duration in ms...',
             icon: const Icon(Icons.timer, color: Colors.white),
@@ -212,7 +234,6 @@ class CalloutConfigToolbarState extends State<CalloutConfigToolbar> {
                   //   fco.refreshOverlay(tc.snippetName, f: () {});
                   fco.dismiss('color-picker');
                   CalloutConfigToolbar.closeThenReopenContentCallout(
-                    widget.cc,
                     widget.tc,
                     widget.wrapperRect,
                     widget.scName,
@@ -278,7 +299,6 @@ class CalloutConfigToolbarState extends State<CalloutConfigToolbar> {
                 if (rootNode == null) return;
                 fco.saveNewVersion(snippet: rootNode);
                 CalloutConfigToolbar.closeThenReopenContentCallout(
-                  widget.cc,
                   tc,
                   widget.wrapperRect,
                   widget.scName,
@@ -379,7 +399,6 @@ class CalloutConfigToolbarState extends State<CalloutConfigToolbar> {
   void _onDragEndF(TargetModel tc) {
     tc.changed_saveRootSnippet();
     CalloutConfigToolbar.closeThenReopenContentCallout(
-      widget.cc,
       tc,
       widget.wrapperRect,
       widget.scName,
@@ -387,7 +406,49 @@ class CalloutConfigToolbarState extends State<CalloutConfigToolbar> {
   }
 
   void _closeCalloutConfigToolbar(TargetModel tc) {
-    // removing the content callout remove toolbar and resets
+    if (tc.calloutLeftPc == null || tc.calloutTopPc == null
+    || tc.targetLocalPosLeftPc == null || tc.targetLocalPosTopPc == null) return;
+
+    // Offset globalCalloutContentPos = Offset(
+    //   widget.wrapperRect.left + tc.calloutLeftPc! * widget.wrapperRect.width,
+    //   widget.wrapperRect.top + tc.calloutTopPc! * widget.wrapperRect.height,
+    // );
+
+    // Offset globalTargetPos = tc.targetStackPos();
+
+
+    // skip if not using targetAlignment
+    if (false) {
+      // pos of callout relative to target
+      Offset calloutContentPosRelToTarget = Offset(
+        (tc.calloutLeftPc! - tc.targetLocalPosLeftPc!) *
+            widget.wrapperRect.width,
+        (tc.calloutTopPc! - tc.targetLocalPosTopPc!) *
+            widget.wrapperRect.height,
+      );
+      // Offset calloutContentPosRelToTarget = globalCalloutContentPos - globalTargetPos;
+
+      // set the target alignment from abs pos of callout inside the wrapperRect
+      GlobalKey? targetGK = fco.getTargetGk(widget.tc.uid);
+      if (targetGK == null) return;
+      RenderBox? targetRB =
+      targetGK.currentContext?.findRenderObject() as RenderBox?;
+      if (targetRB == null) return;
+      Rect r = targetRB.paintBounds;
+
+      print('target: ${r.toString()}');
+      print('calloutContentPosRelToTarget: ${calloutContentPosRelToTarget
+          .toString()}');
+
+      final newAlignment = r.pointToAlignment(calloutContentPosRelToTarget);
+      tc.targetAlignmentX = newAlignment.x;
+      tc.targetAlignmentY = newAlignment.y;
+      print(newAlignment.toString());
+    }
+
+    // close the callout
+
+    // removing the content callout removes toolbar and resets
     removeSnippetContentCallout(tc);
   }
 

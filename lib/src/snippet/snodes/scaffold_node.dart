@@ -64,46 +64,44 @@ class ScaffoldNode extends CL with ScaffoldNodeMappable {
     //ScrollControllerName? scName = EditablePage.name(context);
     //possiblyHighlightSelectedNode(scName);
 
-
-    var appBarProp = appBar.buildPreferredSizeFlutterWidget(context, parentNode);
-    var bodyProp = body.buildFlutterWidget(context, parentNode);
-
     // bool usingTabs = appBar?.bottom?.child is TabBarNode;
-    Widget scaffold = Scaffold(
+
+    var appBarProp = appBar.child != null ? appBar.buildPreferredSizeFlutterWidget(context, this) : null;
+    return Scaffold(
       key: createNodeWidgetGK(),
       backgroundColor: bgColor?.flutterValue,
       appBar: appBarProp,
       // guaranteed the widget is actually an AppBar
-      body: bodyProp,
+      body: body.child != null ? body.buildFlutterWidget(context, this) : null,
     );
 
-    try {
-      bool showPencil = !fco.canEditContent();
-      return Stack(
-        children: [
-          scaffold,
-          if (showPencil && (canShowEditorLoginBtn??false))
-            Align(
-              alignment: Alignment.topRight,
-              child: IconButton(
-                onPressed: () {
-                  // ask user to sign in as editor
-                  EditablePage.of(context)?.editorPasswordDialog();
-                },
-                icon: const Icon(Icons.edit, color: Colors.white),
-              ),
-            ),
-        ],
-      );
-    } catch (e) {
-      return Error(
-        key: createNodeWidgetGK(),
-        FLUTTER_TYPE,
-        color: Colors.red,
-        size: 16,
-        errorMsg: e.toString(),
-      );
-    }
+    // try {
+    //   bool showPencil = !fco.canEditContent();
+    //   return Stack(
+    //     children: [
+    //       scaffold,
+    //       if (showPencil && (canShowEditorLoginBtn??false))
+    //         Align(
+    //           alignment: Alignment.topRight,
+    //           child: IconButton(
+    //             onPressed: () {
+    //               // ask user to sign in as editor
+    //               EditablePage.of(context)?.editorPasswordDialog();
+    //             },
+    //             icon: const Icon(Icons.edit, color: Colors.white),
+    //           ),
+    //         ),
+    //     ],
+    //   );
+    // } catch (e) {
+    //   return Error(
+    //     key: createNodeWidgetGK(),
+    //     FLUTTER_TYPE,
+    //     color: Colors.red,
+    //     size: 16,
+    //     errorMsg: e.toString(),
+    //   );
+    // }
   }
 
   @override
@@ -126,7 +124,36 @@ class ScaffoldNode extends CL with ScaffoldNodeMappable {
   List<Type> replaceWithRecommendations() => [ScaffoldNode];
 
   @override
+  SNode removeFromParent() {
+    var parent = getParent() as SNode?;
+
+    // actually not possible, only snippetrootnode has no parent
+    if (parent == null) {
+      return this;
+    }
+
+    if (parent is SC && parent.child == this) {
+      parent.child = body.child;
+      body.child?.setParent(parent);
+      setParent(null);
+      return parent;
+    } else if (parent is MC && parent.children.contains(this)) {
+      int index = parent.children.indexOf(this);
+      parent.children.remove(this);
+      if (parent.children.isNotEmpty && body.child != null) {
+        parent.children.insert(index, body.child!);
+        body.child?.setParent(parent);
+      }
+      setParent(null);
+      return parent;
+    } else {
+      return this;
+    }
+  }
+
+  @override
   String toString() => FLUTTER_TYPE;
 
   static const String FLUTTER_TYPE = "Scaffold";
+
 }

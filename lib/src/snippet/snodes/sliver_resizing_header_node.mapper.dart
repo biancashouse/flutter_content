@@ -87,11 +87,17 @@ class SliverResizingHeaderNodeMapper
   };
 
   @override
-  final String discriminatorKey = 'sc';
+  final String discriminatorKey = 'DK:sc';
   @override
   final dynamic discriminatorValue = 'SliverResizingHeaderNode';
   @override
   late final ClassMapperBase superMapper = SCMapper.ensureInitialized();
+
+  @override
+  final MappingHook superHook = ChainedHook([
+    PropertyRenameHook('sc', 'DK:sc'),
+    PropertyRenameHook('snode', 'DK:snode'),
+  ]);
 
   static SliverResizingHeaderNode _instantiate(DecodingData data) {
     return SliverResizingHeaderNode(child: data.dec(_f$child));

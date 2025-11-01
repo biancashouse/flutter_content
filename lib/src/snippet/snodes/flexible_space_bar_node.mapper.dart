@@ -103,11 +103,17 @@ class FlexibleSpaceBarNodeMapper
   };
 
   @override
-  final String discriminatorKey = 'cl';
+  final String discriminatorKey = 'DK:cl';
   @override
   final dynamic discriminatorValue = 'FlexibleSpaceBarNode';
   @override
   late final ClassMapperBase superMapper = CLMapper.ensureInitialized();
+
+  @override
+  final MappingHook superHook = ChainedHook([
+    PropertyRenameHook('cl', 'DK:cl'),
+    PropertyRenameHook('snode', 'DK:snode'),
+  ]);
 
   static FlexibleSpaceBarNode _instantiate(DecodingData data) {
     return FlexibleSpaceBarNode(

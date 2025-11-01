@@ -25,14 +25,15 @@ import 'package:flutter_content/src/snippet/snodes/aspect_ratio_node.dart';
 import 'package:flutter_content/src/snippet/snodes/asset_image_node.dart';
 import 'package:flutter_content/src/snippet/snodes/button_node.dart';
 import 'package:flutter_content/src/snippet/snodes/carousel_node.dart';
+import 'package:flutter_content/src/snippet/snodes/interactiveviewer_node.dart';
 
 // import 'package:flutter_content/src/snippet/pnodes/groups/text_style_properties.dart';
 import 'package:flutter_content/src/snippet/snodes/center_node.dart';
-import 'package:flutter_content/src/snippet/snodes/childless_node.dart';
+import 'package:flutter_content/src/snippet/snodes/abstract_cl_node.dart';
 import 'package:flutter_content/src/snippet/snodes/chip_node.dart';
 import 'package:flutter_content/src/snippet/snodes/column_node.dart';
 import 'package:flutter_content/src/snippet/snodes/container_node.dart';
-import 'package:flutter_content/src/snippet/snodes/custom_scroll_view_node.dart';
+import 'package:flutter_content/src/snippet/snodes/custom_scrollview_node.dart';
 import 'package:flutter_content/src/snippet/snodes/default_text_style_node.dart';
 import 'package:flutter_content/src/snippet/snodes/directory_node.dart';
 import 'package:flutter_content/src/snippet/snodes/elevated_button_node.dart';
@@ -44,7 +45,7 @@ import 'package:flutter_content/src/snippet/snodes/flexible_node.dart';
 import 'package:flutter_content/src/snippet/snodes/flexible_space_bar_node.dart';
 import 'package:flutter_content/src/snippet/snodes/fs_image_node.dart';
 import 'package:flutter_content/src/snippet/snodes/gap_node.dart';
-import 'package:flutter_content/src/snippet/snodes/generic_multi_child_node.dart';
+import 'package:flutter_content/src/snippet/snodes/named_multi_child_node.dart';
 import 'package:flutter_content/src/snippet/snodes/named_preferredsize_single_child_node.dart';
 import 'package:flutter_content/src/snippet/snodes/named_single_child_node.dart';
 import 'package:flutter_content/src/snippet/snodes/google_drive_iframe_node.dart';
@@ -58,7 +59,7 @@ import 'package:flutter_content/src/snippet/snodes/listview_node.dart';
 import 'package:flutter_content/src/snippet/snodes/markdown_node.dart';
 import 'package:flutter_content/src/snippet/snodes/menu_bar_node.dart';
 import 'package:flutter_content/src/snippet/snodes/menu_item_button_node.dart';
-import 'package:flutter_content/src/snippet/snodes/multi_child_node.dart';
+import 'package:flutter_content/src/snippet/snodes/abstract_mc_node.dart';
 import 'package:flutter_content/src/snippet/snodes/outlined_button_node.dart';
 import 'package:flutter_content/src/snippet/snodes/padding_node.dart';
 import 'package:flutter_content/src/snippet/snodes/pinned_header_sliver_node.dart';
@@ -70,9 +71,10 @@ import 'package:flutter_content/src/snippet/snodes/quill_text_node.dart';
 import 'package:flutter_content/src/snippet/snodes/rich_text_node.dart';
 import 'package:flutter_content/src/snippet/snodes/row_node.dart';
 import 'package:flutter_content/src/snippet/snodes/scaffold_node.dart';
-import 'package:flutter_content/src/snippet/snodes/single_child_node.dart';
+import 'package:flutter_content/src/snippet/snodes/abstract_sc_node.dart';
 import 'package:flutter_content/src/snippet/snodes/singlechildscrollview_node.dart';
 import 'package:flutter_content/src/snippet/snodes/sizedbox_node.dart';
+import 'package:flutter_content/src/snippet/snodes/constrainedbox_node.dart';
 import 'package:flutter_content/src/snippet/snodes/sliver_floating_header_node.dart';
 import 'package:flutter_content/src/snippet/snodes/sliver_resizing_header_node.dart';
 import 'package:flutter_content/src/snippet/snodes/sliver_to_box_adapter_node.dart';
@@ -210,7 +212,7 @@ export 'src/snippet/snodes/asset_image_node.dart';
 export 'src/snippet/snodes/button_node.dart';
 export 'src/snippet/snodes/carousel_node.dart';
 export 'src/snippet/snodes/center_node.dart';
-export 'src/snippet/snodes/childless_node.dart';
+export 'src/snippet/snodes/abstract_cl_node.dart';
 export 'src/snippet/snodes/chip_node.dart';
 export 'src/snippet/snodes/column_node.dart';
 export 'src/snippet/snodes/container_node.dart';
@@ -226,11 +228,17 @@ export 'src/snippet/snodes/flex_node.dart';
 export 'src/snippet/snodes/flexible_node.dart';
 export 'src/snippet/snodes/algc_node.dart';
 export 'src/snippet/snodes/tab_node.dart';
-export 'src/snippet/snodes/custom_scroll_view_node.dart';
+export 'src/snippet/snodes/custom_scrollview_node.dart';
+export 'src/snippet/snodes/abstract_boxscrollview_node.dart';
+export 'src/snippet/snodes/listview_node.dart';
+export 'src/snippet/snodes/gridview_node.dart';
+export 'src/snippet/snodes/pageview_node.dart';
+export 'src/snippet/snodes/interactiveviewer_node.dart';
+export 'src/dev_grid/dev_grid.dart';
 
 // export 'src/snippet/snodes/fs_folder_node.dart';
 export 'src/snippet/snodes/gap_node.dart';
-export 'src/snippet/snodes/generic_multi_child_node.dart';
+export 'src/snippet/snodes/named_multi_child_node.dart';
 export 'src/snippet/snodes/named_single_child_node.dart';
 export 'src/snippet/snodes/named_preferredsize_single_child_node.dart';
 export 'src/snippet/snodes/google_drive_iframe_node.dart';
@@ -244,7 +252,7 @@ export 'src/snippet/snodes/inlinespan_node.dart';
 export 'src/snippet/snodes/markdown_node.dart';
 export 'src/snippet/snodes/menu_bar_node.dart';
 export 'src/snippet/snodes/menu_item_button_node.dart';
-export 'src/snippet/snodes/multi_child_node.dart';
+export 'src/snippet/snodes/abstract_mc_node.dart';
 // export 'src/snippet/snodes/named_text_style.dart';
 
 // content
@@ -257,10 +265,11 @@ export 'src/snippet/snodes/positioned_node.dart';
 export 'src/snippet/snodes/rich_text_node.dart';
 export 'src/snippet/snodes/row_node.dart';
 export 'src/snippet/snodes/scaffold_node.dart';
-export 'src/snippet/snodes/single_child_node.dart';
+export 'src/snippet/snodes/abstract_sc_node.dart';
 export 'src/snippet/snodes/listview_node.dart';
 export 'src/snippet/snodes/singlechildscrollview_node.dart';
 export 'src/snippet/snodes/sizedbox_node.dart';
+export 'src/snippet/snodes/constrainedbox_node.dart';
 export 'src/snippet/snodes/intrinsic_width_node.dart';
 export 'src/snippet/snodes/intrinsic_height_node.dart';
 export 'src/snippet/snodes/snippet_root_node.dart';
@@ -282,6 +291,8 @@ export 'src/snippet/snodes/widgetspan_node.dart';
 export 'src/snippet/snodes/wrap_node.dart';
 export 'src/snippet/snodes/yt_node.dart';
 export 'src/snippet/snodes/upto6colors.dart';
+
+export 'src/snippet/snodes/property_rename_hook.dart';
 
 export 'src/model/alignment_enum_model.dart';
 export 'src/model/color_model.dart';
@@ -696,7 +707,7 @@ class FlutterContentMixins
   /// Docs about CFBundleVersion: https://developer.apple.com/documentation/bundleresources/information_property_list/cfbundleversion
 
   final List<String> googleFontNames = [];
-  final Map<String, void Function(BuildContext, GlobalKey)> namedCallbacks = {};
+  final Map<String, void Function(BuildContext, GlobalKey?)> namedCallbacks = {};
 
   Map<TextStyleName, TextStyleProperties> namedTextStyles = {};
   Map<ButtonStyleName, ButtonStyleProperties> namedButtonStyles = {};
@@ -858,6 +869,21 @@ class FlutterContentMixins
         .toUpperCase();
   }
 
+  /// Finds the nearest [ScrollController] from an ancestor [Scrollable] widget.
+  ///
+  /// Returns the [ScrollController] if found, otherwise returns `null`.
+  ScrollController? findScrollController(BuildContext context) {
+    // Scrollable.of(context) finds the state of the nearest ancestor Scrollable widget.
+    // This state is of type ScrollableState.
+    final scrollableState = Scrollable.of(context);
+
+    // The ScrollableState has a 'position' property, which is a ScrollPosition.
+    // The ScrollPosition itself holds a reference to the ScrollController.
+    // If no Scrollable is found, scrollableState will be null.
+    return scrollableState?.position.context.notificationContext?.findAncestorWidgetOfExactType<Scrollbar>() != null
+        ? scrollableState?.position.context.notificationContext?.findAncestorWidgetOfExactType<Scrollbar>()?.controller
+        : scrollableState?.widget.controller;
+  }
 
   void initializeMappers() {
     // This function just needs to exist. Its primary purpose is to force the
@@ -873,6 +899,9 @@ class FlutterContentMixins
     AppBarNodeMapper.ensureInitialized();
     AssetImageNodeMapper.ensureInitialized();
     ChipNodeMapper.ensureInitialized();
+    ConstrainedBoxNodeMapper.ensureInitialized();
+    ContainerNodeMapper.ensureInitialized();
+    DefaultTextStyleNodeMapper.ensureInitialized();
     FileNodeMapper.ensureInitialized();
     FlexibleSpaceBarNodeMapper.ensureInitialized();
     FSImageNodeMapper.ensureInitialized();

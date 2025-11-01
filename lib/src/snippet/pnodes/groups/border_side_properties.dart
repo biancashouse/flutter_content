@@ -4,7 +4,7 @@ import 'package:flutter_content/flutter_content.dart';
 
 part 'border_side_properties.mapper.dart';
 
-@MappableClass(discriminatorKey: 'side', includeSubClasses: [])
+@MappableClass()
 class BorderSideProperties with BorderSidePropertiesMappable {
   double? width;
   ColorModel? color;

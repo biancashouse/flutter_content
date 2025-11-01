@@ -37,40 +37,41 @@ class MoreCalloutConfigSettings extends StatefulWidget {
         fco.getTargetGk(tc.uid);
 
     fco.showOverlay(
-        targetGkF: () => targetGK,
-        calloutContent: MoreCalloutConfigSettings(
-          cc,
-          tc,
-          wrapperRect,
-          scName: scName,
+      targetGkF: () => targetGK,
+      calloutContent: MoreCalloutConfigSettings(
+        cc,
+        tc,
+        wrapperRect,
+        scName: scName,
+      ),
+      calloutConfig: CalloutConfig(
+        cId: "more-cc-settings",
+        initialCalloutW: 200,
+        initialCalloutH: 550,
+        barrier: CalloutBarrierConfig(
+          opacity: 0.1,
+          // onTappedF: () async {
+          //   // fco.capiBloc.add(CAPIEvent.TargetModelChanged(newTC: tc));
+          //   fco.dismiss("more-cc-settings");
+          //   removeSnippetContentCallout(tc.snippetName);
+          //   FCO.parentTW(twName)?.zoomer?.resetTransform();
+          //   fco.capiBloc.add(const CAPIEvent.unhideAllTargetGroups());
+          //   // fco.afterNextBuildDo(() {
+          //   //   showSnippetContentCallout(
+          //   //     twName: twName,
+          //   //     tc: tc,
+          //   //     justPlaying: justPlaying,
+          //   //   );
+          //   // });
+          // },
         ),
-        calloutConfig: CalloutConfig(
-          cId: "more-cc-settings",
-          initialCalloutW: 200,
-          initialCalloutH: 550,
-          barrier: CalloutBarrierConfig(
-            opacity: 0.1,
-            // onTappedF: () async {
-            //   // fco.capiBloc.add(CAPIEvent.TargetModelChanged(newTC: tc));
-            //   fco.dismiss("more-cc-settings");
-            //   removeSnippetContentCallout(tc.snippetName);
-            //   FCO.parentTW(twName)?.zoomer?.resetTransform();
-            //   fco.capiBloc.add(const CAPIEvent.unhideAllTargetGroups());
-            //   // fco.afterNextBuildDo(() {
-            //   //   showSnippetContentCallout(
-            //   //     twName: twName,
-            //   //     tc: tc,
-            //   //     justPlaying: justPlaying,
-            //   //   );
-            //   // });
-            // },
-          ),
-          decorationFillColors: ColorOrGradient.color(Colors.purpleAccent),
-          decorationBorderRadius: 16,
-          targetPointerType: TargetPointerType.none()  ,
-          notUsingHydratedStorage: true,
-          scrollControllerName: scName,
-        ));
+        decorationFillColors: ColorOrGradient.color(Colors.purpleAccent),
+        decorationBorderRadius: 16,
+        targetPointerType: TargetPointerType.none(),
+        notUsingHydratedStorage: true,
+        scrollControllerName: scName,
+      ),
+    );
   }
 
   static bool isShowing() => fco.anyPresent(["more-cc-settings"]);
@@ -89,50 +90,49 @@ class _MoreCalloutConfigSettingsState extends State<MoreCalloutConfigSettings> {
   @override
   Widget build(BuildContext context) {
     return Center(
-        child: Column(
-      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-      crossAxisAlignment: CrossAxisAlignment.center,
-      children: [
-        if (tc.calloutDecorationShapeEnum != DecorationShapeEnum.circle &&
-            tc.calloutDecorationShapeEnum !=
-                DecorationShapeEnum.rectangle_dotted &&
-            tc.calloutDecorationShapeEnum !=
-                DecorationShapeEnum.rounded_rectangle_dotted &&
-            tc.calloutDecorationShapeEnum != DecorationShapeEnum.stadium &&
-            tc.calloutDecorationShapeEnum != DecorationShapeEnum.star)
-          Row(
-            mainAxisSize: MainAxisSize.max,
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              const Text('borderRadius: '),
-              Align(
-                alignment: Alignment.center,
-                child: PropertyButtonNumber<double>(
-                  originalValue: tc.calloutBorderRadius,
-                  onChangedF: (newValue) {
-                    tc.calloutBorderRadius = double.tryParse(newValue) ?? 0;
-                    tc.changed_saveRootSnippet();
-                    fco.dismiss("more-cc-settings");
-                    CalloutConfigToolbar.closeThenReopenContentCallout(
-                      widget.cc,
-                      tc,
-                      widget.wrapperRect,
-                      widget.scName,
-                    );
-                  },
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+        crossAxisAlignment: CrossAxisAlignment.center,
+        children: [
+          if (tc.calloutDecorationShapeEnum != DecorationShapeEnum.circle &&
+              tc.calloutDecorationShapeEnum !=
+                  DecorationShapeEnum.rectangle_dotted &&
+              tc.calloutDecorationShapeEnum !=
+                  DecorationShapeEnum.rounded_rectangle_dotted &&
+              tc.calloutDecorationShapeEnum != DecorationShapeEnum.stadium &&
+              tc.calloutDecorationShapeEnum != DecorationShapeEnum.star)
+            Row(
+              mainAxisSize: MainAxisSize.max,
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                const Text('borderRadius: '),
+                Align(
                   alignment: Alignment.center,
-                  label: '${tc.calloutBorderRadius}',
-                  buttonSize: const Size(40, 30),
-                  editorSize: const Size(60, 60),
+                  child: PropertyButtonNumber<double>(
+                    originalValue: tc.calloutBorderRadius,
+                    onChangedF: (newValue) {
+                      tc.calloutBorderRadius = double.tryParse(newValue) ?? 0;
+                      tc.changed_saveRootSnippet();
+                      fco.dismiss("more-cc-settings");
+                      CalloutConfigToolbar.closeThenReopenContentCallout(
+                        tc,
+                        widget.wrapperRect,
+                        widget.scName,
+                      );
+                    },
+                    alignment: Alignment.center,
+                    label: '${tc.calloutBorderRadius}',
+                    buttonSize: const Size(40, 30),
+                    editorSize: const Size(60, 60),
+                  ),
                 ),
-              ),
-            ],
-          ),
-        if (tc.calloutDecorationShapeEnum !=
-                DecorationShapeEnum.rectangle_dotted &&
-            tc.calloutDecorationShapeEnum !=
-                DecorationShapeEnum.rounded_rectangle_dotted)
-          Row(
+              ],
+            ),
+          if (tc.calloutDecorationShapeEnum !=
+                  DecorationShapeEnum.rectangle_dotted &&
+              tc.calloutDecorationShapeEnum !=
+                  DecorationShapeEnum.rounded_rectangle_dotted)
+            Row(
               mainAxisSize: MainAxisSize.max,
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
@@ -147,7 +147,6 @@ class _MoreCalloutConfigSettingsState extends State<MoreCalloutConfigSettings> {
                       tc.changed_saveRootSnippet();
                       fco.dismiss("more-cc-settings");
                       CalloutConfigToolbar.closeThenReopenContentCallout(
-                        widget.cc,
                         tc,
                         widget.wrapperRect,
                         widget.scName,
@@ -159,9 +158,10 @@ class _MoreCalloutConfigSettingsState extends State<MoreCalloutConfigSettings> {
                     editorSize: const Size(60, 60),
                   ),
                 ),
-              ]),
-        if (tc.calloutDecorationShapeEnum == DecorationShapeEnum.star)
-          Row(
+              ],
+            ),
+          if (tc.calloutDecorationShapeEnum == DecorationShapeEnum.star)
+            Row(
               mainAxisSize: MainAxisSize.max,
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
@@ -175,7 +175,6 @@ class _MoreCalloutConfigSettingsState extends State<MoreCalloutConfigSettings> {
                       tc.changed_saveRootSnippet();
                       fco.dismiss("more-cc-settings");
                       CalloutConfigToolbar.closeThenReopenContentCallout(
-                        widget.cc,
                         tc,
                         widget.wrapperRect,
                         widget.scName,
@@ -187,8 +186,9 @@ class _MoreCalloutConfigSettingsState extends State<MoreCalloutConfigSettings> {
                     editorSize: const Size(60, 60),
                   ),
                 ),
-              ]),
-        Row(
+              ],
+            ),
+          Row(
             mainAxisSize: MainAxisSize.max,
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
@@ -201,59 +201,58 @@ class _MoreCalloutConfigSettingsState extends State<MoreCalloutConfigSettings> {
                   tc.changed_saveRootSnippet();
                   fco.dismiss("more-cc-settings");
                   CalloutConfigToolbar.closeThenReopenContentCallout(
-                    widget.cc,
                     tc,
                     widget.wrapperRect,
                     widget.scName,
                   );
                 },
               ),
-            ]),
-        Row(
-          mainAxisSize: MainAxisSize.max,
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            const Text('resizeable V: '),
-            PropertyEditorBool(
-              name: '',
-              boolValue: tc.canResizeV,
-              onChanged: (newValue) {
-                tc.canResizeV = newValue;
-                tc.changed_saveRootSnippet();
-                fco.dismiss("more-cc-settings");
-                CalloutConfigToolbar.closeThenReopenContentCallout(
-                  widget.cc,
-                  tc,
-                  widget.wrapperRect,
-                  widget.scName,
-                );
-              },
-            ),
-          ],
-        ),
-        Row(
-          mainAxisSize: MainAxisSize.max,
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            const Text('follow scroll?'),
-            PropertyEditorBool(
-              name: '',
-              boolValue: tc.followScroll,
-              onChanged: (newValue) {
-                tc.followScroll = newValue;
-                tc.changed_saveRootSnippet();
-                fco.dismiss("more-cc-settings");
-                CalloutConfigToolbar.closeThenReopenContentCallout(
-                  widget.cc,
-                  tc,
-                  widget.wrapperRect,
-                  widget.scName,
-                );
-              },
-            ),
-          ],
-        ),
-      ],
-    ));
+            ],
+          ),
+          Row(
+            mainAxisSize: MainAxisSize.max,
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              const Text('resizeable V: '),
+              PropertyEditorBool(
+                name: '',
+                boolValue: tc.canResizeV,
+                onChanged: (newValue) {
+                  tc.canResizeV = newValue;
+                  tc.changed_saveRootSnippet();
+                  fco.dismiss("more-cc-settings");
+                  CalloutConfigToolbar.closeThenReopenContentCallout(
+                    tc,
+                    widget.wrapperRect,
+                    widget.scName,
+                  );
+                },
+              ),
+            ],
+          ),
+          Row(
+            mainAxisSize: MainAxisSize.max,
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              const Text('follow scroll?'),
+              PropertyEditorBool(
+                name: '',
+                boolValue: tc.followScroll,
+                onChanged: (newValue) {
+                  tc.followScroll = newValue;
+                  tc.changed_saveRootSnippet();
+                  fco.dismiss("more-cc-settings");
+                  CalloutConfigToolbar.closeThenReopenContentCallout(
+                    tc,
+                    widget.wrapperRect,
+                    widget.scName,
+                  );
+                },
+              ),
+            ],
+          ),
+        ],
+      ),
+    );
   }
 }

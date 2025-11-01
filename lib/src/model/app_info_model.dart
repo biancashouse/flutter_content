@@ -35,7 +35,7 @@ class AppInfoModel with AppInfoModelMappable {
 
   void hideClipboard() => fco.dismiss("floating-clipboard");
 
-  void showFloatingClipboard({ScrollControllerName? scName}) {
+  void showFloatingClipboard() {
     fco.dismiss("floating-clipboard");
     fco.showOverlay(
       calloutContent: const ClipboardView(),
@@ -47,7 +47,7 @@ class AppInfoModel with AppInfoModelMappable {
         decorationFillColors: ColorOrGradient.color(Colors.transparent),
         decorationBorderRadius: 16,
         targetPointerType: TargetPointerType.none(),
-        scrollControllerName: scName,
+        scrollControllerName: null,
       ),
     );
   }

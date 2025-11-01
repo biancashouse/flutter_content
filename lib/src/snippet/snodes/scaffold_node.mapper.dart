@@ -101,11 +101,17 @@ class ScaffoldNodeMapper extends SubClassMapperBase<ScaffoldNode> {
   };
 
   @override
-  final String discriminatorKey = 'cl';
+  final String discriminatorKey = 'DK:cl';
   @override
   final dynamic discriminatorValue = 'ScaffoldNode';
   @override
   late final ClassMapperBase superMapper = CLMapper.ensureInitialized();
+
+  @override
+  final MappingHook superHook = ChainedHook([
+    PropertyRenameHook('cl', 'DK:cl'),
+    PropertyRenameHook('snode', 'DK:snode'),
+  ]);
 
   static ScaffoldNode _instantiate(DecodingData data) {
     return ScaffoldNode(

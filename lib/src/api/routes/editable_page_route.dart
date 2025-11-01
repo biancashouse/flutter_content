@@ -25,7 +25,7 @@ class EditablePageRoute extends GoRoute {
            return FutureBuilder<void>(
              future: Future.delayed(Duration.zero),
              builder: (ctx, snap) {
-               if (snap.connectionState != ConnectionState.done && !snap.hasData) {
+               if (snap.connectionState != ConnectionState.done) {
                  return const CircularProgressIndicator();
                } else {
                  if (state.path == null) {
@@ -37,7 +37,6 @@ class EditablePageRoute extends GoRoute {
                      // zoomable: zoomable,
                      // provideNamedScrollController: provideNamedScrollController,
                      child: child ?? SnippetBuilder.fromNodes(
-                       // panelName: state.path!,
                        snippetRootNode: SnippetRootNode(name: state.path!, child: PlaceholderNode()),
                        scName: state.path!,
                      ),

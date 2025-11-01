@@ -1,0 +1,110 @@
+@startuml
+' Set theme for better readability
+'!theme plain
+
+' You can set a global background color for all notes if you want
+skinparam noteBackgroundColor #Yellow
+
+
+' Define a title for the diagram
+title Flutter ScrollView Class Hierarchy
+
+' --- Define Classes ---
+' Using "abstract" keyword for abstract classes
+abstract class Widget
+abstract class StatelessWidget
+abstract class ScrollView
+abstract class BoxScrollView
+
+class CustomScrollView
+class ListView
+class GridView
+class PageView
+
+' --- Define Inheritance Relationships ---
+' Using "<|--" for inheritance (Child <|-- Parent)
+StatelessWidget <|-- ScrollView
+StatelessWidget <|-- PageView
+Widget <|-- StatelessWidget
+
+ScrollView <|-- CustomScrollView
+ScrollView <|-- BoxScrollView
+
+BoxScrollView <|-- ListView
+BoxScrollView <|-- GridView
+
+' --- Add Notes for Variation/Factory Constructors ---
+' These aren't separate classes, so notes are the best way to represent them.
+note top of ScrollView
+ <b>All scrollables intentionally passes
+ <b>unconstrained (or unbounded) maximum
+ <b>dimension constraints to its child
+ <b>along the scroll direction (the main axis).
+
+ All core scrollable widgets in
+ Flutter follow the same rule as
+ <b>SingleChildScrollView</b>: they give
+ their content infinite space in the
+ direction of the scroll. This is necessary
+ so the content can size itself to its
+ natural, potentially oversized, dimensions.
+end note
+
+note left of ScrollView
+ <b><u>In the Scroll Direction (Main Axis)
+ ===Constraint Passed: minSize = 0.0, maxSize = ∞
+
+ <b>Result</b>: The child is given an infinite maximum
+ space. This allows the child widget (e.g., a
+ <b>Column</b> or <b>Container</b> to report a size
+ that is as large as its total content requires,
+ even if it exceeds the screen size.
+
+ <b>Key Consequence:
+ You cannot use widgets like <b>Expanded</b> or
+ <b>Flexible</b> directly inside a <b>Column</b> or <b>Row</b> that
+ is the child of a scrollable (along the scroll direction).
+ Since the available space is infinite, the <b>Expanded</b>
+ or <b>Flexible</b> would try to take an infinite size,
+ leading to an error.
+end note
+
+note bottom of ListView
+  <b>Variations (constructors):</b>
+  - ListView.builder
+  - ListView.separated
+  - ListView.custom
+
+  has children
+end note
+
+note bottom of GridView
+  <b>Variations (constructors):</b>
+  - GridView.builder
+  - GridView.count
+  - GridView.extent
+  - GridView.custom
+
+  has children
+end note
+
+note bottom of CustomScrollView
+  has slivers
+end note
+
+' --- Grouping with Packages (Optional but good for clarity) ---
+'package "Base Abstract Classes" {
+'  class ScrollView
+'  class BoxScrollView
+'}
+
+'package "Specific Layout Implementations" {
+'  class CustomScrollView
+'  class ListView
+'  class GridView
+'}
+
+' Hide empty members for a cleaner look
+hide empty members
+
+@enduml

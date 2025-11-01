@@ -23,8 +23,10 @@ class FYIPNode extends PNode {
 
   @override
   Widget toPropertyNodeContents(BuildContext context) {
+    double? width = EditablePage.of(context)?.pNodeTreeAreaMaxWidth;
+    if (width != null) width -= 20;
     return SizedBox(
-      width: 260, //height: 200,
+      width: width ?? 230, //height: 200,
       child: ExpansionTile(
         showTrailingIcon: false,
         title: Row(
@@ -46,7 +48,7 @@ class FYIPNode extends PNode {
           ],
         ),
         children: [
-          if (msg != null) fco.coloredText(msg!, color: Colors.yellow),
+          if (msg != null) fco.coloredText(msg!, color: Colors.yellow, maxLines: 6),
           if (webLink != null) Gap(10),
           if (webLink != null)
             ElevatedButton(

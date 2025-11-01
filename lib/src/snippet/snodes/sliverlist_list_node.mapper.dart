@@ -82,11 +82,17 @@ class SliverListListNodeMapper extends SubClassMapperBase<SliverListListNode> {
   };
 
   @override
-  final String discriminatorKey = 'mc';
+  final String discriminatorKey = 'DK:mc';
   @override
   final dynamic discriminatorValue = 'SliverListListNode';
   @override
   late final ClassMapperBase superMapper = MCMapper.ensureInitialized();
+
+  @override
+  final MappingHook superHook = ChainedHook([
+    PropertyRenameHook('mc', 'DK:mc'),
+    PropertyRenameHook('snode', 'DK:snode'),
+  ]);
 
   static SliverListListNode _instantiate(DecodingData data) {
     return SliverListListNode(children: data.dec(_f$children));

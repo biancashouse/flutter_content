@@ -233,7 +233,7 @@ class SnippetBuilderState extends State<SnippetBuilder>
                 "SnippetPanel",
                 color: Colors.red,
                 size: 32,
-                errorMsg: "null snippet!",
+                errorMsg: "null snippet! ${snapshot.error.toString()}",
                 key: GlobalKey(),
               );
             }

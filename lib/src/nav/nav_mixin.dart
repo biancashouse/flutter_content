@@ -51,6 +51,7 @@ mixin NavMixin {
                   switch (value) {
                     case 'sign-in-as-editor':
                       EditablePage.of(context)?.editorPasswordDialog();
+                      fco.capiBloc.add(CAPIEvent.forceRefresh());
                       break;
                     default:
                       if (fco.router != null) {

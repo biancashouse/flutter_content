@@ -95,11 +95,17 @@ class PlaceholderNodeMapper extends SubClassMapperBase<PlaceholderNode> {
   };
 
   @override
-  final String discriminatorKey = 'cl';
+  final String discriminatorKey = 'DK:cl';
   @override
   final dynamic discriminatorValue = 'PlaceholderNode';
   @override
   late final ClassMapperBase superMapper = CLMapper.ensureInitialized();
+
+  @override
+  final MappingHook superHook = ChainedHook([
+    PropertyRenameHook('cl', 'DK:cl'),
+    PropertyRenameHook('snode', 'DK:snode'),
+  ]);
 
   static PlaceholderNode _instantiate(DecodingData data) {
     return PlaceholderNode(

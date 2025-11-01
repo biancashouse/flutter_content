@@ -97,11 +97,17 @@ class SubmenuButtonNodeMapper extends SubClassMapperBase<SubmenuButtonNode> {
   };
 
   @override
-  final String discriminatorKey = 'mc';
+  final String discriminatorKey = 'DK:mc';
   @override
   final dynamic discriminatorValue = 'SubmenuButtonNode';
   @override
   late final ClassMapperBase superMapper = MCMapper.ensureInitialized();
+
+  @override
+  final MappingHook superHook = ChainedHook([
+    PropertyRenameHook('mc', 'DK:mc'),
+    PropertyRenameHook('snode', 'DK:snode'),
+  ]);
 
   static SubmenuButtonNode _instantiate(DecodingData data) {
     return SubmenuButtonNode(

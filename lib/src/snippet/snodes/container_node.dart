@@ -90,6 +90,17 @@ class ContainerNode extends SC with ContainerNodeMappable {
         snode: this,
         name: 'fyi',
       ),
+      FYIPNode(
+          label: "Fill the parent. (Designed to take up all the space allowed by its parent's constraints)",
+          msg: "Fills the parent if it has no explicit width or height and no child that sets a size (i.e., it tries to be as big as possible).\n\n"
+              "If a Container has constraints from its parent (e.g., inside a Center), it will expand to those maximum bounds.",
+          snode: this,
+          name: 'fyi'),
+      FYIPNode(
+          label: "Constraint Imposed on Child: 'Tight' if it has fixed width and height",
+          msg: "forces its child to be a specific, fixed width and/or height.",
+          snode: this,
+          name: 'fyi'),
       ContainerStylePNode /*Group*/ (
         snode: this,
         name: 'container style',

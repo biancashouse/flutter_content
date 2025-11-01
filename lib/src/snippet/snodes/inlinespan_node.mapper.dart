@@ -76,17 +76,22 @@ class InlineSpanNodeMapper extends SubClassMapperBase<InlineSpanNode> {
   };
 
   @override
-  final String discriminatorKey = 'snode';
+  final String discriminatorKey = 'DK:snode';
   @override
   final dynamic discriminatorValue = 'InlineSpanNode';
   @override
   late final ClassMapperBase superMapper = SNodeMapper.ensureInitialized();
 
+  @override
+  final MappingHook hook = const PropertyRenameHook('is', 'DK:is');
+  @override
+  final MappingHook superHook = const PropertyRenameHook('snode', 'DK:snode');
+
   static InlineSpanNode _instantiate(DecodingData data) {
     throw MapperException.missingSubclass(
       'InlineSpanNode',
-      'is',
-      '${data.value['is']}',
+      'DK:is',
+      '${data.value['DK:is']}',
     );
   }
 

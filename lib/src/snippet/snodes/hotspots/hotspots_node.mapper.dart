@@ -129,11 +129,17 @@ class TargetsWrapperNodeMapper extends SubClassMapperBase<TargetsWrapperNode> {
   };
 
   @override
-  final String discriminatorKey = 'sc';
+  final String discriminatorKey = 'DK:sc';
   @override
   final dynamic discriminatorValue = 'TargetsWrapperNode';
   @override
   late final ClassMapperBase superMapper = SCMapper.ensureInitialized();
+
+  @override
+  final MappingHook superHook = ChainedHook([
+    PropertyRenameHook('sc', 'DK:sc'),
+    PropertyRenameHook('snode', 'DK:snode'),
+  ]);
 
   static TargetsWrapperNode _instantiate(DecodingData data) {
     return TargetsWrapperNode(

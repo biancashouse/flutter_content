@@ -147,11 +147,18 @@ class IconButtonNodeMapper extends SubClassMapperBase<IconButtonNode> {
   };
 
   @override
-  final String discriminatorKey = 'button';
+  final String discriminatorKey = 'DK:button';
   @override
   final dynamic discriminatorValue = 'IconButtonNode';
   @override
   late final ClassMapperBase superMapper = ButtonNodeMapper.ensureInitialized();
+
+  @override
+  final MappingHook superHook = ChainedHook([
+    PropertyRenameHook('button', 'DK:button'),
+    PropertyRenameHook('sc', 'DK:sc'),
+    PropertyRenameHook('snode', 'DK:snode'),
+  ]);
 
   static IconButtonNode _instantiate(DecodingData data) {
     return IconButtonNode(

@@ -12,8 +12,9 @@ import 'package:flutter_content/src/snippet/snodes/text_style_hook.dart';
 part 'appbar_node.mapper.dart';
 
 @MappableClass(
-  discriminatorKey: 'appbar',
+  discriminatorKey: 'DK:appbar',
   includeSubClasses: [SliverAppBarNode],
+  hook: PropertyRenameHook('appbar', 'DK:appbar'), // 'first_name' -> JSON key, 'firstName' -> Dart field name
 )
 class AppBarNode extends CL with AppBarNodeMappable {
   // String? tabBarName;
@@ -25,6 +26,8 @@ class AppBarNode extends CL with AppBarNodeMappable {
   bool? centerTitle;
   NamedPS bottom;
   NamedMC actions;
+  ColorModel? shadowColor;
+  double? scrolledUnderElevation;
   @MappableField(hook: TextStyleHook2())
   TextStyleProperties titleTextStyle;
 
@@ -39,6 +42,8 @@ class AppBarNode extends CL with AppBarNodeMappable {
     required this.title,
     required this.bottom,
     required this.actions,
+    this.shadowColor,
+    this.scrolledUnderElevation,
   });
 
   bool hasTabBar() => bottom.child is TabBarNode;
@@ -123,9 +128,9 @@ class AppBarNode extends CL with AppBarNodeMappable {
     try {
       setParent(parentNode); // propagating parents down from root
 
-      var actionWidgets = actions.toWidgetProperty(context, this);
-      var leadingWidget = leading.buildFlutterWidget(context, this);
-      var titleWidget = title.buildFlutterWidget(context, this);
+      var actionWidgets = actions.children.isNotEmpty ? actions.toWidgetProperty(context, this) : null;
+      var leadingWidget = leading.child != null ? leading.buildFlutterWidget(context, this) : null;
+      var titleWidget = title.child != null ? title.buildFlutterWidget(context, this) : null;
 
       if (hasTabBar()) {
         toolbarHeight = kToolbarHeight;
@@ -134,7 +139,7 @@ class AppBarNode extends CL with AppBarNodeMappable {
       }
       PreferredSizeWidget? bottomWidget;
       if (toolbarHeight != null) {
-        bottomWidget = bottom.buildPreferredSizeFlutterWidget(context, this);
+        bottomWidget = bottom.child != null ? bottom.buildPreferredSizeFlutterWidget(context, this) : null;
       }
 
       try {
@@ -143,15 +148,17 @@ class AppBarNode extends CL with AppBarNodeMappable {
           title: titleWidget,
           leading: leadingWidget,
           centerTitle: centerTitle??false,
-          toolbarHeight: toolbarHeight,
+          toolbarHeight: toolbarHeight??kToolbarHeight,
           actions: actionWidgets,
           backgroundColor: bgColor?.flutterValue,
           foregroundColor: fgColor?.flutterValue,
-          bottom: bottomWidget,
+          shadowColor: shadowColor?.flutterValue,
+          scrolledUnderElevation: scrolledUnderElevation,
+          // bottom: bottomWidget,
         );
         return appBar;
       } catch (e) {
-        fco.logger.i('AppBarNode.toWidget() failed!');
+        fco.logger.i('AppBarNode.toWidget() failed! ${e.toString()}');
         return Material(
           textStyle: const TextStyle(fontFamily: 'monospace', fontSize: 12),
           child: SingleChildScrollView(

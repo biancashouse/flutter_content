@@ -5,7 +5,7 @@
 // ignore_for_file: unused_element, unnecessary_cast, override_on_non_overriding_member
 // ignore_for_file: strict_raw_type, inference_failure_on_untyped_parameter
 
-part of 'childless_node.dart';
+part of 'abstract_cl_node.dart';
 
 class CLMapper extends SubClassMapperBase<CL> {
   CLMapper._();
@@ -31,6 +31,7 @@ class CLMapper extends SubClassMapperBase<CL> {
       QuillTextNodeMapper.ensureInitialized();
       RichTextNodeMapper.ensureInitialized();
       ScaffoldNodeMapper.ensureInitialized();
+      ScrollViewNodeMapper.ensureInitialized();
       StepNodeMapper.ensureInitialized();
       TextNodeMapper.ensureInitialized();
       UMLImageNodeMapper.ensureInitialized();
@@ -87,14 +88,23 @@ class CLMapper extends SubClassMapperBase<CL> {
   };
 
   @override
-  final String discriminatorKey = 'snode';
+  final String discriminatorKey = 'DK:snode';
   @override
   final dynamic discriminatorValue = 'CL';
   @override
   late final ClassMapperBase superMapper = SNodeMapper.ensureInitialized();
 
+  @override
+  final MappingHook hook = const PropertyRenameHook('cl', 'DK:cl');
+  @override
+  final MappingHook superHook = const PropertyRenameHook('snode', 'DK:snode');
+
   static CL _instantiate(DecodingData data) {
-    throw MapperException.missingSubclass('CL', 'cl', '${data.value['cl']}');
+    throw MapperException.missingSubclass(
+      'CL',
+      'DK:cl',
+      '${data.value['DK:cl']}',
+    );
   }
 
   @override

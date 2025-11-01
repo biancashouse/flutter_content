@@ -5,16 +5,22 @@ import 'package:flutter_content/src/snippet/pnodes/enum_pnode.dart';
 import 'package:flutter_content/src/snippet/pnodes/enums/enum_cross_axis_alignment.dart';
 import 'package:flutter_content/src/snippet/pnodes/enums/enum_main_axis_alignment.dart';
 import 'package:flutter_content/src/snippet/pnodes/enums/enum_main_axis_size.dart';
+import 'package:freezed_annotation/freezed_annotation.dart';
 
 import '../pnodes/fyi_pnodes.dart';
 
 part 'flex_node.mapper.dart';
 
-@MappableClass(discriminatorKey: 'flex', includeSubClasses: flexSubClasses)
-abstract class FlexNode extends MC with FlexNodeMappable {
+@MappableClass(discriminatorKey: 'DK:flex', includeSubClasses: flexSubClasses,
+  hook: PropertyRenameHook('flex', 'DK:flex'), // 'first_name' -> JSON key, 'firstName' -> Dart field name
+)
+class FlexNode extends MC with FlexNodeMappable {
   MainAxisAlignmentEnumModel? mainAxisAlignment;
   MainAxisSizeEnum? mainAxisSize;
   CrossAxisAlignmentEnumModel? crossAxisAlignment;
+
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  bool? wrapInExpanded;
 
   FlexNode({
     this.mainAxisAlignment,
@@ -81,7 +87,51 @@ abstract class FlexNode extends MC with FlexNodeMappable {
       setParent(parentNode);
       //ScrollControllerName? scName = EditablePage.name(context);
       //possiblyHighlightSelectedNode(scName);
-      return LayoutBuilder(
+
+      // if (!(wrapInExpanded??false))
+      // WidgetsBinding.instance.addPostFrameCallback((_) {
+      //   // This code runs after the layout and paint phases are complete.
+      //
+      //   // It's now safe to get the RenderObject and its size.
+      //   // Use the GlobalKey of the parent to get its context.
+      //   if (nodeWidgetGK?.currentContext != null) {
+      //     final RenderBox? renderBox =
+      //     nodeWidgetGK?.currentContext!.findRenderObject() as RenderBox?;
+      //     if (renderBox != null && renderBox.hasSize) {
+      //       final Size parentSize = renderBox.size;
+      //       print('${toString()} size is now available: $parentSize');
+      //       // --- YOUR LOGIC THAT NEEDS THE PARENT'S SIZE GOES HERE ---
+      //     } else {
+      //       SnippetRootNode?  srn = this.rootNodeOfSnippet();
+      //       print('Snippet: ${srn?.name}: this (${parentNode.toString()}) size is MISSING!');
+      //       wrapInExpanded = true;
+      //       fco.forceRefresh();
+      //     }
+      //   }
+      // });
+
+      var flex = Flex(
+        direction: this is RowNode ? Axis.horizontal : Axis.vertical,
+        key: createNodeWidgetGK(),
+        mainAxisAlignment:
+        mainAxisAlignment?.flutterValue ??
+            MainAxisAlignment.start,
+        mainAxisSize: mainAxisSize?.flutterValue ?? MainAxisSize.min,
+        crossAxisAlignment:
+        crossAxisAlignment?.flutterValue ??
+            CrossAxisAlignment.center,
+        textBaseline: TextBaseline.alphabetic,
+        children: children
+            .map(
+              (childNode) =>
+              childNode.buildFlutterWidget(context, this),
+        )
+            .toList(),
+      );
+
+      return false && parentNode is FlexNode
+      ? Expanded(child: flex)
+      : LayoutBuilder(
         builder: (context, constraints) {
           bool rowConstraintError =
               (this is RowNode && constraints.maxWidth == double.infinity);
@@ -96,24 +146,7 @@ abstract class FlexNode extends MC with FlexNodeMappable {
                   errorMsg:
                       "${toString()} Parent has an infinite ${this is RowNode ? 'maxWidth' : 'maxHeight'} Constraints Error!",
                 )
-              : Flex(
-                  direction: this is RowNode ? Axis.horizontal : Axis.vertical,
-                  key: createNodeWidgetGK(),
-                  mainAxisAlignment:
-                      mainAxisAlignment?.flutterValue ??
-                      MainAxisAlignment.start,
-                  mainAxisSize: mainAxisSize?.flutterValue ?? MainAxisSize.min,
-                  crossAxisAlignment:
-                      crossAxisAlignment?.flutterValue ??
-                      CrossAxisAlignment.center,
-                  textBaseline: TextBaseline.alphabetic,
-                  children: children
-                      .map(
-                        (childNode) =>
-                            childNode.buildFlutterWidget(context, this),
-                      )
-                      .toList(),
-                );
+              : flex;
         },
       );
     } catch (e) {

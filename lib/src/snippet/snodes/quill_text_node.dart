@@ -70,27 +70,45 @@ class QuillTextNode extends CL with QuillTextNodeMappable {
       ),
     );
 
-    return LayoutBuilder(builder: (context, constraints) {
-      return QuillEditor.basic(
-        key: createNodeWidgetGK(),
-        config: QuillEditorConfig(
-          customStyles: linkStyle,
-          scrollable: false,
-          onLaunchUrl: (String url) {
-            // quill seems to prepend https:// if not there already
-            String newUrl = url.startsWith('https:///')
-            ? url.substring(9)
-            : url;
-            if (newUrl.startsWith('http')) {
-              launchUrl(Uri.parse(newUrl));
-            } else {
-              context.go(newUrl.startsWith('/') ? newUrl : '/$newUrl');
-            }
-          },
-        ),
-        controller: roQC,
-      );
-    });
+    // WidgetsBinding.instance.addPostFrameCallback((_) {
+    //   // This code runs after the layout and paint phases are complete.
+    //
+    //   // It's now safe to get the RenderObject and its size.
+    //   // Use the GlobalKey of the parent to get its context.
+    //   if (nodeWidgetGK?.currentContext != null) {
+    //     final RenderBox? renderBox =
+    //     nodeWidgetGK?.currentContext!.findRenderObject() as RenderBox?;
+    //     if (renderBox != null && renderBox.hasSize) {
+    //       final Size parentSize = renderBox.size;
+    //       print('${toString()} size is now available: $parentSize');
+    //       // --- YOUR LOGIC THAT NEEDS THE PARENT'S SIZE GOES HERE ---
+    //     } else {
+    //       SnippetRootNode?  srn = this.rootNodeOfSnippet();
+    //       print('Snippet: ${srn?.name}: this (${parentNode.toString()}) size is MISSING!');
+    //     }
+    //   }
+    // });
+
+    var qe = QuillEditor.basic(
+      key: createNodeWidgetGK(),
+      config: QuillEditorConfig(
+        customStyles: linkStyle,
+        scrollable: false,
+        onLaunchUrl: (String url) {
+          // quill seems to prepend https:// if not there already
+          String newUrl = url.startsWith('https:///') ? url.substring(9) : url;
+          if (newUrl.startsWith('http')) {
+            launchUrl(Uri.parse(newUrl));
+          } else {
+            context.go(newUrl.startsWith('/') ? newUrl : '/$newUrl');
+          }
+        },
+      ),
+      controller: roQC,
+    );
+    // for safety, if parent is a flex, wrap with an Expanded widget
+    return parentNode is FlexNode ? Expanded(child: qe) : qe;
+
     // quill editor's parent must provide a maxWidth constraiunt  that is not infinite
     // return parentNode is FlexibleNode || parentNode is ExpandedNode
     //     ? QuillEditor.basic(

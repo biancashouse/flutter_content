@@ -221,7 +221,7 @@ class TargetPlayBtn extends StatelessWidget {
       zoomer?.applyTransform(tc.transformScale, tc.transformScale, ta,
           afterTransformF: () async {
         await fco.ensureContentSnippetPresent(tc.contentCId);
-        showSnippetContentCallout(
+        showHotspotSnippetContentCallout(
           tc: tc,
           justPlaying: true,
           wrapperRect: wrapperRect,

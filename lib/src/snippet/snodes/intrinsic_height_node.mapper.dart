@@ -85,11 +85,17 @@ class IntrinsicHeightNodeMapper
   };
 
   @override
-  final String discriminatorKey = 'sc';
+  final String discriminatorKey = 'DK:sc';
   @override
   final dynamic discriminatorValue = 'IntrinsicHeightNode';
   @override
   late final ClassMapperBase superMapper = SCMapper.ensureInitialized();
+
+  @override
+  final MappingHook superHook = ChainedHook([
+    PropertyRenameHook('sc', 'DK:sc'),
+    PropertyRenameHook('snode', 'DK:snode'),
+  ]);
 
   static IntrinsicHeightNode _instantiate(DecodingData data) {
     return IntrinsicHeightNode(child: data.dec(_f$child));

@@ -133,6 +133,20 @@ class SliverAppBarNodeMapper extends SubClassMapperBase<SliverAppBarNode> {
     _$centerTitle,
     mode: FieldMode.member,
   );
+  static ColorModel? _$shadowColor(SliverAppBarNode v) => v.shadowColor;
+  static const Field<SliverAppBarNode, ColorModel> _f$shadowColor = Field(
+    'shadowColor',
+    _$shadowColor,
+    mode: FieldMode.member,
+  );
+  static double? _$scrolledUnderElevation(SliverAppBarNode v) =>
+      v.scrolledUnderElevation;
+  static const Field<SliverAppBarNode, double> _f$scrolledUnderElevation =
+      Field(
+        'scrolledUnderElevation',
+        _$scrolledUnderElevation,
+        mode: FieldMode.member,
+      );
   static bool? _$large(SliverAppBarNode v) => v.large;
   static const Field<SliverAppBarNode, bool> _f$large = Field(
     'large',
@@ -166,16 +180,25 @@ class SliverAppBarNodeMapper extends SubClassMapperBase<SliverAppBarNode> {
     #canShowTappableNodeWidgetOverlay: _f$canShowTappableNodeWidgetOverlay,
     #nodeWidgetGK: _f$nodeWidgetGK,
     #centerTitle: _f$centerTitle,
+    #shadowColor: _f$shadowColor,
+    #scrolledUnderElevation: _f$scrolledUnderElevation,
     #large: _f$large,
     #medium: _f$medium,
   };
 
   @override
-  final String discriminatorKey = 'appbar';
+  final String discriminatorKey = 'DK:appbar';
   @override
   final dynamic discriminatorValue = 'SliverAppBarNode';
   @override
   late final ClassMapperBase superMapper = AppBarNodeMapper.ensureInitialized();
+
+  @override
+  final MappingHook superHook = ChainedHook([
+    PropertyRenameHook('appbar', 'DK:appbar'),
+    PropertyRenameHook('cl', 'DK:cl'),
+    PropertyRenameHook('snode', 'DK:snode'),
+  ]);
 
   static SliverAppBarNode _instantiate(DecodingData data) {
     return SliverAppBarNode(

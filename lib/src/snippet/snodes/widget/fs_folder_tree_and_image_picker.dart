@@ -60,7 +60,7 @@ class FSFoldersAndImagePickerState extends State<FSFoldersAndImagePicker> {
     return FutureBuilder<void>(
       future: fConfigureStorageUIForFolder,
       builder: (ctx, snap) {
-        if (snap.connectionState != ConnectionState.done && !snap.hasData) {
+        if (snap.connectionState != ConnectionState.done) {
           return const CircularProgressIndicator();
         } else {
           return ClipRRect(

@@ -14,7 +14,7 @@ class ExpandedNodeMapper extends SubClassMapperBase<ExpandedNode> {
   static ExpandedNodeMapper ensureInitialized() {
     if (_instance == null) {
       MapperContainer.globals.use(_instance = ExpandedNodeMapper._());
-      SCMapper.ensureInitialized().addSubMapper(_instance!);
+      FlexibleNodeMapper.ensureInitialized().addSubMapper(_instance!);
       SNodeMapper.ensureInitialized();
     }
     return _instance!;
@@ -75,6 +75,12 @@ class ExpandedNodeMapper extends SubClassMapperBase<ExpandedNode> {
     _$nodeWidgetGK,
     mode: FieldMode.member,
   );
+  static FlexFitEnum _$fit(ExpandedNode v) => v.fit;
+  static const Field<ExpandedNode, FlexFitEnum> _f$fit = Field(
+    'fit',
+    _$fit,
+    mode: FieldMode.member,
+  );
 
   @override
   final MappableFields<ExpandedNode> fields = const {
@@ -86,14 +92,25 @@ class ExpandedNodeMapper extends SubClassMapperBase<ExpandedNode> {
     #hidePropertiesWhileDragging: _f$hidePropertiesWhileDragging,
     #canShowTappableNodeWidgetOverlay: _f$canShowTappableNodeWidgetOverlay,
     #nodeWidgetGK: _f$nodeWidgetGK,
+    #fit: _f$fit,
   };
 
   @override
-  final String discriminatorKey = 'sc';
+  final String discriminatorKey = 'DK:flexible';
   @override
   final dynamic discriminatorValue = 'ExpandedNode';
   @override
-  late final ClassMapperBase superMapper = SCMapper.ensureInitialized();
+  late final ClassMapperBase superMapper =
+      FlexibleNodeMapper.ensureInitialized();
+
+  @override
+  final MappingHook hook = const PropertyDiscriminatorFixHook();
+  @override
+  final MappingHook superHook = ChainedHook([
+    PropertyRenameHook('flexible', 'DK:flexible'),
+    PropertyRenameHook('sc', 'DK:sc'),
+    PropertyRenameHook('snode', 'DK:snode'),
+  ]);
 
   static ExpandedNode _instantiate(DecodingData data) {
     return ExpandedNode(flex: data.dec(_f$flex), child: data.dec(_f$child));
@@ -160,7 +177,7 @@ extension ExpandedNodeValueCopy<$R, $Out>
 }
 
 abstract class ExpandedNodeCopyWith<$R, $In extends ExpandedNode, $Out>
-    implements SCCopyWith<$R, $In, $Out> {
+    implements FlexibleNodeCopyWith<$R, $In, $Out> {
   @override
   SNodeCopyWith<$R, SNode, SNode>? get child;
   @override

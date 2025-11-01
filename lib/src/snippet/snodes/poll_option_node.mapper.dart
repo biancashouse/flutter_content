@@ -77,11 +77,17 @@ class PollOptionNodeMapper extends SubClassMapperBase<PollOptionNode> {
   };
 
   @override
-  final String discriminatorKey = 'cl';
+  final String discriminatorKey = 'DK:cl';
   @override
   final dynamic discriminatorValue = 'PollOptionNode';
   @override
   late final ClassMapperBase superMapper = CLMapper.ensureInitialized();
+
+  @override
+  final MappingHook superHook = ChainedHook([
+    PropertyRenameHook('cl', 'DK:cl'),
+    PropertyRenameHook('snode', 'DK:snode'),
+  ]);
 
   static PollOptionNode _instantiate(DecodingData data) {
     return PollOptionNode(text: data.dec(_f$text));

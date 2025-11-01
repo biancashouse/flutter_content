@@ -79,11 +79,17 @@ class FileNodeMapper extends SubClassMapperBase<FileNode> {
   };
 
   @override
-  final String discriminatorKey = 'cl';
+  final String discriminatorKey = 'DK:cl';
   @override
   final dynamic discriminatorValue = 'FileNode';
   @override
   late final ClassMapperBase superMapper = CLMapper.ensureInitialized();
+
+  @override
+  final MappingHook superHook = ChainedHook([
+    PropertyRenameHook('cl', 'DK:cl'),
+    PropertyRenameHook('snode', 'DK:snode'),
+  ]);
 
   static FileNode _instantiate(DecodingData data) {
     return FileNode(name: data.dec(_f$name), src: data.dec(_f$src));

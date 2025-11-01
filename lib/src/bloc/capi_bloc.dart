@@ -64,7 +64,7 @@ class CAPIBloC extends Bloc<CAPIEvent, CAPIState> {
     // removed snippet place naming functionality - use tab bar instead
     // on<SetPanelSnippet>(
     //     (event, emit) => _setPanelOrPlaceholderSnippet(event, emit));
-    on<UpdateClipboard>((event, emit) => _updateClipboard(event, emit));
+    on<ClearClipboard>((event, emit) => _clearClipboard(event, emit));
 
     //==========================================================================================
     //====  SNIPPET EDITING  ===================================================================
@@ -319,6 +319,7 @@ class CAPIBloC extends Bloc<CAPIEvent, CAPIState> {
   ) async {
     SnippetRootNode? rootNode;
     if (event.snippetJson == null) {
+      // var snippetJson = jsonEncode({"name":"we-create-flutter-apps","tags":"","child":{"csPropGroup":{"fillColors":{"color1":{"a":1,"r":1,"g":1,"b":1},"color2":null,"color3":null,"color4":null,"color5":null,"color6":null,"color1Value":null,"color2Value":null,"color3Value":null,"color4Value":null,"color5Value":null,"color6Value":null},"fillColorValues":null,"radialGradient":null,"margin":{"top":30,"left":30,"bottom":30,"right":30},"padding":{"top":30,"left":30,"bottom":30,"right":30},"width":null,"height":440,"alignment":"center","decorationShapeEnum":"rounded_rectangle","borderThickness":8,"borderColors":{"color1":{"a":1,"r":0.12941176470588237,"g":0.5882352941176471,"b":0.9529411764705882},"color2":{"a":1,"r":0.2980392156862745,"g":0.6862745098039216,"b":0.3137254901960784},"color3":{"a":1,"r":1,"g":0.9215686274509803,"b":0.23137254901960785},"color4":{"a":1,"r":0.9137254901960784,"g":0.11764705882352941,"b":0.38823529411764707},"color5":null,"color6":null,"color1Value":null,"color2Value":null,"color3Value":null,"color4Value":null,"color5Value":null,"color6Value":null},"borderColorValues":null,"borderRadius":16,"starPoints":null,"dash":null,"gap":null,"badgeWidth":null,"badgeHeight":null,"badgeCorner":null,"badgeText":null,"outlinedBorderGroup":null},"child":{"padding":null,"child":{"mainAxisAlignment":null,"mainAxisSize":"max","crossAxisAlignment":null,"children":[{"flex":1,"fit":"loose","child":{"deltaJsonString":"[{\"insert\":\"We create Flutter apps\",\"attributes\":{\"size\":\"huge\",\"bold\":true}},{\"insert\":\"\\n\\n\"}]","DK:snode":"CL","DK:cl":"QuillTextNode"},"DK:snode":"SC","DK:sc":"FlexibleNode"},{"flex":1,"fit":"loose","child":{"mainAxisAlignment":null,"mainAxisSize":"max","crossAxisAlignment":"start","children":[{"gap":20,"DK:snode":"CL","DK:cl":"GapNode"},{"name":"assets/images/icon_flutter.png","fit":"cover","alignment":null,"width":37,"height":46,"scale":2,"DK:snode":"CL","DK:cl":"AssetImageNode"},{"gap":20,"DK:snode":"CL","DK:cl":"GapNode"},{"flex":10,"fit":"loose","child":{"deltaJsonString":"[{\"insert\":\"We created \",\"attributes\":{\"size\":\"huge\"}},{\"insert\":\"Algorithm Creator\",\"attributes\":{\"color\":\"#FF2196F3\",\"size\":\"huge\",\"bold\":true,\"link\":\"http://algorithmcreator.com\"}},{\"insert\":\", an app that whose mission is to help resurrect the dying art of algorithm modelling. It does this (a) by redefining the \\\"flowchart notation\\\" - now any algorithm or process can be modelled using just 3 shapes: actions, decisions and loops. \",\"attributes\":{\"size\":\"huge\"}},{\"insert\":\"(\",\"attributes\":{\"size\":\"large\"}},{\"insert\":\"actually there's also a Function and Async Function shape for coders\",\"attributes\":{\"size\":\"large\",\"italic\":true}},{\"insert\":\"), \",\"attributes\":{\"size\":\"large\"}},{\"insert\":\"and (b) by having a ui that make iteration fast.\",\"attributes\":{\"size\":\"huge\"}},{\"insert\":\"\\n\\n\"},{\"insert\":\"Designing your app's logic graphically with \",\"attributes\":{\"size\":\"large\"}},{\"insert\":\"Algorithm Creator\",\"attributes\":{\"size\":\"large\",\"bold\":true}},{\"insert\":\" before starting to write code in your IDE significantly improves code robustness: it's more likely to work first time. Our app makes it easy and fast to iterate (refine) your logic.\",\"attributes\":{\"size\":\"large\"}},{\"insert\":\"\\n\\n\"},{\"insert\":\"A fun app to build, refine, publish, and share logic, it will help youngsters learn how to think about Algorithms.\",\"attributes\":{\"size\":\"large\",\"italic\":true}},{\"insert\":\"\\n\"}]","DK:snode":"CL","DK:cl":"QuillTextNode"},"DK:snode":"SC","DK:sc":"FlexibleNode"},{"gap":20,"DK:snode":"CL","DK:cl":"GapNode"},{"flex":6,"child":{"name":"assets/images/algc-icon-423-233.png","fit":"contain","alignment":"center","width":null,"height":null,"scale":2,"DK:snode":"CL","DK:cl":"AssetImageNode"},"DK:snode":"SC","DK:sc":"FlexibleNode","DK:flexible":"ExpandedNode"}],"DK:snode":"MC","DK:mc":"FlexNode","DK:flex":"RowNode"},"DK:snode":"SC","DK:sc":"FlexibleNode"}],"DK:snode":"MC","DK:mc":"FlexNode","DK:flex":"ColumnNode"},"DK:snode":"SC","DK:sc":"SingleChildScrollViewNode"},"DK:snode":"SC","DK:sc":"ContainerNode"},"DK:snode":"SC","DK:sc":"SnippetRootNode"});
       var snippetJson = await FlutterClipboard.paste();
       rootNode = SnippetRootNodeMapper.fromJson(snippetJson);
     } else {
@@ -334,17 +335,23 @@ class CAPIBloC extends Bloc<CAPIEvent, CAPIState> {
     // );
   }
 
-  Future<void> _updateClipboard(UpdateClipboard event, emit) async {
-    fco.appInfo.clipboard = event.newContent?.clone();
+  Future<void> _clearClipboard(ClearClipboard event, emit) async {
+    _updateClipboard(null);
     emit(state.copyWith(force: state.force + 1));
-    if (event.skipSave) return;
     fco.modelRepo.saveAppInfo();
+  }
+
+  // whenever you use what's on the clipboard, clone it first
+  // otherwise will get duplicate GK etc.
+  Future<void> _updateClipboard(
+    SNode? newContent,
+    // ScrollControllerName? scName,
+  ) async {
+    fco.appInfo.clipboard = newContent?.clone();
     // possibly hide or show clipbaord tab
-    if (event.newContent == null) {
-      fco.appInfo.hideClipboard();
-    } else {
-      fco.appInfo.hideClipboard();
-      fco.appInfo.showFloatingClipboard(scName: event.scName);
+    fco.appInfo.hideClipboard();
+    if (newContent != null) {
+      fco.appInfo.showFloatingClipboard();
     }
   }
 
@@ -384,7 +391,7 @@ class CAPIBloC extends Bloc<CAPIEvent, CAPIState> {
   }
 
   Future<void> _popSnippetEditor(PopSnippetEditor event, emit) async {
-    // if (!(state.snippetBeingEdited?.aNodeIsSelected ?? false)) return;
+    // if (state.snippetBeingEdited?.aNodeIsNotSelected??false) return;
     if (event.save) {
       //TODO save snippet
     }
@@ -458,7 +465,7 @@ class CAPIBloC extends Bloc<CAPIEvent, CAPIState> {
   }
 
   void _clearNodeSelection(ClearNodeSelection event, emit) {
-    if (!(state.snippetBeingEdited?.aNodeIsSelected ?? false)) return;
+    if (state.snippetBeingEdited?.aNodeIsNotSelected ?? false) return;
     state.snippetBeingEdited!.selectedNode = null;
     state.snippetBeingEdited!.showProperties = false;
 
@@ -476,7 +483,7 @@ class CAPIBloC extends Bloc<CAPIEvent, CAPIState> {
   }
 
   Future<void> _deleteNodeTapped(DeleteNodeTapped event, emit) async {
-    if (!(state.snippetBeingEdited?.aNodeIsSelected ?? false)) return;
+    if (state.snippetBeingEdited?.aNodeIsNotSelected ?? false) return;
     state.snippetBeingEdited!.nodeBeingDeleted =
         state.snippetBeingEdited!.selectedNode;
     emit(state.copyWith(force: state.force + 1));
@@ -485,7 +492,7 @@ class CAPIBloC extends Bloc<CAPIEvent, CAPIState> {
   Future<void> _completeDeletion(CompleteDeletion event, emit) async {
     // state.snippetBeingEdited?.newVersion();
 
-    if (!(state.snippetBeingEdited?.aNodeIsSelected ?? false)) return;
+    if (state.snippetBeingEdited?.aNodeIsNotSelected ?? false) return;
 
     // STreeNode? sel = state.selectedNode;
     // STreeNode? selParent = sel?.getParent() as STreeNode?;
@@ -516,7 +523,7 @@ class CAPIBloC extends Bloc<CAPIEvent, CAPIState> {
   }
 
   // Future<void> _showCutout(ShowCutout event, emit) async {
-  //   if (!(state.snippetBeingEdited?.aNodeIsSelected ?? false)) return;
+  //   if (state.snippetBeingEdited?.aNodeIsNotSelected??false) return;
   //
   //   Rect? r =
   //       state.snippetBeingEdited?.selectedNode?.nodeWidgetGK?.globalPaintBounds(
@@ -532,8 +539,14 @@ class CAPIBloC extends Bloc<CAPIEvent, CAPIState> {
 
   SNode _possiblyRemoveFromParentButNotChildren() {
     SNode sel = state.snippetBeingEdited!.selectedNode!;
-    // node to be deleted must have a parent
+
+    // node to be deleted must have a parent; i.e. not a snippetrootnode
     if (sel.getParent() == null) return sel;
+
+    if (sel is ScaffoldNode) {
+      return sel.removeFromParent();
+    }
+
     SNode selParent = sel.getParent() as SNode;
     late SNode newSel;
     //tab-related
@@ -647,46 +660,34 @@ class CAPIBloC extends Bloc<CAPIEvent, CAPIState> {
   }
 
   Future<void> _cutNode(CutNode event, emit) async {
-    // state.snippetBeingEdited?.newVersion();
-
-    if (!(state.snippetBeingEdited?.aNodeIsSelected ?? false)) return;
-    _cutIncludingAnyChildren(event.node);
-    state.snippetBeingEdited!.treeC.rebuild();
-    // bool well = state.rootNode.anyMissingParents();
-    add(
-      CAPIEvent.updateClipboard(
-        newContent: event.node,
-        scName: event.scName,
-        skipSave: event.skipSave,
-      ),
-    );
-  }
-
-  void _cutIncludingAnyChildren(SNode node) {
-    if (!(state.snippetBeingEdited?.aNodeIsSelected ?? false)) return;
-    if (node != state.snippetBeingEdited!.getRootNode()) {
-      // was: if (state.selectedNode?.parent != null) {
-      SNode parentNode = node.getParent() as SNode;
-      if (parentNode is SC) {
-        parentNode.child = null;
-      } else if (parentNode is MC) {
-        parentNode.children.remove(node);
-      } else if (parentNode is TextSpanNode) {
-        parentNode.children?.remove(node);
+    void cutIncludingAnyChildren(SNode node) {
+      if (state.snippetBeingEdited?.aNodeIsNotSelected ?? false) return;
+      if (node != state.snippetBeingEdited!.getRootNode()) {
+        // was: if (state.selectedNode?.parent != null) {
+        SNode parentNode = node.getParent() as SNode;
+        if (parentNode is SC) {
+          parentNode.child = null;
+        } else if (parentNode is MC) {
+          parentNode.children.remove(node);
+        } else if (parentNode is TextSpanNode) {
+          parentNode.children?.remove(node);
+        }
       }
     }
+
+    if (state.snippetBeingEdited?.aNodeIsNotSelected ?? false) return;
+    cutIncludingAnyChildren(event.node);
+    state.snippetBeingEdited!.treeC.rebuild();
+    _updateClipboard(event.node);
+    emit(state.copyWith(force: state.force + 1));
     fco.saveNewVersion(snippet: state.snippetBeingEdited!.getRootNode());
   }
 
   Future<void> _copyNode(CopyNode event, emit) async {
-    if (!(state.snippetBeingEdited?.aNodeIsSelected ?? false)) return;
-    var copiedNode = event.node.clone();
-    fco.appInfo.clipboard = copiedNode;
+    if (state.snippetBeingEdited?.aNodeIsNotSelected ?? false) return;
+    _updateClipboard(event.node);
     emit(state.copyWith(force: state.force + 1));
-    if (event.skipSave) return;
     fco.modelRepo.saveAppInfo();
-    fco.appInfo.hideClipboard();
-    fco.appInfo.showFloatingClipboard(scName: event.scName);
   }
 
   SNode _typeAsATreeNode(
@@ -741,6 +742,7 @@ class CAPIBloC extends Bloc<CAPIEvent, CAPIState> {
       const (UMLImageNode) => UMLImageNode(),
       const (FSImageNode) => FSImageNode(),
       // const (FirebaseStorageImageNode) => FirebaseStorageImageNode(),
+      const (ConstrainedBoxNode) => ConstrainedBoxNode(),
       const (CarouselNode) => CarouselNode(
         children: childNode != null ? [childNode] : [],
       ),
@@ -763,7 +765,7 @@ class CAPIBloC extends Bloc<CAPIEvent, CAPIState> {
                 child: childNode,
               ),
       // const (ContentSnippetRootNode) => ContentSnippetRootNode(name: 'content', child: childNode),
-      const (CustomScrollViewNode) => CustomScrollViewNode(children: []),
+      const (CustomScrollViewNode) => CustomScrollViewNode(slivers: []),
       const (DefaultTextStyleNode) => DefaultTextStyleNode(
         child: childNode,
         tsPropGroup: TextStyleProperties(
@@ -791,10 +793,12 @@ class CAPIBloC extends Bloc<CAPIEvent, CAPIState> {
       const (FlexibleNode) => FlexibleNode(child: childNode),
       const (GapNode) => GapNode(gap: 0),
       const (GoogleDriveIFrameNode) => GoogleDriveIFrameNode(),
+      const (GridViewNode) => GridViewNode(children: []),
       const (IconButtonNode) => IconButtonNode(
         bsPropGroup: ButtonStyleProperties(tsPropGroup: TextStyleProperties()),
       ),
       const (IFrameNode) => IFrameNode(),
+      const (InteractiveViewerNode) => InteractiveViewerNode(child: childNode),
       const (IntrinsicWidthNode) => IntrinsicWidthNode(child: childNode),
       const (IntrinsicHeightNode) => IntrinsicHeightNode(child: childNode),
       const (ListViewNode) => ListViewNode(children: []),
@@ -846,7 +850,16 @@ class CAPIBloC extends Bloc<CAPIEvent, CAPIState> {
         children: childNode != null ? [childNode] : [],
       ),
       const (ScaffoldNode) => ScaffoldNode(
-        appBar: NamedPS(propertyName: 'appBar'),
+        appBar: NamedPS(
+          propertyName: 'appBar',
+          child: AppBarNode(
+            title: NamedSC(propertyName: 'title'),
+            titleTextStyle: TextStyleProperties(),
+            leading: NamedSC(propertyName: 'leading'),
+            bottom: NamedPS(propertyName: 'bottom'),
+            actions: NamedMC(propertyName: 'actions', children: []),
+          ),
+        ),
         body: NamedSC(propertyName: 'body', child: childNode),
       ),
       const (SingleChildScrollViewNode) => SingleChildScrollViewNode(
@@ -1045,7 +1058,7 @@ class CAPIBloC extends Bloc<CAPIEvent, CAPIState> {
   void _wrapWith(WrapSelectionWith event, emit) {
     // state.snippetBeingEdited?.newVersion();
 
-    if (!(state.snippetBeingEdited?.aNodeIsSelected ?? false)) {
+    if (state.snippetBeingEdited?.aNodeIsNotSelected ?? false) {
       return;
     }
 
@@ -1060,28 +1073,35 @@ class CAPIBloC extends Bloc<CAPIEvent, CAPIState> {
           )
         : event.testNode!;
 
-    if (w is CL || w is WidgetSpanNode) return;
-    if (wChild is InlineSpanNode && w is! InlineSpanNode) return;
-    if (w is PollNode && wChild is! PollOptionNode) return;
-    if (wChild is PollOptionNode && w is! PollNode) return;
-    if (w is StepperNode && wChild is! StepNode) return;
-    if (wChild is StepNode && w is! StepperNode) return;
-    if (wChild is ExpandedNode && w is! FlexNode) return;
-    if (wChild is FlexibleNode && w is! FlexNode) return;
-    if (wChild is PositionedNode && w is! StackNode) return;
-    if (wChild is InlineSpanNode &&
-        parent is RichTextNode &&
-        w is RichTextNode) {
-      return;
-    }
-    if (wChild is InlineSpanNode &&
-        parent is! RichTextNode &&
-        w is! InlineSpanNode) {
-      return;
-    }
-
-    try {
-      //_createSnippetUndo();
+    if (w is ScaffoldNode) {
+      w.body.child = wChild;
+      w.setParent(parent);
+      wChild.setParent(null);
+      if (parent is SC) {
+        parent.child = w;
+      } else if (parent is MC) {
+        parent.children.add(w);
+      }
+    } else {
+      if (w is CL || w is WidgetSpanNode) return;
+      if (wChild is InlineSpanNode && w is! InlineSpanNode) return;
+      if (w is PollNode && wChild is! PollOptionNode) return;
+      if (wChild is PollOptionNode && w is! PollNode) return;
+      if (w is StepperNode && wChild is! StepNode) return;
+      if (wChild is StepNode && w is! StepperNode) return;
+      if (wChild is ExpandedNode && w is! FlexNode) return;
+      if (wChild is FlexibleNode && w is! FlexNode) return;
+      if (wChild is PositionedNode && w is! StackNode) return;
+      if (wChild is InlineSpanNode &&
+          parent is RichTextNode &&
+          w is RichTextNode) {
+        return;
+      }
+      if (wChild is InlineSpanNode &&
+          parent is! RichTextNode &&
+          w is! InlineSpanNode) {
+        return;
+      }
 
       w.setParent(parent);
       wChild.setParent(w);
@@ -1119,36 +1139,33 @@ class CAPIBloC extends Bloc<CAPIEvent, CAPIState> {
       } else if (parent is RichTextNode) {
         parent.text = w as TextSpanNode;
       }
-
-      // update treeC if rootNode changed (that's the Snippet's child)
-      SnippetTreeController possiblyNewTreeC = state.snippetBeingEdited!.treeC;
-
-      // child of snippet root
-      if (parent is SnippetRootNode) {
-        possiblyNewTreeC = SnippetTreeController(
-          roots: [parent],
-          childrenProvider: SNode.childrenProvider,
-          parentProvider: SNode.parentProvider,
-        );
-      }
-
-      possiblyNewTreeC.expand(w);
-      possiblyNewTreeC.rebuild();
-      state.snippetBeingEdited!
-        ..selectedNode = w
-        ..treeC = possiblyNewTreeC;
-
-      fco.saveNewVersion(snippet: state.snippetBeingEdited!.getRootNode());
-
-      emit(state.copyWith(force: state.force + 1));
-    } catch (e) {
-      fco.logger.i("\n ***  _wrapWith() - failed!  ***");
-      rethrow;
     }
+
+    // update treeC if rootNode changed (that's the Snippet's child)
+    SnippetTreeController possiblyNewTreeC = state.snippetBeingEdited!.treeC;
+
+    // child of snippet root
+    if (parent is SnippetRootNode) {
+      possiblyNewTreeC = SnippetTreeController(
+        roots: [parent],
+        childrenProvider: SNode.childrenProvider,
+        parentProvider: SNode.parentProvider,
+      );
+    }
+
+    possiblyNewTreeC.expand(w);
+    possiblyNewTreeC.rebuild();
+    state.snippetBeingEdited!
+      ..selectedNode = w
+      ..treeC = possiblyNewTreeC;
+
+    fco.saveNewVersion(snippet: state.snippetBeingEdited!.getRootNode());
+
+    emit(state.copyWith(force: state.force + 1));
   }
 
   void _replaceWith(ReplaceSelectionWith event, emit) {
-    if (!(state.snippetBeingEdited?.aNodeIsSelected ?? false)) return;
+    if (state.snippetBeingEdited?.aNodeIsNotSelected ?? false) return;
 
     SNode selectedNode = state.snippetBeingEdited!.selectedNode!;
     if (event.type == selectedNode.runtimeType) return;
@@ -1167,7 +1184,7 @@ class CAPIBloC extends Bloc<CAPIEvent, CAPIState> {
   void _replaceWithNewNodeOrClipboard(SNode sel, emit, SNode r) {
     // state.snippetBeingEdited?.newVersion();
 
-    if (!(state.snippetBeingEdited?.aNodeIsSelected ?? false)) return;
+    if (state.snippetBeingEdited?.aNodeIsNotSelected ?? false) return;
 
     if (sel is InlineSpanNode && r is! InlineSpanNode) return;
     if (sel is! InlineSpanNode && r is InlineSpanNode) return;
@@ -1257,7 +1274,7 @@ class CAPIBloC extends Bloc<CAPIEvent, CAPIState> {
   }
 
   void _addChild(AppendChild event, emit) {
-    if (!(state.snippetBeingEdited?.aNodeIsSelected ?? false)) return;
+    if (state.snippetBeingEdited?.aNodeIsNotSelected ?? false) return;
 
     SNode selectedNode = state.snippetBeingEdited!.selectedNode!;
     SNode newNode = event.type != null
@@ -1318,7 +1335,11 @@ class CAPIBloC extends Bloc<CAPIEvent, CAPIState> {
       // scaffoldNode?.numTabs++;
     } else if (selectedNode is SC) {
       selectedNode.child = newNode;
+    } else if (selectedNode is GridViewNode) {
+      selectedNode.children.add(newNode);
     } else if (selectedNode is MC) {
+      selectedNode.children.add(newNode);
+    } else if (selectedNode is ListViewNode) {
       selectedNode.children.add(newNode);
     } else if (selectedNode is TextSpanNode && newNode is InlineSpanNode) {
       selectedNode.children ??= [];
@@ -1328,7 +1349,7 @@ class CAPIBloC extends Bloc<CAPIEvent, CAPIState> {
       // } else if (selectedNode is ScaffoldNode && newNode is AppBarNode) {
       //   selectedNode.appBar = newNode;
     }
-    // newNode.setParent(selectedNode);
+    newNode.setParent(selectedNode);
 
     state.snippetBeingEdited!.treeC.roots.first.validateTree();
 
@@ -1343,12 +1364,10 @@ class CAPIBloC extends Bloc<CAPIEvent, CAPIState> {
   }
 
   void _pasteReplacement(PasteReplacement event, emit) {
-    if (!(state.snippetBeingEdited?.aNodeIsSelected ?? false)) return;
+    if (state.snippetBeingEdited?.aNodeIsNotSelected ?? false) return;
     if (fco.appInfo.clipboard != null) {
       SNode selectedNode = state.snippetBeingEdited!.selectedNode!;
-      SNode clipboardNode = fco.appInfo.clipboard!;
-      //_createSnippetUndo();
-      _replaceWithNewNodeOrClipboard(selectedNode, emit, clipboardNode);
+      _replaceWithNewNodeOrClipboard(selectedNode, emit, fco.appInfo.clipboard!.clone());
     }
 
     // // Container's Container parent should have an alignment property
@@ -1374,16 +1393,15 @@ class CAPIBloC extends Bloc<CAPIEvent, CAPIState> {
   }
 
   void _pasteChild(PasteChild event, emit) {
-    if (!(state.snippetBeingEdited?.aNodeIsSelected ?? false)) return;
+    if (state.snippetBeingEdited?.aNodeIsNotSelected ?? false) return;
     if (fco.appInfo.clipboard != null) {
       SNode selectedNode = state.snippetBeingEdited!.selectedNode!;
-      SNode clipboardNode = fco.appInfo.clipboard!;
-      _addOrPasteChild(selectedNode, emit, clipboardNode);
+      _addOrPasteChild(selectedNode, emit, fco.appInfo.clipboard!.clone());
     }
   }
 
   void _addSiblingBefore(AddSiblingBefore event, emit) {
-    if (!(state.snippetBeingEdited?.aNodeIsSelected ?? false)) return;
+    if (state.snippetBeingEdited?.aNodeIsNotSelected ?? false) return;
     SNode selectedNode = state.snippetBeingEdited!.selectedNode!;
     SNode newNode = event.type != null
         ? _typeAsATreeNode(
@@ -1407,19 +1425,34 @@ class CAPIBloC extends Bloc<CAPIEvent, CAPIState> {
               .indexOf(selectedNode as InlineSpanNode);
       _addSiblingAt(newNode, emit, i);
     }
+    if (state.snippetBeingEdited!.selectedNode?.getParent() is ListViewNode) {
+      int i =
+          (state.snippetBeingEdited!.selectedNode?.getParent() as ListViewNode)
+              .children
+              .indexOf(selectedNode);
+      _addSiblingAt(newNode, emit, i);
+    }
+    if (state.snippetBeingEdited!.selectedNode?.getParent()
+        is CustomScrollViewNode) {
+      int i =
+          (state.snippetBeingEdited!.selectedNode?.getParent()
+                  as CustomScrollViewNode)
+              .slivers
+              .indexOf(selectedNode);
+      _addSiblingAt(newNode, emit, i);
+    }
   }
 
   void _pasteSiblingBefore(PasteSiblingBefore event, emit) {
-    if (!(state.snippetBeingEdited?.aNodeIsSelected ?? false)) return;
+    if (state.snippetBeingEdited?.aNodeIsNotSelected ?? false) return;
     if (fco.appInfo.clipboard != null) {
       SNode selectedNode = state.snippetBeingEdited!.selectedNode!;
-      SNode clipboardNode = fco.appInfo.clipboard!;
       //_createSnippetUndo();
       if (state.snippetBeingEdited?.selectedNode?.getParent() is MC) {
         int i = (state.snippetBeingEdited?.selectedNode?.getParent() as MC)
             .children
             .indexOf(selectedNode);
-        _pasteSiblingAt(clipboardNode, emit, i);
+        _pasteSiblingAt(fco.appInfo.clipboard!, emit, i);
       }
       if (state.snippetBeingEdited?.selectedNode?.getParent() is TextSpanNode) {
         int i =
@@ -1427,13 +1460,30 @@ class CAPIBloC extends Bloc<CAPIEvent, CAPIState> {
                     as TextSpanNode)
                 .children!
                 .indexOf(selectedNode as InlineSpanNode);
-        _pasteSiblingAt(clipboardNode, emit, i);
+        _pasteSiblingAt(fco.appInfo.clipboard!, emit, i);
+      }
+      if (state.snippetBeingEdited?.selectedNode?.getParent() is ListViewNode) {
+        int i =
+            (state.snippetBeingEdited?.selectedNode?.getParent()
+                    as ListViewNode)
+                .children
+                .indexOf(selectedNode);
+        _pasteSiblingAt(fco.appInfo.clipboard!, emit, i);
+      }
+      if (state.snippetBeingEdited?.selectedNode?.getParent()
+          is CustomScrollViewNode) {
+        int i =
+            (state.snippetBeingEdited?.selectedNode?.getParent()
+                    as CustomScrollViewNode)
+                .slivers
+                .indexOf(selectedNode);
+        _pasteSiblingAt(fco.appInfo.clipboard!, emit, i);
       }
     }
   }
 
   void _addSiblingAfter(AddSiblingAfter event, emit) {
-    if (!(state.snippetBeingEdited?.aNodeIsSelected ?? false)) return;
+    if (state.snippetBeingEdited?.aNodeIsNotSelected ?? false) return;
     SNode selectedNode = state.snippetBeingEdited!.selectedNode!;
     SNode newNode = event.type != null
         ? _typeAsATreeNode(
@@ -1457,10 +1507,26 @@ class CAPIBloC extends Bloc<CAPIEvent, CAPIState> {
               .indexOf(selectedNode as InlineSpanNode);
       _addSiblingAt(newNode, emit, i + 1);
     }
+    if (state.snippetBeingEdited!.selectedNode?.getParent() is ListViewNode) {
+      int i =
+          (state.snippetBeingEdited!.selectedNode?.getParent() as ListViewNode)
+              .children
+              .indexOf(selectedNode);
+      _addSiblingAt(newNode, emit, i + 1);
+    }
+    if (state.snippetBeingEdited!.selectedNode?.getParent()
+        is CustomScrollViewNode) {
+      int i =
+          (state.snippetBeingEdited!.selectedNode?.getParent()
+                  as CustomScrollViewNode)
+              .slivers
+              .indexOf(selectedNode);
+      _addSiblingAt(newNode, emit, i + 1);
+    }
   }
 
   void _pasteSiblingAfter(PasteSiblingAfter event, emit) {
-    if (!(state.snippetBeingEdited?.aNodeIsSelected ?? false)) return;
+    if (state.snippetBeingEdited?.aNodeIsNotSelected ?? false) return;
     SNode selectedNode = state.snippetBeingEdited!.selectedNode!;
     SNode clipboardNode = fco.appInfo.clipboard!;
     //_createSnippetUndo();
@@ -1475,6 +1541,22 @@ class CAPIBloC extends Bloc<CAPIEvent, CAPIState> {
           (state.snippetBeingEdited!.selectedNode?.getParent() as TextSpanNode)
               .children!
               .indexOf(selectedNode as InlineSpanNode);
+      _pasteSiblingAt(clipboardNode, emit, i + 1);
+    }
+    if (state.snippetBeingEdited?.selectedNode?.getParent() is ListViewNode) {
+      int i =
+          (state.snippetBeingEdited?.selectedNode?.getParent() as ListViewNode)
+              .children
+              .indexOf(selectedNode);
+      _pasteSiblingAt(clipboardNode, emit, i + 1);
+    }
+    if (state.snippetBeingEdited?.selectedNode?.getParent()
+        is CustomScrollViewNode) {
+      int i =
+          (state.snippetBeingEdited?.selectedNode?.getParent()
+                  as CustomScrollViewNode)
+              .slivers
+              .indexOf(selectedNode);
       _pasteSiblingAt(clipboardNode, emit, i + 1);
     }
   }
@@ -1532,7 +1614,7 @@ class CAPIBloC extends Bloc<CAPIEvent, CAPIState> {
     // state.snippetBeingEdited?.newVersion();
 
     TextSpanNode? textSpanNode;
-    SNode newNode = clipboardNode;
+    SNode newNode = clipboardNode.clone();
 
     if (state.snippetBeingEdited!.selectedNode?.getParent() is MC) {
       (state.snippetBeingEdited!.selectedNode?.getParent() as MC).children
@@ -1546,6 +1628,20 @@ class CAPIBloC extends Bloc<CAPIEvent, CAPIState> {
       newNode.setParent(state.snippetBeingEdited!.selectedNode?.getParent());
     }
 
+    if (state.snippetBeingEdited!.selectedNode?.getParent() is ListViewNode) {
+      (state.snippetBeingEdited!.selectedNode?.getParent() as ListViewNode)
+          .children
+          .insert(i, newNode);
+      newNode.setParent(state.snippetBeingEdited!.selectedNode?.getParent());
+    }
+    if (state.snippetBeingEdited!.selectedNode?.getParent()
+        is CustomScrollViewNode) {
+      (state.snippetBeingEdited!.selectedNode?.getParent()
+              as CustomScrollViewNode)
+          .slivers
+          .insert(i, newNode);
+      newNode.setParent(state.snippetBeingEdited!.selectedNode?.getParent());
+    }
     state.snippetBeingEdited!.getRootNode().validateTree();
 
     fco.saveNewVersion(snippet: state.snippetBeingEdited!.getRootNode());

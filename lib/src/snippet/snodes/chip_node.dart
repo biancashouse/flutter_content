@@ -220,7 +220,7 @@ class ChipNode extends CL with ChipNodeMappable {
       // ScrollControllerName? scName = EditablePage.name(context);
       // possiblyHighlightSelectedNode(scName);
 
-      GlobalKey gk = createNodeWidgetGK();
+      GlobalKey? gk = createNodeWidgetGK();
 
       return InkWell(
         onTap: () => onPressed(context, gk, scName),
@@ -246,7 +246,7 @@ class ChipNode extends CL with ChipNodeMappable {
 
   void onPressed(
     BuildContext context,
-    GlobalKey gk,
+    GlobalKey? gk,
     ScrollControllerName? scName,
   ) {
     if (onTapHandlerName != null) {

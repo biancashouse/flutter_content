@@ -15,6 +15,7 @@ class UMLImageNodeMapper extends SubClassMapperBase<UMLImageNode> {
     if (_instance == null) {
       MapperContainer.globals.use(_instance = UMLImageNodeMapper._());
       CLMapper.ensureInitialized().addSubMapper(_instance!);
+      BoxFitEnumMapper.ensureInitialized();
     }
     return _instance!;
   }
@@ -50,6 +51,12 @@ class UMLImageNodeMapper extends SubClassMapperBase<UMLImageNode> {
   static const Field<UMLImageNode, double> _f$height = Field(
     'height',
     _$height,
+    opt: true,
+  );
+  static BoxFitEnum? _$fit(UMLImageNode v) => v.fit;
+  static const Field<UMLImageNode, BoxFitEnum> _f$fit = Field(
+    'fit',
+    _$fit,
     opt: true,
   );
   static String _$uid(UMLImageNode v) => v.uid;
@@ -105,6 +112,7 @@ class UMLImageNodeMapper extends SubClassMapperBase<UMLImageNode> {
     #encodedText: _f$encodedText,
     #width: _f$width,
     #height: _f$height,
+    #fit: _f$fit,
     #uid: _f$uid,
     #treeNodeGK: _f$treeNodeGK,
     #isExpanded: _f$isExpanded,
@@ -115,11 +123,17 @@ class UMLImageNodeMapper extends SubClassMapperBase<UMLImageNode> {
   };
 
   @override
-  final String discriminatorKey = 'cl';
+  final String discriminatorKey = 'DK:cl';
   @override
   final dynamic discriminatorValue = 'UMLImageNode';
   @override
   late final ClassMapperBase superMapper = CLMapper.ensureInitialized();
+
+  @override
+  final MappingHook superHook = ChainedHook([
+    PropertyRenameHook('cl', 'DK:cl'),
+    PropertyRenameHook('snode', 'DK:snode'),
+  ]);
 
   static UMLImageNode _instantiate(DecodingData data) {
     return UMLImageNode(
@@ -128,6 +142,7 @@ class UMLImageNodeMapper extends SubClassMapperBase<UMLImageNode> {
       encodedText: data.dec(_f$encodedText),
       width: data.dec(_f$width),
       height: data.dec(_f$height),
+      fit: data.dec(_f$fit),
     );
   }
 
@@ -200,6 +215,7 @@ abstract class UMLImageNodeCopyWith<$R, $In extends UMLImageNode, $Out>
     String? encodedText,
     double? width,
     double? height,
+    BoxFitEnum? fit,
   });
   UMLImageNodeCopyWith<$R2, $In, $Out2> $chain<$R2, $Out2>(Then<$Out2, $R2> t);
 }
@@ -219,6 +235,7 @@ class _UMLImageNodeCopyWithImpl<$R, $Out>
     Object? encodedText = $none,
     Object? width = $none,
     Object? height = $none,
+    Object? fit = $none,
   }) => $apply(
     FieldCopyWithData({
       if (name != $none) #name: name,
@@ -226,6 +243,7 @@ class _UMLImageNodeCopyWithImpl<$R, $Out>
       if (encodedText != $none) #encodedText: encodedText,
       if (width != $none) #width: width,
       if (height != $none) #height: height,
+      if (fit != $none) #fit: fit,
     }),
   );
   @override
@@ -235,6 +253,7 @@ class _UMLImageNodeCopyWithImpl<$R, $Out>
     encodedText: data.get(#encodedText, or: $value.encodedText),
     width: data.get(#width, or: $value.width),
     height: data.get(#height, or: $value.height),
+    fit: data.get(#fit, or: $value.fit),
   );
 
   @override

@@ -409,6 +409,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "0.7.11"
+  dev_grid:
+    dependency: "direct main"
+    description:
+      name: dev_grid
+      sha256: c5afda04ae6485ad9c3eda18e1087c13440c1d5e7653cc74d2b0fad48ff7c592
+      url: "https://pub.dev"
+    source: hosted
+    version: "0.0.3"
   device_info_plus:
     dependency: transitive
     description:
@@ -697,10 +705,9 @@ packages:
   flutter_callouts:
     dependency: "direct main"
     description:
-      name: flutter_callouts
-      sha256: c725d89a5dc093fb4bd4424a18b0a2677f69c2514f50befc28df2b2124263ad6
-      url: "https://pub.dev"
-    source: hosted
+      path: "../flutter_callouts"
+      relative: true
+    source: path
     version: "10.1.0"
   flutter_colorpicker:
     dependency: transitive

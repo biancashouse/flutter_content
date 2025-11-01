@@ -1,0 +1,111 @@
+{
+  child: {
+    child: {
+      csPropGroup: {
+        borderColorValues: null,
+        fillColors: {
+          color4Value: null,
+          color1: {
+            r: 1,
+            b: 0.23137254901960785,
+            g: 0.9215686274509803,
+            a: 1
+          },
+          color6: null,
+          color6Value: null,
+          color3Value: null,
+          color2Value: null,
+          color1Value: null,
+          color2: {
+            r: 0.9568627450980393,
+            a: 1,
+            g: 0.2627450980392157,
+            b: 0.21176470588235294
+          },
+          color5: null,
+          color3: null,
+          color5Value: null,
+          color4: null
+        },
+        badgeCorner: null,
+        badgeText: null,
+        alignment: null,
+        margin: null,
+        fillColorValues: null,
+        height: 200,
+        badgeWidth: null,
+        padding: null,
+        dash: null,
+        badgeHeight: null,
+        borderThickness: null,
+        width: 500,
+        radialGradient: null,
+        borderColors: null,
+        starPoints: null,
+        borderRadius: null,
+        gap: null,
+        decorationShapeEnum: rectangle,
+        outlinedBorderGroup: null
+      },
+      child: {
+        crossAxisAlignment: null,
+        children: [
+          {
+            child: {
+              mainAxisAlignment: null,
+              flex: RowNode,
+              snode: MC,
+              children: [
+                {
+                  height: null,
+                  snode: CL,
+                  name: assets/images/frog.jpg,
+                  scale: 1,
+                  fit: null,
+                  cl: AssetImageNode,
+                  width: null,
+                  alignment: null
+                }
+              ],
+              mc: FlexNode,
+              crossAxisAlignment: null
+            },
+            sc: CenterNode,
+            DK: snode
+            :
+          }
+        ],
+        mainAxisSize: max,
+        DK: snode
+        :
+        MC,
+        DK: mc
+        :
+        FlexNode,
+        DK: flex
+        :
+        ColumnNode
+      },
+      DK: snode
+      :
+      SC,
+      DK: sc
+      :
+      ContainerNode
+    },
+    DK: snode
+    :
+    SC,
+    DK: sc
+    :
+    CenterNode
+  },
+  tags:,
+  name: we-create,
+  DK: sc
+  :
+  SnippetRootNode,
+  DK: snode
+  :
+  SC
+}

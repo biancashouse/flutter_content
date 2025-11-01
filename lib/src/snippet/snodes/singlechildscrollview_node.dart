@@ -13,61 +13,57 @@ class SingleChildScrollViewNode extends SC
     with SingleChildScrollViewNodeMappable {
   EdgeInsetsValue? padding;
 
-  SingleChildScrollViewNode({
-    this.padding,
-    super.child,
-  });
+  SingleChildScrollViewNode({this.padding, super.child});
 
-  @JsonKey(includeFromJson: false, includeToJson: false)
   // used when a TabBar and TabBarView are used in a snippet's Scaffold
-  ScrollControllerName? _scName;
+  ScrollControllerName? scName;
 
   @override
   List<PNode> propertyNodes(BuildContext context, SNode? parentSNode) => [
-        FlutterDocPNode(
-            buttonLabel: 'SingleChildScrollView',
-            webLink:
-                'https://api.flutter.dev/flutter/widgets/SingleChildScrollView-class.html',
-            snode: this,
-            name: 'fyi'),
-        StringPNode(
-          snode: this,
-          name: 'ScrollController name',
-          stringValue: _scName,
-          skipHelperText: true,
-          onStringChange: (newValue) {
-            if (newValue != null) {
-              _scName = newValue;
-            } else {
-              if (_scName != null) {
-                NamedScrollController.instance(_scName!)?.dispose();
-              }
-              _scName = null;
-            }
-            refreshWithUpdate(context, () => _scName!);
-          },
-          calloutButtonSize: const Size(280, 70),
-          calloutWidth: 400,
-          numLines: 1,
-        ),
-        PNode /*Group*/ (
+    FlutterDocPNode(
+      buttonLabel: 'SingleChildScrollView',
+      webLink:
+          'https://api.flutter.dev/flutter/widgets/SingleChildScrollView-class.html',
+      snode: this,
+      name: 'fyi',
+    ),
+    StringPNode(
+      snode: this,
+      name: 'ScrollController name',
+      stringValue: scName,
+      skipHelperText: true,
+      onStringChange: (newValue) {
+        if (newValue != null) {
+          scName = newValue;
+        } else {
+          if (scName != null) {
+            NamedScrollController.instance(scName!)?.dispose();
+          }
+          scName = null;
+        }
+        refreshWithUpdate(context, () => scName!);
+      },
+      calloutButtonSize: const Size(280, 70),
+      calloutWidth: 400,
+      numLines: 1,
+    ),
+    PNode /*Group*/ (
+      snode: this,
+      name: 'padding',
+      children: [
+        EdgeInsetsPNode(
           snode: this,
           name: 'padding',
-          children: [
-            EdgeInsetsPNode(
-              snode: this,
-              name: 'padding',
-              eiValue: padding,
-              onEIChangedF: (newValue) =>
-                  refreshWithUpdate(context, () => padding = newValue),
-            ),
-          ],
+          eiValue: padding,
+          onEIChangedF: (newValue) =>
+              refreshWithUpdate(context, () => padding = newValue),
         ),
-      ];
+      ],
+    ),
+  ];
 
   @override
-  Widget buildFlutterWidget(BuildContext context, SNode? parentNode,
-      ) {
+  Widget buildFlutterWidget(BuildContext context, SNode? parentNode) {
     try {
       setParent(parentNode);
       //ScrollControllerName? scName = EditablePage.name(context);
@@ -87,36 +83,29 @@ class SingleChildScrollViewNode extends SC
       //   // sC.listenToOffset();
       // }
 
-      if (_scName != null) {
-        // ensure scroll controller exists
-        if (NamedScrollController.exists(_scName!)) {
-          NamedScrollController(_scName!, Axis.vertical);
-        }
-        return SingleChildScrollView(
-          key: createNodeWidgetGK(),
-          // descendants of this view can access it by:
-          // ScrollableState? scrollableState = Scrollable.of(context);
-          // ScrollController? scrollController = scrollableState?.position.scrollController;
-          controller: NamedScrollController.instance(_scName!),
-          // key: targetGK,
-          padding: padding?.toEdgeInsets(),
-          child: child?.buildFlutterWidget(context, this),
-        );
-      } else {
-        return Error(
-            key: createNodeWidgetGK(),
-            FLUTTER_TYPE,
-            color: Colors.red,
-            size: 16,
-            errorMsg: 'You must give the ScrollController a name');
+      if (scName != null && !NamedScrollController.exists(scName!)) {
+        NamedScrollController(scName!, Axis.vertical);
       }
+      return SingleChildScrollView(
+        key: createNodeWidgetGK(),
+        // descendants of this view can access it by:
+        // ScrollableState? scrollableState = Scrollable.of(context);
+        // ScrollController? scrollController = scrollableState?.position.scrollController;
+        controller: scName != null
+            ? NamedScrollController.instance(scName!)
+            : null,
+        // key: targetGK,
+        padding: padding?.toEdgeInsets(),
+        child: child?.buildFlutterWidget(context, this),
+      );
     } catch (e) {
       return Error(
-          key: createNodeWidgetGK(),
-          FLUTTER_TYPE,
-          color: Colors.red,
-          size: 16,
-          errorMsg: e.toString());
+        key: createNodeWidgetGK(),
+        FLUTTER_TYPE,
+        color: Colors.red,
+        size: 16,
+        errorMsg: e.toString(),
+      );
     }
   }
 

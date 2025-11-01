@@ -5,7 +5,7 @@
 // ignore_for_file: unused_element, unnecessary_cast, override_on_non_overriding_member
 // ignore_for_file: strict_raw_type, inference_failure_on_untyped_parameter
 
-part of 'custom_scroll_view_node.dart';
+part of 'custom_scrollview_node.dart';
 
 class CustomScrollViewNodeMapper
     extends SubClassMapperBase<CustomScrollViewNode> {
@@ -15,9 +15,9 @@ class CustomScrollViewNodeMapper
   static CustomScrollViewNodeMapper ensureInitialized() {
     if (_instance == null) {
       MapperContainer.globals.use(_instance = CustomScrollViewNodeMapper._());
-      MCMapper.ensureInitialized().addSubMapper(_instance!);
-      AxisEnumMapper.ensureInitialized();
+      ScrollViewNodeMapper.ensureInitialized().addSubMapper(_instance!);
       SNodeMapper.ensureInitialized();
+      AxisEnumMapper.ensureInitialized();
     }
     return _instance!;
   }
@@ -25,6 +25,11 @@ class CustomScrollViewNodeMapper
   @override
   final String id = 'CustomScrollViewNode';
 
+  static List<SNode> _$slivers(CustomScrollViewNode v) => v.slivers;
+  static const Field<CustomScrollViewNode, List<SNode>> _f$slivers = Field(
+    'slivers',
+    _$slivers,
+  );
   static AxisEnum _$axis(CustomScrollViewNode v) => v.axis;
   static const Field<CustomScrollViewNode, AxisEnum> _f$axis = Field(
     'axis',
@@ -37,12 +42,6 @@ class CustomScrollViewNodeMapper
     'shrinkWrap',
     _$shrinkWrap,
     opt: true,
-    def: false,
-  );
-  static List<SNode> _$children(CustomScrollViewNode v) => v.children;
-  static const Field<CustomScrollViewNode, List<SNode>> _f$children = Field(
-    'children',
-    _$children,
   );
   static String _$uid(CustomScrollViewNode v) => v.uid;
   static const Field<CustomScrollViewNode, String> _f$uid = Field(
@@ -89,9 +88,9 @@ class CustomScrollViewNodeMapper
 
   @override
   final MappableFields<CustomScrollViewNode> fields = const {
+    #slivers: _f$slivers,
     #axis: _f$axis,
     #shrinkWrap: _f$shrinkWrap,
-    #children: _f$children,
     #uid: _f$uid,
     #treeNodeGK: _f$treeNodeGK,
     #isExpanded: _f$isExpanded,
@@ -101,17 +100,24 @@ class CustomScrollViewNodeMapper
   };
 
   @override
-  final String discriminatorKey = 'mc';
+  final String discriminatorKey = 'DK:scrollview';
   @override
   final dynamic discriminatorValue = 'CustomScrollViewNode';
   @override
-  late final ClassMapperBase superMapper = MCMapper.ensureInitialized();
+  late final ClassMapperBase superMapper =
+      ScrollViewNodeMapper.ensureInitialized();
+
+  @override
+  final MappingHook superHook = ChainedHook([
+    PropertyRenameHook('cl', 'DK:cl'),
+    PropertyRenameHook('snode', 'DK:snode'),
+  ]);
 
   static CustomScrollViewNode _instantiate(DecodingData data) {
     return CustomScrollViewNode(
+      slivers: data.dec(_f$slivers),
       axis: data.dec(_f$axis),
       shrinkWrap: data.dec(_f$shrinkWrap),
-      children: data.dec(_f$children),
     );
   }
 
@@ -184,11 +190,10 @@ abstract class CustomScrollViewNodeCopyWith<
   $In extends CustomScrollViewNode,
   $Out
 >
-    implements MCCopyWith<$R, $In, $Out> {
+    implements ScrollViewNodeCopyWith<$R, $In, $Out> {
+  ListCopyWith<$R, SNode, SNodeCopyWith<$R, SNode, SNode>> get slivers;
   @override
-  ListCopyWith<$R, SNode, SNodeCopyWith<$R, SNode, SNode>> get children;
-  @override
-  $R call({AxisEnum? axis, bool? shrinkWrap, List<SNode>? children});
+  $R call({List<SNode>? slivers, AxisEnum? axis, bool? shrinkWrap});
   CustomScrollViewNodeCopyWith<$R2, $In, $Out2> $chain<$R2, $Out2>(
     Then<$Out2, $R2> t,
   );
@@ -203,29 +208,26 @@ class _CustomScrollViewNodeCopyWithImpl<$R, $Out>
   late final ClassMapperBase<CustomScrollViewNode> $mapper =
       CustomScrollViewNodeMapper.ensureInitialized();
   @override
-  ListCopyWith<$R, SNode, SNodeCopyWith<$R, SNode, SNode>> get children =>
+  ListCopyWith<$R, SNode, SNodeCopyWith<$R, SNode, SNode>> get slivers =>
       ListCopyWith(
-        $value.children,
+        $value.slivers,
         (v, t) => v.copyWith.$chain(t),
-        (v) => call(children: v),
+        (v) => call(slivers: v),
       );
   @override
-  $R call({
-    AxisEnum? axis,
-    Object? shrinkWrap = $none,
-    List<SNode>? children,
-  }) => $apply(
-    FieldCopyWithData({
-      if (axis != null) #axis: axis,
-      if (shrinkWrap != $none) #shrinkWrap: shrinkWrap,
-      if (children != null) #children: children,
-    }),
-  );
+  $R call({List<SNode>? slivers, AxisEnum? axis, Object? shrinkWrap = $none}) =>
+      $apply(
+        FieldCopyWithData({
+          if (slivers != null) #slivers: slivers,
+          if (axis != null) #axis: axis,
+          if (shrinkWrap != $none) #shrinkWrap: shrinkWrap,
+        }),
+      );
   @override
   CustomScrollViewNode $make(CopyWithData data) => CustomScrollViewNode(
+    slivers: data.get(#slivers, or: $value.slivers),
     axis: data.get(#axis, or: $value.axis),
     shrinkWrap: data.get(#shrinkWrap, or: $value.shrinkWrap),
-    children: data.get(#children, or: $value.children),
   );
 
   @override

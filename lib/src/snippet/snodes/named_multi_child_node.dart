@@ -2,7 +2,7 @@ import 'package:dart_mappable/dart_mappable.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_content/flutter_content.dart';
 
-part 'generic_multi_child_node.mapper.dart';
+part 'named_multi_child_node.mapper.dart';
 
 @MappableClass()
 class NamedMC extends MC with NamedMCMappable {
@@ -30,6 +30,15 @@ class NamedMC extends MC with NamedMCMappable {
       return [];
     }
   }
+
+  @override
+  bool canWrap() => false;
+
+  @override
+  bool canReplace() => false;
+
+  @override
+  bool canAddASibling() => false;
 
   @override
   String toString() => propertyName;

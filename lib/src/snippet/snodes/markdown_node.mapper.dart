@@ -87,11 +87,17 @@ class MarkdownNodeMapper extends SubClassMapperBase<MarkdownNode> {
   };
 
   @override
-  final String discriminatorKey = 'cl';
+  final String discriminatorKey = 'DK:cl';
   @override
   final dynamic discriminatorValue = 'MarkdownNode';
   @override
   late final ClassMapperBase superMapper = CLMapper.ensureInitialized();
+
+  @override
+  final MappingHook superHook = ChainedHook([
+    PropertyRenameHook('cl', 'DK:cl'),
+    PropertyRenameHook('snode', 'DK:snode'),
+  ]);
 
   static MarkdownNode _instantiate(DecodingData data) {
     return MarkdownNode(data: data.dec(_f$data));

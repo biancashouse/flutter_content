@@ -9,7 +9,9 @@ import 'package:flutter_content/src/snippet/snodes/button_style_hook.dart';
 
 part 'button_node.mapper.dart';
 
-@MappableClass(discriminatorKey: 'button', includeSubClasses: buttonSubClasses)
+@MappableClass(discriminatorKey: 'DK:button', includeSubClasses: buttonSubClasses,
+  hook: PropertyRenameHook('button', 'DK:button'), // 'first_name' -> JSON key, 'firstName' -> Dart field name
+)
 abstract class ButtonNode extends SC with ButtonNodeMappable {
   // deprecated: use tabbar instead
   // when populating a panel with a snippet
@@ -159,7 +161,7 @@ abstract class ButtonNode extends SC with ButtonNodeMappable {
 
   void onPressed(
     BuildContext context,
-    GlobalKey gk,
+    GlobalKey? gk,
     ScrollControllerName? scName,
   ) {
     if (onTapHandlerName != null) {

@@ -112,11 +112,18 @@ class TextButtonNodeMapper extends SubClassMapperBase<TextButtonNode> {
   };
 
   @override
-  final String discriminatorKey = 'button';
+  final String discriminatorKey = 'DK:button';
   @override
   final dynamic discriminatorValue = 'TextButtonNode';
   @override
   late final ClassMapperBase superMapper = ButtonNodeMapper.ensureInitialized();
+
+  @override
+  final MappingHook superHook = ChainedHook([
+    PropertyRenameHook('button', 'DK:button'),
+    PropertyRenameHook('sc', 'DK:sc'),
+    PropertyRenameHook('snode', 'DK:snode'),
+  ]);
 
   static TextButtonNode _instantiate(DecodingData data) {
     return TextButtonNode(

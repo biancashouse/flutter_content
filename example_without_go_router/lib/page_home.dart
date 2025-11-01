@@ -108,13 +108,13 @@ class Page_Home extends StatelessWidget {
       child: Stack(
         children: [
           scaffold,
-          // Align(
-          //   alignment: Alignment.topRight,
-          //   child: Padding(
-          //     padding:  EdgeInsets.only(right:fco.canEditContent() ?  68: 8.0),
-          //     child: fco.NavigationDD(pencilIconColor: Colors.red),
-          //   ),
-          // ),
+          Align(
+            alignment: Alignment.topRight,
+            child: Padding(
+              padding:  EdgeInsets.only(right:fco.canEditContent() ?  68: 8.0),
+              child: fco.NavigationDD(pencilIconColor: Colors.red),
+            ),
+          ),
         ],
       ),
     );

@@ -92,7 +92,6 @@ class _PointyToolState extends State<PointyTool> {
     if (rootNode == null) return;
     fco.saveNewVersion(snippet: rootNode);
     CalloutConfigToolbar.closeThenReopenContentCallout(
-      widget.cc,
       tc,
       widget.wrapperRect,
       widget.scName,

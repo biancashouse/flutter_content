@@ -94,6 +94,12 @@ class FlexNodeMapper extends SubClassMapperBase<FlexNode> {
     _$nodeWidgetGK,
     mode: FieldMode.member,
   );
+  static bool? _$wrapInExpanded(FlexNode v) => v.wrapInExpanded;
+  static const Field<FlexNode, bool> _f$wrapInExpanded = Field(
+    'wrapInExpanded',
+    _$wrapInExpanded,
+    mode: FieldMode.member,
+  );
 
   @override
   final MappableFields<FlexNode> fields = const {
@@ -107,20 +113,30 @@ class FlexNodeMapper extends SubClassMapperBase<FlexNode> {
     #hidePropertiesWhileDragging: _f$hidePropertiesWhileDragging,
     #canShowTappableNodeWidgetOverlay: _f$canShowTappableNodeWidgetOverlay,
     #nodeWidgetGK: _f$nodeWidgetGK,
+    #wrapInExpanded: _f$wrapInExpanded,
   };
 
   @override
-  final String discriminatorKey = 'mc';
+  final String discriminatorKey = 'DK:mc';
   @override
   final dynamic discriminatorValue = 'FlexNode';
   @override
   late final ClassMapperBase superMapper = MCMapper.ensureInitialized();
 
+  @override
+  final MappingHook hook = const PropertyRenameHook('flex', 'DK:flex');
+  @override
+  final MappingHook superHook = ChainedHook([
+    PropertyRenameHook('mc', 'DK:mc'),
+    PropertyRenameHook('snode', 'DK:snode'),
+  ]);
+
   static FlexNode _instantiate(DecodingData data) {
-    throw MapperException.missingSubclass(
-      'FlexNode',
-      'flex',
-      '${data.value['flex']}',
+    return FlexNode(
+      mainAxisAlignment: data.dec(_f$mainAxisAlignment),
+      mainAxisSize: data.dec(_f$mainAxisSize),
+      crossAxisAlignment: data.dec(_f$crossAxisAlignment),
+      children: data.dec(_f$children),
     );
   }
 
@@ -137,9 +153,46 @@ class FlexNodeMapper extends SubClassMapperBase<FlexNode> {
 }
 
 mixin FlexNodeMappable {
-  String toJson();
-  Map<String, dynamic> toMap();
-  FlexNodeCopyWith<FlexNode, FlexNode, FlexNode> get copyWith;
+  String toJson() {
+    return FlexNodeMapper.ensureInitialized().encodeJson<FlexNode>(
+      this as FlexNode,
+    );
+  }
+
+  Map<String, dynamic> toMap() {
+    return FlexNodeMapper.ensureInitialized().encodeMap<FlexNode>(
+      this as FlexNode,
+    );
+  }
+
+  FlexNodeCopyWith<FlexNode, FlexNode, FlexNode> get copyWith =>
+      _FlexNodeCopyWithImpl<FlexNode, FlexNode>(
+        this as FlexNode,
+        $identity,
+        $identity,
+      );
+  @override
+  String toString() {
+    return FlexNodeMapper.ensureInitialized().stringifyValue(this as FlexNode);
+  }
+
+  @override
+  bool operator ==(Object other) {
+    return FlexNodeMapper.ensureInitialized().equalsValue(
+      this as FlexNode,
+      other,
+    );
+  }
+
+  @override
+  int get hashCode {
+    return FlexNodeMapper.ensureInitialized().hashValue(this as FlexNode);
+  }
+}
+
+extension FlexNodeValueCopy<$R, $Out> on ObjectCopyWith<$R, FlexNode, $Out> {
+  FlexNodeCopyWith<$R, FlexNode, $Out> get $asFlexNode =>
+      $base.as((v, t, t2) => _FlexNodeCopyWithImpl<$R, $Out>(v, t, t2));
 }
 
 abstract class FlexNodeCopyWith<$R, $In extends FlexNode, $Out>
@@ -154,5 +207,54 @@ abstract class FlexNodeCopyWith<$R, $In extends FlexNode, $Out>
     List<SNode>? children,
   });
   FlexNodeCopyWith<$R2, $In, $Out2> $chain<$R2, $Out2>(Then<$Out2, $R2> t);
+}
+
+class _FlexNodeCopyWithImpl<$R, $Out>
+    extends ClassCopyWithBase<$R, FlexNode, $Out>
+    implements FlexNodeCopyWith<$R, FlexNode, $Out> {
+  _FlexNodeCopyWithImpl(super.value, super.then, super.then2);
+
+  @override
+  late final ClassMapperBase<FlexNode> $mapper =
+      FlexNodeMapper.ensureInitialized();
+  @override
+  ListCopyWith<$R, SNode, SNodeCopyWith<$R, SNode, SNode>> get children =>
+      ListCopyWith(
+        $value.children,
+        (v, t) => v.copyWith.$chain(t),
+        (v) => call(children: v),
+      );
+  @override
+  $R call({
+    Object? mainAxisAlignment = $none,
+    Object? mainAxisSize = $none,
+    Object? crossAxisAlignment = $none,
+    List<SNode>? children,
+  }) => $apply(
+    FieldCopyWithData({
+      if (mainAxisAlignment != $none) #mainAxisAlignment: mainAxisAlignment,
+      if (mainAxisSize != $none) #mainAxisSize: mainAxisSize,
+      if (crossAxisAlignment != $none) #crossAxisAlignment: crossAxisAlignment,
+      if (children != null) #children: children,
+    }),
+  );
+  @override
+  FlexNode $make(CopyWithData data) => FlexNode(
+    mainAxisAlignment: data.get(
+      #mainAxisAlignment,
+      or: $value.mainAxisAlignment,
+    ),
+    mainAxisSize: data.get(#mainAxisSize, or: $value.mainAxisSize),
+    crossAxisAlignment: data.get(
+      #crossAxisAlignment,
+      or: $value.crossAxisAlignment,
+    ),
+    children: data.get(#children, or: $value.children),
+  );
+
+  @override
+  FlexNodeCopyWith<$R2, FlexNode, $Out2> $chain<$R2, $Out2>(
+    Then<$Out2, $R2> t,
+  ) => _FlexNodeCopyWithImpl<$R2, $Out2>($value, $cast, t);
 }
 

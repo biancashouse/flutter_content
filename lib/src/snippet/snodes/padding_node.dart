@@ -12,31 +12,34 @@ part 'padding_node.mapper.dart';
 class PaddingNode extends SC with PaddingNodeMappable {
   EdgeInsetsValue? padding;
 
-  PaddingNode({
-    this.padding,
-    super.child,
-  });
+  PaddingNode({this.padding, super.child});
 
   @override
   List<PNode> propertyNodes(BuildContext context, SNode? parentSNode) => [
-        FlutterDocPNode(
-            buttonLabel: 'EdgeInsets',
-            webLink:
-                'https://api.flutter.dev/flutter/painting/EdgeInsets-class.html',
-            snode: this,
-            name: 'fyi'),
-        EdgeInsetsPNode(
-          snode: this,
-          name: 'padding',
-          eiValue: padding ?? EdgeInsetsValue(),
-          onEIChangedF: (newValue) =>
-              refreshWithUpdate(context, () => padding = newValue),
-        ),
-      ];
+    FlutterDocPNode(
+      buttonLabel: 'EdgeInsets',
+      webLink: 'https://api.flutter.dev/flutter/painting/EdgeInsets-class.html',
+      snode: this,
+      name: 'fyi',
+    ),
+    FYIPNode(
+      label: "Constraint Imposed on Child: ",
+      msg:
+          "Fills the parent's size and then passes tighter constraints to its child, effectively making the child smaller than the parent.\n\nThe Padding widget itself always tries to be as big as the parent allows.",
+      snode: this,
+      name: 'fyi',
+    ),
+    EdgeInsetsPNode(
+      snode: this,
+      name: 'padding',
+      eiValue: padding ?? EdgeInsetsValue(),
+      onEIChangedF: (newValue) =>
+          refreshWithUpdate(context, () => padding = newValue),
+    ),
+  ];
 
   @override
-  Widget buildFlutterWidget(BuildContext context, SNode? parentNode,
-      ) {
+  Widget buildFlutterWidget(BuildContext context, SNode? parentNode) {
     setParent(parentNode);
     //ScrollControllerName? scName = EditablePage.name(context);
     //possiblyHighlightSelectedNode(scName);

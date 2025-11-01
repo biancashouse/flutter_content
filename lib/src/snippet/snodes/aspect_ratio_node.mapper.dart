@@ -90,11 +90,17 @@ class AspectRatioNodeMapper extends SubClassMapperBase<AspectRatioNode> {
   };
 
   @override
-  final String discriminatorKey = 'sc';
+  final String discriminatorKey = 'DK:sc';
   @override
   final dynamic discriminatorValue = 'AspectRatioNode';
   @override
   late final ClassMapperBase superMapper = SCMapper.ensureInitialized();
+
+  @override
+  final MappingHook superHook = ChainedHook([
+    PropertyRenameHook('sc', 'DK:sc'),
+    PropertyRenameHook('snode', 'DK:snode'),
+  ]);
 
   static AspectRatioNode _instantiate(DecodingData data) {
     return AspectRatioNode(

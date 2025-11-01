@@ -18,7 +18,7 @@ class NamedPS extends SC
   @override
   List<PNode> propertyNodes(BuildContext context, SNode? parentSNode) => [
     FlutterDocPNode(
-      buttonLabel: 'SizedBox',
+      buttonLabel: 'PreferredSize',
       webLink:
           'https://api.flutter.dev/flutter/widgets/PreferredSize-class.html',
       snode: this,
@@ -31,7 +31,7 @@ class NamedPS extends SC
     SNode? parentNode) {
     try {
       var psChildWidget = child?.buildFlutterWidget(context, this);
-      setParent(parentNode);
+      setParent(null);
       if (psChildWidget is! PreferredSizeWidget) {
         return PreferredSize(
           preferredSize: Size.fromHeight(300),
@@ -46,6 +46,7 @@ class NamedPS extends SC
       }
       return psChildWidget;
     } catch (e) {
+      print('PreferredSize error: ${e.toString()}');
       return PreferredSize(
         preferredSize: Size.fromHeight(300),
         child: Error(
@@ -58,6 +59,15 @@ class NamedPS extends SC
       );
     }
   }
+
+  @override
+  bool canWrap() => false;
+
+  @override
+  bool canReplace() => false;
+
+  @override
+  bool canAddASibling() => false;
 
   @override
   String toString() => propertyName;
