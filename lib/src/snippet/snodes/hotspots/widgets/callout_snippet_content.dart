@@ -115,7 +115,7 @@ Future<void> showHotspotSnippetContentCallout({
       bubbleOrTargetPointerColor: tc.bgColor(),
       targetPointerType: tc.hasAHotspot()
           ? tc.targetPointerTypeEnum?.targetPointerType
-          : TargetPointerType.thin_line(),
+          : TargetPointerType.none(),
       fromDelta: tc.calloutDecorationShapeEnum == DecorationShapeEnum.star
           ? 60
           : null,
@@ -136,7 +136,7 @@ Future<void> showHotspotSnippetContentCallout({
         tc
           ..calloutWidth = newSize.width
           ..calloutHeight = newSize.height;
-        // fco.capiBloc.add(CAPIEvent.TargetModelChanged(newTC: tc));
+        tc.changed_saveRootSnippet();
       },
       onDragEndedF: (Offset newPos) {
         // Offset newPosScrollAware = newPos.translate(

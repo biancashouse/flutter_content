@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:flutter_content/flutter_content.dart';
 import 'package:flutter_content/src/snippet/snodes/hotspots/widgets/targets_wrapper_ontap_menu.dart';
+import 'package:visibility_detector/visibility_detector.dart';
 
 import 'positioned_target_cover.dart';
 import 'positioned_target_play_btn.dart';
@@ -12,7 +13,6 @@ class TargetsWrapper extends StatefulWidget {
   final TargetsWrapperNode parentNode;
   final Widget? child;
   final bool hardEdge;
-  final ScrollControllerName? scName;
 
   static double CAPI_TARGET_BTN_RADIUS = 15.0;
 
@@ -20,7 +20,6 @@ class TargetsWrapper extends StatefulWidget {
     required this.parentNode,
     this.child,
     this.hardEdge = true,
-    this.scName,
     required super.key,
   });
 
@@ -60,12 +59,11 @@ class TargetsWrapper extends StatefulWidget {
   //   }
   // }
 
-  static void configureTarget(
-    TargetModel tc,
-    Rect wrapperRect,
-    ScrollControllerName? scName, {
-    bool quickly = false,
-  }) {
+  static void configureTarget(TargetModel tc,
+      Rect wrapperRect,
+      ScrollControllerName? scName, {
+        bool quickly = false,
+      }) {
     if (!fco.canEditContent()) return;
 
     if (tc.targetsWrapperState() == null) return;
@@ -88,7 +86,10 @@ class TargetsWrapper extends StatefulWidget {
     );
 
     if (tc.hasAHotspot()) {
-      tc.targetsWrapperState()?.zoomer?.applyTransform(
+      tc
+          .targetsWrapperState()
+          ?.zoomer
+          ?.applyTransform(
         tc.transformScale,
         tc.transformScale,
         ta,
@@ -114,14 +115,12 @@ class TargetsWrapper extends StatefulWidget {
     }
   }
 
-  static void showConfigToolbar(
-    TargetModel tc,
-    Rect wrapperRect,
-    final ScrollControllerName? scName,
-  ) {
+  static void showConfigToolbar(TargetModel tc,
+      Rect wrapperRect,
+      ScrollControllerName? scName,) {
     final cc = CalloutConfig(
       cId: CalloutConfigToolbar.CID,
-      scrollControllerName: scName,
+      scrollControllerName: null,
       decorationFillColors: ColorOrGradient.color(Colors.purpleAccent),
       initialCalloutW: 920,
       initialCalloutH: 80,
@@ -155,7 +154,10 @@ class TargetsWrapper extends StatefulWidget {
         }
 
         tc.targetsWrapperState()?.refresh(() {
-          tc.targetsWrapperState()?.zoomer?.resetTransform(
+          tc
+              .targetsWrapperState()
+              ?.zoomer
+              ?.resetTransform(
             afterTransformF: resetZoom,
           );
         });
@@ -191,6 +193,9 @@ class TargetsWrapperState extends State<TargetsWrapper> {
   Offset? pulsingPointPos;
   late GlobalKey pulsingPointGK;
 
+  String? scName(BuildContext context) =>
+      EditablePage.maybeScrollControllerName(context);
+
   // Offset? wrapperPos;
   // Size? _wrapperSize;
   // Size get wrapperSize => _wrapperSize ?? MediaQuery.of(context).size;
@@ -200,10 +205,11 @@ class TargetsWrapperState extends State<TargetsWrapper> {
 
   // Timer? _sizeChangedTimer;
   TargetModel? _playingOrEditingTc; // gets set / reset by btn widgets
-  void setPlayingOrEditingTc(newtC, VoidCallback f) => setState(() {
-    _playingOrEditingTc = newtC;
-    f.call();
-  });
+  void setPlayingOrEditingTc(newtC, VoidCallback f) =>
+      setState(() {
+        _playingOrEditingTc = newtC;
+        f.call();
+      });
 
   TargetModel? get playingTc => _playingOrEditingTc;
 
@@ -247,46 +253,27 @@ class TargetsWrapperState extends State<TargetsWrapper> {
     }
 
     fco.afterNextBuildDo(() {
-      // if (zoomer?.widget.ancestorHScrollController != null) {
-      //   FCO.registerScrollController(zoomer!.widget.ancestorHScrollController!);
-      // }
-      // if (zoomer?.widget.ancestorVScrollController != null) {
-      //   FCO.registerScrollController(zoomer!.widget.ancestorVScrollController!);
-      // }
-
-      // look for enclosing scrollcontroller
-      var surroundingSC = fco.findScrollController(context);
-
-      fco.afterMsDelayDo(1000, () {
-        if (mounted) {
+      if (!mounted) return;
+      fco.afterMsDelayDo(1000, (){
+        // setState(() {
           measureIWPosAndSize();
-          // autoplay callouts when not in editing mode
-          if (!fco.canEditContent()) {
-            fco.afterNextBuildDo(() {
-              for (TargetModel tc in widget.parentNode.targets) {
-                if (!tc.hasAHotspot()) {
-                  TargetCover.playTarget(tc, wrapperRect, null);
-                }
-              }
-            });
-          }
-        }
+        // });
       });
     });
   }
 
   // double scrollOffsetX() =>
-  //     NamedScrollController.hScrollOffset(widget.scName);
+  //     NamedScrollController.hScrollOffset(scName(context));
   //
   // double scrollOffsetY() =>
-  //     NamedScrollController.vScrollOffset(widget.scName);
+  //     NamedScrollController.vScrollOffset(scName(context));
 
   void measureIWPosAndSize() {
     // fco.logger.i('measureIWPosAndSize');
     var newPosAndSize = (widget.key as GlobalKey).globalPosAndSize();
 
-    // final sw = NamedScrollController.hScrollOffset(widget.scName);
-    // final sh = NamedScrollController.vScrollOffset(widget.scName);
+    // final sw = NamedScrollController.hScrollOffset(scName(context));
+    // final sh = NamedScrollController.vScrollOffset(scName(context));
     Offset? globalPos;
     try {
       globalPos = newPosAndSize.$1
@@ -294,7 +281,7 @@ class TargetsWrapperState extends State<TargetsWrapper> {
       // sw,
       // sh,
       // )
-      ;
+          ;
       if (globalPos != null) {
         // fco.logger.i('globalPos != null');
         // fco.logger.i('TargetGroupWrapper.iwPosMap[${widget.name}] = ${globalPos.toString()}');
@@ -355,20 +342,20 @@ class TargetsWrapperState extends State<TargetsWrapper> {
         TargetId uid = data.$1;
         TargetModel? foundTc = widget.parentNode.findTarget(uid);
         // $2 true means target btn rather than target cover
-        // NamedScrollController? sc = widget.scName != null
-        //     ? NamedScrollController.instance(widget.scName!)
+        // NamedScrollController? sc = scName(context) != null
+        //     ? NamedScrollController.instance(scName(context)!)
         //     : null;
         if (foundTc != null && data.$2) {
           foundTc.setBtnStackPosPc(
             details.offset
                 .translate(
-                  TargetsWrapper.CAPI_TARGET_BTN_RADIUS,
-                  TargetsWrapper.CAPI_TARGET_BTN_RADIUS,
-                )
+              TargetsWrapper.CAPI_TARGET_BTN_RADIUS,
+              TargetsWrapper.CAPI_TARGET_BTN_RADIUS,
+            )
                 .translate(
-                  NamedScrollController.hScrollOffset(widget.scName),
-                  NamedScrollController.vScrollOffset(widget.scName),
-                ),
+              NamedScrollController.hScrollOffset(scName(context)),
+              NamedScrollController.vScrollOffset(scName(context)),
+            ),
           );
           foundTc.changed_saveRootSnippet();
         } else if (foundTc != null) {
@@ -376,9 +363,9 @@ class TargetsWrapperState extends State<TargetsWrapper> {
             details.offset
                 .translate(foundTc.radius, foundTc.radius)
                 .translate(
-                  NamedScrollController.hScrollOffset(widget.scName),
-                  NamedScrollController.vScrollOffset(widget.scName),
-                ),
+              NamedScrollController.hScrollOffset(scName(context)),
+              NamedScrollController.vScrollOffset(scName(context)),
+            ),
           );
           foundTc.changed_saveRootSnippet();
         }
@@ -444,7 +431,7 @@ class TargetsWrapperState extends State<TargetsWrapper> {
                             details,
                             widget.parentNode,
                             wrapperRect,
-                            widget.scName,
+                            scName(context),
                           ),
                         ),
                       );
@@ -472,10 +459,14 @@ class TargetsWrapperState extends State<TargetsWrapper> {
           // TARGET COVERS
           for (TargetModel tc in widget.parentNode.targets)
             Positioned(
-              top: tc.targetStackPos().dy - tc.radius,
+              top: tc
+                  .targetStackPos()
+                  .dy - tc.radius,
               // + vScrollOffset,
               // + (_playingOrEditingTc !=null ? scrollOffsetY()/tc.getScale() : 0.00),
-              left: tc.targetStackPos().dx - tc.radius,
+              left: tc
+                  .targetStackPos()
+                  .dx - tc.radius,
               // + hScrollOffset,
               // + (_playingOrEditingTc != null ? scrollOffsetX()/tc.getScale() : 0.00),
               child: Visibility.maintain(
@@ -484,13 +475,13 @@ class TargetsWrapperState extends State<TargetsWrapper> {
                   GlobalKey(debugLabel: 'Target ${tc.uid.toString()}'),
                 ),
                 visible:
-                    fco.canEditContent() &&
+                fco.canEditContent() &&
                     (playingTc == null || playingTc == tc),
                 child: TargetCover(
                   tc,
                   _targetIndex(tc),
                   wrapperRect: wrapperRect,
-                  scName: widget.scName,
+                  scName: scName(context),
                   playing: playingTc == tc,
                 ),
               ),
@@ -501,14 +492,18 @@ class TargetsWrapperState extends State<TargetsWrapper> {
             if (playingTc == null && tc.hasAHotspot())
               Positioned(
                 top:
-                    tc.btnStackPos().dy - TargetsWrapper.CAPI_TARGET_BTN_RADIUS,
+                tc
+                    .btnStackPos()
+                    .dy - TargetsWrapper.CAPI_TARGET_BTN_RADIUS,
                 left:
-                    tc.btnStackPos().dx - TargetsWrapper.CAPI_TARGET_BTN_RADIUS,
+                tc
+                    .btnStackPos()
+                    .dx - TargetsWrapper.CAPI_TARGET_BTN_RADIUS,
                 child: TargetPlayBtn(
                   initialTC: tc,
                   index: _targetIndex(tc),
                   wrapperRect: wrapperRect,
-                  scName: widget.scName,
+                  scName: scName(context),
                 ),
               ),
 
@@ -517,20 +512,20 @@ class TargetsWrapperState extends State<TargetsWrapper> {
               top: pulsingPointPos!.dy,
               left: pulsingPointPos!.dx,
               child:
-                  TargetCover(
-                        gk: pulsingPointGK,
-                        TargetModel(uid: -1)
-                          ..parentTargetsWrapperNode = widget.parentNode,
-                        widget.parentNode.targets.length,
-                        wrapperRect: wrapperRect,
-                        scName: widget.scName,
-                        playing: false,
-                      )
-                      .animate(
-                        onPlay: (controller) =>
-                            controller.repeat(reverse: true),
-                      )
-                      .scale(duration: 500.milliseconds),
+              TargetCover(
+                gk: pulsingPointGK,
+                TargetModel(uid: -1)
+                  ..parentTargetsWrapperNode = widget.parentNode,
+                widget.parentNode.targets.length,
+                wrapperRect: wrapperRect,
+                scName: scName(context),
+                playing: false,
+              )
+                  .animate(
+                onPlay: (controller) =>
+                    controller.repeat(reverse: true),
+              )
+                  .scale(duration: 500.milliseconds),
             ),
         ],
       ),
@@ -540,22 +535,40 @@ class TargetsWrapperState extends State<TargetsWrapper> {
   int _targetIndex(TargetModel tc) => widget.parentNode.targets.indexOf(tc);
 
   Widget _childBuild() {
-    Widget child =
-        widget.child ??
-        const Material(
-          child: Padding(
-            padding: EdgeInsets.all(8.0),
-            child: Text(
-              'Add a Child to the Targets Wrapper; \ne.g. an image over which \nyou will place callout targets',
+    Widget child = IgnorePointer(
+      ignoring: false, //fco.canEditContent.isTrue,
+      child:
+      widget.child ??
+          const Material(
+            child: Padding(
+              padding: EdgeInsets.all(8.0),
+              child: Text(
+                'Add a Child to the Targets Wrapper; \ne.g. an image over which \nyou will place callout targets',
+              ),
             ),
           ),
-        );
+    );
 
     // return child;
-    return IgnorePointer(
-      ignoring: false, //fco.canEditContent.isTrue,
+    return !fco.canEditContent()
+        ? VisibilityDetector(
+      key: UniqueKey(),
+      onVisibilityChanged: (VisibilityInfo info) {
+        print('visibleFraction: ${info.visibleFraction}');
+        if (info.visibleFraction > .95) {
+          // autoplay callouts when not in editing mode
+          if (!fco.canEditContent()) {
+            for (TargetModel tc in widget.parentNode.targets) {
+              if (!tc.hasAHotspot()) {
+                TargetCover.playTarget(tc, wrapperRect, scName(context));
+              }
+            }
+          }
+        }
+      },
       child: child,
-    );
+    )
+        : child;
   }
 }
 
@@ -569,8 +582,7 @@ class IntegerCircleAvatar extends StatelessWidget {
   final double fontSize;
   final Widget? child;
 
-  const IntegerCircleAvatar(
-    this.tc, {
+  const IntegerCircleAvatar(this.tc, {
     this.num,
     // required this.textColor,
     required this.bgColor,

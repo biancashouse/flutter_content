@@ -89,7 +89,6 @@ class TargetsWrapperNode extends SC with TargetsWrapperNodeMappable {
         child: TargetsWrapper(
           parentNode: this,
           key: createNodeWidgetGK(),
-          scName: EditablePage.maybeScrollControllerName(context),
           child: super.child?.buildFlutterWidget(context, this) ?? const Placeholder(),
         ),
       ),
