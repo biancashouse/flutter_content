@@ -11,8 +11,6 @@ class TargetsWrapperNode extends SC with TargetsWrapperNodeMappable {
   double? aspectRatio;
 
   // every drag end of a cover or play btn updates the aspect ratio
-  double? width;
-  double? height;
   double borderRadius;
   List<TargetModel> targets;
   @JsonKey(includeFromJson: false, includeToJson: false)
@@ -20,8 +18,6 @@ class TargetsWrapperNode extends SC with TargetsWrapperNodeMappable {
 
   TargetsWrapperNode({
     this.aspectRatio,
-    this.width,
-    this.height,
     this.borderRadius = 0,
     this.targets = const [],
     this.playList = const [],
@@ -30,73 +26,44 @@ class TargetsWrapperNode extends SC with TargetsWrapperNodeMappable {
 
   @override
   List<PNode> propertyNodes(BuildContext context, SNode? parentSNode) => [
-        DecimalPNode(
-          snode: this,
-          name: 'width',
-          decimalValue: width,
-          onDoubleChange: (newValue) =>
-              refreshWithUpdate(context,() => width = newValue),
-          calloutButtonSize: const Size(80, 20),
-        ),
     DecimalPNode(
       snode: this,
-      name: 'height',
-      decimalValue: height,
+      name: 'aspectRatio',
+      decimalValue: aspectRatio,
       onDoubleChange: (newValue) =>
-          refreshWithUpdate(context,() => height = newValue),
-      calloutButtonSize: const Size(80, 20),
+          refreshWithUpdate(context, () => aspectRatio = newValue ?? 0.0),
+      calloutButtonSize: const Size(130, 20),
     ),
     DecimalPNode(
       snode: this,
       name: 'borderRadius',
       decimalValue: borderRadius,
       onDoubleChange: (newValue) =>
-          refreshWithUpdate(context,() => borderRadius = newValue??0.0),
-      calloutButtonSize: const Size(80, 20),
+          refreshWithUpdate(context, () => borderRadius = newValue ?? 0.0),
+      calloutButtonSize: const Size(130, 20),
     ),
-        // StringPNode(
-        //   snode: this,
-        //   name: 'wrapper name',
-        //   stringValue: name,
-        //   onStringChange: (newValue) =>
-        //       refreshWithUpdate(context,() => name = newValue),
-        //   calloutButtonSize: const Size(280, 80),
-        //   calloutSize: const Size(280, 80),
-        // ),
-      ];
-
-  // @override
-  // List<Widget> nodePropertyEditors(BuildContext context, {bool allowButtonCallouts = false}) => [
-  //       NodePropertyButtonText(
-  //           label: "Snppet Name",
-  //           text: snippetName,
-  //           calloutSize: const Size(600, 200),
-  //           onChangeF: (s) {
-  //             snippetName = s;
-  //             bloc.add(const CAPIEvent.forceRefresh());
-  //           }),
-  //     ];
+   ];
 
   @override
   Widget buildFlutterWidget(BuildContext context, SNode? parentNode) {
     EditablePageState? eps = EditablePage.of(context);
     setParent(parentNode);
     return eps != null
-    ? ClipRRect(borderRadius: BorderRadius.circular(borderRadius),
-      child: SizedBox(
-        width: width,
-        height: height,
-        child: TargetsWrapper(
-          parentNode: this,
-          key: createNodeWidgetGK(),
-          child: super.child?.buildFlutterWidget(context, this) ?? const Placeholder(),
-        ),
-      ),
-    )
-    : Error(
-        key: createNodeWidgetGK(),
-        FLUTTER_TYPE,
-        color: Colors.red, size: 16, errorMsg: "unable to find EditablePage.of(context)!");
+        ? ClipRRect(
+            borderRadius: BorderRadius.circular(borderRadius),
+            child: TargetsWrapper(
+                parentNode: this,
+                key: createNodeWidgetGK(),
+                childNode: child,
+            ),
+          )
+        : Error(
+            key: createNodeWidgetGK(),
+            FLUTTER_TYPE,
+            color: Colors.red,
+            size: 16,
+            errorMsg: "unable to find EditablePage.of(context)!",
+          );
   }
 
   @override
@@ -113,10 +80,8 @@ class TargetsWrapperNode extends SC with TargetsWrapperNodeMappable {
   bool canRemove() => targets.isEmpty;
 
   @override
-  Widget? widgetLogo() => Image.asset(
-    fco.asset('lib/assets/images/pub.dev.png'),
-    width: 16,
-  );
+  Widget? widgetLogo() =>
+      Image.asset(fco.asset('lib/assets/images/pub.dev.png'), width: 16);
 
   @override
   String toString() => FLUTTER_TYPE;

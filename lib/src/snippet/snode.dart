@@ -233,8 +233,7 @@ abstract class SNode extends Node with SNodeMappable {
   static double BORDER = 4;
 
   //maybe a hotspot, so will have a tc
-  void showTappableNodeWidgetOverlay(
-    BuildContext context, {
+  void showTappableNodeWidgetOverlay({
     // bool whiteBarrier = false,
     ScrollControllerName? scName,
     // TargetModel? tc,
@@ -254,8 +253,19 @@ abstract class SNode extends Node with SNodeMappable {
         ensureLowestOverlay: false,
         calloutContent: Tooltip(
           message: 'tap to edit this ${toString()} node',
-          child: InkWell(
-            onTap: () => tappedToEditSnippetNode(context, scName),
+          child: GestureDetector(
+            onTap: () => tappedToEditSnippetNode(),
+            // onPanStart: (DragStartDetails event) {
+            //   print('onPanStart');
+            //
+            // },
+            // onPanUpdate: (DragUpdateDetails event) {
+            //   print('panUpdate');
+            //   if (scName != null) {
+            //     NamedScrollController.updateScrollOffset(scName, event.delta.dy);
+            //   }
+            // },
+            // onPanEnd: (DragEndDetails event) {},
             child: Container(
               width: borderRect.width.abs(),
               height: borderRect.height.abs(),
@@ -279,10 +289,36 @@ abstract class SNode extends Node with SNodeMappable {
     }
   }
 
-  void tappedToEditSnippetNode(
-    BuildContext context,
-    ScrollControllerName? scName,
-  ) {
+  Widget? buildTappableNodeWidgetRect() {
+    Rect? borderRect = calcBorderRect();
+
+    return (borderRect != null)
+        ? Positioned(
+            left: borderRect.left,
+            top: borderRect.top,
+            child: Tooltip(
+              message: 'tap to edit this ${toString()} node',
+              child: GestureDetector(
+                onTap: () => tappedToEditSnippetNode(),
+                child: Container(
+                  width: borderRect.width.abs(),
+                  height: borderRect.height.abs(),
+                  decoration: DottedDecoration(
+                    shape: Shape.box,
+                    dash: const <int>[6, 6],
+                    borderColor: Colors.black,
+                    strokeWidth: 3,
+                    fillColor: Colors.transparent,
+                    // fillGradient: fillGradient,
+                  ),
+                ),
+              ),
+            ),
+          )
+        : null;
+  }
+
+  void tappedToEditSnippetNode() {
     // fco.logger.i("${toString()} tapped");
     SnippetRootNode? rootNode = (this is SnippetRootNode)
         ? this as SnippetRootNode
@@ -299,8 +335,6 @@ abstract class SNode extends Node with SNodeMappable {
     //             hideAllSingleTargetBtns();
     // FCO.capiBloc.add(const CAPIEvent.hideAllTargetGroupBtns());
     // FCO.capiBloc.add(const CAPIEvent.hideTargetGroupsExcept());
-    EditablePageState? eps = EditablePage.of(context);
-    eps?.dismissAllNodeWidgetOverlays();
     // remove the barrier if about to edit a content callout
     if (SnippetRootNode.isHotspotCalloutContent(snippetName)) {
       final cc = fco.findOE(snippetName)?.calloutConfig;
@@ -321,7 +355,7 @@ abstract class SNode extends Node with SNodeMappable {
 
     // var savedOffsets = fco.saveScrollOffsets();
 
-    pushThenShowNamedSnippetWithNodeSelected(snippetName, this, scName: scName);
+    pushThenShowNamedSnippetWithNodeSelected(snippetName, this);
   }
 
   void showSelectedNonTappableNodeWidgetOverlay({
@@ -345,19 +379,22 @@ abstract class SNode extends Node with SNodeMappable {
     //   eps?.dismissAllNodeWidgetOverlays();
     // }
     fco.showOverlay(
-      calloutContent: Container(
-        width: cc.calloutW,
-        height: cc.calloutH,
-        decoration: DottedDecoration(
-          shape: Shape.box,
-          dash: const <int>[6, 6],
-          borderColor: Colors.black,
-          strokeWidth: 3,
-          fillColor: Colors.transparent,
+      calloutContent: AbsorbPointer(
+        child: Container(
+          width: cc.calloutW,
+          height: cc.calloutH,
+          decoration: DottedDecoration(
+            shape: Shape.box,
+            dash: const <int>[6, 6],
+            borderColor: Colors.black,
+            strokeWidth: 3,
+            fillColor: Colors.transparent,
+          ),
         ),
       ),
       calloutConfig: cc,
       wrapInPointerInterceptor: isHtmlElementViewOrPlatformView(),
+      targetGkF: () => this.nodeWidgetGK,
       skipOnScreenCheck: true,
     );
   }
@@ -369,6 +406,7 @@ abstract class SNode extends Node with SNodeMappable {
       skipWidthConstraintWarning: true,
       skipHeightConstraintWarning: true,
     );
+
     // in case widget doesn't have a key (e.g. inlinespans)
     // r ??= (getParent() as SNode?)?.nodeWidgetGK?.globalPaintBounds(
     //   skipWidthConstraintWarning: true,
@@ -384,6 +422,7 @@ abstract class SNode extends Node with SNodeMappable {
       } else {
         borderRect = r;
       }
+
       return borderRect;
     }
     return null;
@@ -611,18 +650,13 @@ abstract class SNode extends Node with SNodeMappable {
   // List<String> sensibleParents() => const [];
 
   GlobalKey? createNodeWidgetGK() {
-    print('--- createNodeGK --- ${toString()}');
+    // print('--- createNodeGK --- ${toString()}');
     String debugLabel = toString();
     if (this is TextNode) {
       debugLabel += (this as TextNode).text;
     }
-    _nodeWidgetGK = GlobalKey(debugLabel: debugLabel);
-    // if (fco.nodesByGK.containsKey(nodeWidgetGK)) {
-    //   fco.logger.d('Trying to use GlobalKey twice!');
-    // }
-    if (!fco.nodesByGK.containsKey(_nodeWidgetGK)) {
-      fco.nodesByGK[_nodeWidgetGK!] = this;
-    }
+    _nodeWidgetGK ??= GlobalKey(debugLabel: debugLabel);
+    fco.nodesByGK[_nodeWidgetGK!] = this;
     return _nodeWidgetGK;
   }
 
@@ -724,10 +758,11 @@ abstract class SNode extends Node with SNodeMappable {
   bool anyMissingParents() {
     var children = childrenProvider(this);
     for (SNode child in children) {
-      bool foundAMissingParent =
-          child.getParent() != this || child.anyMissingParents();
+      bool foundAMissingParent = child.getParent() != this;
       if (foundAMissingParent) {
         return true;
+      } else {
+        return child.anyMissingParents();
       }
     }
     return false;
@@ -767,7 +802,7 @@ abstract class SNode extends Node with SNodeMappable {
     throw UnimplementedError();
   }
 
-  SNode? findDescendant(Type type) {
+  SNode? findDescendant(/*Flutter*/ Type type) {
     //
     SNode? foundChild;
 
@@ -789,6 +824,7 @@ abstract class SNode extends Node with SNodeMappable {
     return foundChild;
   }
 
+  // useful for finding hostspot wrappers => leading to their hotspots
   List<SNode> findDescendantsOfType(Type type) {
     //
     List<SNode> foundNodes = [];
@@ -805,6 +841,23 @@ abstract class SNode extends Node with SNodeMappable {
 
     //
     findMatchingDescendants(this);
+    return foundNodes;
+  }
+
+  // useful for getting a list of all the nodes of a snippet
+  List<SNode> findDescendantNodes(/* of this node*/) {
+    //
+    List<SNode> foundNodes = [];
+
+    void traverseDescendants(SNode node) {
+      for (SNode child in childrenProvider(node)) {
+        foundNodes.add(child);
+        traverseDescendants(child);
+      }
+    }
+
+    //
+    traverseDescendants(this);
     return foundNodes;
   }
 
@@ -1394,7 +1447,13 @@ abstract class SNode extends Node with SNodeMappable {
           menuItemButton(context, "Container", ContainerNode, action, scName),
           menuItemButton(context, "Padding", PaddingNode, action, scName),
           menuItemButton(context, "SizedBox", SizedBoxNode, action, scName),
-          menuItemButton(context, "ConstrainedBox", ConstrainedBoxNode, action, scName),
+          menuItemButton(
+            context,
+            "ConstrainedBox",
+            ConstrainedBoxNode,
+            action,
+            scName,
+          ),
           menuItemButton(
             context,
             "InteractiveViewer",
@@ -1519,7 +1578,13 @@ abstract class SNode extends Node with SNodeMappable {
           // _addChildmenuItemButton(context, "IntrinsicWidth", IntrinsicWidthNode, action, scName),
           menuItemButton(context, "Padding", PaddingNode, action, scName),
           menuItemButton(context, "SizedBox", SizedBoxNode, action, scName),
-          menuItemButton(context, "ConstrainedBox", ConstrainedBoxNode, action, scName),
+          menuItemButton(
+            context,
+            "ConstrainedBox",
+            ConstrainedBoxNode,
+            action,
+            scName,
+          ),
           menuItemButton(context, "ListView", ListViewNode, action, scName),
           menuItemButton(context, "GridView", GridViewNode, action, scName),
           menuItemButton(
@@ -1870,7 +1935,13 @@ abstract class SNode extends Node with SNodeMappable {
             menuItemButton(context, "Container", ContainerNode, action, scName),
             menuItemButton(context, "Padding", PaddingNode, action, scName),
             menuItemButton(context, "SizedBox", SizedBoxNode, action, scName),
-            menuItemButton(context, "ConstrainedBox", ConstrainedBoxNode, action, scName),
+            menuItemButton(
+              context,
+              "ConstrainedBox",
+              ConstrainedBoxNode,
+              action,
+              scName,
+            ),
             menuItemButton(context, "ListView", ListViewNode, action, scName),
             menuItemButton(context, "GridView", GridViewNode, action, scName),
             menuItemButton(
@@ -2364,6 +2435,8 @@ abstract class SNode extends Node with SNodeMappable {
         if (node.subtitle != null) node.subtitle!,
         node.content,
       ];
+    } else if (node is AppBarNode) {
+      children = [node.leading, node.title, node.actions, node.bottom];
     } else if (node is NamedSC) {
       children = node.child != null ? [node.child!] : [];
     } else if (node is NamedPS) {

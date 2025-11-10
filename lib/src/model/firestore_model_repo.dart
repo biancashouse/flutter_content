@@ -70,7 +70,7 @@ class FireStoreModelRepository implements IModelRepository {
       snippetName,
     );
     if (snippetInfo != null) {
-      fco.logger.d("getSnippetInfoFromCacheOrFB($snippetName) - from CACHE");
+      // fco.logger.d("getSnippetInfoFromCacheOrFB($snippetName) - from CACHE");
       return snippetInfo;
     }
 
@@ -89,9 +89,9 @@ class FireStoreModelRepository implements IModelRepository {
       snippetInfoData = snippetInfoDoc.data() as Map<String, dynamic>;
       snippetInfo = SnippetInfoModelMapper.fromMap(snippetInfoData);
       SnippetInfoModel.cacheSnippetInfo(snippetName, snippetInfo);
-      fco.logger.d(
-        "getSnippetInfoFromCacheOrFB($snippetName) - from FB (cached)",
-      );
+      // fco.logger.d(
+      //   "getSnippetInfoFromCacheOrFB($snippetName) - from FB (cached)",
+      // );
       // fco.logger.d("getSnippetInfoFromCacheOrFB($snippetName) - SnippetInfoModel.cachedSnippet($snippetName) is ${SnippetInfoModel.cachedSnippetInfo(snippetName)}");
       // introduce a delay to allow for the cache to be populated
       // await Future.delayed(Duration(milliseconds: 200));

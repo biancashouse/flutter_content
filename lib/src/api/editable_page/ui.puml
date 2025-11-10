@@ -1,0 +1,7 @@
+plantuml
+@startwbs
+* BlocConsumer
+** _guestPage()
+** _signedInPage()
+
+@endwbs

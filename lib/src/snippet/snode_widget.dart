@@ -168,7 +168,8 @@ class SNodeWidget extends StatelessWidget {
                           (entry.node as NamedSC).child == null) ||
                       (entry.node is NamedPS &&
                           (entry.node as NamedPS).child == null)))
-                SizedBox(height: 20,
+                SizedBox(
+                  height: 20,
                   child: entry.node.insertItemMenuAnchor(
                     context,
                     action: NodeAction.addChild,
@@ -326,6 +327,55 @@ class SNodeWidget extends StatelessWidget {
           // selectedTreeNodeGK: GlobalKey(debugLabel: 'selectedTreeNodeGK'),
         ),
       );
+
+      fco.dismissAll();
+
+      fco.afterNextBuildDo(() {
+        var selectedNode = fco.capiBloc.state.snippetBeingEdited!.selectedNode;
+        if (selectedNode == null) return;
+        fco.afterMsDelayDo(100, () {
+          var cc = selectedNode.nodeWidgetGK!.currentContext;
+          if (cc != null) {
+            Scrollable.ensureVisible(
+              cc,
+              duration: const Duration(milliseconds: 500),
+              curve: Curves.easeOut,
+            );
+          }
+          fco.afterMsDelayDo(1000, () {
+            fco.showOverlay(
+              calloutConfig: CalloutConfig(
+                cId: 'selected-node',
+                scrollControllerName: scName,
+                initialCalloutW: 100,
+                initialCalloutH: 40,
+                initialTargetAlignment: Alignment.centerRight,
+                initialCalloutAlignment: Alignment.centerLeft,
+                finalSeparation: 50,
+                targetPointerType: TargetPointerType.thin_line(),
+                bubbleOrTargetPointerColor: Colors.black,
+                animatePointer: true,
+                decorationFillColors: ColorOrGradient.color(Colors.black),
+                followScroll: true,
+              ),
+              calloutContent: fco.coloredText(
+                'selected node',
+                color: Colors.white,
+                edgeInsetValue: 6,
+              ),
+              targetGkF: () => selectedNode.nodeWidgetGK,
+            );
+            Rect? borderRect = selectedNode.calcBorderRect();
+            if (borderRect != null) {
+              selectedNode.showSelectedNonTappableNodeWidgetOverlay(
+                // selected: true,
+                borderRect: borderRect,
+                scName: scName,
+              );
+            }
+          });
+        });
+      });
     }
 
     // fco.afterNextBuildDo(() {
@@ -501,9 +551,7 @@ class SNodeWidget extends StatelessWidget {
                             gc?.propertyName == 'content')) {
                       return;
                     }
-                    fco.capiBloc.add(
-                      CAPIEvent.cutNode(node: node),
-                    );
+                    fco.capiBloc.add(CAPIEvent.cutNode(node: node));
                     fco.afterNextBuildDo(() {
                       fco.dismiss('node-actions');
                       if (fco.appInfo.clipboard != null) {
@@ -533,9 +581,7 @@ class SNodeWidget extends StatelessWidget {
                   hoverColor: Colors.white30,
                   onPressed: () {
                     fco.afterNextBuildDo(() {
-                      fco.capiBloc.add(
-                        CAPIEvent.copyNode(node: node),
-                      );
+                      fco.capiBloc.add(CAPIEvent.copyNode(node: node));
                       fco.afterNextBuildDo(() {
                         fco.dismiss('node-actions');
                         if (fco.appInfo.clipboard != null) {
@@ -563,8 +609,6 @@ class SNodeWidget extends StatelessWidget {
                     if (!node.canRemove()) return;
                     // bool wasShowingAsRoot = selectedNode == snippetBloc.treeC.roots.first;
                     // STreeNode? parentNode = selectedNode.getParent() as STreeNode?;
-                    EditablePageState? eps = EditablePage.of(context);
-                    eps?.dismissAllNodeWidgetOverlays();
                     fco.capiBloc.add(const CAPIEvent.deleteNodeTapped());
                     fco.afterNextBuildDo(() async {
                       await Future.delayed(const Duration(milliseconds: 1000));

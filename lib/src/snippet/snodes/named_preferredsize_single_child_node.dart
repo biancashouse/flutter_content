@@ -31,7 +31,7 @@ class NamedPS extends SC
     SNode? parentNode) {
     try {
       var psChildWidget = child?.buildFlutterWidget(context, this);
-      setParent(null);
+      setParent(parentNode);
       if (psChildWidget is! PreferredSizeWidget) {
         return PreferredSize(
           preferredSize: Size.fromHeight(300),

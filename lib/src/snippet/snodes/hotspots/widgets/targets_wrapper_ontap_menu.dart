@@ -15,6 +15,7 @@ class TargetsWrapperOnTapMenu extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
+      padding: EdgeInsets.all(10),
       decoration: BoxDecoration(
         // color: Colors.purpleAccent,
         borderRadius: BorderRadius.all(Radius.circular(4.0)),
@@ -24,7 +25,28 @@ class TargetsWrapperOnTapMenu extends StatelessWidget {
           mainAxisSize: MainAxisSize.min,
           // mainAxisAlignment: MainAxisAlignment.spaceAround,
           crossAxisAlignment: CrossAxisAlignment.center,
-          children: getMenuItems(context),
+          children: [
+            TextButton(
+              style: ButtonStyle(
+                backgroundColor: WidgetStatePropertyAll(Colors.white),
+                padding: WidgetStatePropertyAll(EdgeInsets.all(8)),
+              ),
+              onPressed: () async {
+                fco.dismissAll();
+                await createTarget(details, true);
+              },
+              child: Text(
+                'create a Target + Hotspot here',
+                style: TextStyle(fontSize: 18),
+                textAlign: TextAlign.center,
+              ),
+            ),
+            Gap(16),
+            Text(
+              '(user will be able to tap\nthe hotspot to play its callout)',
+              style: TextStyle(fontSize: 12, color: Colors.white),
+            )
+          ],
         ),
       ),
     );
@@ -32,77 +54,7 @@ class TargetsWrapperOnTapMenu extends StatelessWidget {
 
   static double menuWidth() => 400.0;
 
-  static double menuHeight() => 350.0;
-
-  List<Widget> getMenuItems(context) {
-    List<Widget> menuItems = [];
-
-    // menuItems.add(Container(
-    //     width: double.infinity,
-    //     alignment: AlignmentEnumModel.topLeft,
-    //     child: Icon(Icons.north_west)));
-
-    menuItems.add(
-      TextButton(
-        style: ButtonStyle(
-          backgroundColor: WidgetStatePropertyAll(Colors.white),
-          padding: WidgetStatePropertyAll(EdgeInsets.all(8)),
-        ),
-        onPressed: () async {
-          fco.dismissAll();
-          await createTarget(details, true);
-        },
-        child: Text(
-          'create a Target + Hotspot here',
-          style: TextStyle(fontSize: 18),
-          textAlign: TextAlign.center,
-        ),
-      ),
-    );
-
-    menuItems.add(Text(
-      '(user will be able to tap\nthe hotspot to play its callout)',
-      style: TextStyle(fontSize: 12, color: Colors.white),
-    ));
-
-    menuItems.add(SizedBox(
-        width: double.infinity,
-        child: Text(
-          'or',
-          textAlign: TextAlign.center,
-          style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
-        )));
-
-    menuItems.add(
-      TextButton(
-        style: ButtonStyle(
-          backgroundColor: WidgetStatePropertyAll(Colors.white),
-          padding: WidgetStatePropertyAll(EdgeInsets.all(8)),
-        ),
-        onPressed: () async {
-          fco.removeParentCallout(context);
-          await createTarget(details, false);
-        },
-        child: Text(
-          'create a Target here',
-          style: TextStyle(fontSize: 18),
-          textAlign: TextAlign.center,
-        ),
-      ),
-    );
-
-    menuItems.add(Text(
-      '(callout will play automatically\nwhen page renders)',
-      style: TextStyle(fontSize: 12, color: Colors.white),
-    ));
-
-    return menuItems
-        .map((Widget mi) => Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: mi,
-            ))
-        .toList();
-  }
+  static double menuHeight() => 200.0;
 
   Future<void> createTarget(TapDownDetails details, bool withHotspot) async {
     if (!fco.canEditContent()) return;

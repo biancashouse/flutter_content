@@ -8,6 +8,7 @@ part 'capi_event.freezed.dart';
 @freezed
 class CAPIEvent with _$CAPIEvent {
   const CAPIEvent._();
+
   // const factory CAPIEvent.appStarted() = AppStarted;
 
   // const factory CAPIEvent.newTarget({
@@ -15,16 +16,14 @@ class CAPIEvent with _$CAPIEvent {
   //   required Offset newGlobalPos,
   // }) = NewTarget;
 
-
   // const factory CAPIEvent.deleteTarget({
   //   required TargetModel tc,
   // }) = DeleteTarget;
 
-  const factory CAPIEvent.signedIn({
-    @Default(false) bool asGuestEditor,
-  }) = SignedIn;
-  const factory CAPIEvent.signedOut() = SignedOut;
+  const factory CAPIEvent.signedIn({@Default(false) bool asGuestEditor}) =
+      SignedIn;
 
+  const factory CAPIEvent.signedOut() = SignedOut;
 
   // const factory CAPIEvent.selectPanel({
   //   required String? panelName,
@@ -107,18 +106,17 @@ class CAPIEvent with _$CAPIEvent {
   //   required double newScale,
   // }) = ChangedTransformScale;
 
-//
-// content editor
-//
-//   const factory CAPIEvent.clearUR() = ClearUR;
+  //
+  // content editor
+  //
+  //   const factory CAPIEvent.clearUR() = ClearUR;
 
   const factory CAPIEvent.forceRefresh({
     @Default(false) bool onlyTargetsWrappers,
   }) = ForceRefresh;
 
-  const factory CAPIEvent.toggleSnippetVisibility({
-    SnippetName? snippetName,
-}) = ToggleSnippetVisibility;
+  const factory CAPIEvent.toggleSnippetVisibility({SnippetName? snippetName}) =
+      ToggleSnippetVisibility;
 
   const factory CAPIEvent.clearClipboard() = ClearClipboard;
 
@@ -163,22 +161,19 @@ class CAPIEvent with _$CAPIEvent {
   //   required String pathName,
   // }) = PageAdded;
 
-  const factory CAPIEvent.deletePage({
-    required String pathName,
-  }) = DeletePage;
+  const factory CAPIEvent.deletePage({required String pathName}) = DeletePage;
 
   const factory CAPIEvent.toggleAutoPublishingOfSnippet({
     required SnippetName snippetName,
   }) = ToggleAutoPublishingOfSnippet;
 
-  const factory CAPIEvent.autoPublishDefault({
-    required bool b,
-  }) = AutoPublishDefault;
+  const factory CAPIEvent.autoPublishDefault({required bool b}) =
+      AutoPublishDefault;
 
-// const factory CAPIEvent.changedSnippetName({
-//   required TargetModel tc,
-//   required String newName,
-// }) = ChangedSnippetName;
+  // const factory CAPIEvent.changedSnippetName({
+  //   required TargetModel tc,
+  //   required String newName,
+  // }) = ChangedSnippetName;
 
   // const factory CAPIEvent.hideIframes({required bool hide}) = HideIframes;
 
@@ -187,21 +182,23 @@ class CAPIEvent with _$CAPIEvent {
     required PanelName panelName,
   }) = SetPanelSnippet;
 
-  const factory CAPIEvent.enterSelectWidgetMode({
+  const factory CAPIEvent.enterNodeSelectionMode({
     required SnippetName snippetName,
   }) = EnterSelectWidgetMode;
 
-  const factory CAPIEvent.exitSelectWidgetMode(
-  ) = ExitSelectWidgetMode;
+  // no need to pass snippet name - will already be in state
+  const factory CAPIEvent.updateTappableRects() =
+      UpdateTappableRects;
+
+  const factory CAPIEvent.exitNodeSelectionMode() = ExitSelectWidgetMode;
 
   const factory CAPIEvent.pushSnippetEditor({
     required SnippetRootNode rootNode,
     SNode? selectedNode,
   }) = PushSnippetEditor;
 
-  const factory CAPIEvent.popSnippetEditor({
-    @Default(false) bool save,
-  }) = PopSnippetEditor;
+  const factory CAPIEvent.popSnippetEditor({@Default(false) bool save}) =
+      PopSnippetEditor;
 
   // const factory CAPIEvent.showCutout({
   //   required Rect cutoutRect,
@@ -214,32 +211,31 @@ class CAPIEvent with _$CAPIEvent {
 
   const factory CAPIEvent.showDirectoryTree() = ShowDirectoryTree;
 
-  const factory CAPIEvent.removeDirectoryTree({
-    @Default(false) bool save,
-  }) = RemoveDirectoryTree;
+  const factory CAPIEvent.removeDirectoryTree({@Default(false) bool save}) =
+      RemoveDirectoryTree;
 
-// const factory CAPIEvent.changedSnippetTreeCalloutSize({
-//   required double? newW,
-//   required double? newH,
-// }) = ChangedSnippetTreeCalloutSize;
-//
-// const factory CAPIEvent.changedSnippetTreeCalloutPos({
-//   required Offset newOffset,
-// }) = ChangedSnippetTreeCalloutPos;
-//
-// const factory CAPIEvent.changedDirectoryTreeCalloutSize({
-//   required double? newW,
-//   required double? newH,
-// }) = ChangedDirectoryTreeCalloutSize;
+  // const factory CAPIEvent.changedSnippetTreeCalloutSize({
+  //   required double? newW,
+  //   required double? newH,
+  // }) = ChangedSnippetTreeCalloutSize;
+  //
+  // const factory CAPIEvent.changedSnippetTreeCalloutPos({
+  //   required Offset newOffset,
+  // }) = ChangedSnippetTreeCalloutPos;
+  //
+  // const factory CAPIEvent.changedDirectoryTreeCalloutSize({
+  //   required double? newW,
+  //   required double? newH,
+  // }) = ChangedDirectoryTreeCalloutSize;
 
-// const factory CAPIEvent.changedSnippetPropertiesCalloutSize({
-//   required double? newW,
-//   required double? newH,
-// }) = ChangedSnippetPropertiesCalloutSize;
+  // const factory CAPIEvent.changedSnippetPropertiesCalloutSize({
+  //   required double? newW,
+  //   required double? newH,
+  // }) = ChangedSnippetPropertiesCalloutSize;
 
-//==========================================================================================
-//====  SNIPPET EDITING  ===================================================================
-//==========================================================================================
+  //==========================================================================================
+  //====  SNIPPET EDITING  ===================================================================
+  //==========================================================================================
   const factory CAPIEvent.selectNode({
     required SNode node,
     // required GlobalKey selectedWidgetGK,
@@ -248,8 +244,7 @@ class CAPIEvent with _$CAPIEvent {
     // TargetModel? widgetTC,
   }) = SelectNode;
 
-  const factory CAPIEvent.clearNodeSelection(
-      ) = ClearNodeSelection;
+  const factory CAPIEvent.clearNodeSelection() = ClearNodeSelection;
 
   const factory CAPIEvent.saveNodeAsSnippet({
     required SNode node,
@@ -337,19 +332,16 @@ class CAPIEvent with _$CAPIEvent {
   //   required STreeNode adder2InsertBefore,
   // }) = AddNode;
 
-  const factory CAPIEvent.copySnippetJsonToClipboard(
-      {required SnippetRootNode rootNode}) = CopySnippetJsonToClipboard;
+  const factory CAPIEvent.copySnippetJsonToClipboard({
+    required SnippetRootNode rootNode,
+  }) = CopySnippetJsonToClipboard;
 
   const factory CAPIEvent.replaceSnippetFromJson({String? snippetJson}) =
       ReplaceSnippetFromJson;
 
-  const factory CAPIEvent.copyNode({
-    required SNode node,
-  }) = CopyNode;
+  const factory CAPIEvent.copyNode({required SNode node}) = CopyNode;
 
-  const factory CAPIEvent.cutNode({
-    required SNode node,
-  }) = CutNode;
+  const factory CAPIEvent.cutNode({required SNode node}) = CutNode;
 
   // const factory CAPIEvent.pasteNode({
   //   required STreeNode adder,
@@ -365,9 +357,7 @@ class CAPIEvent with _$CAPIEvent {
   //   required STreeNode? selectedNode, // null means clear selection
   // }) = SelectedFSDirectoryOrNode;
 
-  const factory CAPIEvent.imageChanged({
-    Uint8List? newBytes,
-  }) = ImageChanged;
+  const factory CAPIEvent.imageChanged({Uint8List? newBytes}) = ImageChanged;
 
   // const factory CAPIEvent.clearUR() = ClearUR;
   //
@@ -391,19 +381,30 @@ class CAPIEvent with _$CAPIEvent {
   }
 
   @override
-  DiagnosticsNode toDiagnosticsNode({String? name, DiagnosticsTreeStyle? style}) {
+  DiagnosticsNode toDiagnosticsNode({
+    String? name,
+    DiagnosticsTreeStyle? style,
+  }) {
     // TODO: implement toDiagnosticsNode
     throw UnimplementedError();
   }
 
   @override
-  String toStringDeep({String prefixLineOne = '', String? prefixOtherLines, DiagnosticLevel minLevel = DiagnosticLevel.debug, int wrapWidth = 65}) {
+  String toStringDeep({
+    String prefixLineOne = '',
+    String? prefixOtherLines,
+    DiagnosticLevel minLevel = DiagnosticLevel.debug,
+    int wrapWidth = 65,
+  }) {
     // TODO: implement toStringDeep
     throw UnimplementedError();
   }
 
   @override
-  String toStringShallow({String joiner = ', ', DiagnosticLevel minLevel = DiagnosticLevel.debug}) {
+  String toStringShallow({
+    String joiner = ', ',
+    DiagnosticLevel minLevel = DiagnosticLevel.debug,
+  }) {
     // TODO: implement toStringShallow
     throw UnimplementedError();
   }

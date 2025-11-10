@@ -30,18 +30,6 @@ class TargetsWrapperNodeMapper extends SubClassMapperBase<TargetsWrapperNode> {
     _$aspectRatio,
     opt: true,
   );
-  static double? _$width(TargetsWrapperNode v) => v.width;
-  static const Field<TargetsWrapperNode, double> _f$width = Field(
-    'width',
-    _$width,
-    opt: true,
-  );
-  static double? _$height(TargetsWrapperNode v) => v.height;
-  static const Field<TargetsWrapperNode, double> _f$height = Field(
-    'height',
-    _$height,
-    opt: true,
-  );
   static double _$borderRadius(TargetsWrapperNode v) => v.borderRadius;
   static const Field<TargetsWrapperNode, double> _f$borderRadius = Field(
     'borderRadius',
@@ -114,8 +102,6 @@ class TargetsWrapperNodeMapper extends SubClassMapperBase<TargetsWrapperNode> {
   @override
   final MappableFields<TargetsWrapperNode> fields = const {
     #aspectRatio: _f$aspectRatio,
-    #width: _f$width,
-    #height: _f$height,
     #borderRadius: _f$borderRadius,
     #targets: _f$targets,
     #playList: _f$playList,
@@ -144,8 +130,6 @@ class TargetsWrapperNodeMapper extends SubClassMapperBase<TargetsWrapperNode> {
   static TargetsWrapperNode _instantiate(DecodingData data) {
     return TargetsWrapperNode(
       aspectRatio: data.dec(_f$aspectRatio),
-      width: data.dec(_f$width),
-      height: data.dec(_f$height),
       borderRadius: data.dec(_f$borderRadius),
       targets: data.dec(_f$targets),
       playList: data.dec(_f$playList),
@@ -241,8 +225,6 @@ abstract class TargetsWrapperNodeCopyWith<
   @override
   $R call({
     double? aspectRatio,
-    double? width,
-    double? height,
     double? borderRadius,
     List<TargetModel>? targets,
     List<TargetModel>? playList,
@@ -289,8 +271,6 @@ class _TargetsWrapperNodeCopyWithImpl<$R, $Out>
   @override
   $R call({
     Object? aspectRatio = $none,
-    Object? width = $none,
-    Object? height = $none,
     double? borderRadius,
     List<TargetModel>? targets,
     List<TargetModel>? playList,
@@ -298,8 +278,6 @@ class _TargetsWrapperNodeCopyWithImpl<$R, $Out>
   }) => $apply(
     FieldCopyWithData({
       if (aspectRatio != $none) #aspectRatio: aspectRatio,
-      if (width != $none) #width: width,
-      if (height != $none) #height: height,
       if (borderRadius != null) #borderRadius: borderRadius,
       if (targets != null) #targets: targets,
       if (playList != null) #playList: playList,
@@ -309,8 +287,6 @@ class _TargetsWrapperNodeCopyWithImpl<$R, $Out>
   @override
   TargetsWrapperNode $make(CopyWithData data) => TargetsWrapperNode(
     aspectRatio: data.get(#aspectRatio, or: $value.aspectRatio),
-    width: data.get(#width, or: $value.width),
-    height: data.get(#height, or: $value.height),
     borderRadius: data.get(#borderRadius, or: $value.borderRadius),
     targets: data.get(#targets, or: $value.targets),
     playList: data.get(#playList, or: $value.playList),

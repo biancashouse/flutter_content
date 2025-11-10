@@ -18,7 +18,7 @@ class Page_RowOf2Panels extends StatelessWidget {
                 name: 'panels-demo1-panel1',
                 child: PaddingNode(
                   padding: EdgeInsetsValue(top: 30, left: 30, bottom: 30, right: 30),
-                  child: AssetImageNode(name: 'assets/images/flowers.jpg'),
+                  child: AssetImageNode(assetPath: 'assets/images/flowers.jpg'),
                 ),
               ),
               scName: null,
@@ -30,9 +30,9 @@ class Page_RowOf2Panels extends StatelessWidget {
               snippetRootNode: SnippetRootNode(
                 name: 'panels-demo2-panel2',
                 child: CarouselNode(children: [
-                  AssetImageNode(name: 'assets/images/frog.jpg'),
-                  AssetImageNode(name: 'assets/images/hummingbird.jpg'),
-                  AssetImageNode(name: 'assets/images/indian-chat.jpg'),
+                  AssetImageNode(assetPath: 'assets/images/frog.jpg'),
+                  AssetImageNode(assetPath: 'assets/images/hummingbird.jpg'),
+                  AssetImageNode(assetPath: 'assets/images/indian-chat.jpg'),
                 ]),
               ),
               scName: null,

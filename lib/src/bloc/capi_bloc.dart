@@ -56,6 +56,7 @@ class CAPIBloC extends Bloc<CAPIEvent, CAPIState> {
     on<EnterSelectWidgetMode>(
       (event, emit) => _enterSelectWidgetMode(event, emit),
     );
+    on<UpdateTappableRects>((event, emit) => _updateTappableRects(event, emit));
     on<ExitSelectWidgetMode>(
       (event, emit) => _exitSelectWidgetMode(event, emit),
     );
@@ -122,7 +123,7 @@ class CAPIBloC extends Bloc<CAPIEvent, CAPIState> {
 
   Future<void> _revertSnippet(RevertSnippet event, emit) async {
     SnippetInfoModel? snippetInfo = SnippetInfoModel.cachedSnippetInfo(
-      snippetName,
+      state.snippetBeingEdited?.getRootNode().name ?? 'missing snippet name!',
     );
     if (snippetInfo == null) return;
 
@@ -381,7 +382,7 @@ class CAPIBloC extends Bloc<CAPIEvent, CAPIState> {
       state.copyWith(
         // hideAllTargetGroupPlayBtns: true,
         // hideTargetsExcept: null,
-        snippetNameShowingTappableOverlaysFor: null,
+        activeSnippetName: null,
         snippetBeingEdited: snippetBeingEdited,
         // hideSnippetPencilIcons: true,
         onlyTargetsWrappers: true,
@@ -400,24 +401,42 @@ class CAPIBloC extends Bloc<CAPIEvent, CAPIState> {
     emit(
       state.copyWith(
         snippetBeingEdited: null,
-        // hideIframes: false,
-        // hideSnippetPencilIcons: false,
-        showOnlySnippet: null,
       ),
     );
   }
 
   void _enterSelectWidgetMode(EnterSelectWidgetMode event, emit) async {
-    emit(state.copyWith(showOnlySnippet: event.snippetName));
-    // then after rendering only the named snippet, trigger bloc listener
+    fco.nodesByGK.clear();
     emit(
-      state.copyWith(snippetNameShowingTappableOverlaysFor: event.snippetName),
+      state.copyWith(
+         // This tells the UI to enter the widget select mode.
+        activeSnippetName: event.snippetName,
+      ),
     );
+    // The UI layer will now be responsible for waiting until after the next
+    // frame is rendered and then dispatching an 'UpdateTappableRects' event.
   }
+
+  void _updateTappableRects(UpdateTappableRects event, emit) async {
+    if (showTappableBorderRects()) {
+      emit(
+        state.copyWith(
+          // tappableNodeRects: _populateNodeBorderRects(
+          //   state.snippetNameShowingTappableOverlaysFor!,
+          ),
+        // ),
+      );
+    }
+  }
+
 
   void _exitSelectWidgetMode(ExitSelectWidgetMode event, emit) {
     fco.dismissAll();
-    emit(state.copyWith(showOnlySnippet: null));
+    emit(
+      state.copyWith(
+        activeSnippetName: null,
+      ),
+    );
   }
 
   // void _setPanelOrPlaceholderSnippet(SetPanelSnippet event, emit) {
@@ -1304,6 +1323,7 @@ class CAPIBloC extends Bloc<CAPIEvent, CAPIState> {
     //     (state.selectedNode?.parent as SingleChildNode).child = newNode;
     //   }
     // } else
+    SnippetRootNode rootNode = state.snippetBeingEdited!.getRootNode();
     if (selectedNode is TabBarNode) {
       TabBarViewNode? tabBarViewNode =
           state.snippetBeingEdited!.treeC.findNodeTypeInTree(
@@ -1367,7 +1387,11 @@ class CAPIBloC extends Bloc<CAPIEvent, CAPIState> {
     if (state.snippetBeingEdited?.aNodeIsNotSelected ?? false) return;
     if (fco.appInfo.clipboard != null) {
       SNode selectedNode = state.snippetBeingEdited!.selectedNode!;
-      _replaceWithNewNodeOrClipboard(selectedNode, emit, fco.appInfo.clipboard!.clone());
+      _replaceWithNewNodeOrClipboard(
+        selectedNode,
+        emit,
+        fco.appInfo.clipboard!.clone(),
+      );
     }
 
     // // Container's Container parent should have an alignment property
@@ -1563,6 +1587,7 @@ class CAPIBloC extends Bloc<CAPIEvent, CAPIState> {
 
   void _addSiblingAt(SNode newNode, emit, int i) {
     // state.snippetBeingEdited?.newVersion();
+    SnippetRootNode rootNode = state.snippetBeingEdited!.getRootNode();
 
     SNode? parent =
         state.snippetBeingEdited!.selectedNode?.getParent() as SNode?;
@@ -1765,12 +1790,20 @@ class CAPIBloC extends Bloc<CAPIEvent, CAPIState> {
   bool get deleteInProgress =>
       state.snippetBeingEdited?.nodeBeingDeleted != null;
 
-  bool get aNodeIsSelected =>
+  bool showTappableBorderRects() =>
+      state.activeSnippetName != null;
+
+  bool dontShowTappableBorderRects() =>
+      state.activeSnippetName == null;
+
+  bool aSnippetIsBeingEdited() => state.snippetBeingEdited != null;
+
+  bool aSnippetIsNotBeingEdited() => state.snippetBeingEdited == null;
+
+  bool aNodeIsSelected() => state.snippetBeingEdited?.aNodeIsSelected ?? false;
+
+  bool aNodeIsNotSelected() =>
       state.snippetBeingEdited?.aNodeIsSelected ?? false;
 
-  SnippetRootNode? get rootNode => state.snippetBeingEdited?.getRootNode();
-
-  SnippetTreeController? get treeC => state.snippetBeingEdited?.treeC;
-
-  String get snippetName => rootNode?.name ?? 'snippetName?';
+  TargetModel? getNewestTarget() => state.newestTarget;
 }

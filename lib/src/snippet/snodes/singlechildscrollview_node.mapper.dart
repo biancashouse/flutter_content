@@ -18,6 +18,7 @@ class SingleChildScrollViewNodeMapper
         _instance = SingleChildScrollViewNodeMapper._(),
       );
       SCMapper.ensureInitialized().addSubMapper(_instance!);
+      AxisEnumMapper.ensureInitialized();
       EdgeInsetsValueMapper.ensureInitialized();
       SNodeMapper.ensureInitialized();
     }
@@ -27,9 +28,21 @@ class SingleChildScrollViewNodeMapper
   @override
   final String id = 'SingleChildScrollViewNode';
 
+  static AxisEnum? _$scrollDirection(SingleChildScrollViewNode v) =>
+      v.scrollDirection;
+  static const Field<SingleChildScrollViewNode, AxisEnum> _f$scrollDirection =
+      Field('scrollDirection', _$scrollDirection, opt: true);
   static EdgeInsetsValue? _$padding(SingleChildScrollViewNode v) => v.padding;
   static const Field<SingleChildScrollViewNode, EdgeInsetsValue> _f$padding =
       Field('padding', _$padding, opt: true);
+  static bool? _$useThisSnippetsScrollController(SingleChildScrollViewNode v) =>
+      v.useThisSnippetsScrollController;
+  static const Field<SingleChildScrollViewNode, bool>
+  _f$useThisSnippetsScrollController = Field(
+    'useThisSnippetsScrollController',
+    _$useThisSnippetsScrollController,
+    opt: true,
+  );
   static SNode? _$child(SingleChildScrollViewNode v) => v.child;
   static const Field<SingleChildScrollViewNode, SNode> _f$child = Field(
     'child',
@@ -87,7 +100,9 @@ class SingleChildScrollViewNodeMapper
 
   @override
   final MappableFields<SingleChildScrollViewNode> fields = const {
+    #scrollDirection: _f$scrollDirection,
     #padding: _f$padding,
+    #useThisSnippetsScrollController: _f$useThisSnippetsScrollController,
     #child: _f$child,
     #uid: _f$uid,
     #treeNodeGK: _f$treeNodeGK,
@@ -112,7 +127,11 @@ class SingleChildScrollViewNodeMapper
 
   static SingleChildScrollViewNode _instantiate(DecodingData data) {
     return SingleChildScrollViewNode(
+      scrollDirection: data.dec(_f$scrollDirection),
       padding: data.dec(_f$padding),
+      useThisSnippetsScrollController: data.dec(
+        _f$useThisSnippetsScrollController,
+      ),
       child: data.dec(_f$child),
     );
   }
@@ -195,7 +214,12 @@ abstract class SingleChildScrollViewNodeCopyWith<
   @override
   SNodeCopyWith<$R, SNode, SNode>? get child;
   @override
-  $R call({EdgeInsetsValue? padding, SNode? child});
+  $R call({
+    AxisEnum? scrollDirection,
+    EdgeInsetsValue? padding,
+    bool? useThisSnippetsScrollController,
+    SNode? child,
+  });
   SingleChildScrollViewNodeCopyWith<$R2, $In, $Out2> $chain<$R2, $Out2>(
     Then<$Out2, $R2> t,
   );
@@ -217,16 +241,29 @@ class _SingleChildScrollViewNodeCopyWithImpl<$R, $Out>
   SNodeCopyWith<$R, SNode, SNode>? get child =>
       $value.child?.copyWith.$chain((v) => call(child: v));
   @override
-  $R call({Object? padding = $none, Object? child = $none}) => $apply(
+  $R call({
+    Object? scrollDirection = $none,
+    Object? padding = $none,
+    Object? useThisSnippetsScrollController = $none,
+    Object? child = $none,
+  }) => $apply(
     FieldCopyWithData({
+      if (scrollDirection != $none) #scrollDirection: scrollDirection,
       if (padding != $none) #padding: padding,
+      if (useThisSnippetsScrollController != $none)
+        #useThisSnippetsScrollController: useThisSnippetsScrollController,
       if (child != $none) #child: child,
     }),
   );
   @override
   SingleChildScrollViewNode $make(CopyWithData data) =>
       SingleChildScrollViewNode(
+        scrollDirection: data.get(#scrollDirection, or: $value.scrollDirection),
         padding: data.get(#padding, or: $value.padding),
+        useThisSnippetsScrollController: data.get(
+          #useThisSnippetsScrollController,
+          or: $value.useThisSnippetsScrollController,
+        ),
         child: data.get(#child, or: $value.child),
       );
 

@@ -65,7 +65,7 @@ mixin NavMixin {
           } else {
             final dropdownItems = <DropdownMenuItem<String>>[];
             dropdownItems.add(
-              _dropdownItemWithPI(value: 'sign-out', child: _signOutBtn()),
+              _dropdownItemWithPI(value: 'sign-out', child: _signOutBtn(context)),
             );
             if (fco.router != null) {
               dropdownItems.add(
@@ -176,10 +176,11 @@ mixin NavMixin {
     );
   }
 
-  Widget _signOutBtn() => TextButton(
+  Widget _signOutBtn(context) => TextButton(
     onPressed: () {
       if (!fco.anyPresent([CalloutConfigToolbar.CID])) {
         fco.capiBloc.add(CAPIEvent.signedOut());
+        Navigator.pop(context);
       }
     },
     child: fco.coloredText('Sign Out', color: Colors.red),

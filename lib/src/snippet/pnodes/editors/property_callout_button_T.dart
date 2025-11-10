@@ -42,7 +42,7 @@ class PropertyButton<T> extends StatelessWidget {
       String editedText = originalText;
       // fco.logger.d('editedText: $editedText');
       // fco.logger.d('label: $label');
-      Text textLabel() => skipLabelText
+      Widget textLabel() => skipLabelText
           ? fco.coloredText(editedText, color: Colors.white, fontWeight: FontWeight.bold)
           : editedText.isNotEmpty
               ? Text.rich(TextSpan(

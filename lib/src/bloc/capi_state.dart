@@ -1,6 +1,7 @@
 // ignore_for_file: constant_identifier_names, non_constant_identifier_names
 
 import 'package:flutter_content/flutter_content.dart';
+import 'package:flutter_content/src/api/editable_page/tappable_node_borders.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 
 import 'snippet_being_edited.dart';
@@ -25,7 +26,6 @@ abstract class CAPIState with _$CAPIState {
     // @Default(Offset.zero) Offset? directoryTreeCalloutInitialPos,
     // @Default(400) double? directoryTreeCalloutW,
     // @Default(600) double? directoryTreeCalloutH,
-
     TargetModel? newestTarget,
     TargetModel? selectedTarget,
     //
@@ -44,24 +44,14 @@ abstract class CAPIState with _$CAPIState {
     //==========================================================================================
     //====  SNIPPET EDITING  ===================================================================
     //==========================================================================================
-    // filters page s.t. only named snippet rendered
-    SnippetName? showOnlySnippet,
 
-    // when set invoke bloc listener to show tappables
-    SnippetName? snippetNameShowingTappableOverlaysFor,
+    // set when inNodeSelectionMode
+    SnippetName? activeSnippetName,
 
+    // set when editing a snippet (ui is a MSV)
     SnippetBeingEdited? snippetBeingEdited,
 
     // VersionId? snippetBeingEditedVersionId,
     @Default(true) bool ONLY_TESTING,
   }) = _CAPIState;
-
-}
-
-// Create an extension for your custom logic
-extension CAPIStateX on CAPIState {
-  bool inSelectWidgetMode() => showOnlySnippet != null;
-
-  TargetModel? getNewestTarget() => newestTarget;
-// ... any other custom methods or getters ...
 }

@@ -1,22 +1,27 @@
 import 'package:dart_mappable/dart_mappable.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_content/flutter_content.dart';
+import 'package:flutter_content/src/snippet/pnodes/bool_pnode.dart';
 import 'package:flutter_content/src/snippet/pnodes/edge_insets_pnode.dart';
+import 'package:flutter_content/src/snippet/pnodes/enum_pnode.dart';
 import 'package:flutter_content/src/snippet/pnodes/fyi_pnodes.dart';
-import 'package:flutter_content/src/snippet/pnodes/string_pnode.dart';
-import 'package:freezed_annotation/freezed_annotation.dart';
 
 part 'singlechildscrollview_node.mapper.dart';
 
 @MappableClass()
 class SingleChildScrollViewNode extends SC
     with SingleChildScrollViewNodeMappable {
+  AxisEnum? scrollDirection;
+
   EdgeInsetsValue? padding;
+  bool? useThisSnippetsScrollController;
 
-  SingleChildScrollViewNode({this.padding, super.child});
-
-  // used when a TabBar and TabBarView are used in a snippet's Scaffold
-  ScrollControllerName? scName;
+  SingleChildScrollViewNode({
+    this.scrollDirection,
+    this.padding,
+    this.useThisSnippetsScrollController,
+    super.child,
+  });
 
   @override
   List<PNode> propertyNodes(BuildContext context, SNode? parentSNode) => [
@@ -27,25 +32,21 @@ class SingleChildScrollViewNode extends SC
       snode: this,
       name: 'fyi',
     ),
-    StringPNode(
+    EnumPNode<AxisEnum?>(
       snode: this,
-      name: 'ScrollController name',
-      stringValue: scName,
-      skipHelperText: true,
-      onStringChange: (newValue) {
-        if (newValue != null) {
-          scName = newValue;
-        } else {
-          if (scName != null) {
-            NamedScrollController.instance(scName!)?.dispose();
-          }
-          scName = null;
-        }
-        refreshWithUpdate(context, () => scName!);
-      },
-      calloutButtonSize: const Size(280, 70),
-      calloutWidth: 400,
-      numLines: 1,
+      name: 'scrollDirection',
+      valueIndex: (scrollDirection??AxisEnum.vertical).index,
+      onIndexChange: (newValue) => refreshWithUpdate(context,
+              () => scrollDirection = AxisEnum.of(newValue) ?? AxisEnum.vertical),
+    ),
+    BoolPNode(
+      snode: this,
+      name: 'listen to its ScrollController ?',
+      boolValue: useThisSnippetsScrollController,
+      onBoolChange: (newValue) => refreshWithUpdate(
+        context,
+        () => useThisSnippetsScrollController = newValue ?? true,
+      ),
     ),
     PNode /*Group*/ (
       snode: this,
@@ -64,36 +65,26 @@ class SingleChildScrollViewNode extends SC
 
   @override
   Widget buildFlutterWidget(BuildContext context, SNode? parentNode) {
+    ScrollController? sc;
+    if (useThisSnippetsScrollController ?? false) {
+      final rootNode = rootNodeOfSnippet();
+      rootNode?.scrollController ??= ScrollController();
+      rootNode?.scrollDirection ??= Axis.vertical;
+      sc = rootNode?.scrollController;
+    }
     try {
       setParent(parentNode);
       //ScrollControllerName? scName = EditablePage.name(context);
       //possiblyHighlightSelectedNode(scName);
       //var targetGK = nodeWidgetGK;
 
-      // // maintain offset between instantiations
-      // NamedScrollController? sC;
-      // if (EditablePage.of(context) != null) {
-      //   String editablePageName = EditablePage.name(context);
-      //   sC = NamedScrollController(
-      //     editablePageName,
-      //     Axis.vertical,
-      //     initialScrollOffset:
-      //         NamedScrollController.vScrollOffset(editablePageName),
-      //   );
-      //   // sC.listenToOffset();
-      // }
-
-      if (scName != null && !NamedScrollController.exists(scName!)) {
-        NamedScrollController(scName!, Axis.vertical);
-      }
       return SingleChildScrollView(
         key: createNodeWidgetGK(),
+        scrollDirection: scrollDirection?.flutterValue??Axis.vertical,
         // descendants of this view can access it by:
         // ScrollableState? scrollableState = Scrollable.of(context);
         // ScrollController? scrollController = scrollableState?.position.scrollController;
-        controller: scName != null
-            ? NamedScrollController.instance(scName!)
-            : null,
+        // controller: sc,
         // key: targetGK,
         padding: padding?.toEdgeInsets(),
         child: child?.buildFlutterWidget(context, this),

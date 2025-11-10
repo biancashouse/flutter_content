@@ -3,22 +3,22 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:flutter_content/flutter_content.dart';
+import 'package:flutter_content/src/measuring/size_aware_widget.dart';
 import 'package:flutter_content/src/snippet/snodes/hotspots/widgets/targets_wrapper_ontap_menu.dart';
-import 'package:visibility_detector/visibility_detector.dart';
 
 import 'positioned_target_cover.dart';
 import 'positioned_target_play_btn.dart';
 
 class TargetsWrapper extends StatefulWidget {
   final TargetsWrapperNode parentNode;
-  final Widget? child;
+  final SNode? childNode;
   final bool hardEdge;
 
   static double CAPI_TARGET_BTN_RADIUS = 15.0;
 
   const TargetsWrapper({
     required this.parentNode,
-    this.child,
+    this.childNode,
     this.hardEdge = true,
     required super.key,
   });
@@ -29,41 +29,12 @@ class TargetsWrapper extends StatefulWidget {
   static TargetsWrapperState? of(BuildContext context) =>
       context.findAncestorStateOfType<TargetsWrapperState>();
 
-  /// the following statics are actually all UI-related and span all blocs...
-  // can have multiple transformable widgets and preferredSize widgets under the MaterialApp
-  // want new sizes to be available immediately after changing, hence not part of bloc, but static (global) instead
-  // keys are wrapper name (WidgetWrapper or ImageWrapper)
-
-  // static Alignment? calcTargetAlignmentWithinTargetsWrapper(TargetModel tc, Rect wrapperRect) {
-  //
-  //   if (targetRect == null) return null;
-  //
-  //   return FCO.calcTargetAlignmentWithinWrapper(wrapperRect, targetRect);
-  // }
-
-  // static void hideAllTargets({required CAPIBloc bloc, required String name, final TargetModel? exception}) {
-  //   CAPITargetModel? config = bloc.state.imageConfig(name);
-  //   if (config != null) {
-  //     for (int i = 0; i < config.imageTargets.length; i++) {
-  //       TargetModel? tc = bloc.state.target(name, i);
-  //       if (tc != exception) tc?.visible = false;
-  //     }
-  //   }
-  // }
-  //
-  // static void showAllTargets({required CAPIBloc bloc, required String name}) {
-  //   if (!bloc.state.aTargetIsSelected()) {
-  //     for (TargetModel tc in bloc.state.imageConfig(name)?.imageTargets ?? []) {
-  //       tc.visible = true;
-  //     }
-  //   }
-  // }
-
-  static void configureTarget(TargetModel tc,
-      Rect wrapperRect,
-      ScrollControllerName? scName, {
-        bool quickly = false,
-      }) {
+  static void configureTarget(
+    TargetModel tc,
+    Rect wrapperRect,
+    ScrollControllerName? scName, {
+    bool quickly = false,
+  }) {
     if (!fco.canEditContent()) return;
 
     if (tc.targetsWrapperState() == null) return;
@@ -86,10 +57,7 @@ class TargetsWrapper extends StatefulWidget {
     );
 
     if (tc.hasAHotspot()) {
-      tc
-          .targetsWrapperState()
-          ?.zoomer
-          ?.applyTransform(
+      tc.targetsWrapperState()?.zoomer?.applyTransform(
         tc.transformScale,
         tc.transformScale,
         ta,
@@ -115,9 +83,11 @@ class TargetsWrapper extends StatefulWidget {
     }
   }
 
-  static void showConfigToolbar(TargetModel tc,
-      Rect wrapperRect,
-      ScrollControllerName? scName,) {
+  static void showConfigToolbar(
+    TargetModel tc,
+    Rect wrapperRect,
+    ScrollControllerName? scName,
+  ) {
     final cc = CalloutConfig(
       cId: CalloutConfigToolbar.CID,
       scrollControllerName: null,
@@ -154,10 +124,7 @@ class TargetsWrapper extends StatefulWidget {
         }
 
         tc.targetsWrapperState()?.refresh(() {
-          tc
-              .targetsWrapperState()
-              ?.zoomer
-              ?.resetTransform(
+          tc.targetsWrapperState()?.zoomer?.resetTransform(
             afterTransformF: resetZoom,
           );
         });
@@ -187,7 +154,7 @@ class TargetsWrapperState extends State<TargetsWrapper> {
 
   // bool _needToMeasureSize = true;
   // bool _needToMeasurePos = true;
-  bool _needToMeasureWrapperRect = true;
+  late bool _needToMeasureChild;
   late Rect wrapperRect;
 
   Offset? pulsingPointPos;
@@ -205,11 +172,10 @@ class TargetsWrapperState extends State<TargetsWrapper> {
 
   // Timer? _sizeChangedTimer;
   TargetModel? _playingOrEditingTc; // gets set / reset by btn widgets
-  void setPlayingOrEditingTc(newtC, VoidCallback f) =>
-      setState(() {
-        _playingOrEditingTc = newtC;
-        f.call();
-      });
+  void setPlayingOrEditingTc(newtC, VoidCallback f) => setState(() {
+    _playingOrEditingTc = newtC;
+    f.call();
+  });
 
   TargetModel? get playingTc => _playingOrEditingTc;
 
@@ -243,8 +209,10 @@ class TargetsWrapperState extends State<TargetsWrapper> {
 
   @override
   void initState() {
-    fco.logger.i('TargetsWrapperState initState');
+    // fco.logger.i('TargetsWrapperState initState');
     super.initState();
+
+    _needToMeasureChild = true;
 
     pulsingPointGK = GlobalKey();
 
@@ -254,11 +222,11 @@ class TargetsWrapperState extends State<TargetsWrapper> {
 
     fco.afterNextBuildDo(() {
       if (!mounted) return;
-      fco.afterMsDelayDo(1000, (){
-        // setState(() {
-          measureIWPosAndSize();
-        // });
-      });
+      // fco.afterMsDelayDo(1000, (){
+      // setState(() {
+      measureIWPosAndSize();
+      // });
+      // });
     });
   }
 
@@ -281,7 +249,7 @@ class TargetsWrapperState extends State<TargetsWrapper> {
       // sw,
       // sh,
       // )
-          ;
+      ;
       if (globalPos != null) {
         // fco.logger.i('globalPos != null');
         // fco.logger.i('TargetGroupWrapper.iwPosMap[${widget.name}] = ${globalPos.toString()}');
@@ -304,7 +272,7 @@ class TargetsWrapperState extends State<TargetsWrapper> {
         );
         setState(() {
           widget.parentNode.aspectRatio ??= wrapperSize.aspectRatio;
-          _needToMeasureWrapperRect = false;
+          _needToMeasureChild = false;
         });
       }
     } catch (e) {
@@ -315,19 +283,6 @@ class TargetsWrapperState extends State<TargetsWrapper> {
 
   @override
   Widget build(BuildContext context) {
-    if (_needToMeasureWrapperRect) {
-      _needToMeasureWrapperRect = false;
-      return _childBuild();
-    }
-
-    // String? editablePageName = EditablePage.maybeScrollControllerName(context);
-    // double hScrollOffset = NamedScrollController.hScrollOffset(
-    //   editablePageName,
-    // );
-    // double vScrollOffset = NamedScrollController.vScrollOffset(
-    //   editablePageName,
-    // );
-
     // when dragging a btn or cover ends
     void droppedBtnOrCover(DragTargetDetails<(TargetId, bool)> details) {
       // ignore drags when toolbar showing
@@ -349,13 +304,13 @@ class TargetsWrapperState extends State<TargetsWrapper> {
           foundTc.setBtnStackPosPc(
             details.offset
                 .translate(
-              TargetsWrapper.CAPI_TARGET_BTN_RADIUS,
-              TargetsWrapper.CAPI_TARGET_BTN_RADIUS,
-            )
+                  TargetsWrapper.CAPI_TARGET_BTN_RADIUS,
+                  TargetsWrapper.CAPI_TARGET_BTN_RADIUS,
+                )
                 .translate(
-              NamedScrollController.hScrollOffset(scName(context)),
-              NamedScrollController.vScrollOffset(scName(context)),
-            ),
+                  NamedScrollController.hScrollOffset(scName(context)),
+                  NamedScrollController.vScrollOffset(scName(context)),
+                ),
           );
           foundTc.changed_saveRootSnippet();
         } else if (foundTc != null) {
@@ -363,9 +318,9 @@ class TargetsWrapperState extends State<TargetsWrapper> {
             details.offset
                 .translate(foundTc.radius, foundTc.radius)
                 .translate(
-              NamedScrollController.hScrollOffset(scName(context)),
-              NamedScrollController.vScrollOffset(scName(context)),
-            ),
+                  NamedScrollController.hScrollOffset(scName(context)),
+                  NamedScrollController.vScrollOffset(scName(context)),
+                ),
           );
           foundTc.changed_saveRootSnippet();
         }
@@ -374,99 +329,92 @@ class TargetsWrapperState extends State<TargetsWrapper> {
       });
     }
 
-    return SizedBox.fromSize(
-      size: wrapperRect.size,
-      child: Stack(
-        clipBehavior: widget.hardEdge ? Clip.hardEdge : Clip.none,
-        children: [
-          // BARRIER below IgnorePointer(child) - long-pressable
-          DragTarget<(TargetId, bool)>(
-            builder: (_, __, ___) {
-              return SizedBox.fromSize(
-                size: wrapperRect.size,
-                child: GestureDetector(
-                  onTapDown: (TapDownDetails details) async {
-                    // ignore if not in editing mode or if currently showing config toolbar
-                    if (!fco.canEditContent() ||
-                        fco.anyPresent([CalloutConfigToolbar.CID]) ||
-                        fco.snippetBeingEdited != null) {
-                      return;
-                    }
-                    CalloutConfig cc = CalloutConfig(
-                      cId: 'create-target-menu',
-                      initialTargetAlignment: Alignment.topRight,
-                      initialCalloutAlignment: Alignment.bottomLeft,
-                      initialCalloutW: TargetsWrapperOnTapMenu.menuWidth(),
-                      initialCalloutH: TargetsWrapperOnTapMenu.menuHeight(),
-                      // contentTranslateX: 1,
-                      // contentTranslateY: 1,
-                      barrier: CalloutBarrierConfig(opacity: 0.1),
-                      // finalSeparation: 50,
-                      bubbleOrTargetPointerColor: Colors.purpleAccent,
-                      animatePointer: true,
-                      decorationFillColors: ColorOrGradient.color(
-                        Colors.purpleAccent.withAlpha(90),
-                      ),
-                      scrollControllerName: null,
-                      showCloseButton: true,
-                      closeButtonPos: Offset(10, 10),
-                      closeButtonColor: Colors.white,
-                      decorationBorderRadius: 16,
-                      onDismissedF: () {
-                        hidePossibleNewTarget();
-                      },
-                    );
-                    // show pulsing indicator
-                    setState(() {
-                      pulsingPointPos = details.localPosition.translate(
-                        -32,
-                        -32,
-                      );
-                      fco.showOverlay(
-                        targetGkF: () => pulsingPointGK,
-                        calloutConfig: cc,
-                        calloutContent: Padding(
-                          padding: const EdgeInsets.all(48.0),
-                          child: TargetsWrapperOnTapMenu(
-                            details,
-                            widget.parentNode,
-                            wrapperRect,
-                            scName(context),
-                          ),
-                        ),
-                      );
-                    });
-
-                    // hide pulsing indicator
-                    // setState(() {
-                    //   pulsingPointPos = null;
-                    // });
+    return Stack(
+      clipBehavior: widget.hardEdge ? Clip.hardEdge : Clip.none,
+      children: [
+        DragTarget<(TargetId, bool)>(
+          builder: (_, __, ___) {
+            return GestureDetector(
+              onTapDown: (TapDownDetails details) async {
+                // ignore if not in editing mode or if currently showing config toolbar
+                if (!fco.canEditContent() ||
+                    fco.anyPresent([CalloutConfigToolbar.CID]) ||
+                    fco.snippetBeingEdited != null) {
+                  return;
+                }
+                CalloutConfig cc = CalloutConfig(
+                  cId: 'create-target-menu',
+                  initialTargetAlignment: Alignment.topRight,
+                  initialCalloutAlignment: Alignment.bottomLeft,
+                  initialCalloutW: TargetsWrapperOnTapMenu.menuWidth(),
+                  initialCalloutH: TargetsWrapperOnTapMenu.menuHeight(),
+                  // contentTranslateX: 1,
+                  // contentTranslateY: 1,
+                  barrier: CalloutBarrierConfig(opacity: 0.1),
+                  finalSeparation: 30,
+                  targetPointerType: TargetPointerType.thin_line(),
+                  bubbleOrTargetPointerColor: Colors.purpleAccent,
+                  animatePointer: true,
+                  decorationFillColors: ColorOrGradient.color(
+                    Colors.purpleAccent.withAlpha(90),
+                  ),
+                  scrollControllerName: null,
+                  showCloseButton: true,
+                  closeButtonPos: Offset(10, 10),
+                  closeButtonColor: Colors.white,
+                  decorationBorderRadius: 16,
+                  onDismissedF: () {
+                    hidePossibleNewTarget();
                   },
-                  child: _childBuild(),
-                  // onLongPressEnd: (LongPressEndDetails details) async =>
-                  //     await longPressedeBarrier(details),
-                ),
-              );
-            },
-            onAcceptWithDetails: fco.anyPresent([CalloutConfigToolbar.CID])
-                ? null
-                : droppedBtnOrCover,
-          ),
+                );
+                // show pulsing indicator
+                setState(() {
+                  pulsingPointPos = details.localPosition.translate(-32, -32);
+                  fco.showOverlay(
+                    targetGkF: () => pulsingPointGK,
+                    calloutConfig: cc,
+                    calloutContent: Padding(
+                      padding: const EdgeInsets.only(
+                        top: 48.0,
+                        left: 48,
+                        right: 48,
+                      ),
+                      child: TargetsWrapperOnTapMenu(
+                        details,
+                        widget.parentNode,
+                        wrapperRect,
+                        scName(context),
+                      ),
+                    ),
+                  );
+                });
 
-          // CHILD, typically an image
-          // _childBuild(),
+                // hide pulsing indicator
+                // setState(() {
+                //   pulsingPointPos = null;
+                // });
+              },
+              child: _childBuild(),
+              // onLongPressEnd: (LongPressEndDetails details) async =>
+              //     await longPressedeBarrier(details),
+            );
+          },
+          onAcceptWithDetails: fco.anyPresent([CalloutConfigToolbar.CID])
+              ? null
+              : droppedBtnOrCover,
+        ),
 
-          // TARGET COVERS
+        // CHILD, typically an image
+        // _childBuild(),
+
+        // TARGET COVERS
+        if (!_needToMeasureChild)
           for (TargetModel tc in widget.parentNode.targets)
             Positioned(
-              top: tc
-                  .targetStackPos()
-                  .dy - tc.radius,
+              top: tc.targetStackPos().dy - tc.radius,
               // + vScrollOffset,
               // + (_playingOrEditingTc !=null ? scrollOffsetY()/tc.getScale() : 0.00),
-              left: tc
-                  .targetStackPos()
-                  .dx - tc.radius,
+              left: tc.targetStackPos().dx - tc.radius,
               // + hScrollOffset,
               // + (_playingOrEditingTc != null ? scrollOffsetX()/tc.getScale() : 0.00),
               child: Visibility.maintain(
@@ -475,7 +423,7 @@ class TargetsWrapperState extends State<TargetsWrapper> {
                   GlobalKey(debugLabel: 'Target ${tc.uid.toString()}'),
                 ),
                 visible:
-                fco.canEditContent() &&
+                    fco.canEditContent() &&
                     (playingTc == null || playingTc == tc),
                 child: TargetCover(
                   tc,
@@ -487,18 +435,17 @@ class TargetsWrapperState extends State<TargetsWrapper> {
               ),
             ),
 
-          // TARGET BUTTONS
+        // TARGET BUTTONS
+        if (!_needToMeasureChild)
           for (TargetModel tc in widget.parentNode.targets)
             if (playingTc == null && tc.hasAHotspot())
               Positioned(
                 top:
-                tc
-                    .btnStackPos()
-                    .dy - TargetsWrapper.CAPI_TARGET_BTN_RADIUS,
+                    tc.btnStackPos().dy -
+                    TargetsWrapper.CAPI_TARGET_BTN_RADIUS,
                 left:
-                tc
-                    .btnStackPos()
-                    .dx - TargetsWrapper.CAPI_TARGET_BTN_RADIUS,
+                    tc.btnStackPos().dx -
+                    TargetsWrapper.CAPI_TARGET_BTN_RADIUS,
                 child: TargetPlayBtn(
                   initialTC: tc,
                   index: _targetIndex(tc),
@@ -507,38 +454,50 @@ class TargetsWrapperState extends State<TargetsWrapper> {
                 ),
               ),
 
-          if (pulsingPointPos != null)
-            Positioned(
-              top: pulsingPointPos!.dy,
-              left: pulsingPointPos!.dx,
-              child:
-              TargetCover(
-                gk: pulsingPointGK,
-                TargetModel(uid: -1)
-                  ..parentTargetsWrapperNode = widget.parentNode,
-                widget.parentNode.targets.length,
-                wrapperRect: wrapperRect,
-                scName: scName(context),
-                playing: false,
-              )
-                  .animate(
-                onPlay: (controller) =>
-                    controller.repeat(reverse: true),
-              )
-                  .scale(duration: 500.milliseconds),
-            ),
-        ],
-      ),
+        if (!_needToMeasureChild && pulsingPointPos != null)
+          Positioned(
+            top: pulsingPointPos!.dy,
+            left: pulsingPointPos!.dx,
+            child:
+                TargetCover(
+                      gk: pulsingPointGK,
+                      TargetModel(uid: -1)
+                        ..parentTargetsWrapperNode = widget.parentNode,
+                      widget.parentNode.targets.length,
+                      wrapperRect: wrapperRect,
+                      scName: scName(context),
+                      playing: false,
+                    )
+                    .animate(
+                      onPlay: (controller) =>
+                          controller.repeat(reverse: true),
+                    )
+                    .scale(duration: 500.milliseconds),
+          ),
+      ],
     );
   }
 
   int _targetIndex(TargetModel tc) => widget.parentNode.targets.indexOf(tc);
 
   Widget _childBuild() {
+
+    Widget? childWidget;
+    if (widget.childNode is AssetImageNode) {
+      childWidget = SizeAwareWidget.asset(
+        assetPath: (widget.childNode as AssetImageNode).assetPath!,
+          onSizeAvailable: (Size _) {
+            setState(() {
+              measureIWPosAndSize();
+            });
+          },
+        );
+    }
+
     Widget child = IgnorePointer(
       ignoring: false, //fco.canEditContent.isTrue,
       child:
-      widget.child ??
+          childWidget ??
           const Material(
             child: Padding(
               padding: EdgeInsets.all(8.0),
@@ -550,25 +509,7 @@ class TargetsWrapperState extends State<TargetsWrapper> {
     );
 
     // return child;
-    return !fco.canEditContent()
-        ? VisibilityDetector(
-      key: UniqueKey(),
-      onVisibilityChanged: (VisibilityInfo info) {
-        print('visibleFraction: ${info.visibleFraction}');
-        if (info.visibleFraction > .95) {
-          // autoplay callouts when not in editing mode
-          if (!fco.canEditContent()) {
-            for (TargetModel tc in widget.parentNode.targets) {
-              if (!tc.hasAHotspot()) {
-                TargetCover.playTarget(tc, wrapperRect, scName(context));
-              }
-            }
-          }
-        }
-      },
-      child: child,
-    )
-        : child;
+    return child;
   }
 }
 
@@ -582,7 +523,8 @@ class IntegerCircleAvatar extends StatelessWidget {
   final double fontSize;
   final Widget? child;
 
-  const IntegerCircleAvatar(this.tc, {
+  const IntegerCircleAvatar(
+    this.tc, {
     this.num,
     // required this.textColor,
     required this.bgColor,

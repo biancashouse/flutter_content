@@ -90,6 +90,7 @@ import 'package:flutter_content/src/snippet/snodes/tabbarview_node.dart';
 import 'package:flutter_content/src/snippet/snodes/text_button_node.dart';
 import 'package:flutter_content/src/snippet/snodes/text_node.dart';
 import 'package:flutter_content/src/snippet/snodes/uml_image_node.dart';
+
 // import 'package:flutter_content/src/snippet/snodes/quill_text_node.dart';
 import 'package:flutter_content/src/snippet/snodes/widget/fs_folder_node.dart';
 import 'package:flutter_content/src/snippet/snodes/wrap_node.dart';
@@ -368,6 +369,7 @@ class FlutterContentMixins
   }
 
   Logger get logger => _logger;
+
   Logger get loggerNs => _loggerNs;
 
   // called by _initApp() to set the late variables
@@ -521,14 +523,38 @@ class FlutterContentMixins
 
   late TapGestureRecognizer webLinkF;
 
+  // TODO replace with context.read<CAPIBloC>()
   late CAPIBloC capiBloc;
 
   SnippetBeingEdited? get snippetBeingEdited =>
       capiBloc.state.snippetBeingEdited;
 
+  bool get aSnippetIsBeingEdited => snippetBeingEdited != null;
+
   bool get aNodeIsSelected => snippetBeingEdited?.selectedNode != null;
 
-  bool get inSelectWidgetMode => capiBloc.state.inSelectWidgetMode();
+  //==========================================================================================
+  //====  SNIPPET EDITING  ===================================================================
+  //==========================================================================================
+  // filter page s.t. only named snippet rendered
+  // SnippetName? showOnlySnippet;
+  // SnippetName? snippetNameShowingTappableOverlaysFor;
+  // selectWidgetMode - cannot use BloC, because don't want a rebuild,
+  // which will reset scroll pos
+
+  // void enterSelectWidgetMode(SnippetName snippetName) async {
+  //   showOnlySnippet = snippetName;
+  //   snippetNameShowingTappableOverlaysFor = snippetName;
+  // }
+  //
+  // void exitSelectWidgetMode() {
+  //   fco.dismissAll();
+  //   showOnlySnippet = null;
+  //   snippetNameShowingTappableOverlaysFor = null;
+  // }
+  //
+  bool get inNodeSelectionMode => capiBloc.showTappableBorderRects();
+  bool get notInNodeSelectionMode => !inNodeSelectionMode;
 
   SNode? get selectedNode => snippetBeingEdited?.selectedNode;
 
@@ -707,7 +733,8 @@ class FlutterContentMixins
   /// Docs about CFBundleVersion: https://developer.apple.com/documentation/bundleresources/information_property_list/cfbundleversion
 
   final List<String> googleFontNames = [];
-  final Map<String, void Function(BuildContext, GlobalKey?)> namedCallbacks = {};
+  final Map<String, void Function(BuildContext, GlobalKey?)> namedCallbacks =
+      {};
 
   Map<TextStyleName, TextStyleProperties> namedTextStyles = {};
   Map<ButtonStyleName, ButtonStyleProperties> namedButtonStyles = {};
@@ -834,7 +861,7 @@ class FlutterContentMixins
     return gk;
   }
 
-    // stolen from quill, because not exported
+  // stolen from quill, because not exported
   Color hexToColor(String? hexString) {
     if (hexString == null) {
       return Colors.black;
@@ -863,9 +890,9 @@ class FlutterContentMixins
     final blue = floatToInt8(color.b);
 
     return '${alpha.toRadixString(16).padLeft(2, '0')}'
-        '${red.toRadixString(16).padLeft(2, '0')}'
-        '${green.toRadixString(16).padLeft(2, '0')}'
-        '${blue.toRadixString(16).padLeft(2, '0')}'
+            '${red.toRadixString(16).padLeft(2, '0')}'
+            '${green.toRadixString(16).padLeft(2, '0')}'
+            '${blue.toRadixString(16).padLeft(2, '0')}'
         .toUpperCase();
   }
 
@@ -880,8 +907,12 @@ class FlutterContentMixins
     // The ScrollableState has a 'position' property, which is a ScrollPosition.
     // The ScrollPosition itself holds a reference to the ScrollController.
     // If no Scrollable is found, scrollableState will be null.
-    return scrollableState?.position.context.notificationContext?.findAncestorWidgetOfExactType<Scrollbar>() != null
-        ? scrollableState?.position.context.notificationContext?.findAncestorWidgetOfExactType<Scrollbar>()?.controller
+    return scrollableState?.position.context.notificationContext
+                ?.findAncestorWidgetOfExactType<Scrollbar>() !=
+            null
+        ? scrollableState?.position.context.notificationContext
+              ?.findAncestorWidgetOfExactType<Scrollbar>()
+              ?.controller
         : scrollableState?.widget.controller;
   }
 
@@ -918,7 +949,7 @@ class FlutterContentMixins
     TextNodeMapper.ensureInitialized();
     UMLImageNodeMapper.ensureInitialized();
     YTNodeMapper.ensureInitialized();
-  // SC
+    // SC
     AlignNodeMapper.ensureInitialized();
     AspectRatioNodeMapper.ensureInitialized();
     ButtonNodeMapper.ensureInitialized();
@@ -971,6 +1002,5 @@ class FlutterContentMixins
     ColumnNodeMapper.ensureInitialized();
   }
 
-// lib/src/init.dart
-
+  // lib/src/init.dart
 }

@@ -24,10 +24,10 @@ class AssetImageNodeMapper extends SubClassMapperBase<AssetImageNode> {
   @override
   final String id = 'AssetImageNode';
 
-  static String? _$name(AssetImageNode v) => v.name;
-  static const Field<AssetImageNode, String> _f$name = Field(
-    'name',
-    _$name,
+  static String? _$assetPath(AssetImageNode v) => v.assetPath;
+  static const Field<AssetImageNode, String> _f$assetPath = Field(
+    'assetPath',
+    _$assetPath,
     opt: true,
   );
   static BoxFitEnum? _$fit(AssetImageNode v) => v.fit;
@@ -40,18 +40,6 @@ class AssetImageNodeMapper extends SubClassMapperBase<AssetImageNode> {
   static const Field<AssetImageNode, AlignmentEnum> _f$alignment = Field(
     'alignment',
     _$alignment,
-    opt: true,
-  );
-  static double? _$width(AssetImageNode v) => v.width;
-  static const Field<AssetImageNode, double> _f$width = Field(
-    'width',
-    _$width,
-    opt: true,
-  );
-  static double? _$height(AssetImageNode v) => v.height;
-  static const Field<AssetImageNode, double> _f$height = Field(
-    'height',
-    _$height,
     opt: true,
   );
   static double _$scale(AssetImageNode v) => v.scale;
@@ -104,11 +92,9 @@ class AssetImageNodeMapper extends SubClassMapperBase<AssetImageNode> {
 
   @override
   final MappableFields<AssetImageNode> fields = const {
-    #name: _f$name,
+    #assetPath: _f$assetPath,
     #fit: _f$fit,
     #alignment: _f$alignment,
-    #width: _f$width,
-    #height: _f$height,
     #scale: _f$scale,
     #uid: _f$uid,
     #treeNodeGK: _f$treeNodeGK,
@@ -126,6 +112,8 @@ class AssetImageNodeMapper extends SubClassMapperBase<AssetImageNode> {
   late final ClassMapperBase superMapper = CLMapper.ensureInitialized();
 
   @override
+  final MappingHook hook = const PropertyRenameHook('name', 'assetPath');
+  @override
   final MappingHook superHook = ChainedHook([
     PropertyRenameHook('cl', 'DK:cl'),
     PropertyRenameHook('snode', 'DK:snode'),
@@ -133,11 +121,9 @@ class AssetImageNodeMapper extends SubClassMapperBase<AssetImageNode> {
 
   static AssetImageNode _instantiate(DecodingData data) {
     return AssetImageNode(
-      name: data.dec(_f$name),
+      assetPath: data.dec(_f$assetPath),
       fit: data.dec(_f$fit),
       alignment: data.dec(_f$alignment),
-      width: data.dec(_f$width),
-      height: data.dec(_f$height),
       scale: data.dec(_f$scale),
     );
   }
@@ -206,11 +192,9 @@ abstract class AssetImageNodeCopyWith<$R, $In extends AssetImageNode, $Out>
     implements CLCopyWith<$R, $In, $Out> {
   @override
   $R call({
-    String? name,
+    String? assetPath,
     BoxFitEnum? fit,
     AlignmentEnum? alignment,
-    double? width,
-    double? height,
     double? scale,
   });
   AssetImageNodeCopyWith<$R2, $In, $Out2> $chain<$R2, $Out2>(
@@ -228,29 +212,23 @@ class _AssetImageNodeCopyWithImpl<$R, $Out>
       AssetImageNodeMapper.ensureInitialized();
   @override
   $R call({
-    Object? name = $none,
+    Object? assetPath = $none,
     Object? fit = $none,
     Object? alignment = $none,
-    Object? width = $none,
-    Object? height = $none,
     double? scale,
   }) => $apply(
     FieldCopyWithData({
-      if (name != $none) #name: name,
+      if (assetPath != $none) #assetPath: assetPath,
       if (fit != $none) #fit: fit,
       if (alignment != $none) #alignment: alignment,
-      if (width != $none) #width: width,
-      if (height != $none) #height: height,
       if (scale != null) #scale: scale,
     }),
   );
   @override
   AssetImageNode $make(CopyWithData data) => AssetImageNode(
-    name: data.get(#name, or: $value.name),
+    assetPath: data.get(#assetPath, or: $value.assetPath),
     fit: data.get(#fit, or: $value.fit),
     alignment: data.get(#alignment, or: $value.alignment),
-    width: data.get(#width, or: $value.width),
-    height: data.get(#height, or: $value.height),
     scale: data.get(#scale, or: $value.scale),
   );
 

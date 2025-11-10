@@ -78,6 +78,16 @@ class SnippetRootNodeMapper extends SubClassMapperBase<SnippetRootNode> {
     _$nodeWidgetGK,
     mode: FieldMode.member,
   );
+  static ScrollController? _$scrollController(SnippetRootNode v) =>
+      v.scrollController;
+  static const Field<SnippetRootNode, ScrollController> _f$scrollController =
+      Field('scrollController', _$scrollController, mode: FieldMode.member);
+  static Axis _$scrollDirection(SnippetRootNode v) => v.scrollDirection;
+  static const Field<SnippetRootNode, Axis> _f$scrollDirection = Field(
+    'scrollDirection',
+    _$scrollDirection,
+    mode: FieldMode.member,
+  );
 
   @override
   final MappableFields<SnippetRootNode> fields = const {
@@ -90,6 +100,8 @@ class SnippetRootNodeMapper extends SubClassMapperBase<SnippetRootNode> {
     #hidePropertiesWhileDragging: _f$hidePropertiesWhileDragging,
     #canShowTappableNodeWidgetOverlay: _f$canShowTappableNodeWidgetOverlay,
     #nodeWidgetGK: _f$nodeWidgetGK,
+    #scrollController: _f$scrollController,
+    #scrollDirection: _f$scrollDirection,
   };
 
   @override

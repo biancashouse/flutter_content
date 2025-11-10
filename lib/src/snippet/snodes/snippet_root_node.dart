@@ -25,8 +25,7 @@ part 'snippet_root_node.mapper.dart';
 // }
 
 @MappableClass() //discriminatorKey: 'DK:sr', includeSubClasses: [TitleSnippetRootNode, SubtitleSnippetRootNode, ContentSnippetRootNode])
-class SnippetRootNode extends SC
-    with SnippetRootNodeMappable {
+class SnippetRootNode extends SC with SnippetRootNodeMappable {
   SnippetName name;
 
   // RoutePath? routePath;
@@ -43,158 +42,151 @@ class SnippetRootNode extends SC
     // fco.logger.i('SnippetRootNode created with uid: $uid');
   }
 
+  /// snippet's scrollcontroller
+  /// this might get set by a scrollable descendant if that node has
+  /// set property: listenToThisScrollController = true
+  ScrollController? _scrollController;
+  Axis? _scrollDirection;
+
+  ScrollController? get scrollController => _scrollController;
+
+  set scrollController(ScrollController value) {
+    _scrollController = value;
+  }
+
+  Axis get scrollDirection => _scrollDirection ?? Axis.vertical;
+
+  set scrollDirection(Axis value) {
+    _scrollDirection = value;
+  }
+
+  @override
   static bool isHotspotCalloutContent(String sname) =>
       int.tryParse(sname) != null || /*legacy*/ sname.startsWith('T-');
 
   @override
-  List<PNode> propertyNodes(BuildContext context, SNode? parentSNode) =>
-      [
-        StringPNode(
-          snode: this,
-          name: 'tags',
-          stringValue: tags.toString(),
-          onStringChange: (newValue) {
-            refreshWithUpdate(context, () => tags = newValue ?? '');
-          },
-          calloutButtonSize: const Size(280, 70),
-          calloutWidth: 280,
-        ),
-        // StringPNode(
-        //   snode: this,
-        //   name: 'Snippet Name',
-        //   stringValue: name,
-        //   onStringChange: (newValue) => refreshWithUpdate(context,() => name = newValue??''),
-        //   calloutButtonSize: const Size(280, 70),
-        //   calloutWidth: 280,
-        // ),
-        // PropertyGroup(
-        //   snode: this,
-        //   name: 'Page Snippet...',
-        //   children: [
-        //     StringPNode(
-        //       snode: this,
-        //       name: 'Snippet Name',
-        //       stringValue: name,
-        //       onStringChange: (newValue) => refreshWithUpdate(context,() => name = newValue??''),
-        //       calloutButtonSize: const Size(280, 70),
-        //       calloutWidth: 280,
-        //     ),
-        // StringPNode(
-        //   snode: this,
-        //   name: 'Route Path',
-        //   stringValue: routePath,
-        //   onStringChange: (newValue) => refreshWithUpdate(context,() => routePath = newValue),
-        //   calloutButtonSize: const Size(280, 70),
-        //   calloutWidth: 280,
-        // ),
-        //   ],
-        // ),
-        // BoolPNode(
-        //   snode: this,
-        //   name: 'isEmbedded',
-        //   boolValue: isEmbedded,
-        //   onBoolChange: (newValue) => refreshWithUpdate(context,() => isEmbedded = newValue ?? false),
-        // ),
-      ];
+  List<PNode> propertyNodes(BuildContext context, SNode? parentSNode) => [
+    StringPNode(
+      snode: this,
+      name: 'tags',
+      stringValue: tags.toString(),
+      onStringChange: (newValue) {
+        refreshWithUpdate(context, () => tags = newValue ?? '');
+      },
+      calloutButtonSize: const Size(280, 70),
+      calloutWidth: 280,
+    ),
+    // StringPNode(
+    //   snode: this,
+    //   name: 'Snippet Name',
+    //   stringValue: name,
+    //   onStringChange: (newValue) => refreshWithUpdate(context,() => name = newValue??''),
+    //   calloutButtonSize: const Size(280, 70),
+    //   calloutWidth: 280,
+    // ),
+    // PropertyGroup(
+    //   snode: this,
+    //   name: 'Page Snippet...',
+    //   children: [
+    //     StringPNode(
+    //       snode: this,
+    //       name: 'Snippet Name',
+    //       stringValue: name,
+    //       onStringChange: (newValue) => refreshWithUpdate(context,() => name = newValue??''),
+    //       calloutButtonSize: const Size(280, 70),
+    //       calloutWidth: 280,
+    //     ),
+    // StringPNode(
+    //   snode: this,
+    //   name: 'Route Path',
+    //   stringValue: routePath,
+    //   onStringChange: (newValue) => refreshWithUpdate(context,() => routePath = newValue),
+    //   calloutButtonSize: const Size(280, 70),
+    //   calloutWidth: 280,
+    // ),
+    //   ],
+    // ),
+    // BoolPNode(
+    //   snode: this,
+    //   name: 'isEmbedded',
+    //   boolValue: isEmbedded,
+    //   onBoolChange: (newValue) => refreshWithUpdate(context,() => isEmbedded = newValue ?? false),
+    // ),
+  ];
 
   @override
   Widget buildFlutterWidget(BuildContext context, SNode? parentNode) {
-
     var snippetInfo = SnippetInfoModel.cachedSnippetInfo(name);
 
     if (snippetInfo?.hide ?? false) {
       return const Offstage();
     }
 
+    // only use a FutureBuilder if abs necc
+    var snippet = snippetInfo?.currentVersionFromCache();
     try {
       // fco.logger.i("SnippetRootNode.toWidget($name)...");
       // if (findDescendant(SnippetRootNode) != null) {}
       setParent(parentNode);
 
       // SnippetInfoModel.debug();
-      return FutureBuilder<SnippetRootNode?>(
-        future: SnippetRootNode.loadSnippetFromCacheOrFromFB(snippetName: name),
-        builder: (futureContext, snapshot) {
-           if (snapshot.connectionState == ConnectionState.done) {
-            // fco.logger.i("FutureBuilder<void> Ensuring $name present");
-            try {
-              // in case did a revert, ignore snapshot data and use the AppInfo instead
-              SnippetRootNode? snippet =
-                  snapshot.data; //fco.currentSnippetVersion(name);
-              // SnippetRootNode? snippetRoot = cache?[editingVersionId];
-              Widget snippetWidget = snippet == null
-                  ? Error(
-                key: createNodeWidgetGK(),
-                FLUTTER_TYPE,
-                color: Colors.red,
-                size: 16,
-                errorMsg: "null snippet!",
-              )
-                  : snippet.child?.buildFlutterWidget(futureContext, this) ??
-                  const FlexibleSpaceBar(background: Placeholder());
-              snippet?.validateTree();
-              if (!(snippet?.isValid() ?? false)) {
-                return const Offstage();
-              }
-              Widget snippetWidgetStack = Stack(
-                fit: StackFit.loose,
-                children: [
-                  Center(child: snippetWidget),
-                  if (fco.canEditContent())
-                    Align(
-                      alignment: Alignment.topRight,
-                      child: SizedBox(
-                        width: 40,
-                        height: 40,
-                        child: CustomPaint(
-                          size: const Size(40, 40),
-                          painter: TRTriangle(Colors.black),
-                        ),
-                      ),
-                    ),
-                ],
-              );
+      return snippet != null
+          ? _snippetAndBanner(
+              snippetInfo!,
+              _snippetWidgetStack(
+                snippet.child?.buildFlutterWidget(context, this) ??
+                    Icon(Icons.warning, color: Colors.red, size: 24),
+              ),
+            )
+          : FutureBuilder<SnippetRootNode?>(
+              future: SnippetRootNode.loadSnippetFromCacheOrFromFB(
+                snippetName: name,
+              ),
+              builder: (futureContext, snapshot) {
+                if (snapshot.connectionState == ConnectionState.done) {
+                  // fco.logger.i("FutureBuilder<void> Ensuring $name present");
+                  try {
+                    // in case did a revert, ignore snapshot data and use the AppInfo instead
+                    SnippetRootNode? snippet =
+                        snapshot.data; //fco.currentSnippetVersion(name);
+                    // SnippetRootNode? snippetRoot = cache?[editingVersionId];
+                    Widget snippetWidget = snippet == null
+                        ? Error(
+                            key: createNodeWidgetGK(),
+                            FLUTTER_TYPE,
+                            color: Colors.red,
+                            size: 16,
+                            errorMsg: "null snippet!",
+                          )
+                        : snippet.child?.buildFlutterWidget(
+                                futureContext,
+                                this,
+                              ) ??
+                              const FlexibleSpaceBar(background: Placeholder());
+                    snippet?.validateTree();
+                    if (!(snippet?.isValid() ?? false)) {
+                      return const Offstage();
+                    }
+                    Widget snippetWidgetStack = _snippetWidgetStack(
+                      snippetWidget,
+                    );
 
-              bool isPublishedVersion =
-                  snippetInfo?.publishedVersionId == snippetInfo?.editingVersionId;
-
-              return fco.canEditContent()
-                  ? SizedBox(
-                width: double.infinity,
-                child: Banner(
-                  message: isPublishedVersion
-                      ? 'published'
-                      : 'not published',
-                  location: BannerLocation.topEnd,
-                  color: isPublishedVersion
-                      ? Colors.limeAccent.withValues(alpha: .5)
-                      : Colors.pink.shade100,
-                  textStyle: TextStyle(color: Colors.black, fontSize: 10),
-                  child: snippetWidgetStack,
-                ),
-              )
-              //TODO warn user if in debug mode and snippet version does not match editing version
-                  : !isPublishedVersion && kDebugMode
-                  ? Container(
-                color: Colors.red,
-                padding: EdgeInsets.all(50),
-                child: snippetWidget,
-              )
-                  : snippetWidget;
-            } catch (e) {
-              return Error(
-                key: createNodeWidgetGK(),
-                FLUTTER_TYPE,
-                color: Colors.red,
-                size: 16,
-                errorMsg: e.toString(),
-              );
-            }
-          } else {
-            return const CircularProgressIndicator();
-          }
-        },
-      );
+                    var snippetInfo = SnippetInfoModel.cachedSnippetInfo(name);
+                    return _snippetAndBanner(snippetInfo!, snippetWidgetStack);
+                  } catch (e) {
+                    return Error(
+                      key: createNodeWidgetGK(),
+                      FLUTTER_TYPE,
+                      color: Colors.red,
+                      size: 16,
+                      errorMsg: e.toString(),
+                    );
+                  }
+                } else {
+                  return const CircularProgressIndicator();
+                }
+              },
+            );
     } catch (e) {
       return Error(
         key: createNodeWidgetGK(),
@@ -204,6 +196,57 @@ class SnippetRootNode extends SC
         errorMsg: e.toString(),
       );
     }
+  }
+
+  Widget _snippetWidgetStack(Widget snippetWidget) {
+    return Stack(
+      fit: StackFit.loose,
+      children: [
+        Center(child: snippetWidget),
+        if (fco.canEditContent())
+          Align(
+            alignment: Alignment.topRight,
+            child: SizedBox(
+              width: 40,
+              height: 40,
+              child: CustomPaint(
+                size: const Size(40, 40),
+                painter: TRTriangle(Colors.black),
+              ),
+            ),
+          ),
+      ],
+    );
+  }
+
+  Widget _snippetAndBanner(
+    SnippetInfoModel snippetInfo,
+    Widget snippetWidgetStack,
+  ) {
+    bool isPublishedVersion =
+        snippetInfo.publishedVersionId == snippetInfo.editingVersionId;
+
+    return fco.canEditContent()
+        ? SizedBox(
+            width: double.infinity,
+            child: Banner(
+              message: isPublishedVersion ? 'published' : 'not published',
+              location: BannerLocation.topEnd,
+              color: isPublishedVersion
+                  ? Colors.limeAccent.withValues(alpha: .5)
+                  : Colors.pink.shade100,
+              textStyle: TextStyle(color: Colors.black, fontSize: 10),
+              child: snippetWidgetStack,
+            ),
+          )
+        //TODO warn user if in debug mode and snippet version does not match editing version
+        : !isPublishedVersion && kDebugMode
+        ? Container(
+            color: Colors.red,
+            padding: EdgeInsets.all(50),
+            child: snippetWidgetStack,
+          )
+        : snippetWidgetStack;
   }
 
   // if root already exists, return it.
@@ -260,7 +303,7 @@ class SnippetRootNode extends SC
     SnippetInfoModel? snippetInfo = await fco.modelRepo
         .getSnippetInfoFromCacheOrFB(snippetName: snippetName);
     return snippetInfo != null
-    // may already be in snippet cache, or will be loaded from FB
+        // may already be in snippet cache, or will be loaded from FB
         ? await snippetInfo.currentVersionFromCacheOrFB()
         : null;
   }
@@ -342,12 +385,12 @@ class SnippetRootNode extends SC
   }
 
   @override
-
   /// optional clone name, with a default
   SnippetRootNode clone({String? cloneName}) {
     SnippetRootNode copiedNode = super.clone() as SnippetRootNode;
     copiedNode
       ..name = (cloneName ?? '$name-copy')
+      // new GlobalKey !
       ..nodeWidgetGK = GlobalKey();
     return copiedNode;
   }
@@ -379,7 +422,7 @@ WidgetType _classifyNode(SNode node) {
   }
   // Check for common scrollable widgets (want infinite space on main axis)
   if (node is ListViewNode ||
-      node is SingleChildScrollViewNode /* || node is GridViewNode */) {
+      node is SingleChildScrollViewNode /* || node is GridViewNode */ ) {
     return WidgetType.Scrollable;
   }
   // Check for widgets that use flex properties (Expanded/Flexible)
@@ -408,7 +451,8 @@ String findUnboundedConstraintIssues(SnippetRootNode snippet) {
   );
 }
 
-String _checkWidgetNesting(SNode sNode, {
+String _checkWidgetNesting(
+  SNode sNode, {
   required bool isInsideFlex,
   required bool isInsideScrollable,
 }) {
@@ -421,8 +465,7 @@ String _checkWidgetNesting(SNode sNode, {
       isInsideFlex &&
       !isInsideScrollable) {
     // This often happens when a ListView is a direct child of a Column.
-    return "Issue Found: ${sNode
-        .toString()} (Scrollable) is a direct child of an unbounded Flex widget.";
+    return "Issue Found: ${sNode.toString()} (Scrollable) is a direct child of an unbounded Flex widget.";
   }
 
   // 2. An inner Flex widget is a child of an outer Flex and *not* wrapped in Expanded/Flexible
@@ -436,15 +479,13 @@ String _checkWidgetNesting(SNode sNode, {
     // unless it's wrapped in a Flexible/Expanded.
     // Note: The parent data check is what Flutter's runtime does.
     if (sNode is! FlexibleNode) {
-      return "Issue Found: Nested Flex widget (${sNode
-          .toString()}) is not wrapped in Expanded/Flexible. It will request infinite space.";
+      return "Issue Found: Nested Flex widget (${sNode.toString()}) is not wrapped in Expanded/Flexible. It will request infinite space.";
     }
   }
 
   // 3. Expanded/Flexible used outside of a Flex widget.
   if (currentType == WidgetType.Flexible && !isInsideFlex) {
-    return "Issue Found: ${sNode
-        .toString()} can only be used in a Flex (Row/Column).";
+    return "Issue Found: ${sNode.toString()} can only be used in a Flex (Row/Column).";
   }
 
   // --- Recurse to children ---

@@ -1,6 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_content/flutter_content.dart';
 import 'package:flutter_content/src/api/editable_page/versions_menu_anchor.dart';
+
+// import 'package:flutter_content/src/api/snippet_builder/context_extension.dart';
 import 'package:pointer_interceptor/pointer_interceptor.dart';
 
 import 'tr_triangle_painter.dart' show TRTriangle;
@@ -8,11 +12,13 @@ import 'tr_triangle_painter.dart' show TRTriangle;
 enum AnchorWidgetEnum { Triangle, IconButton }
 
 class SnippetMenuAnchor extends StatelessWidget {
+  final SnippetBuilderState parentBuilderState;
   final SnippetInfoModel snippetInfo;
   final AnchorWidgetEnum anchorWidget;
   final Color? triangleColor;
 
-  const SnippetMenuAnchor({
+  const SnippetMenuAnchor(
+    this.parentBuilderState, {
     required this.anchorWidget,
     required this.snippetInfo,
     this.triangleColor,
@@ -31,7 +37,7 @@ class SnippetMenuAnchor extends StatelessWidget {
                       onDoubleTap: () {
                         snippetInfo
                             .currentVersionFromCache()
-                            ?.tappedToEditSnippetNode(context, null);
+                            ?.tappedToEditSnippetNode();
                       },
                       onTap: () {
                         if (controller.isOpen) {
@@ -50,7 +56,7 @@ class SnippetMenuAnchor extends StatelessWidget {
                     onDoubleTap: () {
                       snippetInfo
                           .currentVersionFromCache()
-                          ?.tappedToEditSnippetNode(context, null);
+                          ?.tappedToEditSnippetNode();
                     },
                     onTap: () {
                       if (controller.isOpen) {
@@ -91,9 +97,38 @@ class SnippetMenuAnchor extends StatelessWidget {
         ),
         _menuItemButtonWithPI(
           onPressed: () {
-            fco.capiBloc.add(
-              CAPIEvent.enterSelectWidgetMode(snippetName: snippetInfo.name),
+            final bloc = context.read<CAPIBloC>();
+            print('entering node selection mode');
+            //
+            // enter select widget mode
+            //
+            bloc.add(
+              CAPIEvent.enterNodeSelectionMode(
+                snippetName: snippetInfo.name,
+              ),
             );
+            // fco.afterNextBuildDo(() {
+            // setup key handler to exit widget selection mode
+            fco.removeKeystrokeHandler('key-handler-exit-Select-Widget-Mode');
+            fco.registerKeystrokeHandler(
+              'key-handler-exit-Select-Widget-Mode',
+              (KeyEvent event) {
+                if (event.logicalKey == LogicalKeyboardKey.escape) {
+                  if (bloc.showTappableBorderRects()) {
+                    bloc.add(CAPIEvent.exitNodeSelectionMode());
+                  }
+                }
+                return false;
+              },
+            );
+            // // build stack of dotted rects to show widget boundaries
+            // var rootNode = snippetInfo.currentVersionFromCache();
+            // if (rootNode == null) return;
+            // parentBuilderState.stackOfNodeBorderRects = _buildStackOfNodeRects(rootNode);
+            // // start listening to the scroll controller
+            // rootNode.scrollController?.addListener(parentBuilderState.refresh);
+            // parentBuilderState.refresh();
+            // });
             // // after rendering just this snippet, show its tappable overlays
             // fco.afterNextBuildDo((){
             //   var snippet = snippetInfo.currentVersionFromCache();
@@ -159,9 +194,11 @@ class SnippetMenuAnchor extends StatelessWidget {
         ),
         _menuItemButtonWithPI(
           onPressed: () async {
-            fco.capiBloc.add(CAPIEvent.toggleSnippetVisibility(snippetName: snippetInfo.name));
+            fco.capiBloc.add(
+              CAPIEvent.toggleSnippetVisibility(snippetName: snippetInfo.name),
+            );
           },
-          child:  Text('${snippetInfo.hide??false ? 'show' : 'hide'} snippet'),
+          child: Text('${snippetInfo.hide ?? false ? 'show' : 'hide'} snippet'),
         ),
       ],
     );
@@ -177,4 +214,11 @@ class SnippetMenuAnchor extends StatelessWidget {
       child: PointerInterceptor(child: child),
     ),
   );
+
+  // Widget _buildStackOfNodeRects(SnippetRootNode rootNode) {
+  //   BuildContext? ctx = rootNode?.child?.nodeWidgetGK?.currentContext;
+  //   List<Widget> nodeBorderRects = [];
+  //   ctx?.traverseSnippetNodes(nodeBorderRects);
+  //   return Stack(children: nodeBorderRects);
+  // }
 }
