@@ -100,4 +100,72 @@ class SnippetInfoModel with SnippetInfoModelMappable {
   bool isFirstVersion() => editingVersionId == earliestVersionId();
 
   bool isLatestVersion() => editingVersionId == latestVersionId();
+
+  static VersionId createNewVersion(SnippetRootNode snippet) {
+    // may require a new SnippetInfo
+    SnippetInfoModel? snippetInfo =
+        SnippetInfoModel.cachedSnippetInfo(snippet.name) ??
+        createAndCacheNewSnippetInfo(snippet);
+
+    // remove all subsequent versions following the current version
+    // before saving new version
+    List<VersionId> newIdCache = [];
+    List<VersionId> tbd = [];
+    for (VersionId v in snippetInfo.versionIds ?? []) {
+      try {
+        if (int.parse(v.isEmpty ? "0" : v) >
+            int.parse(snippetInfo.currentVersionId() ?? "-1")) {
+          tbd.add(v);
+        } else {
+          newIdCache.add(v);
+        }
+      } catch (e) {
+        fco.logger.e('$e');
+      }
+    }
+    if (tbd.isNotEmpty) {
+      // delete from FB and also from cache
+      for (VersionId vId in tbd) {
+        snippetInfo.versionIds?.remove(vId);
+        snippetInfo.cachedVersions.remove(vId);
+      }
+    }
+
+    VersionId newVersionId = DateTime.now().millisecondsSinceEpoch.toString();
+
+    // update FB appInfo
+    // jsArray issue
+    // List<String> newList = appInfo.snippetNames;
+    if (!fco.appInfo.snippetNames.contains(snippetInfo.name)) {
+      fco.appInfo.snippetNames = [
+        ...fco.appInfo.snippetNames,
+        snippetInfo.name,
+      ];
+      AppInfoModel.needToSave = true;
+    }
+    snippetInfo.editingVersionId = newVersionId;
+    if (snippetInfo.autoPublish ?? fco.appInfo.autoPublishDefault) {
+      snippetInfo.publishedVersionId = newVersionId;
+    }
+
+    (snippetInfo.versionIds ??= []).add(newVersionId);
+    snippetInfo.cachedVersions[newVersionId] = snippet;
+    return newVersionId;
+  }
+
+  static SnippetInfoModel createAndCacheNewSnippetInfo(
+    SnippetRootNode firstVersion,
+  ) {
+    VersionId firstVersionId = DateTime.now().millisecondsSinceEpoch.toString();
+
+    final newSnippetInfo = SnippetInfoModel(
+      firstVersion.name,
+      editingVersionId: firstVersionId,
+      publishedVersionId: firstVersionId,
+      autoPublish: fco.appInfo.autoPublishDefault,
+      versionIds: [firstVersionId],
+    );
+    SnippetInfoModel.cacheSnippetInfo(firstVersion.name, newSnippetInfo);
+    return newSnippetInfo;
+  }
 }

@@ -20,7 +20,7 @@ class SnippetBuilder extends StatefulWidget {
   final String? snippetName;
 
   // or by providing tree of nodes
-  final SnippetRootNode? snippetRootNode;
+  final SnippetRootNode? templateSnippet;
 
   final Map<String, void Function(BuildContext)>? handlers;
 
@@ -30,36 +30,12 @@ class SnippetBuilder extends StatefulWidget {
 
   final void Function(ScrollNotification)? onScrollF;
 
-  // final bool allowButtonCallouts;
-  // final bool justPlaying;
-
-  // final Icon? icon;
-  // final Color? iconColor;
-  // final double? iconSize;
-  // final VoidCallback? onPressed;
-  // final VoidCallback? onLongPress;
-  // parent widget may be scrollable
   final ScrollControllerName? scName;
   final VoidCallback? onLayoutDone;
 
-  // effectively from a Template
-  const SnippetBuilder.fromNodes({
-    // this.panelName,
+  const SnippetBuilder({
     this.snippetName,
-    required this.snippetRootNode,
-    this.handlers,
-    this.onScrollF,
-    required this.scName, // force dev to be scroll aware
-    this.justPlaying = false,
-    this.tc,
-    this.onLayoutDone,
-    super.key,
-  });
-
-  const SnippetBuilder.fromSnippet({
-    // this.panelName,
-    required this.snippetName,
-    this.snippetRootNode,
+    this.templateSnippet,
     this.handlers,
     this.onScrollF,
     required this.scName, // force dev to be scroll aware
@@ -91,13 +67,9 @@ class SnippetBuilder extends StatefulWidget {
 class SnippetBuilderState extends State<SnippetBuilder>
     with TickerProviderStateMixin {
   Map<String, TabBarNode> tabBars = {};
-  late Future<SnippetRootNode?> fEnsureSnippetInCache;
 
-  // will be supplied snippetName or supplied snippet's rootNode name
-  String snippetName() => widget.snippetName ?? widget.snippetRootNode!.name;
-
-  SnippetInfoModel? snippetInfo() =>
-      SnippetInfoModel.cachedSnippetInfo(snippetName());
+  // will be supplied directly as snippetName arg or supplied via the template
+  String snippetName() => widget.snippetName ?? widget.templateSnippet!.name;
 
   // ZoomerState? get parentTSState => Zoomer.of(context);
 
@@ -111,8 +83,6 @@ class SnippetBuilderState extends State<SnippetBuilder>
   @override
   void initState() {
     super.initState();
-
-    fEnsureSnippetInCache = _ensureSnippetInCache();
 
     widget.handlers?.forEach((key, value) {
       fco.registerHandler(key, value);
@@ -137,21 +107,7 @@ class SnippetBuilderState extends State<SnippetBuilder>
 
   bool get pageIsEditable => EditablePage.of(context) != null;
 
-  Future<SnippetRootNode?> _ensureSnippetInCache() async {
-    // may already be in memory
-    var appInfo = fco.appInfo;
-    if (appInfo.snippetNames.contains(snippetName())) {
-      if (snippetInfo() != null) {
-        return await snippetInfo()!.currentVersionFromCacheOrFB();
-      }
-    }
-    return await SnippetRootNode.loadSnippetFromCacheOrFromFBOrCreateFromTemplate(
-      snippetName: snippetName(),
-      templateSnippetRootNode: widget.snippetRootNode,
-    );
-  }
-
-  void refresh() => setState(() {});
+  CAPIBloC get bloc => context.read<CAPIBloC>();
 
   @override
   Widget build(BuildContext context) {
@@ -220,7 +176,7 @@ class SnippetBuilderState extends State<SnippetBuilder>
     //     fco.logger.d('\nSnippetPanel builder:\n');
     //
     return BlocBuilder<CAPIBloC, CAPIState>(
-        buildWhen: (previous, current) {
+      buildWhen: (previous, current) {
         bool result =
             (!current.onlyTargetsWrappers
             //     &&
@@ -239,197 +195,104 @@ class SnippetBuilderState extends State<SnippetBuilder>
               );
               widget.onScrollF?.call(notification);
               // if (fco.inNodeSelectionMode) {
-                // Schedule the callback, but DO NOT pass the stale state into it.
-                // fco.afterNextBuildDo(() {
-                // Inside the callback, use the BuildContext to get the
-                // LATEST state from the BLoC. The `context` here is from
-                // the BlocBuilder's builder method and is always current.
-                // Why This Works
-                //   - context.read<CAPIBloC>().state: The context passed
-                //   to the BlocBuilder's builder is "live" and is aware
-                //   of its position in the widget tree. When you call
-                //   context.read<T>(), it walks up the tree to find the
-                //   nearest provider of type T (in this case, your CapiBloc)
-                //   and gives you access to it.
-                //   - Post-Build Accuracy: Because your afterNextBuildDo
-                //   callback runs after the build cycle, when you call
-                //   context.read<CAPIBloC>().state at that moment, you are
-                //   guaranteed to receive the most up-to-date state object
-                //   that was just used for the completed build.
-                //
-                // This pattern of fetching fresh state from the BuildContext
-                // inside a post-frame callback is the standard and correct
-                // way to avoid race conditions and stale state issues in
-                // Flutter when dealing with asynchronous UI updates.
-                // final CAPIBloC bloc = context.read<CAPIBloC>();
-                // final CAPIState currentState = bloc.state;
-                // TODO populateNodeBorderRects(snippetName());
-                // });
-                // return true;
+              // Schedule the callback, but DO NOT pass the stale state into it.
+              // fco.afterNextBuildDo(() {
+              // Inside the callback, use the BuildContext to get the
+              // LATEST state from the BLoC. The `context` here is from
+              // the BlocBuilder's builder method and is always current.
+              // Why This Works
+              //   - context.read<CAPIBloC>().state: The context passed
+              //   to the BlocBuilder's builder is "live" and is aware
+              //   of its position in the widget tree. When you call
+              //   context.read<T>(), it walks up the tree to find the
+              //   nearest provider of type T (in this case, your CapiBloc)
+              //   and gives you access to it.
+              //   - Post-Build Accuracy: Because your afterNextBuildDo
+              //   callback runs after the build cycle, when you call
+              //   context.read<CAPIBloC>().state at that moment, you are
+              //   guaranteed to receive the most up-to-date state object
+              //   that was just used for the completed build.
+              //
+              // This pattern of fetching fresh state from the BuildContext
+              // inside a post-frame callback is the standard and correct
+              // way to avoid race conditions and stale state issues in
+              // Flutter when dealing with asynchronous UI updates.
+              // final CAPIBloC bloc = context.read<CAPIBloC>();
+              // final CAPIState currentState = bloc.state;
+              // TODO populateNodeBorderRects(snippetName());
+              // });
+              // return true;
               // }
             }
             // Return `true` to consume the notification and stop it from bubbling further up.
             // Return `false` to let it continue bubbling.
             return false;
           },
-          child: FutureBuilder<SnippetRootNode?>(
-            future: fEnsureSnippetInCache,
-            builder: (futureContext, snapshot) {
-              if (snapshot.connectionState != ConnectionState.done ||
-              !snapshot.hasData) {
-                return const Center(child: CircularProgressIndicator());
-              }
-
-              // SnippetInfoModel.debug();
-              // SnippetInfoModel? snippetInfo = SnippetInfoModel.snippetInfoCache[snippetName()];
-              // SnippetInfoModel.debug();
-
-              if (snapshot.data == null) {
-                return Error(
-                  "SnippetPanel",
-                  color: Colors.red,
-                  size: 32,
-                  errorMsg: "null snippet! ${snapshot.error.toString()}",
-                  key: GlobalKey(),
+          child: Builder(
+            builder: (context) {
+              // optimise by first checking whether already in memory
+              // can avoid unnecessary futurebuilder
+              var appInfo = fco.appInfo;
+              if (appInfo.snippetNames.contains(snippetName())) {
+                // ALREADY IM CACHE ?
+                var name = snippetName();
+                var snippetInfo = SnippetInfoModel.cachedSnippetInfo(
+                  snippetName(),
                 );
-              }
-
-              WidgetsBinding.instance.addPostFrameCallback((_) {
-                widget.onLayoutDone?.call();
-              });
-
-              bool isPublishedVersion = fco.isEditingVersionPublished(
-                snippetName(),
-              );
-
-              SnippetRootNode snippet = snapshot.data!;
-
-              // test whether snippet is in the cache
-              // bool namePresent = fco.appInfo.snippetNames.contains(snippetName());
-
-              // cId as a number means it's a hotspot content callout
-              final isCID = SnippetRootNode.isHotspotCalloutContent(
-                snippetName(),
-              );
-
-              Color triangleColor = Colors.purpleAccent; // in edit mode
-              if (!isPublishedVersion) triangleColor = Colors.deepOrange;
-              if (!pageIsEditable && !isCID) triangleColor = Colors.black;
-
-              // snippet.validateTree();
-              // SnippetRootNode? snippetRoot = cache?[editingVersionId];
-
-              bool playing = widget.justPlaying;
-
-              // is it part of a CalloutContentEditablePage rather than a normal EditablePage
-              // var parent = CalloutContentEditablePage.of(context);
-              // bool isOnANormalPage = parent == null;
-
-              // final currentPage = fco.currentEditablePagePath;
-
-              // final snippetInEditMode = fco.inEditModeForSnippetName;
-              // final hideSnippetPanel =
-              //     inEditModeValue && snippetName() != snippetInEditMode;
-
-              SnippetInfoModel? snippetInfo =
-                  SnippetInfoModel.cachedSnippetInfo(snippetName());
-
-              late Widget generatedWidget;
-
-              try {
-                generatedWidget = snippet.buildFlutterWidget(context, null);
-              } catch (e) {
-                generatedWidget = Icon(
-                  Icons.error,
-                  size: 40,
-                  color: Colors.purpleAccent,
+                 if (snippetInfo != null) {
+                  var snippet = snippetInfo.currentVersionFromCache();
+                  if (snippet != null) {
+                    return _stackWidget(snippet);
+                  }
+                }
+              } else if (widget.templateSnippet != null) {
+                // CREATE FROM TEMPLATE
+                fco.pageList.add(widget.templateSnippet!.name);
+                VersionId newVersionId = SnippetInfoModel.createNewVersion(
+                  widget.templateSnippet!,
                 );
+                print(
+                  'SnippetBuilder() created a brand new snippet from a template (${widget.templateSnippet!.name}',
+                );
+                fco.modelRepo.saveSnippetVersion(
+                  snippetName: widget.templateSnippet!.name,
+                  newVersionId: newVersionId,
+                  newVersion: widget.templateSnippet!,
+                );
+                fco.modelRepo.saveAppInfo();
+                return _stackWidget(widget.templateSnippet!);
               }
 
-              Widget snippetWidget = Stack(
-                children: [
-                  generatedWidget,
-                  if (!widget.justPlaying &&
-                      !isPublishedVersion &&
-                      !fco.canEditContent())
-                    Align(
-                      alignment: Alignment.topLeft,
-                      child: Container(
-                        color: Colors.deepOrange,
-                        height: 6,
-                        width: double.infinity,
-                      ),
-                    ),
-                  if (!playing &&
-                      fco.canEditContent() &&
-                      fco.notInNodeSelectionMode &&
-                      fco.snippetBeingEdited == null)
-                    Align(
-                      alignment: Alignment.topRight,
-                      child: PointerInterceptor(
-                        child: SnippetMenuAnchor(
-                          this,
-                          anchorWidget: AnchorWidgetEnum.Triangle,
-                          triangleColor: triangleColor,
-                          snippetInfo: snippetInfo!,
-                        ),
-                      ),
-                    ),
-                  if (!playing &&
-                      fco.canEditContent() &&
-                      fco.notInNodeSelectionMode &&
-                      fco.snippetBeingEdited == null)
-                    Align(
-                      alignment: Alignment.topRight,
-                      child: PointerInterceptor(
-                        child: Tooltip(
-                          message: 'show Snippet menu\n${snippetInfo?.name}',
-                          child: Container(
-                            width: 20,
-                            height: 20,
-                            alignment: Alignment.topRight,
-                            child: pageIsEditable || isCID
-                                ? SnippetMenuAnchor(
-                                    this,
-                                    anchorWidget: AnchorWidgetEnum.IconButton,
-                                    snippetInfo: snippetInfo!,
-                                  )
-                                // Icon(Icons.select_all, size: 20, color: Colors.white)
-                                : const Offstage(),
-                          ),
-                        ),
-                      ),
-                    ),
-                  // if in select widget mode, will have a stack of nodes
-                  // if (stackOfNodeBorderRects != null)
-                  //   Positioned(
-                  //     left: snippet.scrollDirection == Axis.horizontal
-                  //         ? snippet.scrollController?.offset ?? 0.0
-                  //         : 0.0,
-                  //     top: snippet.scrollDirection == Axis.vertical
-                  //         ? snippet.scrollController?.offset ?? 0.0
-                  //         : 0.0,
-                  //     child: stackOfNodeBorderRects!,
-                  //   ),
-                  // The rects overlay itself, driven by BLoC state
-                 ],
-              );
+              // EXISTS, BUT NOT PRESENT IN CACHE, so go fetch...
+              return FutureBuilder<SnippetRootNode?>(
+                future: SnippetRootNode.loadSnippetFromCacheOrFromFB(
+                  snippetName: snippetName(),
+                ),
+                builder: (futureContext, snapshot) {
+                  if (snapshot.connectionState != ConnectionState.done ||
+                      !snapshot.hasData) {
+                    return const Center(child: CircularProgressIndicator());
+                  }
 
-              return false && fco.canEditContent() && fco.inNodeSelectionMode
-                  ? Banner(
-                      message: isPublishedVersion
-                          ? 'published'
-                          : 'not published',
-                      location: BannerLocation.topEnd,
-                      color: isPublishedVersion
-                          ? Colors.limeAccent.withValues(alpha: .5)
-                          : Colors.pink.shade100,
-                      textStyle: TextStyle(color: Colors.black, fontSize: 10),
-                      child: IgnorePointer(child: snippetWidget),
-                    )
-                  : fco.canEditContent() && fco.snippetBeingEdited != null
-                  ? IgnorePointer(child: snippetWidget)
-                  : snippetWidget;
+                  // SnippetInfoModel.debug();
+                  // SnippetInfoModel? snippetInfo = SnippetInfoModel.snippetInfoCache[snippetName()];
+                  // SnippetInfoModel.debug();
+
+                  if (snapshot.data == null) {
+                    return Error(
+                      "SnippetPanel",
+                      color: Colors.red,
+                      size: 32,
+                      errorMsg: "null snippet! ${snapshot.error.toString()}",
+                      key: GlobalKey(),
+                    );
+                  }
+
+                  SnippetRootNode snippet = snapshot.data!;
+
+                  return _stackWidget(snippet);
+                },
+              );
             },
           ),
         );
@@ -439,6 +302,96 @@ class SnippetBuilderState extends State<SnippetBuilder>
     // );
   }
 
+  Widget _stackWidget(SnippetRootNode snippet) {
+
+    // triggers AFTER layout of this widget
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      widget.onLayoutDone?.call();
+    });
+
+    late List<Widget> stackChildren;
+
+    try {
+      stackChildren = [snippet.buildFlutterWidget(context, null)];
+    } catch (e) {
+      stackChildren = [Icon(Icons.error, size: 40, color: Colors.purpleAccent)];
+    }
+
+    SnippetInfoModel snippetInfo = SnippetInfoModel.cachedSnippetInfo(
+      snippetName(),
+    )!;
+
+    bool isPublishedVersion = fco.isEditingVersionPublished(snippetName());
+
+    Color triangleColor = Colors.purpleAccent; // in edit mode
+    if (!isPublishedVersion) triangleColor = Colors.deepOrange;
+
+    // orange indicator when not signed in and
+    // showing an unpublished snippet
+    if (!widget.justPlaying && !isPublishedVersion && !fco.canEditContent()) {
+      stackChildren.add(
+        Align(
+          alignment: Alignment.topLeft,
+          child: Container(
+            color: Colors.deepOrange,
+            height: 6,
+            width: double.infinity,
+          ),
+        ),
+      );
+    }
+
+    // show menu anchor if signed in and not selecting a
+    // widget not editing a snippety
+    if (fco.canEditContent() &&
+        bloc.dontShowTappableBorderRects() &&
+        bloc.aSnippetIsNotBeingEdited()) {
+      stackChildren.add(
+        Align(
+          alignment: Alignment.topRight,
+          child: PointerInterceptor(
+            child: SnippetMenuAnchor(
+              this,
+              anchorWidget: AnchorWidgetEnum.Triangle,
+              triangleColor: triangleColor,
+              snippetInfo: snippetInfo!,
+            ),
+          ),
+        ),
+      );
+    }
+
+    // show menu anchor for a hotspot's content
+    // cId as a number means it's a hotspot content callout
+    if (!widget.justPlaying &&
+        fco.canEditContent() &&
+        bloc.dontShowTappableBorderRects() &&
+        bloc.aSnippetIsNotBeingEdited() &&
+        pageIsEditable &&
+        SnippetRootNode.isHotspotCalloutContent(snippetName())) {
+      stackChildren.add(
+        Align(
+          alignment: Alignment.topRight,
+          child: PointerInterceptor(
+            child: Tooltip(
+              message: 'show Snippet menu\n${snippetInfo?.name}',
+              child: Container(
+                width: 20,
+                height: 20,
+                alignment: Alignment.topRight,
+                child: SnippetMenuAnchor(
+                  this,
+                  anchorWidget: AnchorWidgetEnum.IconButton,
+                  snippetInfo: snippetInfo!,
+                ),
+              ),
+            ),
+          ),
+        ),
+      );
+    }
+    return Stack(children: stackChildren);
+  }
 
   // void _tappedTriangle(bool isCID) {
   //   if ((!pageIsEditable && !isCID) || fco.snippetBeingEdited != null) {

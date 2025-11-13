@@ -560,7 +560,8 @@ abstract class SNode extends Node with SNodeMappable {
       final rootNode = rootNodeOfSnippet();
       if (rootNode != null) {
         assert(rootNode.isValid());
-        fco.saveNewVersion(snippet: rootNode);
+        final newVersionId = SnippetInfoModel.createNewVersion(rootNode);
+        fco.modelRepo.saveSnippetVersion(snippetName: rootNode.name, newVersionId: newVersionId, newVersion: rootNode);
         // EditablePageState? eps = EditablePage.of(context);
         // eps?.showNodeWidgetOverlays();
       }

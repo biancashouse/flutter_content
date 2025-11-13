@@ -33,7 +33,8 @@ Future<void> showTargetDurationCallout(
               tc.calloutDurationMs = int.tryParse(s)??0;
               SnippetRootNode? rootNode = tc.parentTargetsWrapperNode?.rootNodeOfSnippet();
               if (rootNode == null) return;
-              fco.saveNewVersion(snippet: rootNode);
+              final newVersionId = SnippetInfoModel.createNewVersion(rootNode);
+              fco.modelRepo.saveSnippetVersion(snippetName: rootNode.name, newVersionId: newVersionId, newVersion: rootNode);
               fco.dismiss("duration");
             },
           ),

@@ -87,7 +87,8 @@ class TargetsWrapperOnTapMenu extends StatelessWidget {
     fco.capiBloc
         .add(const CAPIEvent.forceRefresh(onlyTargetsWrappers: true));
 
-    fco.saveNewVersion(snippet: parentNode.rootNodeOfSnippet()!);
+    final newVersionId = SnippetInfoModel.createNewVersion(parentNode.rootNodeOfSnippet()!);
+    fco.modelRepo.saveSnippetVersion(snippetName: parentNode.rootNodeOfSnippet()!.name, newVersionId: newVersionId, newVersion: parentNode.rootNodeOfSnippet()!);
 
     // fco.cacheAndSaveANewSnippetVersion(
     //   snippetName: snippetName,

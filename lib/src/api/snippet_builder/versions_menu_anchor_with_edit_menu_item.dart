@@ -74,22 +74,23 @@ class SnippetMenuAnchor extends StatelessWidget {
         Container(
           padding: EdgeInsets.all(10),
           color: snippetInfo.editingVersionId != snippetInfo.publishedVersionId
-              ? Colors.grey
-              : Colors.deepOrange,
+              ? Colors.red
+              : Colors.purpleAccent,
           child: Column(
             mainAxisSize: MainAxisSize.max,
             mainAxisAlignment: MainAxisAlignment.start,
+            crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               fco.coloredText(
                 snippetInfo.editingVersionId != snippetInfo.publishedVersionId
-                    ? '(this is not the published version)'
-                    : '(this is the published version)',
+                    ? 'This is NOT the published version!'
+                    : 'This is the published version.',
                 color: Colors.white,
               ),
               fco.coloredText(
                 snippetInfo.autoPublish ?? fco.appInfo.autoPublishDefault
-                    ? '(changes to this snippet are automatically published)'
-                    : '(changes are NOT automatically published)',
+                    ? 'Changes to this snippet are automatically published'
+                    : 'Changes are NOT automatically published',
                 color: Colors.white,
               ),
             ],
@@ -114,9 +115,9 @@ class SnippetMenuAnchor extends StatelessWidget {
               'key-handler-exit-Select-Widget-Mode',
               (KeyEvent event) {
                 if (event.logicalKey == LogicalKeyboardKey.escape) {
-                  if (bloc.showTappableBorderRects()) {
+                  // if (bloc.showTappableBorderRects()) {
                     bloc.add(CAPIEvent.exitNodeSelectionMode());
-                  }
+                  // }
                 }
                 return false;
               },

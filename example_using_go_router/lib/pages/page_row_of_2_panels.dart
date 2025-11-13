@@ -12,9 +12,9 @@ class Page_RowOf2Panels extends StatelessWidget {
         mainAxisSize: MainAxisSize.max,
         children: [
           Expanded(
-            child: SnippetBuilder.fromNodes(
+            child: SnippetBuilder(
               // panelName: 'panel1',
-              snippetRootNode: SnippetRootNode(
+              templateSnippet: SnippetRootNode(
                 name: 'panels-demo1-panel1',
                 child: PaddingNode(
                   padding: EdgeInsetsValue(top: 30, left: 30, bottom: 30, right: 30),
@@ -25,9 +25,9 @@ class Page_RowOf2Panels extends StatelessWidget {
             ),
           ),
           Expanded(
-            child: SnippetBuilder.fromNodes(
+            child: SnippetBuilder(
               // panelName: 'panel2',
-              snippetRootNode: SnippetRootNode(
+              templateSnippet: SnippetRootNode(
                 name: 'panels-demo2-panel2',
                 child: CarouselNode(children: [
                   AssetImageNode(assetPath: 'assets/images/frog.jpg'),

@@ -57,9 +57,7 @@ Future<void> showHotspotSnippetContentCallout({
   //  by now should definitely have created the target's snippet
   // if (fco.targetSnippetBeingConfigured != null) {
 
-  Widget content() => SnippetBuilder.fromSnippet(
-    // panelName: tc.contentCId,
-    // never used
+  Widget content() => SnippetBuilder(
     snippetName: tc.contentCId,
     scName: scName,
     justPlaying: justPlaying,

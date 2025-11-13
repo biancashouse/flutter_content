@@ -36,8 +36,8 @@ class EditablePageRoute extends GoRoute {
                      routePath: state.path!,
                      // zoomable: zoomable,
                      // provideNamedScrollController: provideNamedScrollController,
-                     child: child ?? SnippetBuilder.fromNodes(
-                       snippetRootNode: SnippetRootNode(name: state.path!, child: PlaceholderNode()),
+                     child: child ?? SnippetBuilder(
+                       templateSnippet: SnippetRootNode(name: state.path!, child: PlaceholderNode()),
                        scName: state.path!,
                      ),
                    );

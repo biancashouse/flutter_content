@@ -54,6 +54,7 @@ class EditablePageState extends State<EditablePage> {
   List<NodeRenderData> borderRects = [];
   bool _needsToPopulateRects = false;
   GlobalKey zoomerGk = GlobalKey();
+  Debouncer debouncer = Debouncer(delayMs: 5);
 
   @override
   void initState() {
@@ -86,7 +87,6 @@ class EditablePageState extends State<EditablePage> {
 
   // also allow for a selected node
   void _populateNodeBorderRects(CAPIBloC bloc) {
-    print('populateNodeBorderRects');
     List<SNode> nodes = [];
     SnippetRootNode? rootNode;
     SNode? selectedNode;
@@ -111,18 +111,16 @@ class EditablePageState extends State<EditablePage> {
           Rect? borderRect = node.calcBorderRect();
           if (borderRect != null) {
             borderRects.add(NodeRenderData(node: node, rect: borderRect));
-            print(
-              '${node.toString()} nodes measured. ${borderRect.toString()}',
-            );
           }
         }
       }
     }
+    print('populateNodeBorderRects measured ${borderRects.length} nodes.');
   }
 
   @override
   Widget build(BuildContext context) {
-    print('build - node: ${borderRects.length}');
+    print('build - borderRects: ${borderRects.length}');
     return BlocConsumer<CAPIBloC, CAPIState>(
       // only run the listener when in select widget mode or...
       listenWhen: (prev, curr) {
@@ -134,10 +132,11 @@ class EditablePageState extends State<EditablePage> {
       listener: (lcontext, state) {
         if (state.activeSnippetName != null &&
             state.snippetBeingEdited == null) {
+          // just entered snippetNodeSelection mode
           print('listener: setting _needsToPopulateRects to true');
           // Set the flag. Don't schedule any callbacks here.
           _needsToPopulateRects = true;
-        } else if (fco.aNodeIsSelected) {
+        } else if (state.snippetBeingEdited?.selectedNode != null) {
           // update selection widget overlay
           // skip if currently editing a markdown, quill, or uml
           if (fco.anyPresent(['quill-te', 'uml-te', 'markdown-te'])) return;
@@ -150,13 +149,15 @@ class EditablePageState extends State<EditablePage> {
       // only rebuild page when entering or exiting snippet editor (msv)
       buildWhen: (previous, current) {
         if (current.onlyTargetsWrappers) return false;
-        if (previous.activeSnippetName != current.activeSnippetName) {
-          // Clear old rects when snippet changes
-          if (previous.activeSnippetName != null) {
-            borderRects.clear();
-          }
+        if (_needsToPopulateRects) {
+          // // Clear old rects when snippet changes
+          // if (previous.activeSnippetName != null) {
+          //   borderRects.clear();
+          // }
           return true;
         }
+        if (previous.activeSnippetName != current.activeSnippetName)
+          return true;
         if (previous.snippetBeingEdited != current.snippetBeingEdited)
           return true;
         if (previous.snippetBeingEdited?.selectedNode !=
@@ -249,7 +250,7 @@ class EditablePageState extends State<EditablePage> {
     );
   }
 
-  void _tappedToEditSNode(SNode node) {
+  void _tappedToEditSnippetAndSelectNode(SNode node) {
     SnippetRootNode? rootNode = node.rootNodeOfSnippet();
     if (rootNode == null) return;
     SnippetName? snippetName = rootNode.name;
@@ -332,7 +333,9 @@ class EditablePageState extends State<EditablePage> {
         ),
       );
     }
-    areas.add(Area(builder: (ctx, area) => _snippetWidgetStack(bloc), flex: 2));
+    areas.add(
+      Area(builder: (ctx, area) => _snippetBeingEditedStack(bloc), flex: 2),
+    );
 
     msvC.areas = areas;
 
@@ -355,13 +358,13 @@ class EditablePageState extends State<EditablePage> {
           bloc.add(CAPIEvent.updateTappableRects());
         },
         onDividerDragEnd: (_) {
-          final rootNode = fco.selectedNode?.rootNodeOfSnippet();
-          if (rootNode != null) {
-            assert(rootNode.isValid());
-            fco.saveNewVersion(snippet: rootNode);
-            // refreshSelectedNodeWidgetBorderOverlay(rootNode.name);
-            // showNodeWidgetOverlays();
-          }
+          // final rootNode = fco.selectedNode?.rootNodeOfSnippet();
+          // if (rootNode != null) {
+          //   assert(rootNode.isValid());
+          //   fco.saveNewVersion(snippet: rootNode);
+          //   // refreshSelectedNodeWidgetBorderOverlay(rootNode.name);
+          //   // showNodeWidgetOverlays();
+          // }
         },
       ),
     );
@@ -373,7 +376,7 @@ class EditablePageState extends State<EditablePage> {
   Widget _snippetWidgetStack(CAPIBloC bloc) => Stack(
     children: [
       if (bloc.showTappableBorderRects())
-        SnippetBuilder.fromSnippet(
+        SnippetBuilder(
           snippetName: bloc.state.activeSnippetName,
           scName: widget.routePath,
           onLayoutDone: () {
@@ -390,13 +393,15 @@ class EditablePageState extends State<EditablePage> {
             }
           },
           onScrollF: (ScrollNotification event) {
-            setState(() {
-              _populateNodeBorderRects(bloc);
-            });
+            // debouncer.run(() {
+              setState(() {
+                _populateNodeBorderRects(bloc);
+              });
+            // });
           },
         ),
       if (bloc.aSnippetIsBeingEdited())
-        SnippetBuilder.fromSnippet(
+        SnippetBuilder(
           snippetName: bloc.state.activeSnippetName,
           scName: widget.routePath,
           onScrollF: (ScrollNotification event) {
@@ -428,7 +433,7 @@ class EditablePageState extends State<EditablePage> {
               // When a node is tapped, fire the existing SelectNode event
               bloc.add(CAPIEvent.selectNode(node: node));
             } else {
-              _tappedToEditSNode(node);
+              _tappedToEditSnippetAndSelectNode(node);
             }
           },
         ),
@@ -439,6 +444,27 @@ class EditablePageState extends State<EditablePage> {
             padding: EdgeInsets.only(right: fco.canEditContent() ? 68 : 8.0),
             child: fco.NavigationDD(pencilIconColor: Colors.red),
           ),
+        ),
+    ],
+  );
+
+  Widget _snippetBeingEditedStack(CAPIBloC bloc) => Stack(
+    children: [
+      SnippetBuilder(
+        snippetName: bloc.state.snippetBeingEdited?.getRootNode().name,
+        scName: widget.routePath,
+        onScrollF: (ScrollNotification event) {
+          setState(() {
+            _populateNodeBorderRects(bloc);
+          });
+        },
+      ),
+      if (bloc.aNodeIsSelected() && borderRects.isNotEmpty)
+        TappableNodeBorders(
+          renderData: borderRects,
+          onNodeTapped: (node) {
+            bloc.add(CAPIEvent.selectNode(node: node));
+          },
         ),
     ],
   );

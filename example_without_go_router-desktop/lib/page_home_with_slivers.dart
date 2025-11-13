@@ -64,9 +64,9 @@ class _Page_HomeState extends State<Page_Home> {
         : "flutter content demo";
 
     final uniqueTabBarName = DateTime.now().millisecondsSinceEpoch.toString();
-    SnippetBuilder sp = SnippetBuilder.fromNodes(
+    SnippetBuilder sp = SnippetBuilder(
       // panelName: 'demo-buttons',
-      snippetRootNode: SnippetRootNode(
+      templateSnippet: SnippetRootNode(
         name: 'home-scaffold-with-tabs',
         child: ScaffoldNode(
           appBar: NamedPS(

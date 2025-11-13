@@ -90,7 +90,8 @@ class _PointyToolState extends State<PointyTool> {
     //   fco.refreshOverlay(tc.snippetName, f: () {});
     SnippetRootNode? rootNode = tc.parentTargetsWrapperNode?.rootNodeOfSnippet();
     if (rootNode == null) return;
-    fco.saveNewVersion(snippet: rootNode);
+    final newVersionId = SnippetInfoModel.createNewVersion(rootNode);
+    fco.modelRepo.saveSnippetVersion(snippetName: rootNode.name, newVersionId: newVersionId, newVersion: rootNode);
     CalloutConfigToolbar.closeThenReopenContentCallout(
       tc,
       widget.wrapperRect,

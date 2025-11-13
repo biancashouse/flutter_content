@@ -333,7 +333,7 @@ late Logger _loggerNs;
 class MyLogFilter extends LogFilter {
   @override
   bool shouldLog(LogEvent event) {
-    return true;
+    return false;
   }
 }
 
@@ -554,17 +554,17 @@ class FlutterContentMixins
   // }
   //
   bool get inNodeSelectionMode => capiBloc.showTappableBorderRects();
+
   bool get notInNodeSelectionMode => !inNodeSelectionMode;
 
   SNode? get selectedNode => snippetBeingEdited?.selectedNode;
 
   bool get showProperties => snippetBeingEdited?.showProperties ?? false;
 
-  Future<void> ensureContentSnippetPresent(String contentCId) async =>
-      SnippetInfoModel.cachedSnippetInfo(contentCId) ??
-      await SnippetRootNode.loadSnippetFromCacheOrFromFBOrCreateFromTemplate(
-        snippetName: contentCId,
-        templateSnippetRootNode: SnippetRootNode(
+  Future<void> ensureContentSnippetPresent(String contentCId) async {
+    if (SnippetInfoModel.cachedSnippetInfo(contentCId) != null) {
+      SnippetInfoModel.createAndCacheNewSnippetInfo(
+        SnippetRootNode(
           name: contentCId,
           child: CenterNode(
             child: TextNode(
@@ -573,8 +573,9 @@ class FlutterContentMixins
             ),
           ),
         ),
-        // snippetRootNode: SnippetTemplateEnum.empty.templateSnippet(),
       );
+    }
+  }
 
   void setAppInfo(AppInfoModel newModel) => appInfo = newModel;
 
@@ -600,60 +601,22 @@ class FlutterContentMixins
   // versionIdCache[snippetName]?.map((e) => e.versionId).toList() ??[];
   // Map<SnippetName, Map<VersionId, SnippetRootNode>> versionCache = {};
 
-  Future<void> saveNewVersion({required SnippetRootNode? snippet}) async {
-    if (snippet?.name == null) {
-      return;
-    }
-
-    String? snippetName = snippet!.name; //.startsWith('/')
-    // ? snippet.name.substring(1)
-    // : snippet.name;
-
-    // only does following i.i. a new snippet
-    SnippetInfoModel? snippetInfo = SnippetInfoModel.cachedSnippetInfo(
-      snippetName,
-    );
-    if (snippetInfo != null) {
-      // remove all subsequent versions following the current version
-      // before saving new version
-      VersionId currVerId = snippetInfo.currentVersionId() ?? '??!';
-      List<VersionId> newIdCache = [];
-      List<VersionId> tbd = [];
-      for (VersionId v in snippetInfo.versionIds ?? []) {
-        try {
-          if (int.parse(v.isEmpty ? "0" : v) > int.parse(currVerId)) {
-            tbd.add(v);
-          } else {
-            newIdCache.add(v);
-          }
-        } catch (e) {
-          fco.logger.e('$e');
-        }
-      }
-      if (tbd.isNotEmpty) {
-        // delete from FB and also from cache
-        for (VersionId vId in tbd) {
-          snippetInfo.versionIds?.remove(vId);
-          snippetInfo.cachedVersions.remove(vId);
-        }
-        fco.modelRepo.deleteSnippetVersions(snippetName, tbd);
-        // SnippetInfoModel.debug();
-      }
-    }
-
-    // write new version to FB
-    await fco._cacheAndSaveANewSnippetVersion(
-      snippetName: snippetName,
-      rootNode: snippet,
-    );
-  }
+  // // assumes already cached
+  // Future<void> saveNewVersion({required SnippetRootNode snippet, required newVersionId}) async {
+  //   SnippetInfoModel snippetInfo = SnippetInfoModel.cachedSnippetInfo(
+  //     snippet.name,
+  //   )!;
+  //   // write new version to FB
+  //   await fco._cacheAndSaveANewSnippetVersion(
+  //     snippetName: snippetName,
+  //     rootNode: snippet,
+  //   );
+  // }
 
   // create new snippet version in cache, then write through to FB
   Future<void> _cacheAndSaveANewSnippetVersion({
     required SnippetName snippetName,
-    // String? pagePath,
     required SnippetRootNode rootNode,
-    // bool? publish,
   }) async {
     logger.i('cacheAndSaveANewSnippetVersion($snippetName)');
 
@@ -673,7 +636,6 @@ class FlutterContentMixins
       // jsArray issue
       // List<String> newList = appInfo.snippetNames;
       appInfo.snippetNames = [...appInfo.snippetNames, snippetName];
-      await modelRepo.saveAppInfo();
       snippetInfo = SnippetInfoModel(
         snippetName,
         editingVersionId: newVersionId,

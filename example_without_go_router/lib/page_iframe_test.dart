@@ -7,8 +7,8 @@ class Page_IframeTest extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    SnippetBuilder sp = SnippetBuilder.fromNodes(
-      snippetRootNode: SnippetRootNode(
+    SnippetBuilder sp = SnippetBuilder(
+      templateSnippet: SnippetRootNode(
         name: 'iframe-demo',
         child: IFrameNode(),
       ),

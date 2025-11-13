@@ -76,17 +76,17 @@ class _Page_HomeState extends State<Page_Home> {
     // );
 
     final uniqueTabBarName = DateTime.now().millisecondsSinceEpoch.toString();
-    SnippetBuilder snippet1 = SnippetBuilder.fromNodes(
-      snippetRootNode: SnippetRootNode(
+    SnippetBuilder snippet1 = SnippetBuilder(
+      templateSnippet: SnippetRootNode(
         name: 'home-scaffold-with-tabs',
         child: ContainerNode(csPropGroup: ContainerStyleProperties(
           width: 200, height: 300, fillColors: UpTo6Colors(color1: ColorModel.red())
         )),),
         scName: null, //sC.name, because no scrolling used
     );
-    SnippetBuilder snippet2 = SnippetBuilder.fromNodes(
+    SnippetBuilder snippet2 = SnippetBuilder(
       // panelName: 'demo-buttons',
-      snippetRootNode: SnippetRootNode(
+      templateSnippet: SnippetRootNode(
         name: 'home-scaffold-with-tabs',
         child: ScaffoldNode(
           appBar: NamedPS(

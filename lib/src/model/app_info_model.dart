@@ -19,6 +19,8 @@ class AppInfoModel with AppInfoModelMappable {
   @MappableField(key: 'editor-passwords')
   List<String> editorPasswords;
 
+  static bool needToSave = false;
+
   AppInfoModel({
     this.clipboard,
     this.autoPublishDefault = true,

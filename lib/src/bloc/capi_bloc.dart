@@ -327,13 +327,9 @@ class CAPIBloC extends Bloc<CAPIEvent, CAPIState> {
       rootNode = SnippetRootNodeMapper.fromJson(event.snippetJson!);
     }
     fco.logger.i('_replaceSnippetFromJson: snippet name is "${rootNode.name}"');
-    // save the clipboard snippet snippet
-    await fco.saveNewVersion(snippet: rootNode);
-    // await fco.cacheAndSaveANewSnippetVersion(
-    //   snippetName: snippetName,
-    //   rootNode: rootNode,
-    //   publish: true,
-    // );
+    // save the clipboard snippet
+    final newVersionId = SnippetInfoModel.createNewVersion(rootNode);
+    fco.modelRepo.saveSnippetVersion(snippetName: rootNode.name, newVersionId: newVersionId, newVersion: rootNode);
   }
 
   Future<void> _clearClipboard(ClearClipboard event, emit) async {
@@ -531,7 +527,9 @@ class CAPIBloC extends Bloc<CAPIEvent, CAPIState> {
     state.snippetBeingEdited!.nodeBeingDeleted = null;
     state.snippetBeingEdited!.selectedNode = newSel;
 
-    fco.saveNewVersion(snippet: state.snippetBeingEdited!.getRootNode());
+    final newSnippet = state.snippetBeingEdited!.getRootNode();
+    final newVersionId = SnippetInfoModel.createNewVersion(newSnippet);
+    fco.modelRepo.saveSnippetVersion(snippetName: newSnippet.name, newVersionId: newVersionId, newVersion: newSnippet);
 
     emit(
       state.copyWith(
@@ -699,7 +697,9 @@ class CAPIBloC extends Bloc<CAPIEvent, CAPIState> {
     state.snippetBeingEdited!.treeC.rebuild();
     _updateClipboard(event.node);
     emit(state.copyWith(force: state.force + 1));
-    fco.saveNewVersion(snippet: state.snippetBeingEdited!.getRootNode());
+    final newSnippet = state.snippetBeingEdited!.getRootNode();
+    final newVersionId = SnippetInfoModel.createNewVersion(newSnippet);
+    fco.modelRepo.saveSnippetVersion(snippetName: newSnippet.name, newVersionId: newVersionId, newVersion: newSnippet);
   }
 
   Future<void> _copyNode(CopyNode event, emit) async {
@@ -1178,7 +1178,9 @@ class CAPIBloC extends Bloc<CAPIEvent, CAPIState> {
       ..selectedNode = w
       ..treeC = possiblyNewTreeC;
 
-    fco.saveNewVersion(snippet: state.snippetBeingEdited!.getRootNode());
+    final newSnippet = state.snippetBeingEdited!.getRootNode();
+    final newVersionId = SnippetInfoModel.createNewVersion(newSnippet);
+    fco.modelRepo.saveSnippetVersion(snippetName: newSnippet.name, newVersionId: newVersionId, newVersion: newSnippet);
 
     emit(state.copyWith(force: state.force + 1));
   }
@@ -1287,7 +1289,9 @@ class CAPIBloC extends Bloc<CAPIEvent, CAPIState> {
       ..selectedNode = r
       ..treeC = possiblyNewTreeC;
 
-    fco.saveNewVersion(snippet: state.snippetBeingEdited!.getRootNode());
+    final newSnippet = state.snippetBeingEdited!.getRootNode();
+    final newVersionId = SnippetInfoModel.createNewVersion(newSnippet);
+    fco.modelRepo.saveSnippetVersion(snippetName: newSnippet.name, newVersionId: newVersionId, newVersion: newSnippet);
 
     emit(state.copyWith(force: state.force + 1));
   }
@@ -1378,7 +1382,9 @@ class CAPIBloC extends Bloc<CAPIEvent, CAPIState> {
       ..treeC.rebuild()
       ..getRootNode().validateTree();
 
-    fco.saveNewVersion(snippet: state.snippetBeingEdited!.getRootNode());
+    final newSnippet = state.snippetBeingEdited!.getRootNode();
+    final newVersionId = SnippetInfoModel.createNewVersion(newSnippet);
+    fco.modelRepo.saveSnippetVersion(snippetName: newSnippet.name, newVersionId: newVersionId, newVersion: newSnippet);
 
     emit(state.copyWith(force: state.force + 1));
   }
@@ -1630,7 +1636,9 @@ class CAPIBloC extends Bloc<CAPIEvent, CAPIState> {
     state.snippetBeingEdited!.treeC.expand(newNode);
     state.snippetBeingEdited!.selectedNode = newNode;
 
-    fco.saveNewVersion(snippet: state.snippetBeingEdited!.getRootNode());
+    final newSnippet = state.snippetBeingEdited!.getRootNode();
+    final newVersionId = SnippetInfoModel.createNewVersion(newSnippet);
+    fco.modelRepo.saveSnippetVersion(snippetName: newSnippet.name, newVersionId: newVersionId, newVersion: newSnippet);
 
     emit(state.copyWith(force: state.force + 1));
   }
@@ -1669,7 +1677,9 @@ class CAPIBloC extends Bloc<CAPIEvent, CAPIState> {
     }
     state.snippetBeingEdited!.getRootNode().validateTree();
 
-    fco.saveNewVersion(snippet: state.snippetBeingEdited!.getRootNode());
+    final newSnippet = state.snippetBeingEdited!.getRootNode();
+    final newVersionId = SnippetInfoModel.createNewVersion(newSnippet);
+    fco.modelRepo.saveSnippetVersion(snippetName: newSnippet.name, newVersionId: newVersionId, newVersion: newSnippet);
 
     if (newNode is RichTextNode) {
       state.snippetBeingEdited!.treeC.expand(newNode);
@@ -1698,7 +1708,8 @@ class CAPIBloC extends Bloc<CAPIEvent, CAPIState> {
       child: event.node,
     );
     // VersionId initialVersionId = DateTime.now().millisecondsSinceEpoch.toString();
-    await fco.saveNewVersion(snippet: newRootNode);
+    final newVersionId = SnippetInfoModel.createNewVersion(newRootNode);
+    fco.modelRepo.saveSnippetVersion(snippetName: newRootNode.name, newVersionId: newVersionId, newVersion: newRootNode);
     // await fco.cacheAndSaveANewSnippetVersion(
     //   snippetName: event.newSnippetName,
     //   rootNode: newRootNode,
@@ -1794,7 +1805,7 @@ class CAPIBloC extends Bloc<CAPIEvent, CAPIState> {
       state.activeSnippetName != null;
 
   bool dontShowTappableBorderRects() =>
-      state.activeSnippetName == null;
+      !state.isSignedIn || state.activeSnippetName == null;
 
   bool aSnippetIsBeingEdited() => state.snippetBeingEdited != null;
 

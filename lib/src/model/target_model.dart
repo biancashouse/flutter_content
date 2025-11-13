@@ -319,7 +319,8 @@ class TargetModel with TargetModelMappable {
         bgColor: Colors.yellow,
         textColor: Colors.black,
       );
-      fco.saveNewVersion(snippet: rootNode);
+      final newVersionId = SnippetInfoModel.createNewVersion(rootNode);
+      fco.modelRepo.saveSnippetVersion(snippetName: rootNode.name, newVersionId: newVersionId, newVersion: rootNode);
       fco.dismissToast(Alignment.topCenter);
     }
 

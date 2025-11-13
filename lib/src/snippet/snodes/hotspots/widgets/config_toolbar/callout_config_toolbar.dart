@@ -74,7 +74,7 @@ class CalloutConfigToolbar extends StatefulWidget {
 
 class CalloutConfigToolbarState extends State<CalloutConfigToolbar> {
   // BuildContext? updatedContext;
-  final dbT = Debouncer(delayMs: 100);
+  // final dbT = Debouncer(delayMs: 100);
 
   // @override
   @override
@@ -297,7 +297,8 @@ class CalloutConfigToolbarState extends State<CalloutConfigToolbar> {
                 SnippetRootNode? rootNode = tc.parentTargetsWrapperNode
                     ?.rootNodeOfSnippet();
                 if (rootNode == null) return;
-                fco.saveNewVersion(snippet: rootNode);
+                final newVersionId = SnippetInfoModel.createNewVersion(rootNode);
+                fco.modelRepo.saveSnippetVersion(snippetName: rootNode.name, newVersionId: newVersionId, newVersion: rootNode);
                 CalloutConfigToolbar.closeThenReopenContentCallout(
                   tc,
                   widget.wrapperRect,
@@ -343,7 +344,8 @@ class CalloutConfigToolbarState extends State<CalloutConfigToolbar> {
                   ?.rootNodeOfSnippet();
               if (rootNode == null) return;
               tc.targetsWrapperState()?.widget.parentNode.targets.remove(tc);
-              fco.saveNewVersion(snippet: rootNode);
+              final newVersionId = SnippetInfoModel.createNewVersion(rootNode);
+              fco.modelRepo.saveSnippetVersion(snippetName: rootNode.name, newVersionId: newVersionId, newVersion: rootNode);
               // fco.cacheAndSaveANewSnippetVersion(
               //   snippetName: rootNode.name, // tc.snippetName,
               //   rootNode: rootNode,
