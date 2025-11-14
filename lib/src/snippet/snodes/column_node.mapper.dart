@@ -76,6 +76,9 @@ class ColumnNodeMapper extends SubClassMapperBase<ColumnNode> {
     _$hidePropertiesWhileDragging,
     mode: FieldMode.member,
   );
+  static GlobalKey<State<StatefulWidget>>? _$nodeGK(ColumnNode v) => v.nodeGK;
+  static const Field<ColumnNode, GlobalKey<State<StatefulWidget>>> _f$nodeGK =
+      Field('nodeGK', _$nodeGK, mode: FieldMode.member);
   static bool _$canShowTappableNodeWidgetOverlay(ColumnNode v) =>
       v.canShowTappableNodeWidgetOverlay;
   static const Field<ColumnNode, bool> _f$canShowTappableNodeWidgetOverlay =
@@ -109,6 +112,7 @@ class ColumnNodeMapper extends SubClassMapperBase<ColumnNode> {
     #treeNodeGK: _f$treeNodeGK,
     #isExpanded: _f$isExpanded,
     #hidePropertiesWhileDragging: _f$hidePropertiesWhileDragging,
+    #nodeGK: _f$nodeGK,
     #canShowTappableNodeWidgetOverlay: _f$canShowTappableNodeWidgetOverlay,
     #nodeWidgetGK: _f$nodeWidgetGK,
     #wrapInExpanded: _f$wrapInExpanded,

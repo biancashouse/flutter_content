@@ -108,6 +108,9 @@ class AppBarNodeMapper extends SubClassMapperBase<AppBarNode> {
     _$hidePropertiesWhileDragging,
     mode: FieldMode.member,
   );
+  static GlobalKey<State<StatefulWidget>>? _$nodeGK(AppBarNode v) => v.nodeGK;
+  static const Field<AppBarNode, GlobalKey<State<StatefulWidget>>> _f$nodeGK =
+      Field('nodeGK', _$nodeGK, mode: FieldMode.member);
   static bool _$canShowTappableNodeWidgetOverlay(AppBarNode v) =>
       v.canShowTappableNodeWidgetOverlay;
   static const Field<AppBarNode, bool> _f$canShowTappableNodeWidgetOverlay =
@@ -142,6 +145,7 @@ class AppBarNodeMapper extends SubClassMapperBase<AppBarNode> {
     #treeNodeGK: _f$treeNodeGK,
     #isExpanded: _f$isExpanded,
     #hidePropertiesWhileDragging: _f$hidePropertiesWhileDragging,
+    #nodeGK: _f$nodeGK,
     #canShowTappableNodeWidgetOverlay: _f$canShowTappableNodeWidgetOverlay,
     #nodeWidgetGK: _f$nodeWidgetGK,
   };

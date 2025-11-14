@@ -47,20 +47,20 @@ class SnippetRootNode extends SC
   /// snippet's scrollcontroller
   /// this might get set by a scrollable descendant if that node has
   /// set property: listenToThisScrollController = true
-  ScrollController? _scrollController;
-  Axis? _scrollDirection;
-
-  ScrollController? get scrollController => _scrollController;
-
-  set scrollController(ScrollController value) {
-    _scrollController = value;
-  }
-
-  Axis get scrollDirection => _scrollDirection ?? Axis.vertical;
-
-  set scrollDirection(Axis value) {
-    _scrollDirection = value;
-  }
+  // ScrollController? _scrollController;
+  // Axis? _scrollDirection;
+  //
+  // ScrollController? get scrollController => _scrollController;
+  //
+  // set scrollController(ScrollController value) {
+  //   _scrollController = value;
+  // }
+  //
+  // Axis get scrollDirection => _scrollDirection ?? Axis.vertical;
+  //
+  // set scrollDirection(Axis value) {
+  //   _scrollDirection = value;
+  // }
 
   static bool isHotspotCalloutContent(String sname) =>
       int.tryParse(sname) != null || /*legacy*/ sname.startsWith('T-');

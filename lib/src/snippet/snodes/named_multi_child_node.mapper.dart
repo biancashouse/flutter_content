@@ -56,6 +56,9 @@ class NamedMCMapper extends SubClassMapperBase<NamedMC> {
     _$hidePropertiesWhileDragging,
     mode: FieldMode.member,
   );
+  static GlobalKey<State<StatefulWidget>>? _$nodeGK(NamedMC v) => v.nodeGK;
+  static const Field<NamedMC, GlobalKey<State<StatefulWidget>>> _f$nodeGK =
+      Field('nodeGK', _$nodeGK, mode: FieldMode.member);
   static bool _$canShowTappableNodeWidgetOverlay(NamedMC v) =>
       v.canShowTappableNodeWidgetOverlay;
   static const Field<NamedMC, bool> _f$canShowTappableNodeWidgetOverlay = Field(
@@ -80,6 +83,7 @@ class NamedMCMapper extends SubClassMapperBase<NamedMC> {
     #treeNodeGK: _f$treeNodeGK,
     #isExpanded: _f$isExpanded,
     #hidePropertiesWhileDragging: _f$hidePropertiesWhileDragging,
+    #nodeGK: _f$nodeGK,
     #canShowTappableNodeWidgetOverlay: _f$canShowTappableNodeWidgetOverlay,
     #nodeWidgetGK: _f$nodeWidgetGK,
   };

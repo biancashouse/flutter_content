@@ -53,6 +53,10 @@ class WidgetSpanNodeMapper extends SubClassMapperBase<WidgetSpanNode> {
         _$hidePropertiesWhileDragging,
         mode: FieldMode.member,
       );
+  static GlobalKey<State<StatefulWidget>>? _$nodeGK(WidgetSpanNode v) =>
+      v.nodeGK;
+  static const Field<WidgetSpanNode, GlobalKey<State<StatefulWidget>>>
+  _f$nodeGK = Field('nodeGK', _$nodeGK, mode: FieldMode.member);
   static bool _$canShowTappableNodeWidgetOverlay(WidgetSpanNode v) =>
       v.canShowTappableNodeWidgetOverlay;
   static const Field<WidgetSpanNode, bool> _f$canShowTappableNodeWidgetOverlay =
@@ -77,6 +81,7 @@ class WidgetSpanNodeMapper extends SubClassMapperBase<WidgetSpanNode> {
     #treeNodeGK: _f$treeNodeGK,
     #isExpanded: _f$isExpanded,
     #hidePropertiesWhileDragging: _f$hidePropertiesWhileDragging,
+    #nodeGK: _f$nodeGK,
     #canShowTappableNodeWidgetOverlay: _f$canShowTappableNodeWidgetOverlay,
     #nodeWidgetGK: _f$nodeWidgetGK,
   };

@@ -101,6 +101,10 @@ class IconButtonNodeMapper extends SubClassMapperBase<IconButtonNode> {
         _$hidePropertiesWhileDragging,
         mode: FieldMode.member,
       );
+  static GlobalKey<State<StatefulWidget>>? _$nodeGK(IconButtonNode v) =>
+      v.nodeGK;
+  static const Field<IconButtonNode, GlobalKey<State<StatefulWidget>>>
+  _f$nodeGK = Field('nodeGK', _$nodeGK, mode: FieldMode.member);
   static bool _$canShowTappableNodeWidgetOverlay(IconButtonNode v) =>
       v.canShowTappableNodeWidgetOverlay;
   static const Field<IconButtonNode, bool> _f$canShowTappableNodeWidgetOverlay =
@@ -141,6 +145,7 @@ class IconButtonNodeMapper extends SubClassMapperBase<IconButtonNode> {
     #treeNodeGK: _f$treeNodeGK,
     #isExpanded: _f$isExpanded,
     #hidePropertiesWhileDragging: _f$hidePropertiesWhileDragging,
+    #nodeGK: _f$nodeGK,
     #canShowTappableNodeWidgetOverlay: _f$canShowTappableNodeWidgetOverlay,
     #nodeWidgetGK: _f$nodeWidgetGK,
     #nodeAddersAndPropertiesCalloutSize: _f$nodeAddersAndPropertiesCalloutSize,

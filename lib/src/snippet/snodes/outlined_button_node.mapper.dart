@@ -72,6 +72,10 @@ class OutlinedButtonNodeMapper extends SubClassMapperBase<OutlinedButtonNode> {
         _$hidePropertiesWhileDragging,
         mode: FieldMode.member,
       );
+  static GlobalKey<State<StatefulWidget>>? _$nodeGK(OutlinedButtonNode v) =>
+      v.nodeGK;
+  static const Field<OutlinedButtonNode, GlobalKey<State<StatefulWidget>>>
+  _f$nodeGK = Field('nodeGK', _$nodeGK, mode: FieldMode.member);
   static bool _$canShowTappableNodeWidgetOverlay(OutlinedButtonNode v) =>
       v.canShowTappableNodeWidgetOverlay;
   static const Field<OutlinedButtonNode, bool>
@@ -108,6 +112,7 @@ class OutlinedButtonNodeMapper extends SubClassMapperBase<OutlinedButtonNode> {
     #treeNodeGK: _f$treeNodeGK,
     #isExpanded: _f$isExpanded,
     #hidePropertiesWhileDragging: _f$hidePropertiesWhileDragging,
+    #nodeGK: _f$nodeGK,
     #canShowTappableNodeWidgetOverlay: _f$canShowTappableNodeWidgetOverlay,
     #nodeWidgetGK: _f$nodeWidgetGK,
     #nodeAddersAndPropertiesCalloutSize: _f$nodeAddersAndPropertiesCalloutSize,

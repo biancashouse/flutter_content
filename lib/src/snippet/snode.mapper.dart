@@ -48,6 +48,12 @@ class SNodeMapper extends ClassMapperBase<SNode> {
     _$hidePropertiesWhileDragging,
     mode: FieldMode.member,
   );
+  static GlobalKey<State<StatefulWidget>>? _$nodeGK(SNode v) => v.nodeGK;
+  static const Field<SNode, GlobalKey<State<StatefulWidget>>> _f$nodeGK = Field(
+    'nodeGK',
+    _$nodeGK,
+    mode: FieldMode.member,
+  );
   static bool _$canShowTappableNodeWidgetOverlay(SNode v) =>
       v.canShowTappableNodeWidgetOverlay;
   static const Field<SNode, bool> _f$canShowTappableNodeWidgetOverlay = Field(
@@ -66,6 +72,7 @@ class SNodeMapper extends ClassMapperBase<SNode> {
     #treeNodeGK: _f$treeNodeGK,
     #isExpanded: _f$isExpanded,
     #hidePropertiesWhileDragging: _f$hidePropertiesWhileDragging,
+    #nodeGK: _f$nodeGK,
     #canShowTappableNodeWidgetOverlay: _f$canShowTappableNodeWidgetOverlay,
     #nodeWidgetGK: _f$nodeWidgetGK,
   };

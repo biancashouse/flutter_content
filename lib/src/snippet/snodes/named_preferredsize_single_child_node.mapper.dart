@@ -57,6 +57,9 @@ class NamedPSMapper extends SubClassMapperBase<NamedPS> {
     _$hidePropertiesWhileDragging,
     mode: FieldMode.member,
   );
+  static GlobalKey<State<StatefulWidget>>? _$nodeGK(NamedPS v) => v.nodeGK;
+  static const Field<NamedPS, GlobalKey<State<StatefulWidget>>> _f$nodeGK =
+      Field('nodeGK', _$nodeGK, mode: FieldMode.member);
   static bool _$canShowTappableNodeWidgetOverlay(NamedPS v) =>
       v.canShowTappableNodeWidgetOverlay;
   static const Field<NamedPS, bool> _f$canShowTappableNodeWidgetOverlay = Field(
@@ -81,6 +84,7 @@ class NamedPSMapper extends SubClassMapperBase<NamedPS> {
     #treeNodeGK: _f$treeNodeGK,
     #isExpanded: _f$isExpanded,
     #hidePropertiesWhileDragging: _f$hidePropertiesWhileDragging,
+    #nodeGK: _f$nodeGK,
     #canShowTappableNodeWidgetOverlay: _f$canShowTappableNodeWidgetOverlay,
     #nodeWidgetGK: _f$nodeWidgetGK,
   };

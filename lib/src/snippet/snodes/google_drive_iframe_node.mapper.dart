@@ -81,6 +81,10 @@ class GoogleDriveIFrameNodeMapper
     _$hidePropertiesWhileDragging,
     mode: FieldMode.member,
   );
+  static GlobalKey<State<StatefulWidget>>? _$nodeGK(GoogleDriveIFrameNode v) =>
+      v.nodeGK;
+  static const Field<GoogleDriveIFrameNode, GlobalKey<State<StatefulWidget>>>
+  _f$nodeGK = Field('nodeGK', _$nodeGK, mode: FieldMode.member);
   static bool _$canShowTappableNodeWidgetOverlay(GoogleDriveIFrameNode v) =>
       v.canShowTappableNodeWidgetOverlay;
   static const Field<GoogleDriveIFrameNode, bool>
@@ -116,6 +120,7 @@ class GoogleDriveIFrameNodeMapper
     #treeNodeGK: _f$treeNodeGK,
     #isExpanded: _f$isExpanded,
     #hidePropertiesWhileDragging: _f$hidePropertiesWhileDragging,
+    #nodeGK: _f$nodeGK,
     #canShowTappableNodeWidgetOverlay: _f$canShowTappableNodeWidgetOverlay,
     #nodeWidgetGK: _f$nodeWidgetGK,
     #savedWidget: _f$savedWidget,

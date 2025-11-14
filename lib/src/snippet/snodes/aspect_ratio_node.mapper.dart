@@ -60,6 +60,10 @@ class AspectRatioNodeMapper extends SubClassMapperBase<AspectRatioNode> {
         _$hidePropertiesWhileDragging,
         mode: FieldMode.member,
       );
+  static GlobalKey<State<StatefulWidget>>? _$nodeGK(AspectRatioNode v) =>
+      v.nodeGK;
+  static const Field<AspectRatioNode, GlobalKey<State<StatefulWidget>>>
+  _f$nodeGK = Field('nodeGK', _$nodeGK, mode: FieldMode.member);
   static bool _$canShowTappableNodeWidgetOverlay(AspectRatioNode v) =>
       v.canShowTappableNodeWidgetOverlay;
   static const Field<AspectRatioNode, bool>
@@ -85,6 +89,7 @@ class AspectRatioNodeMapper extends SubClassMapperBase<AspectRatioNode> {
     #treeNodeGK: _f$treeNodeGK,
     #isExpanded: _f$isExpanded,
     #hidePropertiesWhileDragging: _f$hidePropertiesWhileDragging,
+    #nodeGK: _f$nodeGK,
     #canShowTappableNodeWidgetOverlay: _f$canShowTappableNodeWidgetOverlay,
     #nodeWidgetGK: _f$nodeWidgetGK,
   };

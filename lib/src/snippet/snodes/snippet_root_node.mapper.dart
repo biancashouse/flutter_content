@@ -62,6 +62,10 @@ class SnippetRootNodeMapper extends SubClassMapperBase<SnippetRootNode> {
         _$hidePropertiesWhileDragging,
         mode: FieldMode.member,
       );
+  static GlobalKey<State<StatefulWidget>>? _$nodeGK(SnippetRootNode v) =>
+      v.nodeGK;
+  static const Field<SnippetRootNode, GlobalKey<State<StatefulWidget>>>
+  _f$nodeGK = Field('nodeGK', _$nodeGK, mode: FieldMode.member);
   static bool _$canShowTappableNodeWidgetOverlay(SnippetRootNode v) =>
       v.canShowTappableNodeWidgetOverlay;
   static const Field<SnippetRootNode, bool>
@@ -78,16 +82,6 @@ class SnippetRootNodeMapper extends SubClassMapperBase<SnippetRootNode> {
     _$nodeWidgetGK,
     mode: FieldMode.member,
   );
-  static ScrollController? _$scrollController(SnippetRootNode v) =>
-      v.scrollController;
-  static const Field<SnippetRootNode, ScrollController> _f$scrollController =
-      Field('scrollController', _$scrollController, mode: FieldMode.member);
-  static Axis _$scrollDirection(SnippetRootNode v) => v.scrollDirection;
-  static const Field<SnippetRootNode, Axis> _f$scrollDirection = Field(
-    'scrollDirection',
-    _$scrollDirection,
-    mode: FieldMode.member,
-  );
 
   @override
   final MappableFields<SnippetRootNode> fields = const {
@@ -98,10 +92,9 @@ class SnippetRootNodeMapper extends SubClassMapperBase<SnippetRootNode> {
     #treeNodeGK: _f$treeNodeGK,
     #isExpanded: _f$isExpanded,
     #hidePropertiesWhileDragging: _f$hidePropertiesWhileDragging,
+    #nodeGK: _f$nodeGK,
     #canShowTappableNodeWidgetOverlay: _f$canShowTappableNodeWidgetOverlay,
     #nodeWidgetGK: _f$nodeWidgetGK,
-    #scrollController: _f$scrollController,
-    #scrollDirection: _f$scrollDirection,
   };
 
   @override

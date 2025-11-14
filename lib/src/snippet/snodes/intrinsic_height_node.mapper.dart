@@ -55,6 +55,10 @@ class IntrinsicHeightNodeMapper
         _$hidePropertiesWhileDragging,
         mode: FieldMode.member,
       );
+  static GlobalKey<State<StatefulWidget>>? _$nodeGK(IntrinsicHeightNode v) =>
+      v.nodeGK;
+  static const Field<IntrinsicHeightNode, GlobalKey<State<StatefulWidget>>>
+  _f$nodeGK = Field('nodeGK', _$nodeGK, mode: FieldMode.member);
   static bool _$canShowTappableNodeWidgetOverlay(IntrinsicHeightNode v) =>
       v.canShowTappableNodeWidgetOverlay;
   static const Field<IntrinsicHeightNode, bool>
@@ -80,6 +84,7 @@ class IntrinsicHeightNodeMapper
     #treeNodeGK: _f$treeNodeGK,
     #isExpanded: _f$isExpanded,
     #hidePropertiesWhileDragging: _f$hidePropertiesWhileDragging,
+    #nodeGK: _f$nodeGK,
     #canShowTappableNodeWidgetOverlay: _f$canShowTappableNodeWidgetOverlay,
     #nodeWidgetGK: _f$nodeWidgetGK,
   };

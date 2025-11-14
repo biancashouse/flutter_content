@@ -85,7 +85,7 @@ class SNodeWidget extends StatelessWidget {
               if (entry.node is QuillTextNode)
                 InkWell(
                   onTap: () {
-                    _tappedNode(context);
+                    _tappedNode();
                     fco.afterNextBuildDo(() {
                       var quillTextNode = entry.node as QuillTextNode;
                       PropertyButtonQuillText.showQuillEditor(
@@ -106,7 +106,7 @@ class SNodeWidget extends StatelessWidget {
               if (entry.node is UMLImageNode)
                 InkWell(
                   onTap: () {
-                    _tappedNode(context);
+                    _tappedNode();
                     fco.afterNextBuildDo(() {
                       var umlImageNode = entry.node as UMLImageNode;
                       final teC = TextEditingController();
@@ -147,7 +147,7 @@ class SNodeWidget extends StatelessWidget {
               if (entry.node is MarkdownNode)
                 InkWell(
                   onTap: () {
-                    _tappedNode(context);
+                    _tappedNode();
                     fco.afterNextBuildDo(() {
                       var markdownNode = entry.node as MarkdownNode;
                       PropertyButtonMarkdown.showMarkdownEditor(
@@ -253,7 +253,7 @@ class SNodeWidget extends StatelessWidget {
           // ignore taps to named child property
           if (entry.node.isANamedPropertyNode()) return;
 
-          _tappedNode(context);
+          _tappedNode();
         },
         onSecondaryTapUp: fco.isIOS
             ? null
@@ -283,7 +283,7 @@ class SNodeWidget extends StatelessWidget {
     );
   }
 
-  void _tappedNode(BuildContext context) {
+  void _tappedNode() {
     if (onClipboard /* || entry.node is GenericSingleChildNode*/ ) return;
     // if (entry.node is TextSpanNode) {
     //   fco.logger.i('TextSpan cannot be selected (has no key property!)');
@@ -331,50 +331,8 @@ class SNodeWidget extends StatelessWidget {
       fco.dismissAll();
 
       fco.afterNextBuildDo(() {
-        var selectedNode = fco.capiBloc.state.snippetBeingEdited!.selectedNode;
-        if (selectedNode == null) return;
-        fco.afterMsDelayDo(100, () {
-          var cc = selectedNode.nodeWidgetGK!.currentContext;
-          if (cc != null) {
-            Scrollable.ensureVisible(
-              cc,
-              duration: const Duration(milliseconds: 500),
-              curve: Curves.easeOut,
-            );
-          }
-          fco.afterMsDelayDo(1000, () {
-            fco.showOverlay(
-              calloutConfig: CalloutConfig(
-                cId: 'selected-node',
-                scrollControllerName: scName,
-                initialCalloutW: 100,
-                initialCalloutH: 40,
-                initialTargetAlignment: Alignment.centerRight,
-                initialCalloutAlignment: Alignment.centerLeft,
-                finalSeparation: 50,
-                targetPointerType: TargetPointerType.thin_line(),
-                bubbleOrTargetPointerColor: Colors.black,
-                animatePointer: true,
-                decorationFillColors: ColorOrGradient.color(Colors.black),
-                followScroll: true,
-              ),
-              calloutContent: fco.coloredText(
-                'selected node',
-                color: Colors.white,
-                edgeInsetValue: 6,
-              ),
-              targetGkF: () => selectedNode.nodeWidgetGK,
-            );
-            Rect? borderRect = selectedNode.calcBorderRect();
-            if (borderRect != null) {
-              selectedNode.showSelectedNonTappableNodeWidgetOverlay(
-                // selected: true,
-                borderRect: borderRect,
-                scName: scName,
-              );
-            }
-          });
-        });
+        // point out the selected node widget
+        pointOutSelectedNode(scName);
       });
     }
 
@@ -388,6 +346,54 @@ class SNodeWidget extends StatelessWidget {
     //     }
     //   });
     // });
+  }
+
+  static void pointOutSelectedNode(scName) {
+    var selectedNode = fco.capiBloc.state.snippetBeingEdited!.selectedNode;
+    if (selectedNode == null) return;
+    fco.afterMsDelayDo(100, () {
+      var cc = selectedNode.nodeWidgetGK!.currentContext;
+      if (cc != null) {
+        Scrollable.ensureVisible(
+          cc,
+          duration: const Duration(milliseconds: 200),
+          curve: Curves.easeOut,
+          alignment: .5,
+        );
+      }
+      fco.afterMsDelayDo(210, () {
+        // fco.showOverlay(
+        //   calloutConfig: CalloutConfig(
+        //     cId: 'selected-node',
+        //     scrollControllerName: scName,
+        //     initialCalloutW: 100,
+        //     initialCalloutH: 40,
+        //     initialTargetAlignment: Alignment.centerRight,
+        //     initialCalloutAlignment: Alignment.centerLeft,
+        //     finalSeparation: 50,
+        //     targetPointerType: TargetPointerType.thin_line(),
+        //     bubbleOrTargetPointerColor: Colors.black,
+        //     animatePointer: true,
+        //     decorationFillColors: ColorOrGradient.color(Colors.black),
+        //     followScroll: true,
+        //   ),
+        //   calloutContent: fco.coloredText(
+        //     'selected node',
+        //     color: Colors.white,
+        //     edgeInsetValue: 6,
+        //   ),
+        //   targetGkF: () => selectedNode.nodeWidgetGK,
+        // );
+        Rect? borderRect = selectedNode.calcBorderRect();
+        if (borderRect != null) {
+          selectedNode.showSelectedNonTappableNodeWidgetOverlay(
+            // selected: true,
+            borderRect: borderRect,
+            scName: scName,
+          );
+        }
+      });
+    });
   }
 
   void _longPressedNode(BuildContext context, Offset tapPos, SNode node) {

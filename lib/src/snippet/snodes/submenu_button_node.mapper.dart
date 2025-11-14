@@ -59,6 +59,10 @@ class SubmenuButtonNodeMapper extends SubClassMapperBase<SubmenuButtonNode> {
         _$hidePropertiesWhileDragging,
         mode: FieldMode.member,
       );
+  static GlobalKey<State<StatefulWidget>>? _$nodeGK(SubmenuButtonNode v) =>
+      v.nodeGK;
+  static const Field<SubmenuButtonNode, GlobalKey<State<StatefulWidget>>>
+  _f$nodeGK = Field('nodeGK', _$nodeGK, mode: FieldMode.member);
   static bool _$canShowTappableNodeWidgetOverlay(SubmenuButtonNode v) =>
       v.canShowTappableNodeWidgetOverlay;
   static const Field<SubmenuButtonNode, bool>
@@ -91,6 +95,7 @@ class SubmenuButtonNodeMapper extends SubClassMapperBase<SubmenuButtonNode> {
     #treeNodeGK: _f$treeNodeGK,
     #isExpanded: _f$isExpanded,
     #hidePropertiesWhileDragging: _f$hidePropertiesWhileDragging,
+    #nodeGK: _f$nodeGK,
     #canShowTappableNodeWidgetOverlay: _f$canShowTappableNodeWidgetOverlay,
     #nodeWidgetGK: _f$nodeWidgetGK,
     #children: _f$children,

@@ -476,6 +476,7 @@ class CAPIBloC extends Bloc<CAPIEvent, CAPIState> {
     state.snippetBeingEdited!.nodeBeingDeleted = null;
     state.snippetBeingEdited!.treeC.rebuild();
 
+    print('select node emitted');
     emit(state.copyWith(force: state.force + 1));
   }
 

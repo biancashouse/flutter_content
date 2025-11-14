@@ -64,6 +64,9 @@ class ListViewNodeMapper extends SubClassMapperBase<ListViewNode> {
     _$hidePropertiesWhileDragging,
     mode: FieldMode.member,
   );
+  static GlobalKey<State<StatefulWidget>>? _$nodeGK(ListViewNode v) => v.nodeGK;
+  static const Field<ListViewNode, GlobalKey<State<StatefulWidget>>> _f$nodeGK =
+      Field('nodeGK', _$nodeGK, mode: FieldMode.member);
   static bool _$canShowTappableNodeWidgetOverlay(ListViewNode v) =>
       v.canShowTappableNodeWidgetOverlay;
   static const Field<ListViewNode, bool> _f$canShowTappableNodeWidgetOverlay =
@@ -103,6 +106,7 @@ class ListViewNodeMapper extends SubClassMapperBase<ListViewNode> {
     #treeNodeGK: _f$treeNodeGK,
     #isExpanded: _f$isExpanded,
     #hidePropertiesWhileDragging: _f$hidePropertiesWhileDragging,
+    #nodeGK: _f$nodeGK,
     #canShowTappableNodeWidgetOverlay: _f$canShowTappableNodeWidgetOverlay,
     #nodeWidgetGK: _f$nodeWidgetGK,
     #axis: _f$axis,

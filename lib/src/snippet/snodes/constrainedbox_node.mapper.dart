@@ -77,6 +77,10 @@ class ConstrainedBoxNodeMapper extends SubClassMapperBase<ConstrainedBoxNode> {
         _$hidePropertiesWhileDragging,
         mode: FieldMode.member,
       );
+  static GlobalKey<State<StatefulWidget>>? _$nodeGK(ConstrainedBoxNode v) =>
+      v.nodeGK;
+  static const Field<ConstrainedBoxNode, GlobalKey<State<StatefulWidget>>>
+  _f$nodeGK = Field('nodeGK', _$nodeGK, mode: FieldMode.member);
   static bool _$canShowTappableNodeWidgetOverlay(ConstrainedBoxNode v) =>
       v.canShowTappableNodeWidgetOverlay;
   static const Field<ConstrainedBoxNode, bool>
@@ -106,6 +110,7 @@ class ConstrainedBoxNodeMapper extends SubClassMapperBase<ConstrainedBoxNode> {
     #treeNodeGK: _f$treeNodeGK,
     #isExpanded: _f$isExpanded,
     #hidePropertiesWhileDragging: _f$hidePropertiesWhileDragging,
+    #nodeGK: _f$nodeGK,
     #canShowTappableNodeWidgetOverlay: _f$canShowTappableNodeWidgetOverlay,
     #nodeWidgetGK: _f$nodeWidgetGK,
   };

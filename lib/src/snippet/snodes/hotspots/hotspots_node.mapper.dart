@@ -81,6 +81,10 @@ class TargetsWrapperNodeMapper extends SubClassMapperBase<TargetsWrapperNode> {
         _$hidePropertiesWhileDragging,
         mode: FieldMode.member,
       );
+  static GlobalKey<State<StatefulWidget>>? _$nodeGK(TargetsWrapperNode v) =>
+      v.nodeGK;
+  static const Field<TargetsWrapperNode, GlobalKey<State<StatefulWidget>>>
+  _f$nodeGK = Field('nodeGK', _$nodeGK, mode: FieldMode.member);
   static bool _$canShowTappableNodeWidgetOverlay(TargetsWrapperNode v) =>
       v.canShowTappableNodeWidgetOverlay;
   static const Field<TargetsWrapperNode, bool>
@@ -110,6 +114,7 @@ class TargetsWrapperNodeMapper extends SubClassMapperBase<TargetsWrapperNode> {
     #treeNodeGK: _f$treeNodeGK,
     #isExpanded: _f$isExpanded,
     #hidePropertiesWhileDragging: _f$hidePropertiesWhileDragging,
+    #nodeGK: _f$nodeGK,
     #canShowTappableNodeWidgetOverlay: _f$canShowTappableNodeWidgetOverlay,
     #nodeWidgetGK: _f$nodeWidgetGK,
   };

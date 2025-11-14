@@ -193,6 +193,8 @@ abstract class SNode extends Node with SNodeMappable {
   bool? hidePropertiesWhileDragging;
 
   @JsonKey(includeFromJson: false, includeToJson: false)
+  GlobalKey? nodeGK; // gets used Scrollable.ensureVisible
+  @JsonKey(includeFromJson: false, includeToJson: false)
   GlobalKey? _nodeWidgetGK; // gets used in toWidget()
 
   SnippetRootNode? rootNodeOfSnippet() {
@@ -362,6 +364,7 @@ abstract class SNode extends Node with SNodeMappable {
     required Rect borderRect,
     ScrollControllerName? scName,
   }) {
+    print('scname: $scName');
     bool isSelected = this == fco.selectedNode;
     if (!isSelected) {
       return;

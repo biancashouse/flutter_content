@@ -84,6 +84,9 @@ class RichTextNodeMapper extends SubClassMapperBase<RichTextNode> {
     _$hidePropertiesWhileDragging,
     mode: FieldMode.member,
   );
+  static GlobalKey<State<StatefulWidget>>? _$nodeGK(RichTextNode v) => v.nodeGK;
+  static const Field<RichTextNode, GlobalKey<State<StatefulWidget>>> _f$nodeGK =
+      Field('nodeGK', _$nodeGK, mode: FieldMode.member);
   static bool _$canShowTappableNodeWidgetOverlay(RichTextNode v) =>
       v.canShowTappableNodeWidgetOverlay;
   static const Field<RichTextNode, bool> _f$canShowTappableNodeWidgetOverlay =
@@ -113,6 +116,7 @@ class RichTextNodeMapper extends SubClassMapperBase<RichTextNode> {
     #treeNodeGK: _f$treeNodeGK,
     #isExpanded: _f$isExpanded,
     #hidePropertiesWhileDragging: _f$hidePropertiesWhileDragging,
+    #nodeGK: _f$nodeGK,
     #canShowTappableNodeWidgetOverlay: _f$canShowTappableNodeWidgetOverlay,
     #nodeWidgetGK: _f$nodeWidgetGK,
   };

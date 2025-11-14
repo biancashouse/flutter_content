@@ -49,6 +49,9 @@ class FileNodeMapper extends SubClassMapperBase<FileNode> {
     _$hidePropertiesWhileDragging,
     mode: FieldMode.member,
   );
+  static GlobalKey<State<StatefulWidget>>? _$nodeGK(FileNode v) => v.nodeGK;
+  static const Field<FileNode, GlobalKey<State<StatefulWidget>>> _f$nodeGK =
+      Field('nodeGK', _$nodeGK, mode: FieldMode.member);
   static bool _$canShowTappableNodeWidgetOverlay(FileNode v) =>
       v.canShowTappableNodeWidgetOverlay;
   static const Field<FileNode, bool> _f$canShowTappableNodeWidgetOverlay =
@@ -74,6 +77,7 @@ class FileNodeMapper extends SubClassMapperBase<FileNode> {
     #treeNodeGK: _f$treeNodeGK,
     #isExpanded: _f$isExpanded,
     #hidePropertiesWhileDragging: _f$hidePropertiesWhileDragging,
+    #nodeGK: _f$nodeGK,
     #canShowTappableNodeWidgetOverlay: _f$canShowTappableNodeWidgetOverlay,
     #nodeWidgetGK: _f$nodeWidgetGK,
   };

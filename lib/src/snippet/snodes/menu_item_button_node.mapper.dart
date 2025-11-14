@@ -72,6 +72,10 @@ class MenuItemButtonNodeMapper extends SubClassMapperBase<MenuItemButtonNode> {
         _$hidePropertiesWhileDragging,
         mode: FieldMode.member,
       );
+  static GlobalKey<State<StatefulWidget>>? _$nodeGK(MenuItemButtonNode v) =>
+      v.nodeGK;
+  static const Field<MenuItemButtonNode, GlobalKey<State<StatefulWidget>>>
+  _f$nodeGK = Field('nodeGK', _$nodeGK, mode: FieldMode.member);
   static bool _$canShowTappableNodeWidgetOverlay(MenuItemButtonNode v) =>
       v.canShowTappableNodeWidgetOverlay;
   static const Field<MenuItemButtonNode, bool>
@@ -108,6 +112,7 @@ class MenuItemButtonNodeMapper extends SubClassMapperBase<MenuItemButtonNode> {
     #treeNodeGK: _f$treeNodeGK,
     #isExpanded: _f$isExpanded,
     #hidePropertiesWhileDragging: _f$hidePropertiesWhileDragging,
+    #nodeGK: _f$nodeGK,
     #canShowTappableNodeWidgetOverlay: _f$canShowTappableNodeWidgetOverlay,
     #nodeWidgetGK: _f$nodeWidgetGK,
     #nodeAddersAndPropertiesCalloutSize: _f$nodeAddersAndPropertiesCalloutSize,

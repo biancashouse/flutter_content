@@ -5,6 +5,7 @@ import 'package:flutter_content/src/snippet/pnodes/bool_pnode.dart';
 import 'package:flutter_content/src/snippet/pnodes/edge_insets_pnode.dart';
 import 'package:flutter_content/src/snippet/pnodes/enum_pnode.dart';
 import 'package:flutter_content/src/snippet/pnodes/fyi_pnodes.dart';
+import 'package:flutter_content/src/snippet/pnodes/string_pnode.dart';
 
 part 'singlechildscrollview_node.mapper.dart';
 
@@ -15,11 +16,13 @@ class SingleChildScrollViewNode extends SC
 
   EdgeInsetsValue? padding;
   bool? useThisSnippetsScrollController;
+  ScrollControllerName? scName;
 
   SingleChildScrollViewNode({
     this.scrollDirection,
     this.padding,
     this.useThisSnippetsScrollController,
+    this.scName,
     super.child,
   });
 
@@ -35,9 +38,11 @@ class SingleChildScrollViewNode extends SC
     EnumPNode<AxisEnum?>(
       snode: this,
       name: 'scrollDirection',
-      valueIndex: (scrollDirection??AxisEnum.vertical).index,
-      onIndexChange: (newValue) => refreshWithUpdate(context,
-              () => scrollDirection = AxisEnum.of(newValue) ?? AxisEnum.vertical),
+      valueIndex: (scrollDirection ?? AxisEnum.vertical).index,
+      onIndexChange: (newValue) => refreshWithUpdate(
+        context,
+        () => scrollDirection = AxisEnum.of(newValue) ?? AxisEnum.vertical,
+      ),
     ),
     BoolPNode(
       snode: this,
@@ -47,6 +52,26 @@ class SingleChildScrollViewNode extends SC
         context,
         () => useThisSnippetsScrollController = newValue ?? true,
       ),
+    ),
+    StringPNode(
+      snode: this,
+      name: 'ScrollController name',
+      stringValue: scName,
+      skipHelperText: true,
+      onStringChange: (newValue) {
+        if (newValue != null) {
+          scName = newValue;
+        } else {
+          if (scName != null) {
+            NamedScrollController.instance(scName!)?.dispose();
+          }
+          scName = null;
+        }
+        refreshWithUpdate(context, () => scName!);
+      },
+      calloutButtonSize: const Size(280, 70),
+      calloutWidth: 400,
+      numLines: 1,
     ),
     PNode /*Group*/ (
       snode: this,
@@ -65,13 +90,15 @@ class SingleChildScrollViewNode extends SC
 
   @override
   Widget buildFlutterWidget(BuildContext context, SNode? parentNode) {
-    ScrollController? sc;
-    if (useThisSnippetsScrollController ?? false) {
-      final rootNode = rootNodeOfSnippet();
-      rootNode?.scrollController ??= ScrollController();
-      rootNode?.scrollDirection ??= Axis.vertical;
-      sc = rootNode?.scrollController;
+
+    if (scName != null && !NamedScrollController.exists(scName!)) {
+      NamedScrollController(scName!, Axis.vertical);
     }
+
+    ScrollController? sc = scName != null
+    ? NamedScrollController.instance(scName!)
+        : null;
+
     try {
       setParent(parentNode);
       //ScrollControllerName? scName = EditablePage.name(context);
@@ -80,7 +107,8 @@ class SingleChildScrollViewNode extends SC
 
       return SingleChildScrollView(
         key: createNodeWidgetGK(),
-        scrollDirection: scrollDirection?.flutterValue??Axis.vertical,
+        controller: sc,
+        scrollDirection: scrollDirection?.flutterValue ?? Axis.vertical,
         // descendants of this view can access it by:
         // ScrollableState? scrollableState = Scrollable.of(context);
         // ScrollController? scrollController = scrollableState?.position.scrollController;

@@ -55,6 +55,10 @@ class PinnedHeaderSliverNodeMapper
     _$hidePropertiesWhileDragging,
     mode: FieldMode.member,
   );
+  static GlobalKey<State<StatefulWidget>>? _$nodeGK(PinnedHeaderSliverNode v) =>
+      v.nodeGK;
+  static const Field<PinnedHeaderSliverNode, GlobalKey<State<StatefulWidget>>>
+  _f$nodeGK = Field('nodeGK', _$nodeGK, mode: FieldMode.member);
   static bool _$canShowTappableNodeWidgetOverlay(PinnedHeaderSliverNode v) =>
       v.canShowTappableNodeWidgetOverlay;
   static const Field<PinnedHeaderSliverNode, bool>
@@ -80,6 +84,7 @@ class PinnedHeaderSliverNodeMapper
     #treeNodeGK: _f$treeNodeGK,
     #isExpanded: _f$isExpanded,
     #hidePropertiesWhileDragging: _f$hidePropertiesWhileDragging,
+    #nodeGK: _f$nodeGK,
     #canShowTappableNodeWidgetOverlay: _f$canShowTappableNodeWidgetOverlay,
     #nodeWidgetGK: _f$nodeWidgetGK,
   };

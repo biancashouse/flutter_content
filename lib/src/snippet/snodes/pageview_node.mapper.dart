@@ -51,6 +51,9 @@ class PageViewNodeMapper extends SubClassMapperBase<PageViewNode> {
     _$hidePropertiesWhileDragging,
     mode: FieldMode.member,
   );
+  static GlobalKey<State<StatefulWidget>>? _$nodeGK(PageViewNode v) => v.nodeGK;
+  static const Field<PageViewNode, GlobalKey<State<StatefulWidget>>> _f$nodeGK =
+      Field('nodeGK', _$nodeGK, mode: FieldMode.member);
   static bool _$canShowTappableNodeWidgetOverlay(PageViewNode v) =>
       v.canShowTappableNodeWidgetOverlay;
   static const Field<PageViewNode, bool> _f$canShowTappableNodeWidgetOverlay =
@@ -75,6 +78,7 @@ class PageViewNodeMapper extends SubClassMapperBase<PageViewNode> {
     #treeNodeGK: _f$treeNodeGK,
     #isExpanded: _f$isExpanded,
     #hidePropertiesWhileDragging: _f$hidePropertiesWhileDragging,
+    #nodeGK: _f$nodeGK,
     #canShowTappableNodeWidgetOverlay: _f$canShowTappableNodeWidgetOverlay,
     #nodeWidgetGK: _f$nodeWidgetGK,
   };

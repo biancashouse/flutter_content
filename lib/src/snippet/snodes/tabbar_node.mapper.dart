@@ -97,6 +97,9 @@ class TabBarNodeMapper extends SubClassMapperBase<TabBarNode> {
     _$hidePropertiesWhileDragging,
     mode: FieldMode.member,
   );
+  static GlobalKey<State<StatefulWidget>>? _$nodeGK(TabBarNode v) => v.nodeGK;
+  static const Field<TabBarNode, GlobalKey<State<StatefulWidget>>> _f$nodeGK =
+      Field('nodeGK', _$nodeGK, mode: FieldMode.member);
   static bool _$canShowTappableNodeWidgetOverlay(TabBarNode v) =>
       v.canShowTappableNodeWidgetOverlay;
   static const Field<TabBarNode, bool> _f$canShowTappableNodeWidgetOverlay =
@@ -153,6 +156,7 @@ class TabBarNodeMapper extends SubClassMapperBase<TabBarNode> {
     #treeNodeGK: _f$treeNodeGK,
     #isExpanded: _f$isExpanded,
     #hidePropertiesWhileDragging: _f$hidePropertiesWhileDragging,
+    #nodeGK: _f$nodeGK,
     #canShowTappableNodeWidgetOverlay: _f$canShowTappableNodeWidgetOverlay,
     #nodeWidgetGK: _f$nodeWidgetGK,
     #tabC: _f$tabC,

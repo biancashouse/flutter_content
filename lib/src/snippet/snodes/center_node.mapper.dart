@@ -52,6 +52,9 @@ class CenterNodeMapper extends SubClassMapperBase<CenterNode> {
     _$hidePropertiesWhileDragging,
     mode: FieldMode.member,
   );
+  static GlobalKey<State<StatefulWidget>>? _$nodeGK(CenterNode v) => v.nodeGK;
+  static const Field<CenterNode, GlobalKey<State<StatefulWidget>>> _f$nodeGK =
+      Field('nodeGK', _$nodeGK, mode: FieldMode.member);
   static bool _$canShowTappableNodeWidgetOverlay(CenterNode v) =>
       v.canShowTappableNodeWidgetOverlay;
   static const Field<CenterNode, bool> _f$canShowTappableNodeWidgetOverlay =
@@ -76,6 +79,7 @@ class CenterNodeMapper extends SubClassMapperBase<CenterNode> {
     #treeNodeGK: _f$treeNodeGK,
     #isExpanded: _f$isExpanded,
     #hidePropertiesWhileDragging: _f$hidePropertiesWhileDragging,
+    #nodeGK: _f$nodeGK,
     #canShowTappableNodeWidgetOverlay: _f$canShowTappableNodeWidgetOverlay,
     #nodeWidgetGK: _f$nodeWidgetGK,
   };

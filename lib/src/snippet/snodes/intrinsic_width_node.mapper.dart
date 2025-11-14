@@ -53,6 +53,10 @@ class IntrinsicWidthNodeMapper extends SubClassMapperBase<IntrinsicWidthNode> {
         _$hidePropertiesWhileDragging,
         mode: FieldMode.member,
       );
+  static GlobalKey<State<StatefulWidget>>? _$nodeGK(IntrinsicWidthNode v) =>
+      v.nodeGK;
+  static const Field<IntrinsicWidthNode, GlobalKey<State<StatefulWidget>>>
+  _f$nodeGK = Field('nodeGK', _$nodeGK, mode: FieldMode.member);
   static bool _$canShowTappableNodeWidgetOverlay(IntrinsicWidthNode v) =>
       v.canShowTappableNodeWidgetOverlay;
   static const Field<IntrinsicWidthNode, bool>
@@ -78,6 +82,7 @@ class IntrinsicWidthNodeMapper extends SubClassMapperBase<IntrinsicWidthNode> {
     #treeNodeGK: _f$treeNodeGK,
     #isExpanded: _f$isExpanded,
     #hidePropertiesWhileDragging: _f$hidePropertiesWhileDragging,
+    #nodeGK: _f$nodeGK,
     #canShowTappableNodeWidgetOverlay: _f$canShowTappableNodeWidgetOverlay,
     #nodeWidgetGK: _f$nodeWidgetGK,
   };

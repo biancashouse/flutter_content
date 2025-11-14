@@ -59,6 +59,9 @@ class ExpandedNodeMapper extends SubClassMapperBase<ExpandedNode> {
     _$hidePropertiesWhileDragging,
     mode: FieldMode.member,
   );
+  static GlobalKey<State<StatefulWidget>>? _$nodeGK(ExpandedNode v) => v.nodeGK;
+  static const Field<ExpandedNode, GlobalKey<State<StatefulWidget>>> _f$nodeGK =
+      Field('nodeGK', _$nodeGK, mode: FieldMode.member);
   static bool _$canShowTappableNodeWidgetOverlay(ExpandedNode v) =>
       v.canShowTappableNodeWidgetOverlay;
   static const Field<ExpandedNode, bool> _f$canShowTappableNodeWidgetOverlay =
@@ -90,6 +93,7 @@ class ExpandedNodeMapper extends SubClassMapperBase<ExpandedNode> {
     #treeNodeGK: _f$treeNodeGK,
     #isExpanded: _f$isExpanded,
     #hidePropertiesWhileDragging: _f$hidePropertiesWhileDragging,
+    #nodeGK: _f$nodeGK,
     #canShowTappableNodeWidgetOverlay: _f$canShowTappableNodeWidgetOverlay,
     #nodeWidgetGK: _f$nodeWidgetGK,
     #fit: _f$fit,

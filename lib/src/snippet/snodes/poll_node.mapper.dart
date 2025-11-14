@@ -97,6 +97,9 @@ class PollNodeMapper extends SubClassMapperBase<PollNode> {
     _$hidePropertiesWhileDragging,
     mode: FieldMode.member,
   );
+  static GlobalKey<State<StatefulWidget>>? _$nodeGK(PollNode v) => v.nodeGK;
+  static const Field<PollNode, GlobalKey<State<StatefulWidget>>> _f$nodeGK =
+      Field('nodeGK', _$nodeGK, mode: FieldMode.member);
   static bool _$canShowTappableNodeWidgetOverlay(PollNode v) =>
       v.canShowTappableNodeWidgetOverlay;
   static const Field<PollNode, bool> _f$canShowTappableNodeWidgetOverlay =
@@ -128,6 +131,7 @@ class PollNodeMapper extends SubClassMapperBase<PollNode> {
     #treeNodeGK: _f$treeNodeGK,
     #isExpanded: _f$isExpanded,
     #hidePropertiesWhileDragging: _f$hidePropertiesWhileDragging,
+    #nodeGK: _f$nodeGK,
     #canShowTappableNodeWidgetOverlay: _f$canShowTappableNodeWidgetOverlay,
     #nodeWidgetGK: _f$nodeWidgetGK,
   };

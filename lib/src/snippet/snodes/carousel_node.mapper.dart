@@ -93,6 +93,9 @@ class CarouselNodeMapper extends SubClassMapperBase<CarouselNode> {
     _$hidePropertiesWhileDragging,
     mode: FieldMode.member,
   );
+  static GlobalKey<State<StatefulWidget>>? _$nodeGK(CarouselNode v) => v.nodeGK;
+  static const Field<CarouselNode, GlobalKey<State<StatefulWidget>>> _f$nodeGK =
+      Field('nodeGK', _$nodeGK, mode: FieldMode.member);
   static bool _$canShowTappableNodeWidgetOverlay(CarouselNode v) =>
       v.canShowTappableNodeWidgetOverlay;
   static const Field<CarouselNode, bool> _f$canShowTappableNodeWidgetOverlay =
@@ -123,6 +126,7 @@ class CarouselNodeMapper extends SubClassMapperBase<CarouselNode> {
     #treeNodeGK: _f$treeNodeGK,
     #isExpanded: _f$isExpanded,
     #hidePropertiesWhileDragging: _f$hidePropertiesWhileDragging,
+    #nodeGK: _f$nodeGK,
     #canShowTappableNodeWidgetOverlay: _f$canShowTappableNodeWidgetOverlay,
     #nodeWidgetGK: _f$nodeWidgetGK,
   };

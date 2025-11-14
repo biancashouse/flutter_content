@@ -43,6 +43,12 @@ class SingleChildScrollViewNodeMapper
     _$useThisSnippetsScrollController,
     opt: true,
   );
+  static String? _$scName(SingleChildScrollViewNode v) => v.scName;
+  static const Field<SingleChildScrollViewNode, String> _f$scName = Field(
+    'scName',
+    _$scName,
+    opt: true,
+  );
   static SNode? _$child(SingleChildScrollViewNode v) => v.child;
   static const Field<SingleChildScrollViewNode, SNode> _f$child = Field(
     'child',
@@ -77,6 +83,14 @@ class SingleChildScrollViewNodeMapper
     _$hidePropertiesWhileDragging,
     mode: FieldMode.member,
   );
+  static GlobalKey<State<StatefulWidget>>? _$nodeGK(
+    SingleChildScrollViewNode v,
+  ) => v.nodeGK;
+  static const Field<
+    SingleChildScrollViewNode,
+    GlobalKey<State<StatefulWidget>>
+  >
+  _f$nodeGK = Field('nodeGK', _$nodeGK, mode: FieldMode.member);
   static bool _$canShowTappableNodeWidgetOverlay(SingleChildScrollViewNode v) =>
       v.canShowTappableNodeWidgetOverlay;
   static const Field<SingleChildScrollViewNode, bool>
@@ -103,11 +117,13 @@ class SingleChildScrollViewNodeMapper
     #scrollDirection: _f$scrollDirection,
     #padding: _f$padding,
     #useThisSnippetsScrollController: _f$useThisSnippetsScrollController,
+    #scName: _f$scName,
     #child: _f$child,
     #uid: _f$uid,
     #treeNodeGK: _f$treeNodeGK,
     #isExpanded: _f$isExpanded,
     #hidePropertiesWhileDragging: _f$hidePropertiesWhileDragging,
+    #nodeGK: _f$nodeGK,
     #canShowTappableNodeWidgetOverlay: _f$canShowTappableNodeWidgetOverlay,
     #nodeWidgetGK: _f$nodeWidgetGK,
   };
@@ -132,6 +148,7 @@ class SingleChildScrollViewNodeMapper
       useThisSnippetsScrollController: data.dec(
         _f$useThisSnippetsScrollController,
       ),
+      scName: data.dec(_f$scName),
       child: data.dec(_f$child),
     );
   }
@@ -218,6 +235,7 @@ abstract class SingleChildScrollViewNodeCopyWith<
     AxisEnum? scrollDirection,
     EdgeInsetsValue? padding,
     bool? useThisSnippetsScrollController,
+    String? scName,
     SNode? child,
   });
   SingleChildScrollViewNodeCopyWith<$R2, $In, $Out2> $chain<$R2, $Out2>(
@@ -245,6 +263,7 @@ class _SingleChildScrollViewNodeCopyWithImpl<$R, $Out>
     Object? scrollDirection = $none,
     Object? padding = $none,
     Object? useThisSnippetsScrollController = $none,
+    Object? scName = $none,
     Object? child = $none,
   }) => $apply(
     FieldCopyWithData({
@@ -252,6 +271,7 @@ class _SingleChildScrollViewNodeCopyWithImpl<$R, $Out>
       if (padding != $none) #padding: padding,
       if (useThisSnippetsScrollController != $none)
         #useThisSnippetsScrollController: useThisSnippetsScrollController,
+      if (scName != $none) #scName: scName,
       if (child != $none) #child: child,
     }),
   );
@@ -264,6 +284,7 @@ class _SingleChildScrollViewNodeCopyWithImpl<$R, $Out>
           #useThisSnippetsScrollController,
           or: $value.useThisSnippetsScrollController,
         ),
+        scName: data.get(#scName, or: $value.scName),
         child: data.get(#child, or: $value.child),
       );
 

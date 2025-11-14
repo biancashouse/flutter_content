@@ -53,6 +53,10 @@ class QuillTextNodeMapper extends SubClassMapperBase<QuillTextNode> {
         _$hidePropertiesWhileDragging,
         mode: FieldMode.member,
       );
+  static GlobalKey<State<StatefulWidget>>? _$nodeGK(QuillTextNode v) =>
+      v.nodeGK;
+  static const Field<QuillTextNode, GlobalKey<State<StatefulWidget>>>
+  _f$nodeGK = Field('nodeGK', _$nodeGK, mode: FieldMode.member);
   static bool _$canShowTappableNodeWidgetOverlay(QuillTextNode v) =>
       v.canShowTappableNodeWidgetOverlay;
   static const Field<QuillTextNode, bool> _f$canShowTappableNodeWidgetOverlay =
@@ -83,6 +87,7 @@ class QuillTextNodeMapper extends SubClassMapperBase<QuillTextNode> {
     #treeNodeGK: _f$treeNodeGK,
     #isExpanded: _f$isExpanded,
     #hidePropertiesWhileDragging: _f$hidePropertiesWhileDragging,
+    #nodeGK: _f$nodeGK,
     #canShowTappableNodeWidgetOverlay: _f$canShowTappableNodeWidgetOverlay,
     #nodeWidgetGK: _f$nodeWidgetGK,
     #roQC: _f$roQC,

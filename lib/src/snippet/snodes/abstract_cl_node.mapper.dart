@@ -65,6 +65,12 @@ class CLMapper extends SubClassMapperBase<CL> {
     _$hidePropertiesWhileDragging,
     mode: FieldMode.member,
   );
+  static GlobalKey<State<StatefulWidget>>? _$nodeGK(CL v) => v.nodeGK;
+  static const Field<CL, GlobalKey<State<StatefulWidget>>> _f$nodeGK = Field(
+    'nodeGK',
+    _$nodeGK,
+    mode: FieldMode.member,
+  );
   static bool _$canShowTappableNodeWidgetOverlay(CL v) =>
       v.canShowTappableNodeWidgetOverlay;
   static const Field<CL, bool> _f$canShowTappableNodeWidgetOverlay = Field(
@@ -83,6 +89,7 @@ class CLMapper extends SubClassMapperBase<CL> {
     #treeNodeGK: _f$treeNodeGK,
     #isExpanded: _f$isExpanded,
     #hidePropertiesWhileDragging: _f$hidePropertiesWhileDragging,
+    #nodeGK: _f$nodeGK,
     #canShowTappableNodeWidgetOverlay: _f$canShowTappableNodeWidgetOverlay,
     #nodeWidgetGK: _f$nodeWidgetGK,
   };

@@ -183,16 +183,16 @@ class SnippetBuilderState extends State<SnippetBuilder>
             // previous.snippetNameShowingTappableOverlaysFor !=
             //     current.snippetNameShowingTappableOverlaysFor
             );
-        print('buildWhen is $result');
+        // print('buildWhen is $result');
         return result;
       },
       builder: (context, state) {
         return NotificationListener<ScrollNotification>(
           onNotification: (notification) {
             if (notification is ScrollUpdateNotification) {
-              print(
-                "A descendant widget scrolled to: ${notification.metrics.pixels}",
-              );
+              // print(
+              //   "A descendant widget scrolled to: ${notification.metrics.pixels}",
+              // );
               widget.onScrollF?.call(notification);
               // if (fco.inNodeSelectionMode) {
               // Schedule the callback, but DO NOT pass the stale state into it.

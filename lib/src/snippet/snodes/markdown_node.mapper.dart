@@ -51,6 +51,9 @@ class MarkdownNodeMapper extends SubClassMapperBase<MarkdownNode> {
     _$hidePropertiesWhileDragging,
     mode: FieldMode.member,
   );
+  static GlobalKey<State<StatefulWidget>>? _$nodeGK(MarkdownNode v) => v.nodeGK;
+  static const Field<MarkdownNode, GlobalKey<State<StatefulWidget>>> _f$nodeGK =
+      Field('nodeGK', _$nodeGK, mode: FieldMode.member);
   static bool _$canShowTappableNodeWidgetOverlay(MarkdownNode v) =>
       v.canShowTappableNodeWidgetOverlay;
   static const Field<MarkdownNode, bool> _f$canShowTappableNodeWidgetOverlay =
@@ -81,6 +84,7 @@ class MarkdownNodeMapper extends SubClassMapperBase<MarkdownNode> {
     #treeNodeGK: _f$treeNodeGK,
     #isExpanded: _f$isExpanded,
     #hidePropertiesWhileDragging: _f$hidePropertiesWhileDragging,
+    #nodeGK: _f$nodeGK,
     #canShowTappableNodeWidgetOverlay: _f$canShowTappableNodeWidgetOverlay,
     #nodeWidgetGK: _f$nodeWidgetGK,
     #SAMPLE_MD: _f$SAMPLE_MD,

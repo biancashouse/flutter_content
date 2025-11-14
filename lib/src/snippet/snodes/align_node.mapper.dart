@@ -58,6 +58,9 @@ class AlignNodeMapper extends SubClassMapperBase<AlignNode> {
     _$hidePropertiesWhileDragging,
     mode: FieldMode.member,
   );
+  static GlobalKey<State<StatefulWidget>>? _$nodeGK(AlignNode v) => v.nodeGK;
+  static const Field<AlignNode, GlobalKey<State<StatefulWidget>>> _f$nodeGK =
+      Field('nodeGK', _$nodeGK, mode: FieldMode.member);
   static bool _$canShowTappableNodeWidgetOverlay(AlignNode v) =>
       v.canShowTappableNodeWidgetOverlay;
   static const Field<AlignNode, bool> _f$canShowTappableNodeWidgetOverlay =
@@ -83,6 +86,7 @@ class AlignNodeMapper extends SubClassMapperBase<AlignNode> {
     #treeNodeGK: _f$treeNodeGK,
     #isExpanded: _f$isExpanded,
     #hidePropertiesWhileDragging: _f$hidePropertiesWhileDragging,
+    #nodeGK: _f$nodeGK,
     #canShowTappableNodeWidgetOverlay: _f$canShowTappableNodeWidgetOverlay,
     #nodeWidgetGK: _f$nodeWidgetGK,
   };

@@ -73,6 +73,10 @@ class AssetImageNodeMapper extends SubClassMapperBase<AssetImageNode> {
         _$hidePropertiesWhileDragging,
         mode: FieldMode.member,
       );
+  static GlobalKey<State<StatefulWidget>>? _$nodeGK(AssetImageNode v) =>
+      v.nodeGK;
+  static const Field<AssetImageNode, GlobalKey<State<StatefulWidget>>>
+  _f$nodeGK = Field('nodeGK', _$nodeGK, mode: FieldMode.member);
   static bool _$canShowTappableNodeWidgetOverlay(AssetImageNode v) =>
       v.canShowTappableNodeWidgetOverlay;
   static const Field<AssetImageNode, bool> _f$canShowTappableNodeWidgetOverlay =
@@ -100,6 +104,7 @@ class AssetImageNodeMapper extends SubClassMapperBase<AssetImageNode> {
     #treeNodeGK: _f$treeNodeGK,
     #isExpanded: _f$isExpanded,
     #hidePropertiesWhileDragging: _f$hidePropertiesWhileDragging,
+    #nodeGK: _f$nodeGK,
     #canShowTappableNodeWidgetOverlay: _f$canShowTappableNodeWidgetOverlay,
     #nodeWidgetGK: _f$nodeWidgetGK,
   };
