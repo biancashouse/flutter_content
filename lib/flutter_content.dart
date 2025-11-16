@@ -858,6 +858,36 @@ class FlutterContentMixins
         .toUpperCase();
   }
 
+  /// Finds the nearest [ScrollController] via an ancestor [Scrollable] widget.
+  /// Returns the [ScrollController] if found, otherwise returns `null`.
+  /// NOTE - only need this if you don't already have the scrollcontroller or
+  /// don't know it's scrollDirection
+  ScrollConfig findAncestorScrollControllerAndDirection(
+      BuildContext? ctx,
+      ) {
+    // try to find a SingleChildScrollView
+    SingleChildScrollView? scsv = ctx
+        ?.findAncestorWidgetOfExactType<SingleChildScrollView>();
+    if (scsv != null) {
+      return (scsv.controller, scsv.scrollDirection);
+    }
+
+    // // try to find a PageView
+    // SingleChildScrollView? pv = context
+    //     .findAncestorWidgetOfExactType<PageView>();
+    // if (pv?.controller is NamedScrollController) {
+    // return namedSC = pv?.controller as NamedScrollController;
+    // }
+
+    // try to find a ListView, GridView, or CustomScrollView
+    ScrollView? sv = ctx?.findAncestorWidgetOfExactType<ScrollView>();
+    if (sv != null) {
+      return (sv.controller, sv.scrollDirection);
+    }
+
+    return (null, null);
+  }
+
    void initializeMappers() {
     // This function just needs to exist. Its primary purpose is to force the
     // dart analyzer to process all the imports. Inside each .mapper.dart file,

@@ -67,7 +67,7 @@ class SnippetTreeView extends StatelessWidget {
       treeController: treeC,
       entry: entry,
       // allowButtonCallouts: allowButtonCallouts,
-      scName: null,
+      
     ),
   );
 }

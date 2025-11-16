@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_content/flutter_content.dart';
 import 'package:flutter_content/src/algc/model/m/flowchart_m.dart';
 import 'package:flutter_content/src/algc/model/m/step_m.dart';
+
 // import 'package:flutter_content/src/algc/widgets/painters/flowchart_bg_painter.dart';
 import 'package:flutter_content/src/algc/widgets/painters/screen_flowchart_painter.dart';
 import 'package:flutter_content/src/algc/widgets/pkg_step_widget.dart';
@@ -12,9 +13,8 @@ import 'package:flutter_content/src/algc/widgets/pkg_tappable_comment_btn.dart';
 class FlowchartWidget extends StatelessWidget {
   final String jsonString;
   final String fbUID;
-  final ScrollControllerName scName;
 
-  const FlowchartWidget(this.jsonString, this.fbUID, this.scName, {super.key});
+  const FlowchartWidget(this.jsonString, this.fbUID, {super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -26,10 +26,16 @@ class FlowchartWidget extends StatelessWidget {
       f.zeroNumStepComments();
       f.isACommentIconPresent = false;
 
-      return FlowchartWidgetStack(f, fbUID, scName);
+      return FlowchartWidgetStack(f, fbUID);
     } catch (e) {
-      fco.logger.e('', error:e);
-      return Error("FlowchartWidget", color: Colors.red, size: 32, errorMsg: e.toString(), key:GlobalKey());
+      fco.logger.e('', error: e);
+      return Error(
+        "FlowchartWidget",
+        color: Colors.red,
+        size: 32,
+        errorMsg: e.toString(),
+        key: GlobalKey(),
+      );
     }
   }
 }
@@ -37,17 +43,15 @@ class FlowchartWidget extends StatelessWidget {
 class FlowchartWidgetStack extends StatelessWidget {
   final FlowchartM f;
   final String fbUID;
-  final ScrollControllerName scName;
 
-
-  const FlowchartWidgetStack(this.f, this.fbUID, this.scName, {super.key});
+  const FlowchartWidgetStack(this.f, this.fbUID, {super.key});
 
   @override
   Widget build(BuildContext context) {
     fco.logger.i('FlowchartWidgetStack build');
     double w = FlowchartM.PAGE_VISIBLE_OVERFLOW + f.width;
     double h = FlowchartM.PAGE_VISIBLE_OVERFLOW * 4 + f.height;
-        // FlowchartM.PAGE_VISIBLE_OVERFLOW * 2 + max(f.height, f.screenPaperH);
+    // FlowchartM.PAGE_VISIBLE_OVERFLOW * 2 + max(f.height, f.screenPaperH);
 
     return SizedBox(
       width: w,
@@ -94,10 +98,7 @@ class FlowchartWidgetStack extends StatelessWidget {
     return Positioned(
       top: 0,
       left: 0,
-      child: CustomPaint(
-        foregroundPainter: funcPainter,
-        size: Size(w, h),
-      ),
+      child: CustomPaint(foregroundPainter: funcPainter, size: Size(w, h)),
     );
   }
 
@@ -129,10 +130,11 @@ class FlowchartWidgetStack extends StatelessWidget {
     );
 
     return Positioned(
-        top: vOffset + f.flowchartOffset.dy + f.endTxtOverlayT,
-        left: f.flowchartOffset.dx + f.endTxtOverlayL - padding,
-        width: f.endTxtW + 10 + padding * 2 /*shit!*/,
-        child: childW);
+      top: vOffset + f.flowchartOffset.dy + f.endTxtOverlayT,
+      left: f.flowchartOffset.dx + f.endTxtOverlayL - padding,
+      width: f.endTxtW + 10 + padding * 2 /*shit!*/,
+      child: childW,
+    );
   }
 
   // Widget _positionedBeginStepMenuButton(double vOffset) {
@@ -167,7 +169,8 @@ class FlowchartWidgetStack extends StatelessWidget {
       f.isACommentIconPresent = true;
       return Positioned(
         top: f.flowchartOffset.dy + f.beginTxtOverlayT - f.PPP,
-        left: f.flowchartOffset.dx +
+        left:
+            f.flowchartOffset.dx +
             f.beginTxtOverlayL +
             f.beginTxtW +
             f.PPP * 2 +
@@ -210,8 +213,9 @@ class FlowchartWidgetStack extends StatelessWidget {
   Widget _positionedFlowchartSteps(FlowchartM f) {
     //fco.logger.i('starting _positionedFlowchartSteps');
     // create the child step widgets
-    List<PkgStepWidget> columnChildren =
-        f.stepsShowingChanges.map((step) => PkgStepWidget(f, step, fbUID, scName)).toList();
+    List<PkgStepWidget> columnChildren = f.stepsShowingChanges
+        .map((step) => PkgStepWidget(f, step, fbUID))
+        .toList();
 
     Widget rootSteps = Positioned(
       left: f.flowchartOffset.dx + f.stepListOffsetLeft(ROOT_STEPS),

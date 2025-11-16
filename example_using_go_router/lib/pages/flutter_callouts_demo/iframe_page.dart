@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_content/flutter_content.dart';
+import 'package:flutter_callouts/flutter_callouts.dart';
 
 import 'sample_iframe.dart';
 
@@ -12,26 +12,24 @@ class IFramePage extends StatefulWidget {
 }
 
 class _IFramePageState extends State<IFramePage> {
-  late final NamedScrollController _namedSC;
+  final ScrollController sc = ScrollController();
   final GlobalKey _gk = GlobalKey();
 
   @override
   void initState() {
     super.initState();
 
-    _namedSC = NamedScrollController('some-nsc', Axis.vertical);
-
     /// auto show a callout pointing at the FAB
-    fco.afterNextBuildDo(() {
+    fca.afterNextBuildDo(() {
       // namedSC.jumpTo(150.0);
       // showOverlay requires a callout config + callout content + optionally, a target widget globalKey
-      fco.showOverlay(
+      fca.showOverlay(
         calloutConfig: _createCalloutConfig1(),
         calloutContent: _createCalloutContent1(),
         targetGkF: () => _gk,
         wrapInPointerInterceptor: true, // THIS IS THE MOST IMPORTANT LINE
       );
-      fco.showToast(
+      fca.showToast(
         gravity: Alignment.bottomCenter,
         msg: 'demonstrating that a callout is still draggable even when over an Iframe',
         textColor: Colors.white,
@@ -44,12 +42,12 @@ class _IFramePageState extends State<IFramePage> {
 
   @override
   void dispose() {
-    _namedSC.dispose();
+    sc.dispose();
     super.dispose();
   }
 
   double get fontSize {
-    double result = fco.scrW < 600 ? 12.0 : 24.0;
+    double result = fca.scrW < 600 ? 12.0 : 24.0;
     return result;
   }
 
@@ -91,7 +89,7 @@ class _IFramePageState extends State<IFramePage> {
     // gotitAxis:
     // -- pointer -------------------------------------------------
     // arrowColor: Color.yellow(),
-    targetPointerType: const TargetPointerType.bubble(),
+    targetPointerType: TargetPointerType.bubble(),
     animatePointer: true,
     // lineLabel: Text('line label'),
     // fromDelta: -20,
@@ -109,13 +107,12 @@ class _IFramePageState extends State<IFramePage> {
     // draggable: false,
     // draggableColor: Colors.green,
     // dragHandleHeight: ,
-    scrollControllerName: _namedSC.name,
     followScroll: false,
   );
 
-  Widget _createCalloutContent1() => const IntrinsicHeight(
+  Widget _createCalloutContent1() => IntrinsicHeight(
     child: Padding(
-      padding: EdgeInsets.all(8.0),
+      padding: const EdgeInsets.all(8.0),
       child: Text('Pointing out the blue icon.\n\n'
           'This callout works, because when\n'
           'showOverlay() is called, the parameter\n'
@@ -128,12 +125,12 @@ class _IFramePageState extends State<IFramePage> {
     return PopScope(
       canPop: true,
       onPopInvokedWithResult: (_, _) {
-        fco.dismissAll();
+        fca.dismissAll();
       },
       child: SafeArea(
         child: Scaffold(
           appBar: AppBar(
-            title: const Text(
+            title: Text(
               'flutter_callouts iframe demo',
               style: TextStyle(fontWeight: FontWeight.bold),
               textScaler: TextScaler.linear(1.4),
@@ -144,17 +141,17 @@ class _IFramePageState extends State<IFramePage> {
                 Icons.adb_rounded,
                 color: Colors.blue,
               ),
-              const SizedBox(width: 100),
+              SizedBox(width: 100),
             ],
           ),
           // give it extra height to show how scrolling can work with callouts
           // also notice we pass in the named scroll controller
           body: SingleChildScrollView(
-                        controller: _namedSC,
+                        controller: sc,
                         child: SizedBox(
                             width: double.infinity,
-                            height: fco.scrH - 100,
-                            child: const Center(child: SampleIFrame())),
+                            height: fca.scrH - 100,
+                            child: Center(child: SampleIFrame())),
                       ),
         ),
       ),

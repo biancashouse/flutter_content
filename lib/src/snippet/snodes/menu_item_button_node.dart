@@ -61,7 +61,7 @@ class MenuItemButtonNode extends ButtonNode with MenuItemButtonNodeMappable {
 
   @override
   Widget buildFlutterWidget(BuildContext context, SNode? parentNode) {
-    ScrollControllerName? scName = EditablePage.maybeScrollControllerName(context);
+    
     try {
       setParent(parentNode); // propagating parents down from root
     //ScrollControllerName? scName = EditablePage.name(context);
@@ -79,7 +79,7 @@ class MenuItemButtonNode extends ButtonNode with MenuItemButtonNodeMappable {
               // } else
                 if (destinationRoutePathSnippetName != null) {
                 //context.goNamed(destinationRoutePathSnippetName!);
-                onPressed(context, gk, scName);
+                onPressed(context, gk);
               }
             },
             style: fco.buttonStyle(30),

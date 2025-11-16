@@ -298,23 +298,23 @@ class TextSpanNode extends InlineSpanNode with TextSpanNodeMappable {
       BuildContext context,
       NodeAction action,
       bool? skipHeading,
-      ScrollControllerName? scName,
+      
       ) {
     return [
       if (!(skipHeading ?? false))
-        ...menuAnchorWidgets_Heading(context, action, scName),
-      menuItemButton(context, "TextSpan", TextSpanNode, action, scName),
-      menuItemButton(context, "WidgetSpan", WidgetSpanNode, action, scName),
+        ...menuAnchorWidgets_Heading(context, action),
+      menuItemButton(context, "TextSpan", TextSpanNode, action),
+      menuItemButton(context, "WidgetSpan", WidgetSpanNode, action),
     ];
   }
 
   @override
   List<Widget> menuAnchorWidgets_WrapWith(BuildContext context,NodeAction action,
       bool? skipHeading,
-      ScrollControllerName? scName,) {
+      ) {
     return [
-      ...super.menuAnchorWidgets_Heading(context, action, scName),
-      menuItemButton(context, "TextSpan", TextSpanNode, action, scName),
+      ...super.menuAnchorWidgets_Heading(context, action),
+      menuItemButton(context, "TextSpan", TextSpanNode, action),
     ];
   }
 

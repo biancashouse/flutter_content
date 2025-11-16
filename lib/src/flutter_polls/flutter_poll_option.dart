@@ -12,12 +12,12 @@ import 'flutter_poll.dart';
 class FlutterPollOption extends HookWidget {
   final PollOptionId optionId;
   final Widget optionWidget;
-  final ScrollControllerName? scName;
+  
 
   const FlutterPollOption({
     required this.optionId,
     required this.optionWidget,
-    required this.scName,
+    required 
     super.key,
   });
 
@@ -151,7 +151,7 @@ class FlutterPollOption extends HookWidget {
                                       optionId: optionId),
                                 );
                               },
-                              scName: scName,
+                               
                             );
                           } else {
                             fco.logger.d('missing gcr-bh-apps-dart');

@@ -35,12 +35,6 @@ class SingleChildScrollViewNodeMapper
   static EdgeInsetsValue? _$padding(SingleChildScrollViewNode v) => v.padding;
   static const Field<SingleChildScrollViewNode, EdgeInsetsValue> _f$padding =
       Field('padding', _$padding, opt: true);
-  static String? _$scName(SingleChildScrollViewNode v) => v.scName;
-  static const Field<SingleChildScrollViewNode, String> _f$scName = Field(
-    'scName',
-    _$scName,
-    opt: true,
-  );
   static SNode? _$child(SingleChildScrollViewNode v) => v.child;
   static const Field<SingleChildScrollViewNode, SNode> _f$child = Field(
     'child',
@@ -108,7 +102,6 @@ class SingleChildScrollViewNodeMapper
   final MappableFields<SingleChildScrollViewNode> fields = const {
     #scrollDirection: _f$scrollDirection,
     #padding: _f$padding,
-    #scName: _f$scName,
     #child: _f$child,
     #uid: _f$uid,
     #treeNodeGK: _f$treeNodeGK,
@@ -136,7 +129,6 @@ class SingleChildScrollViewNodeMapper
     return SingleChildScrollViewNode(
       scrollDirection: data.dec(_f$scrollDirection),
       padding: data.dec(_f$padding),
-      scName: data.dec(_f$scName),
       child: data.dec(_f$child),
     );
   }
@@ -219,12 +211,7 @@ abstract class SingleChildScrollViewNodeCopyWith<
   @override
   SNodeCopyWith<$R, SNode, SNode>? get child;
   @override
-  $R call({
-    AxisEnum? scrollDirection,
-    EdgeInsetsValue? padding,
-    String? scName,
-    SNode? child,
-  });
+  $R call({AxisEnum? scrollDirection, EdgeInsetsValue? padding, SNode? child});
   SingleChildScrollViewNodeCopyWith<$R2, $In, $Out2> $chain<$R2, $Out2>(
     Then<$Out2, $R2> t,
   );
@@ -249,13 +236,11 @@ class _SingleChildScrollViewNodeCopyWithImpl<$R, $Out>
   $R call({
     Object? scrollDirection = $none,
     Object? padding = $none,
-    Object? scName = $none,
     Object? child = $none,
   }) => $apply(
     FieldCopyWithData({
       if (scrollDirection != $none) #scrollDirection: scrollDirection,
       if (padding != $none) #padding: padding,
-      if (scName != $none) #scName: scName,
       if (child != $none) #child: child,
     }),
   );
@@ -264,7 +249,6 @@ class _SingleChildScrollViewNodeCopyWithImpl<$R, $Out>
       SingleChildScrollViewNode(
         scrollDirection: data.get(#scrollDirection, or: $value.scrollDirection),
         padding: data.get(#padding, or: $value.padding),
-        scName: data.get(#scName, or: $value.scName),
         child: data.get(#child, or: $value.child),
       );
 

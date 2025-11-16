@@ -12,14 +12,14 @@ class PNodeWidget extends StatefulWidget {
   final SNode sNode;
   final PNodeTreeController treeC;
   final TreeEntry<PNode> entry;
-  final ScrollControllerName? scName;
+  
 
   const PNodeWidget({
     super.key,
     required this.sNode,
     required this.treeC,
     required this.entry,
-    this.scName,
+    
   });
 
   @override

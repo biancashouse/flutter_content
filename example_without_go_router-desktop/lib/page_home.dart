@@ -34,7 +34,7 @@ class _Page_HomeState extends State<Page_Home> {
         decorationFillColors: ColorOrGradient.color(Colors.yellow[700]!),
         targetPointerType: TargetPointerType.bubble(),
         animatePointer: true,
-        scrollControllerName: null,
+        
       );
 
       fco.namedCallbacks['sample-popup'] = (context, gk) => fco.showOverlay(
@@ -82,7 +82,7 @@ class _Page_HomeState extends State<Page_Home> {
         child: ContainerNode(csPropGroup: ContainerStyleProperties(
           width: 200, height: 300, fillColors: UpTo6Colors(color1: ColorModel.red())
         )),),
-        scName: null, //sC.name, because no scrolling used
+         //sC.name, because no scrolling used
     );
     SnippetBuilder snippet2 = SnippetBuilder(
       // panelName: 'demo-buttons',
@@ -134,7 +134,7 @@ class _Page_HomeState extends State<Page_Home> {
       //   name: 'we-create-flutter-apps-and-packages',
       //   child: PlaceholderNode()
       // ),
-      scName: null, //sC.name, because no scrolling used
+       //sC.name, because no scrolling used
     );
 
     int counter = 0;

@@ -12,7 +12,7 @@ abstract class BoxScrollViewNode extends ScrollViewNode with BoxScrollViewNodeMa
   EdgeInsetsValue? padding;
 
   BoxScrollViewNode({
-    super.axis,
+    super.scrolDirection,
     super.shrinkWrap,
     this.padding,
   });

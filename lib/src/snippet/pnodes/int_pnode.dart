@@ -27,7 +27,7 @@ class IntPNode extends PNode {
 
   @override
   Widget toPropertyNodeContents(BuildContext context) {
-    ScrollControllerName? scName = EditablePage.maybeScrollControllerName(context);
+    
     return PropertyButton<int>(
       originalText: intValue != null ? intValue.toString() : '',
       label: super.name,
@@ -38,7 +38,7 @@ class IntPNode extends PNode {
       onChangeF: (s) {
         onIntChange.call(intValue = int.tryParse(s));
       },
-      scName: scName,
+       
     );
   }
 }

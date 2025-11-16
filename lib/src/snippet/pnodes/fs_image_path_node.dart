@@ -23,7 +23,7 @@ class FSImagePathPNode extends PNode {
 
   @override
   Widget toPropertyNodeContents(BuildContext context) {
-    ScrollControllerName? scName = EditablePage.maybeScrollControllerName(context);
+    
     return PropertyButtonFSBrowser(
       label: name,
       tooltip: tooltip,
@@ -33,7 +33,7 @@ class FSImagePathPNode extends PNode {
           onPathChange.call(stringValue = newPath);
         }
       },
-      scName: scName,
+       
       calloutButtonSize: calloutButtonSize,
     );
   }

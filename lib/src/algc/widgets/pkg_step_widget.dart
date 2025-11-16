@@ -12,9 +12,8 @@ class PkgStepWidget extends StatelessWidget {
   final FlowchartM flowchart;
   final StepM step;
   final String fbUID;
-  final ScrollControllerName scName;
 
-  const PkgStepWidget(this.flowchart, this.step, this.fbUID, this.scName, {super.key});
+  const PkgStepWidget(this.flowchart, this.step, this.fbUID, {super.key});
 
   double get extraWidthForFunctionCall =>
       step.isFuncCallStep() ? step.PPP * 2 : 0.0;
@@ -246,13 +245,13 @@ class PkgStepWidget extends StatelessWidget {
                   decorationBorderRadius: 16,
                   decorationBorderColors: ColorOrGradient.color(Colors.grey),
                   elevation: 10,
-                  scrollControllerName: scName,
+                  
                   barrier: CalloutBarrierConfig(
                     opacity: .1,
                     closeOnTapped: true
                   ),
                 ),
-                calloutContent: FlowchartWidget(jsonS, fbUID, scName),
+                calloutContent: FlowchartWidget(jsonS, fbUID),
               );
             }
           }
@@ -276,7 +275,6 @@ class PkgStepWidget extends StatelessWidget {
             step.parentFlowchart,
             step,
             fbUID,
-            scName,
           ))
           .toList();
 //    fco.logger.i(stepWidgets[0].runtimeType.toString());

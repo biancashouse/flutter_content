@@ -221,7 +221,7 @@ class VersionsMenuAnchor extends StatelessWidget {
         // decorationBorderRadius: 12,
         // // arrowType: ArrowTypeEnumModel.THIN_REVERSED,
         // decorationFillColors: ColorOrGradient.color(Colors.white),
-        scrollControllerName: null,
+        
         onDismissedF: () {
           fco.removeKeystrokeHandler("raw-snippet-json");
         },

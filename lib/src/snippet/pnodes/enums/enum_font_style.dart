@@ -24,7 +24,7 @@ enum FontStyleEnum   {
     required SNode snode,
     required String label,
     ValueChanged<int?>? onChangedF,
-    required ScrollControllerName? scName,
+    required 
   }) =>
       PropertyButtonEnum(
         label: label,
@@ -37,7 +37,6 @@ enum FontStyleEnum   {
         wrap: true,
         calloutButtonSize: const Size(120, 30),
         calloutSize: const Size(170, 50),
-        scName: scName,
       );
 
   Widget toMenuItem() => fco.coloredText(name, color: Colors.white);

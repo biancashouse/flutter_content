@@ -135,7 +135,7 @@ class CAPIBloC extends Bloc<CAPIEvent, CAPIState> {
         decorationFillColors: ColorOrGradient.color(Colors.yellow),
         initialCalloutW: fco.scrW * .8,
         initialCalloutH: 40,
-        scrollControllerName: null,
+        
       ),
       calloutContent: Padding(
         padding: const EdgeInsets.all(10),
@@ -243,7 +243,7 @@ class CAPIBloC extends Bloc<CAPIEvent, CAPIState> {
         decorationFillColors: ColorOrGradient.color(Colors.yellow),
         initialCalloutW: fco.scrW * .8,
         initialCalloutH: 40,
-        scrollControllerName: null,
+        
       ),
       calloutContent: Padding(
         padding: const EdgeInsets.all(10),
@@ -342,7 +342,7 @@ class CAPIBloC extends Bloc<CAPIEvent, CAPIState> {
   // otherwise will get duplicate GK etc.
   Future<void> _updateClipboard(
     SNode? newContent,
-    // ScrollControllerName? scName,
+    // 
   ) async {
     fco.appInfo.clipboard = newContent?.clone();
     // possibly hide or show clipbaord tab
@@ -489,7 +489,7 @@ class CAPIBloC extends Bloc<CAPIEvent, CAPIState> {
 
     // fco.afterMsDelayDo(1300, () {
     //   restore scroll offset
-    // NamedScrollController.restoreOffsetTo(event.scName, savedOffset);
+    // NamedScrollController.restoreOffsetTo(event. savedOffset);
     // });
     // } else {
     //   emit(state.copyWith(

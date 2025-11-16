@@ -1,7 +1,8 @@
 import 'dart:async';
+import 'dart:math';
 
 import 'package:flutter/material.dart';
-import 'package:flutter_content/flutter_content.dart';
+import 'package:flutter_callouts/flutter_callouts.dart';
 
 /// it's important to add the mixin, because callouts are animated
 class ScrollingDemo extends StatefulWidget {
@@ -12,10 +13,12 @@ class ScrollingDemo extends StatefulWidget {
 }
 
 class _ScrollingDemoState extends State<ScrollingDemo> {
-  late final NamedScrollController _namedSC;
   final GlobalKey _blueIconGK = GlobalKey();
   final GlobalKey _redIconGK = GlobalKey();
   final GlobalKey _purpleIconGK = GlobalKey();
+  final GlobalKey _pinkContainerGK = GlobalKey();
+  final ScrollController sc = ScrollController();
+
   late CalloutConfig _cc1, _cc2;
 
   // user can change callout properties even when a callout is already shown
@@ -27,28 +30,26 @@ class _ScrollingDemoState extends State<ScrollingDemo> {
   void initState() {
     super.initState();
 
-    _namedSC = NamedScrollController('some-name', Axis.vertical);
-
     // catch scrolling so we can detect whether user has actually tried scrolling
-    _namedSC.addListener(() {
-      if (_namedSC.hasClients && _namedSC.offset > 0) didScroll = true;
+    sc.addListener(() {
+      if (sc.hasClients && sc.offset > 0) didScroll = true;
     });
 
     /// auto show a callout pointing at the FAB
-    fco.afterNextBuildDo(() {
+    fca.afterNextBuildDo(() {
       // namedSC.jumpTo(150.0);
       // showOverlay requires a callout config + callout content + optionally, a target widget globalKey
-      fco.showOverlay(
+      fca.showOverlay(
         calloutConfig: _cc1 = _createGreenCalloutConfig(),
         calloutContent: _createGreenContent(),
         targetGkF: () => _blueIconGK,
       );
-      fco.showOverlay(
+      fca.showOverlay(
         calloutConfig: _cc2 = _createYellowCalloutConfig(),
         calloutContent: _createYellowCalloutContent(),
         targetGkF: () => _redIconGK,
         onReadyF: () {
-          fco.showOverlay(
+          fca.showOverlay(
             calloutConfig: _createOrangeCalloutConfig(),
             calloutContent: _createOrangeCalloutContent(),
             targetGkF: () => _purpleIconGK,
@@ -56,11 +57,53 @@ class _ScrollingDemoState extends State<ScrollingDemo> {
           );
         },
       );
-      fco.showOverlay(
+      fca.showOverlay(
         calloutConfig: _createBlueCalloutConfig(),
         calloutContent: _createBlueContent(),
       );
-      fco.showToast(
+
+      // dotted overlay test
+      fca.afterMsDelayDo(5000, () {
+        var borderRect = calcBorderRect();
+        if (borderRect != null) {
+          fca.showOverlay(
+            skipOnScreenCheck: true,
+            ensureLowestOverlay: true,
+            calloutConfig: CalloutConfig(
+              cId: 'dotted',
+              initialCalloutW: borderRect.width,
+              initialCalloutH: borderRect.height,
+              initialCalloutPos: Offset(borderRect.left, borderRect.top),
+              targetPointerType: TargetPointerType.none(),
+              scrollConfig: (sc,Axis.vertical),
+              followScroll: true,
+              decorationFillColors: ColorOrGradient.color(Colors.white10),
+            ),
+            calloutContent: Container(
+              width: borderRect.width,
+              height: borderRect.height,
+              decoration: DottedDecoration(
+                shape: Shape.box,
+                dash: const <int>[6, 6],
+                borderColor: Colors.black,
+                strokeWidth: 3,
+                fillColor: Colors.transparent,
+              ),
+              child: Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: Text(
+                  'This is a callout with TargetPointerType.none(), '
+                  'with initialCalloutPos set to the Rect of the '
+                      'pink container that it covers.\n\n'
+                  'Notice it follows scroll',
+                ),
+              ),
+            ),
+          );
+        }
+      });
+
+      fca.showToast(
         gravity: Alignment.bottomCenter,
         msg: 'demonstrating dragging, resizing,\nand scrolling with callouts',
         textColor: Colors.white,
@@ -69,9 +112,9 @@ class _ScrollingDemoState extends State<ScrollingDemo> {
         bgColor: Colors.black,
       );
       // if user hasn't scrolled in the next 5 secs, prompt to do so
-      Timer(const Duration(seconds: 5), () {
+      Timer(Duration(seconds: 5), () {
         if (!didScroll) {
-          fco.showToast(
+          fca.showToast(
             gravity: Alignment.center,
             msg: 'scroll to see the callout pointer follow the target',
             textColor: Colors.yellow,
@@ -85,12 +128,12 @@ class _ScrollingDemoState extends State<ScrollingDemo> {
 
   @override
   void dispose() {
-    _namedSC.dispose();
+    sc.dispose();
     super.dispose();
   }
 
   double get fontSize {
-    double result = fco.scrW < 600 ? 12.0 : 24.0;
+    double result = fca.scrW < 600 ? 12.0 : 24.0;
     return result;
   }
 
@@ -127,7 +170,7 @@ class _ScrollingDemoState extends State<ScrollingDemo> {
     // gotitAxis:
     // -- pointer -------------------------------------------------
     // arrowColor: Color.yellow(),
-    targetPointerType: const TargetPointerType.bubble(),
+    targetPointerType: TargetPointerType.bubble(),
     bubbleOrTargetPointerColor: Colors.green[400],
     bubbleBorderRadius: 30,
     // targetPointerColor: Colors.yellow[700]!,
@@ -148,17 +191,17 @@ class _ScrollingDemoState extends State<ScrollingDemo> {
     // draggable: false,
     // draggableColor: Colors.green,
     // dragHandleHeight: ,
-    scrollControllerName: _namedSC.name,
+    scrollConfig: (sc,Axis.vertical),
     followScroll: false,
   );
 
   CalloutConfig _createYellowCalloutConfig() => CalloutConfig(
     cId: 'some-callout-id-2',
     // -- initial pos and animation ---------------------------------
-    initialCalloutAlignment: fco.isAndroid
+    initialCalloutAlignment: fca.isAndroid
         ? Alignment.bottomCenter
         : Alignment.centerRight,
-    initialTargetAlignment: fco.isAndroid
+    initialTargetAlignment: fca.isAndroid
         ? Alignment.topCenter
         : Alignment.centerLeft,
     // initialCalloutPos:
@@ -169,9 +212,9 @@ class _ScrollingDemoState extends State<ScrollingDemo> {
     decorationFillColors: ColorOrGradient.color(Colors.yellow[600]!),
     bubbleOrTargetPointerColor: Colors.yellow[600],
     // elevation: 10,
-    targetPointerType: const TargetPointerType.thin_line(),
+    targetPointerType: TargetPointerType.thin_line(),
     animatePointer: true,
-    scrollControllerName: _namedSC.name,
+    scrollConfig: (sc,Axis.vertical),
     followScroll: false,
     resizeableH: true,
     resizeableV: true,
@@ -186,22 +229,25 @@ class _ScrollingDemoState extends State<ScrollingDemo> {
     initialCalloutW: 240,
     initialCalloutH: 70,
     decorationBorderThickness: 3,
-    decorationFillColors: ColorOrGradient.gradient([Colors.orange[300]!, Colors.deepOrangeAccent]),
+    decorationFillColors: ColorOrGradient.gradient([
+      Colors.orange[300]!,
+      Colors.deepOrangeAccent,
+    ]),
     bubbleOrTargetPointerColor: Colors.orange[600],
     // elevation: 3,
-    targetPointerType: const TargetPointerType.thin_line(),
-    scrollControllerName: _namedSC.name,
+    targetPointerType: TargetPointerType.thin_line(),
+    scrollConfig: (sc,Axis.vertical),
     followScroll: false,
   );
 
   CalloutConfig _createBlueCalloutConfig() => CalloutConfig(
     cId: 'some-callout-id-4',
     // abs pos bottom right of screen
-    initialCalloutPos: Offset(fco.scrW - 350, fco.scrH - 260),
+    initialCalloutPos: Offset(fca.scrW - 350, fca.scrH - 260),
     // initialCalloutW: 300,
     // initialCalloutH: 160,
-    targetPointerType: const TargetPointerType.none(),
-    scrollControllerName: _namedSC.name,
+    targetPointerType: TargetPointerType.none(),
+    scrollConfig: (sc,Axis.vertical),
     followScroll: false,
     resizeableH: true,
     resizeableV: true,
@@ -214,7 +260,7 @@ class _ScrollingDemoState extends State<ScrollingDemo> {
         mainAxisSize: MainAxisSize.min,
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
-          const Text('This is a "bubble" callout\npointing out the blue icon.\n'),
+          Text('This is a "bubble" callout\npointing out the blue icon.\n'),
           SizedBox(
             width: double.infinity,
             child: Row(
@@ -241,20 +287,20 @@ class _ScrollingDemoState extends State<ScrollingDemo> {
   Widget _createBlueContent() => IntrinsicHeight(
     child: Container(
       padding: const EdgeInsets.all(18.0),
-      decoration: const BoxDecoration(
+      decoration: BoxDecoration(
         gradient: LinearGradient(
           colors: [Colors.blue, Colors.black54, Colors.black],
         ),
       ),
-      child: fco.coloredText(
+      child: fca.coloredText(
         'This is a callout with no target pointer.\n'
-            'It is rendered at an Absolute Position\n'
-            'rather than being calculated from\n'
-            ' a Target and Callout Alignment.\n\n'
-            'It\'s still draggable and resizable.\n\n'
-            'BTW - this callout\'s size is actually\n'
-            'measured by the API, whereas the others\n'
-            'have an explicit initialCalloutW and ...H.',
+        'It is rendered at an Absolute Position\n'
+        'rather than being calculated from\n'
+        ' a Target and Callout Alignment.\n\n'
+        'It\'s still draggable and resizable.\n\n'
+        'BTW - this callout\'s size is actually\n'
+        'measured by the API, whereas the others\n'
+        'have an explicit initialCalloutW and ...H.',
         color: Colors.white,
       ),
     ),
@@ -267,8 +313,8 @@ class _ScrollingDemoState extends State<ScrollingDemo> {
         mainAxisSize: MainAxisSize.min,
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
-          const Text('Pointing out the red icon.'),
-          const SizedBox(height: 20.0),
+          Text('Pointing out the red icon.'),
+          SizedBox(height: 20.0),
           Center(
             child: Icon(
               key: _purpleIconGK,
@@ -299,9 +345,9 @@ class _ScrollingDemoState extends State<ScrollingDemo> {
     ),
   );
 
-  Widget _createOrangeCalloutContent() => const IntrinsicHeight(
+  Widget _createOrangeCalloutContent() => IntrinsicHeight(
     child: Padding(
-      padding: EdgeInsets.all(8.0),
+      padding: const EdgeInsets.all(8.0),
       child: Text('Pointing out the purple icon\ninside another callout.\n'),
     ),
   );
@@ -310,7 +356,7 @@ class _ScrollingDemoState extends State<ScrollingDemo> {
     setState(() {
       followScroll1 = !followScroll1;
       _cc1.followScroll = followScroll1;
-      fco.rebuild('some-callout-id-1');
+      fca.rebuild('some-callout-id-1');
     });
   }
 
@@ -318,7 +364,7 @@ class _ScrollingDemoState extends State<ScrollingDemo> {
     setState(() {
       followScroll2 = !followScroll2;
       _cc2.followScroll = followScroll2;
-      fco.rebuild('some-callout-id-2');
+      fca.rebuild('some-callout-id-2');
     });
   }
 
@@ -327,12 +373,12 @@ class _ScrollingDemoState extends State<ScrollingDemo> {
     return PopScope(
       canPop: true,
       onPopInvokedWithResult: (_, _) {
-        fco.dismissAll();
+        fca.dismissAll();
       },
       child: SafeArea(
         child: Scaffold(
           appBar: AppBar(
-            title: const Text(
+            title: Text(
               'flutter_callouts scrolling demo',
               style: TextStyle(fontWeight: FontWeight.bold),
               textScaler: TextScaler.linear(1.4),
@@ -341,7 +387,7 @@ class _ScrollingDemoState extends State<ScrollingDemo> {
           // give it extra height to show how scrolling can work with callouts
           // also notice we pass in the named scroll controller
           body: SingleChildScrollView(
-            controller: _namedSC,
+            controller: sc,
             child: IntrinsicHeight(
               child: Column(
                 children: [
@@ -349,12 +395,12 @@ class _ScrollingDemoState extends State<ScrollingDemo> {
                     padding: const EdgeInsets.all(28.0),
                     child: Text(
                       'All these callouts have been configured to be draggable.\n\n'
-                          'The yellow callout is also resizable, and its arrow animated.\n\n'
-                          'When scrolling your UI, you can have the callout stay in place\n'
-                          'of follow the scroll.\n\n'
-                          'The configuration can be updated in real time. E.g. when you change the\n'
-                          '"followScroll?" checkbox, the scroll behaviour changes.\n\n'
-                          'Try dragging the yellow callout and scrolling the screen...',
+                      'The yellow callout is also resizable, and its arrow animated.\n\n'
+                      'When scrolling your UI, you can have the callout stay in place\n'
+                      'of follow the scroll.\n\n'
+                      'The configuration can be updated in real time. E.g. when you change the\n'
+                      '"followScroll?" checkbox, the scroll behaviour changes.\n\n'
+                      'Try dragging the yellow callout and scrolling the screen...',
                       style: TextStyle(
                         color: Colors.green[900],
                         fontStyle: FontStyle.italic,
@@ -362,7 +408,7 @@ class _ScrollingDemoState extends State<ScrollingDemo> {
                       ),
                     ),
                   ),
-                  const SizedBox(height: 100.0),
+                  SizedBox(height: 100.0),
                   Center(
                     child: Icon(
                       key: _redIconGK,
@@ -370,7 +416,7 @@ class _ScrollingDemoState extends State<ScrollingDemo> {
                       color: Colors.red,
                     ),
                   ),
-                  const SizedBox(height: 100.0),
+                  SizedBox(height: 100.0),
                   Center(
                     child: Icon(
                       key: _blueIconGK,
@@ -378,7 +424,14 @@ class _ScrollingDemoState extends State<ScrollingDemo> {
                       color: Colors.blue,
                     ),
                   ),
-                  SizedBox(height: fco.scrH),
+                  SizedBox(height: 100.0),
+                  Container(
+                    key: _pinkContainerGK,
+                    color: Colors.pink,
+                    width: 300,
+                    height: 1000,
+                  ),
+                  SizedBox(height: 500),
                 ],
               ),
             ),
@@ -397,5 +450,34 @@ class _ScrollingDemoState extends State<ScrollingDemo> {
         ),
       ),
     );
+  }
+
+  Rect? calcBorderRect() {
+    // var gkState = nodeWidgetGK?.currentState;
+    // var gkCtx = nodeWidgetGK?.currentContext;
+    Rect? r = _pinkContainerGK.globalPaintBounds(
+      skipWidthConstraintWarning: true,
+      skipHeightConstraintWarning: true,
+    );
+
+    // in case widget doesn't have a key (e.g. inlinespans)
+    // r ??= (getParent() as SNode?)?.nodeWidgetGK?.globalPaintBounds(
+    //   skipWidthConstraintWarning: true,
+    //   skipHeightConstraintWarning: true,
+    // );
+    if (r != null) {
+      Rect borderRect;
+      // ensure has a width and height
+      if (r.width < 1.0 || r.height < 1.0) {
+        double w = max(r.width, 40);
+        double h = max(r.height, 24);
+        borderRect = Rect.fromLTWH(r.left, r.top, w, h);
+      } else {
+        borderRect = r;
+      }
+
+      return borderRect;
+    }
+    return null;
   }
 }

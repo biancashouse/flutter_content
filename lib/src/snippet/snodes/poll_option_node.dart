@@ -38,7 +38,7 @@ class PollOptionNode extends CL with PollOptionNodeMappable {
 
   @override
   Widget buildFlutterWidget(BuildContext context, SNode? parentNode) {
-    ScrollControllerName? scName = EditablePage.maybeScrollControllerName(context);
+    
     try {
       setParent(parentNode);
     //ScrollControllerName? scName = EditablePage.name(context);
@@ -50,7 +50,7 @@ class PollOptionNode extends CL with PollOptionNodeMappable {
           key: createNodeWidgetGK(),
           optionId: pos.toString(),
           optionWidget: Text(text),
-          scName: scName,
+           
         );
       } else {
         return Error(
@@ -93,16 +93,16 @@ class PollOptionNode extends CL with PollOptionNodeMappable {
   List<Widget> menuAnchorWidgets_WrapWith(BuildContext context,
     NodeAction action,
     bool? skipHeading,
-    ScrollControllerName? scName,
+    
   ) {
     return [
       if (getParent() is! PollNode)
         ...super.menuAnchorWidgets_Heading(context,
           action,
-          scName,
+          
         ),
       if (getParent() is! PollNode)
-        menuItemButton(context, "Poll", PollNode, action, scName),
+        menuItemButton(context, "Poll", PollNode, action),
     ];
   }
 

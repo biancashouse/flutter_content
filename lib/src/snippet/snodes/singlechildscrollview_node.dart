@@ -6,6 +6,7 @@ import 'package:flutter_content/src/snippet/pnodes/edge_insets_pnode.dart';
 import 'package:flutter_content/src/snippet/pnodes/enum_pnode.dart';
 import 'package:flutter_content/src/snippet/pnodes/fyi_pnodes.dart';
 import 'package:flutter_content/src/snippet/pnodes/string_pnode.dart';
+import 'package:freezed_annotation/freezed_annotation.dart';
 
 part 'singlechildscrollview_node.mapper.dart';
 
@@ -15,14 +16,16 @@ class SingleChildScrollViewNode extends SC
   AxisEnum? scrollDirection;
 
   EdgeInsetsValue? padding;
-  ScrollControllerName? scName;
 
   SingleChildScrollViewNode({
     this.scrollDirection,
     this.padding,
-    this.scName,  // if not supplied, creates its own named scroll controller
+      // if not supplied, creates its own named scroll controller
     super.child,
   });
+
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  ScrollController _sc = ScrollController();
 
   @override
   List<PNode> propertyNodes(BuildContext context, SNode? parentSNode) => [
@@ -42,26 +45,7 @@ class SingleChildScrollViewNode extends SC
         () => scrollDirection = AxisEnum.of(newValue) ?? AxisEnum.vertical,
       ),
     ),
-     StringPNode(
-      snode: this,
-      name: 'ScrollController name',
-      stringValue: scName,
-      skipHelperText: true,
-      onStringChange: (newValue) {
-        if (newValue != null) {
-          scName = newValue;
-        } else {
-          if (scName != null) {
-            NamedScrollController.instance(scName!)?.dispose();
-          }
-          scName = null;
-        }
-        refreshWithUpdate(context, () => scName!);
-      },
-      calloutButtonSize: const Size(280, 70),
-      calloutWidth: 400,
-      numLines: 1,
-    ),
+
     PNode /*Group*/ (
       snode: this,
       name: 'padding',
@@ -80,14 +64,6 @@ class SingleChildScrollViewNode extends SC
   @override
   Widget buildFlutterWidget(BuildContext context, SNode? parentNode) {
 
-    Axis axis = scrollDirection?.flutterValue ?? Axis.vertical;
-    // scName is either what the dev specifies, or the node's id
-    if (!NamedScrollController.exists(scName??uid)) {
-      NamedScrollController(scName??uid, axis);
-    }
-
-    ScrollController? sc = NamedScrollController.instance(scName??uid);
-
     try {
       setParent(parentNode);
       //ScrollControllerName? scName = EditablePage.name(context);
@@ -96,8 +72,8 @@ class SingleChildScrollViewNode extends SC
 
       return SingleChildScrollView(
         key: createNodeWidgetGK(),
-        controller: sc,
-        scrollDirection: axis,
+        controller: _sc,
+        scrollDirection: scrollDirection?.flutterValue ?? Axis.vertical,
         // descendants of this view can access it by:
         // ScrollableState? scrollableState = Scrollable.of(context);
         // ScrollController? scrollController = scrollableState?.position.scrollController;

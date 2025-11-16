@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_content/flutter_content.dart';
 import 'package:go_router/go_router.dart';
 
-import 'flutter_callouts_demo/intro_page.dart';
+// import 'flutter_callouts_demo/intro_page.dart';
 import 'page_bh.dart';
 import 'page_home.dart';
 import 'page_row_of_2_panels.dart';
@@ -32,11 +32,11 @@ final webRoutingConfig = RoutingConfig(
           path: 'row-of-2-panels2',
           child: const Page_RowOf2Panels(),
         ),
-        GoRoute(
-          path: 'flutter-callouts-demo',
-          builder: (BuildContext context, GoRouterState state) =>
-          const IntroPage(),
-        ),
+        // TODO GoRoute(
+        //   path: 'flutter-callouts-demo',
+        //   builder: (BuildContext context, GoRouterState state) =>
+        //   const IntroPage(),
+        // ),
         GoRoute(
           path: 'flutter-content-demo',
           builder: (BuildContext context, GoRouterState state) =>

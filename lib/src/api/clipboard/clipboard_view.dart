@@ -10,9 +10,8 @@ const double CLIPBOARD_TAB_W = 200;
 const double CLIPBOARD_TAB_H = 200;
 
 class ClipboardView extends StatelessWidget {
-  final ScrollControllerName? scName;
 
-  const ClipboardView({this.scName, super.key});
+  const ClipboardView({super.key});
 
   @override
   Widget build(BuildContext context) {

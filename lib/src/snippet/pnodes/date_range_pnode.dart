@@ -22,7 +22,7 @@ class DateRangePNode extends PNode {
 
   @override
   Widget toPropertyNodeContents(BuildContext context) {
-    ScrollControllerName? scName = EditablePage.maybeScrollControllerName(context);
+    
     return DateRangeButton(
       from: fromValue,
       until: untilValue,
@@ -31,7 +31,7 @@ class DateRangePNode extends PNode {
         untilValue = range.until;
         onRangeChange.call(range);
       },
-      scName: scName,
+       
     );
   }
 }

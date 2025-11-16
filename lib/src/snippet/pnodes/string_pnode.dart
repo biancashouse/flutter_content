@@ -36,7 +36,7 @@ class StringPNode extends PNode {
 
   @override
   Widget toPropertyNodeContents(BuildContext context) {
-    ScrollControllerName? scName = EditablePage.maybeScrollControllerName(context);
+    
     // fco.logger.i('toPropertyNodeContents');
     return PropertyButton<String>(
       // originalText: (stringValue??'').isNotEmpty
@@ -61,7 +61,7 @@ class StringPNode extends PNode {
         fco.dismiss('te');
         onStringChange(stringValue = s);
       },
-      scName: scName,
+       
     );
   }
 }

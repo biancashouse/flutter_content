@@ -207,13 +207,13 @@ class PositionedNode extends SC with PositionedNodeMappable {
   List<Widget> menuAnchorWidgets_WrapWith(BuildContext context,
     NodeAction action,
     bool? skipHeading,
-    ScrollControllerName? scName,
+    
   ) {
     return [
       if (getParent() is! StackNode)
-        ...super.menuAnchorWidgets_Heading(context, action, scName),
+        ...super.menuAnchorWidgets_Heading(context, action),
       if (getParent() is! StackNode)
-        menuItemButton(context, "Stack", StackNode, action, scName),
+        menuItemButton(context, "Stack", StackNode, action),
     ];
   }
 

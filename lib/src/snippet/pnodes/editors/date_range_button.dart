@@ -19,13 +19,12 @@ class DateRangeButton extends StatefulWidget {
   final int? from;
   final int? until;
   final ValueChanged<DateRange> onChangeF;
-  final ScrollControllerName? scName;
+  
 
   const DateRangeButton({
     this.from,
     this.until,
     required this.onChangeF,
-    required this.scName,
     super.key,
   });
 
@@ -76,7 +75,6 @@ class _DateRangeButtonState extends State<DateRangeButton> {
       initialTargetAlignment: Alignment.topRight,
       initialCalloutAlignment: Alignment.centerLeft,
       finalSeparation: 50,
-      scrollControllerName: widget.scName,
     );
 
     return WrappedCallout(

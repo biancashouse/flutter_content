@@ -223,10 +223,7 @@ class ContainerStyleSearchPNode extends PNode {
 
   @override
   Widget toPropertyNodeContents(BuildContext context) {
-    ScrollControllerName? scName = EditablePage.maybeScrollControllerName(
-      context,
-    );
-    return PropertyButtonContainerStyleNameSearch(
+      return PropertyButtonContainerStyleNameSearch(
       cId: name,
       tooltip: tooltip,
       containerStyle: containerStyleProps,
@@ -241,7 +238,7 @@ class ContainerStyleSearchPNode extends PNode {
         snode.forcePropertyTreeRefresh(context);
       },
       calloutButtonSize: calloutButtonSize,
-      scName: scName,
+       
     );
   }
 }

@@ -18,7 +18,7 @@ class PropertyCalloutButton extends StatelessWidget {
   final Size calloutSize;
   final VoidCallback? onDismissedF;
   // final ValueNotifier<int> notifier;
-  final ScrollControllerName? scName;
+  
 
   const PropertyCalloutButton({
     required this.cId,
@@ -36,7 +36,6 @@ class PropertyCalloutButton extends StatelessWidget {
     this.draggable,
     this.onDismissedF,
     // required this.notifier,
-    required this.scName,
     super.key,
   });
 
@@ -74,7 +73,7 @@ class PropertyCalloutButton extends StatelessWidget {
       resizeableV: false,
       decorationBorderRadius: 16,
       onDismissedF: onDismissedF,
-      scrollControllerName: scName,
+      
     );
 
     // experiment

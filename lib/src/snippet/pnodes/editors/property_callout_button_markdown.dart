@@ -38,7 +38,7 @@ class PropertyButtonMarkdown extends StatelessWidget {
   static void showMarkdownEditor(String originalMarkdown, ValueChanged<String> onChangeF) {
   CalloutConfig teCC = CalloutConfig(
     cId: 'markdown-te',
-    scrollControllerName: null,
+    
     // containsTextField: true,
     barrier: CalloutBarrierConfig(
         opacity: .25,

@@ -20,11 +20,11 @@ void refreshSnippetContentCallout(TargetModel tc) {
 }
 
 /// returning false means user tapped the x
-Future<void> showHotspotSnippetContentCallout({
+Future<void> showHotspotSnippetContentCallout(BuildContext context, {
   required TargetModel tc,
   required bool justPlaying,
   required Rect wrapperRect,
-  ScrollControllerName? scName,
+  
 }) async {
   // possibly transform before showing callout
 
@@ -59,7 +59,7 @@ Future<void> showHotspotSnippetContentCallout({
 
   Widget content() => SnippetBuilder(
     snippetName: tc.contentCId,
-    scName: scName,
+     
     justPlaying: justPlaying,
     tc: tc,
   );
@@ -82,12 +82,18 @@ Future<void> showHotspotSnippetContentCallout({
 
   final snippetBeingEdited = fco.snippetBeingEdited != null;
 
+  var scrollConfig = fco.findAncestorScrollControllerAndDirection(
+    context,
+  );
+  ScrollController? sc = scrollConfig.$1;
+  Axis? scrollDirection = scrollConfig.$2;
+
   Offset initialPosScrollAware =
       OffsetModel.fromOffset(
         tc.getCalloutPos().translate(1 - tc.getScale(), 1 - tc.getScale()),
       ).translate(
-        NamedScrollController.hScrollOffset(scName),
-        NamedScrollController.vScrollOffset(scName),
+        scrollDirection == Axis.horizontal ? sc?.offset ?? 0.0 : 0.0,
+        scrollDirection == Axis.vertical ? sc?.offset ?? 0.0 : 0.0,
       );
 
   fco.showOverlay(
@@ -102,7 +108,7 @@ Future<void> showHotspotSnippetContentCallout({
     ),
     calloutConfig: CalloutConfig(
       cId: tc.contentCId,
-      scrollControllerName: scName,
+      
       // finalSeparation: 50,
       decorationFillColors: tc.calloutFillColors?.getColorOrGradient(),
       decorationShape: tc.calloutDecorationShapeEnum?.decorationShape,

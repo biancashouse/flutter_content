@@ -9,13 +9,13 @@ class MoreCalloutConfigSettings extends StatefulWidget {
   final CalloutConfig cc;
   final TargetModel tc;
   final Rect wrapperRect;
-  final ScrollControllerName? scName;
+  
 
   const MoreCalloutConfigSettings(
     this.cc,
     this.tc,
     this.wrapperRect, {
-    this.scName,
+    
     super.key,
   });
 
@@ -27,7 +27,7 @@ class MoreCalloutConfigSettings extends StatefulWidget {
     CalloutConfig cc,
     TargetModel tc,
     Rect wrapperRect, {
-    ScrollControllerName? scName,
+    
     required bool justPlaying,
   }) {
     GlobalKey? targetGK =
@@ -42,7 +42,7 @@ class MoreCalloutConfigSettings extends StatefulWidget {
         cc,
         tc,
         wrapperRect,
-        scName: scName,
+         
       ),
       calloutConfig: CalloutConfig(
         cId: "more-cc-settings",
@@ -69,7 +69,7 @@ class MoreCalloutConfigSettings extends StatefulWidget {
         decorationBorderRadius: 16,
         targetPointerType: TargetPointerType.none(),
         notUsingHydratedStorage: true,
-        scrollControllerName: scName,
+        
       ),
     );
   }
@@ -114,10 +114,9 @@ class _MoreCalloutConfigSettingsState extends State<MoreCalloutConfigSettings> {
                       tc.calloutBorderRadius = double.tryParse(newValue) ?? 0;
                       tc.changed_saveRootSnippet();
                       fco.dismiss("more-cc-settings");
-                      CalloutConfigToolbar.closeThenReopenContentCallout(
+                      CalloutConfigToolbar.closeThenReopenContentCallout(context,
                         tc,
                         widget.wrapperRect,
-                        widget.scName,
                       );
                     },
                     alignment: Alignment.center,
@@ -146,10 +145,9 @@ class _MoreCalloutConfigSettingsState extends State<MoreCalloutConfigSettings> {
                           double.tryParse(newValue) ?? 0;
                       tc.changed_saveRootSnippet();
                       fco.dismiss("more-cc-settings");
-                      CalloutConfigToolbar.closeThenReopenContentCallout(
+                      CalloutConfigToolbar.closeThenReopenContentCallout(context,
                         tc,
                         widget.wrapperRect,
-                        widget.scName,
                       );
                     },
                     alignment: Alignment.center,
@@ -174,10 +172,9 @@ class _MoreCalloutConfigSettingsState extends State<MoreCalloutConfigSettings> {
                       tc.setCalloutStarPoints(int.tryParse(newValue));
                       tc.changed_saveRootSnippet();
                       fco.dismiss("more-cc-settings");
-                      CalloutConfigToolbar.closeThenReopenContentCallout(
+                      CalloutConfigToolbar.closeThenReopenContentCallout(context,
                         tc,
                         widget.wrapperRect,
-                        widget.scName,
                       );
                     },
                     alignment: Alignment.center,
@@ -200,10 +197,9 @@ class _MoreCalloutConfigSettingsState extends State<MoreCalloutConfigSettings> {
                   tc.canResizeH = newValue;
                   tc.changed_saveRootSnippet();
                   fco.dismiss("more-cc-settings");
-                  CalloutConfigToolbar.closeThenReopenContentCallout(
+                  CalloutConfigToolbar.closeThenReopenContentCallout(context,
                     tc,
                     widget.wrapperRect,
-                    widget.scName,
                   );
                 },
               ),
@@ -221,10 +217,9 @@ class _MoreCalloutConfigSettingsState extends State<MoreCalloutConfigSettings> {
                   tc.canResizeV = newValue;
                   tc.changed_saveRootSnippet();
                   fco.dismiss("more-cc-settings");
-                  CalloutConfigToolbar.closeThenReopenContentCallout(
+                  CalloutConfigToolbar.closeThenReopenContentCallout(context,
                     tc,
                     widget.wrapperRect,
-                    widget.scName,
                   );
                 },
               ),
@@ -242,10 +237,9 @@ class _MoreCalloutConfigSettingsState extends State<MoreCalloutConfigSettings> {
                   tc.followScroll = newValue;
                   tc.changed_saveRootSnippet();
                   fco.dismiss("more-cc-settings");
-                  CalloutConfigToolbar.closeThenReopenContentCallout(
+                  CalloutConfigToolbar.closeThenReopenContentCallout(context,
                     tc,
                     widget.wrapperRect,
-                    widget.scName,
                   );
                 },
               ),

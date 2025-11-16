@@ -83,17 +83,16 @@ class ListViewNodeMapper extends SubClassMapperBase<ListViewNode> {
     _$nodeWidgetGK,
     mode: FieldMode.member,
   );
-  static AxisEnum _$axis(ListViewNode v) => v.axis;
-  static const Field<ListViewNode, AxisEnum> _f$axis = Field(
-    'axis',
-    _$axis,
+  static AxisEnum _$scrolDirection(ListViewNode v) => v.scrolDirection;
+  static const Field<ListViewNode, AxisEnum> _f$scrolDirection = Field(
+    'scrolDirection',
+    _$scrolDirection,
     mode: FieldMode.member,
   );
-  static String? _$scrollControllerName(ListViewNode v) =>
-      v.scrollControllerName;
-  static const Field<ListViewNode, String> _f$scrollControllerName = Field(
-    'scrollControllerName',
-    _$scrollControllerName,
+  static ScrollController _$sc(ListViewNode v) => v.sc;
+  static const Field<ListViewNode, ScrollController> _f$sc = Field(
+    'sc',
+    _$sc,
     mode: FieldMode.member,
   );
 
@@ -109,8 +108,8 @@ class ListViewNodeMapper extends SubClassMapperBase<ListViewNode> {
     #nodeGK: _f$nodeGK,
     #canShowTappableNodeWidgetOverlay: _f$canShowTappableNodeWidgetOverlay,
     #nodeWidgetGK: _f$nodeWidgetGK,
-    #axis: _f$axis,
-    #scrollControllerName: _f$scrollControllerName,
+    #scrolDirection: _f$scrolDirection,
+    #sc: _f$sc,
   };
 
   @override

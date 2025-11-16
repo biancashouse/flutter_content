@@ -21,7 +21,6 @@ class Page_RowOf2Panels extends StatelessWidget {
                   child: AssetImageNode(assetPath: 'assets/images/flowers.jpg'),
                 ),
               ),
-              scName: null,
             ),
           ),
           Expanded(
@@ -35,7 +34,6 @@ class Page_RowOf2Panels extends StatelessWidget {
                   AssetImageNode(assetPath: 'assets/images/indian-chat.jpg'),
                 ]),
               ),
-              scName: null,
             ),
           ),
         ],

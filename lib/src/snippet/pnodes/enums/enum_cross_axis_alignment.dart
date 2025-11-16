@@ -27,7 +27,7 @@ enum CrossAxisAlignmentEnumModel  {
     required SNode snode,
     required String label,
     ValueChanged<int?>? onChangedF,
-    required ScrollControllerName? scName,
+    required 
   }) =>
       PropertyButtonEnum(
         label: label,
@@ -40,7 +40,6 @@ enum CrossAxisAlignmentEnumModel  {
         wrap: true,
         calloutButtonSize: Size(snode is RowNode ? 260 : 200, snode is RowNode ? 70 : 120),
         calloutSize: Size(snode is RowNode ? 140 : 340, snode is RowNode ? 280 : 130),
-        scName: scName,
       );
 
   Widget toMenuItem(bool isRow) {

@@ -7,13 +7,13 @@
 //   final String? originalNamedStyle;
 //   final Color menuBgColor;
 //   final Function(String?) onChangeF;
-//   final ScrollControllerName? scName;
+//   
 //
 //   const PropertyButtonNamedTextStyle({
 //     required this.originalNamedStyle,
 //     required this.menuBgColor,
 //     required this.onChangeF,
-//     required this.scName,
+//     required 
 //     super.key,
 //   });
 //
@@ -40,7 +40,7 @@
 //     );
 //     return PropertyCalloutButton(
 //       cId: 'named-text-style',
-//       scName: widget.scName,
+//       
 //       notifier: ValueNotifier<int>(0),
 //       labelWidget: namedStyleLabel,
 //       calloutButtonSize: const Size(200, 40),

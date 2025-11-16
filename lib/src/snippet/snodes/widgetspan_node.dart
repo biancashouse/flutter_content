@@ -60,11 +60,11 @@ class WidgetSpanNode extends InlineSpanNode with WidgetSpanNodeMappable {
   List<Widget> menuAnchorWidgets_WrapWith(BuildContext context,
     NodeAction action,
     bool? skipHeading,
-    ScrollControllerName? scName,
+    
   ) {
     return [
-      ...super.menuAnchorWidgets_Heading(context, action, scName),
-      menuItemButton(context, "TextSpan", TextSpanNode, action, scName),
+      ...super.menuAnchorWidgets_Heading(context, action),
+      menuItemButton(context, "TextSpan", TextSpanNode, action),
     ];
   }
 

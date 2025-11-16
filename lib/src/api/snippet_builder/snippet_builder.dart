@@ -67,7 +67,7 @@ class SnippetBuilderState extends State<SnippetBuilder>
   Map<String, TabBarNode> tabBars = {};
 
   // will be supplied directly as snippetName arg or supplied via the template
-  String snippetName() => widget.snippetName ?? widget.templateSnippet!.name;
+  String snippetName() => widget.snippetName ?? widget.templateSnippet?.name??'???';
 
   // ZoomerState? get parentTSState => Zoomer.of(context);
 
@@ -161,7 +161,7 @@ class SnippetBuilderState extends State<SnippetBuilder>
     //     //   final selectedNode = state.snippetBeingEdited!.selectedNode;
     //     //     Rect? borderRect = selectedNode!.calcBborderRect();
     //     //     if (borderRect != null) {
-    //     //       selectedNode.showNodeWidgetOverlay(borderRect, scName: widget.scName, followScroll: false);
+    //     //       selectedNode.showNodeWidgetOverlay(borderRect: widget. followScroll: false);
     //     //     }
     //     // }
     //   },

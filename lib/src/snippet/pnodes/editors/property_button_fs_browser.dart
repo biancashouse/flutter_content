@@ -10,7 +10,7 @@ class PropertyButtonFSBrowser extends StatelessWidget {
   final String? originalFSPath;
   final ValueChanged<String?> onChangeF;
   final Size calloutButtonSize;
-  final ScrollControllerName? scName;
+  
 
   const PropertyButtonFSBrowser({
     required this.label,
@@ -18,7 +18,6 @@ class PropertyButtonFSBrowser extends StatelessWidget {
     required this.originalFSPath,
     required this.onChangeF,
     required this.calloutButtonSize,
-    required this.scName,
     super.key,
   });
 
@@ -26,7 +25,6 @@ class PropertyButtonFSBrowser extends StatelessWidget {
   Widget build(BuildContext context) {
     return PropertyCalloutButton(
       cId: 'fs-browser',
-      scName: scName,
       labelWidget:
           Text(originalFSPath == null ? '$label...' : '$originalFSPath...',
               style: const TextStyle(

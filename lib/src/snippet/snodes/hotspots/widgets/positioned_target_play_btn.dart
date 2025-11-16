@@ -6,13 +6,12 @@ class TargetPlayBtn extends StatelessWidget {
   final TargetModel initialTC;
   final int index;
   final Rect wrapperRect;
-  final ScrollControllerName? scName;
 
   const TargetPlayBtn({
     required this.initialTC,
     required this.index,
     required this.wrapperRect,
-    this.scName,
+
     super.key,
   });
 
@@ -26,17 +25,18 @@ class TargetPlayBtn extends StatelessWidget {
     //   }
 
     var snippetBeingEdited = fco.snippetBeingEdited;
-    bool toolbarPresent =
-        fco.anyPresent([CalloutConfigToolbar.CID], includeHidden: true);
+    bool toolbarPresent = fco.anyPresent([
+      CalloutConfigToolbar.CID,
+    ], includeHidden: true);
     bool isVisible = snippetBeingEdited == null && !toolbarPresent;
 
     return Visibility(
       visible: isVisible,
-      child: _draggableSelectTargetBtn(tc),
+      child: _draggableSelectTargetBtn(context, tc),
     );
   }
 
-  Widget _draggableSelectTargetBtn(TargetModel tc) {
+  Widget _draggableSelectTargetBtn(BuildContext context, TargetModel tc) {
     bool preventDrag = fco.anyPresent([CalloutConfigToolbar.CID]);
     return !fco.canEditContent()
         ? GestureDetector(
@@ -45,12 +45,13 @@ class TargetPlayBtn extends StatelessWidget {
               tc.targetsWrapperState()!.widget.parentNode.playList.toList()
                 ..clear()
                 ..add(tc);
-              playTarget(tc, wrapperRect, scName);
+              playTarget(context, tc, wrapperRect);
             },
             child: IntegerCircleAvatar(
               tc,
               num: index + 1,
-              bgColor: tc.calloutFillColors?.color1?.flutterValue??Colors.black,
+              bgColor:
+                  tc.calloutFillColors?.color1?.flutterValue ?? Colors.black,
               //tc.calloutFillColor!.decorationShapeEnum,
               radius: TargetsWrapper.CAPI_TARGET_BTN_RADIUS,
               fontSize: 14,
@@ -65,8 +66,7 @@ class TargetPlayBtn extends StatelessWidget {
                     tc,
                     num: index + 1,
                     bgColor: tc.bgColor(),
-                    radius:
-                    TargetsWrapper.CAPI_TARGET_BTN_RADIUS,
+                    radius: TargetsWrapper.CAPI_TARGET_BTN_RADIUS,
                     fontSize: 14,
                   ),
             // onDragUpdate: (DragUpdateDetails details) {
@@ -130,7 +130,7 @@ class TargetPlayBtn extends StatelessWidget {
                     .playList
                     .toList();
                 playList.add(tc);
-                playTarget(tc, wrapperRect, scName);
+                playTarget(context, tc, wrapperRect);
               },
               // onLongPress: () {
               //   tc.setTargetStackPosPc(
@@ -141,12 +141,10 @@ class TargetPlayBtn extends StatelessWidget {
               onDoubleTap: () {
                 if (fco.snippetBeingEdited != null) return;
                 tc.targetsWrapperState()!.setPlayingOrEditingTc(
-                    tc,
-                    () => TargetsWrapper.configureTarget(
-                          tc,
-                          wrapperRect,
-                          scName,
-                        ));
+                  tc,
+                  () =>
+                      TargetsWrapper.configureTarget(context, tc, wrapperRect),
+                );
               },
               child: IntegerCircleAvatar(
                 tc,
@@ -195,9 +193,9 @@ class TargetPlayBtn extends StatelessWidget {
   // }
 
   static void playTarget(
+    BuildContext context,
     TargetModel tc,
     Rect wrapperRect,
-    ScrollControllerName? scName,
   ) {
     if (tc.targetsWrapperState() == null) return;
 
@@ -211,28 +209,36 @@ class TargetPlayBtn extends StatelessWidget {
     if (targetRect == null) return;
 
     Alignment? ta = fco.calcTargetAlignmentWithinWrapper(
-        wrapperRect: wrapperRect, targetRect: targetRect);
+      wrapperRect: wrapperRect,
+      targetRect: targetRect,
+    );
 
     // IMPORTANT applyTransform will destroy this context, so make state available for afterwards
     var zoomer = tc.targetsWrapperState()!.zoomer;
     // var savedKey = tc.targetsWrapperGK;
 
     tc.targetsWrapperState()!.setPlayingOrEditingTc(tc, () {
-      zoomer?.applyTransform(tc.transformScale, tc.transformScale, ta,
-          afterTransformF: () async {
-        await fco.ensureContentSnippetPresent(tc.contentCId);
-        showHotspotSnippetContentCallout(
-          tc: tc,
-          justPlaying: true,
-          wrapperRect: wrapperRect,
-          scName: scName,
-        );
-        fco.afterMsDelayDo(tc.calloutDurationMs, () {
-          tc.targetsWrapperState()!.zoomer?.resetTransform(afterTransformF: () {
-            tc.targetsWrapperState()!.setPlayingOrEditingTc(null, () {});
+      zoomer?.applyTransform(
+        tc.transformScale,
+        tc.transformScale,
+        ta,
+        afterTransformF: () async {
+          await fco.ensureContentSnippetPresent(tc.contentCId);
+          showHotspotSnippetContentCallout(
+            context,
+            tc: tc,
+            justPlaying: true,
+            wrapperRect: wrapperRect,
+          );
+          fco.afterMsDelayDo(tc.calloutDurationMs, () {
+            tc.targetsWrapperState()!.zoomer?.resetTransform(
+              afterTransformF: () {
+                tc.targetsWrapperState()!.setPlayingOrEditingTc(null, () {});
+              },
+            );
           });
-        });
-      });
+        },
+      );
     });
   }
 }

@@ -61,7 +61,6 @@ class Page_Home extends StatelessWidget {
       //   name: 'we-create-flutter-apps-and-packages',
       //   child: PlaceholderNode()
       // ),
-      scName: null, //sC.name, because no scrolling used
     );
 
     int counter = 0;

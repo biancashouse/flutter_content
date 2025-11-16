@@ -37,7 +37,7 @@ class EnumPNode<T> extends PNode {
 
   @override
   Widget toPropertyNodeContents(BuildContext context) {
-    ScrollControllerName? scName = EditablePage.maybeScrollControllerName(context);
+    
     // just show name for null property value
     // if (value == null) return FCO.coloredText(name, color:Colors.white);
     // SnippetTemplate -------------
@@ -48,7 +48,7 @@ class EnumPNode<T> extends PNode {
     //     enumValueIndex: valueIndex,
     //     onChangedF: (newValueIndex) =>
     //         onIndexChange(valueIndex = newValueIndex),
-    //     scName: scName,
+    //      
     //   );
     // }
     // BoxFit -------------
@@ -59,7 +59,7 @@ class EnumPNode<T> extends PNode {
         enumValueIndex: valueIndex,
         onChangedF: (newValueIndex) =>
             onIndexChange(valueIndex = newValueIndex),
-        scName: scName,
+         
       );
     }
     // Alignment -------------
@@ -70,7 +70,7 @@ class EnumPNode<T> extends PNode {
         enumValueIndex: valueIndex,
         onChangedF: (newValueIndex) =>
             onIndexChange(valueIndex = newValueIndex),
-        scName: scName,
+         
       );
     }
     // Alignment -------------
@@ -81,7 +81,7 @@ class EnumPNode<T> extends PNode {
         enumValueIndex: valueIndex,
         onChangedF: (newValueIndex) =>
             onIndexChange(valueIndex = newValueIndex),
-        scName: scName,
+         
       );
     }
     // ArrowType -------------
@@ -92,7 +92,7 @@ class EnumPNode<T> extends PNode {
         enumValueIndex: valueIndex,
         onChangedF: (newValueIndex) =>
             onIndexChange(valueIndex = newValueIndex),
-        scName: scName,
+         
       );
     }
     // Axis -------------
@@ -122,7 +122,7 @@ class EnumPNode<T> extends PNode {
         enumValueIndex: valueIndex,
         onChangedF: (newValueIndex) =>
             onIndexChange(valueIndex = newValueIndex),
-        scName: scName,
+         
       );
     }
     // MainAxisAlignment -------------
@@ -133,7 +133,7 @@ class EnumPNode<T> extends PNode {
         enumValueIndex: valueIndex,
         onChangedF: (newValueIndex) =>
             onIndexChange(valueIndex = newValueIndex),
-        scName: scName,
+         
       );
     }
     // MainAxisSize -------------
@@ -147,14 +147,14 @@ class EnumPNode<T> extends PNode {
     }
     // CrossAxisAlignment -------------
     if (_sameType<T, CrossAxisAlignmentEnumModel?>()) {
-      ScrollControllerName? scName = EditablePage.maybeScrollControllerName(context);
+      
       return CrossAxisAlignmentEnumModel.propertyNodeContents(
         snode: snode,
         label: name,
         enumValueIndex: valueIndex,
         onChangedF: (newValueIndex) =>
             onIndexChange(valueIndex = newValueIndex),
-        scName: scName,
+         
       );
     }
     // FlexFit -------------
@@ -183,7 +183,7 @@ class EnumPNode<T> extends PNode {
         enumValueIndex: valueIndex,
         onChangedF: (newValueIndex) =>
             onIndexChange(valueIndex = newValueIndex),
-        scName: scName,
+         
       );
     }
     // FontWeight -------------
@@ -194,7 +194,7 @@ class EnumPNode<T> extends PNode {
         enumValueIndex: valueIndex,
         onChangedF: (newValueIndex) =>
             onIndexChange(valueIndex = newValueIndex),
-        scName: scName,
+         
       );
     }
     // Material3 Text Size -------------
@@ -206,7 +206,7 @@ class EnumPNode<T> extends PNode {
         enumValueIndex: valueIndex,
         onChangedF: (newValueIndex) =>
             onIndexChange(valueIndex = newValueIndex),
-        scName: scName,
+         
       );
     }
     // OutlinedBorder -------------
@@ -217,7 +217,7 @@ class EnumPNode<T> extends PNode {
         enumValueIndex: valueIndex,
         onChangedF: (newValueIndex) =>
             onIndexChange(valueIndex = newValueIndex),
-        scName: scName,
+         
       );
     }
     // StackFit -------------
@@ -246,7 +246,7 @@ class EnumPNode<T> extends PNode {
         enumValueIndex: valueIndex,
         onChangedF: (newValueIndex) =>
             onIndexChange(valueIndex = newValueIndex),
-        scName: scName,
+         
       );
     }
     // TextDirection -------------
@@ -266,7 +266,7 @@ class EnumPNode<T> extends PNode {
         enumValueIndex: valueIndex,
         onChangedF: (newValueIndex) =>
             onIndexChange(valueIndex = newValueIndex),
-        scName: scName,
+         
       );
     }
     // T property not implemented yet

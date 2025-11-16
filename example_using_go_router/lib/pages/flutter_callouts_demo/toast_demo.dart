@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_content/flutter_content.dart';
+import 'package:flutter_callouts/flutter_callouts.dart';
 
 class ToastDemoPage extends StatefulWidget {
   const ToastDemoPage({super.key});
@@ -18,7 +18,7 @@ class ToastDemoPageState extends State<ToastDemoPage> {
   void initState() {
     super.initState();
 
-    fco.afterNextBuildDo(() => _showToast(Alignment.topCenter));
+    fca.afterNextBuildDo(() => _showToast(Alignment.topCenter));
   }
 
   void _showToast(Alignment gravity, {int showForMs = 0}) {
@@ -58,12 +58,12 @@ class ToastDemoPageState extends State<ToastDemoPage> {
         break;
     }
 
-    fco.showToastOverlay(
+    fca.showToastOverlay(
       removeAfterMs: showForMs,
       calloutConfig: CalloutConfig(
         cId: 'toast-${gravity.toString()}',
         gravity: gravity,
-        initialCalloutW: fco.isAndroid ? 200 : 500,
+        initialCalloutW: fca.isAndroid ? 200 : 500,
         initialCalloutH: 240,
         decorationFillColors: ColorOrGradient.color(Colors.black),
         showCloseButton: true,
@@ -71,7 +71,7 @@ class ToastDemoPageState extends State<ToastDemoPage> {
         decorationBorderRadius: 16,
         decorationBorderColors: ColorOrGradient.color(Colors.yellow),
         elevation: 10,
-        scrollControllerName: null,
+        scrollConfig: null,
         contentTranslateX: contentTranslateX,
         contentTranslateY: contentTranslateY,
         onDismissedF: () => setState(() => justShowNextDemoButton = true),
@@ -79,8 +79,8 @@ class ToastDemoPageState extends State<ToastDemoPage> {
       calloutContent: Center(
         child: Column(
           children: [
-            const Padding(
-              padding: EdgeInsets.all(18.0),
+            Padding(
+              padding: const EdgeInsets.all(18.0),
               child: Text(
                 'this is a Toast callout, positioned according to the gravity:',
                 style: TextStyle(color: Colors.white),
@@ -101,12 +101,12 @@ class ToastDemoPageState extends State<ToastDemoPage> {
                   style: TextStyle(color: Colors.blueGrey),
                 ),
                 onSelected: (Alignment? newGravity) {
-                  fco.dismissToast(gravity);
+                  fca.dismissToast(gravity);
                   _showToast(
                     selectedGravity = newGravity ?? Alignment.topCenter,
                   );
                 },
-                dropdownMenuEntries: const [
+                dropdownMenuEntries: [
                   DropdownMenuEntry<Alignment>(
                     value: Alignment.topLeft,
                     label: "Alignment.topLeft",
@@ -156,7 +156,7 @@ class ToastDemoPageState extends State<ToastDemoPage> {
   Widget build(BuildContext context) => PopScope(
     canPop: true,
     onPopInvokedWithResult: (_, __) {
-      fco.dismissAll();
+      fca.dismissAll();
     },
     child: SafeArea(
       child: Scaffold(
@@ -167,7 +167,7 @@ class ToastDemoPageState extends State<ToastDemoPage> {
             child: Column(
               children: [
                 if (!justShowNextDemoButton)
-                  const Text(
+                  Text(
                     'This page of the demo shows how you can overlay messages\n(popping on the screen like toast) over your app.\n\n'
                     'Try changing the "Gravity" pulldown...',
                   ),
@@ -177,8 +177,8 @@ class ToastDemoPageState extends State<ToastDemoPage> {
         ),
         bottomSheet: Container(
           color: Colors.black,
-          padding: const EdgeInsets.all(8),
-          child: const Text(
+          padding: EdgeInsets.all(8),
+          child: Text(
             'demonstrating callouts as Toasts',
             style: TextStyle(color: Colors.white),
           ),

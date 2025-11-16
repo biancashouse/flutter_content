@@ -26,16 +26,9 @@ class EditablePage extends StatefulWidget {
   });
 
   // allow a page widget to find its parent EditablePage
-  static EditablePageState? of(BuildContext context) =>
-      context.mounted
-          ? context.findAncestorStateOfType<EditablePageState>()
-          : null;
-
-  static NamedScrollController? maybeScrollController(BuildContext context) =>
-      of(context)?.namedSC;
-
-  static String? maybeScrollControllerName(BuildContext context) =>
-      maybeScrollController(context)?.name;
+  static EditablePageState? of(BuildContext context) => context.mounted
+      ? context.findAncestorStateOfType<EditablePageState>()
+      : null;
 
   // static ScrollController? ancestorSc(BuildContext context, Axis? axis) {
   //   ScrollableState? scrollableState = Scrollable.maybeOf(context, axis: axis);
@@ -49,7 +42,6 @@ class EditablePage extends StatefulWidget {
 /// every EditablePage creates a ScrollController (not necc used)
 class EditablePageState extends State<EditablePage> {
   late MultiSplitViewController msvC;
-  late NamedScrollController namedSC;
 
   // late ScrollController treeViewScrollController;
   final kDividerThickness = 20.0;
@@ -66,11 +58,7 @@ class EditablePageState extends State<EditablePage> {
     super.initState();
 
     msvC = MultiSplitViewController();
-    namedSC = NamedScrollController(
-      widget.routePath,
-      Axis.vertical,
-      keepScrollOffset: true,
-    );
+
     // treeViewScrollController = ScrollController();
 
     // fco.pageGKs[widget.routePath] = widget.key as GlobalKey;
@@ -83,14 +71,18 @@ class EditablePageState extends State<EditablePage> {
     // });
   }
 
-   // also allow for a selected node
-  void _populateNodeBorderRects(CAPIBloC bloc) {
-    if (bloc.state.activeSnippetName == null) return;
+  // also allow for a selected node
+  void populateNodeBorderRects() {
+    if (fco.capiBloc.state.activeSnippetName == null &&
+        fco.capiBloc.aSnippetIsNotBeingEdited())
+      return;
     List<SNode> nodes = [];
     SnippetRootNode? rootNode;
     // not yet editing, show all widget borderRects
     SnippetInfoModel? snippetInfo = SnippetInfoModel.cachedSnippetInfo(
-      bloc.state.activeSnippetName!,
+      fco.capiBloc.state.activeSnippetName != null
+          ? fco.capiBloc.state.activeSnippetName!
+          : fco.capiBloc.state.snippetBeingEdited?.getRootNode().name ?? '???',
     );
     rootNode = snippetInfo?.currentVersionFromCache();
     // traverse node
@@ -101,7 +93,20 @@ class EditablePageState extends State<EditablePage> {
       for (SNode node in nodes) {
         Rect? borderRect = node.calcBorderRect();
         if (borderRect != null) {
-          borderRects.add(NodeRenderData(node: node, rect: borderRect));
+          // adjust rect if inside a MSV area
+          fco.aSnippetIsBeingEdited
+              ? borderRects.add(
+                  NodeRenderData(
+                    node: node,
+                    rect: borderRect.translate(
+                      -sNodeTreeAreaMaxWidth -
+                          pNodeTreeAreaMaxWidth -
+                          kDividerThickness * 2,
+                      0,
+                    ),
+                  ),
+                )
+              : borderRects.add(NodeRenderData(node: node, rect: borderRect));
         }
       }
     }
@@ -148,10 +153,12 @@ class EditablePageState extends State<EditablePage> {
           // }
           return true;
         }
-        if (previous.activeSnippetName != current.activeSnippetName)
+        if (previous.activeSnippetName != current.activeSnippetName) {
           return true;
-        if (previous.snippetBeingEdited != current.snippetBeingEdited)
+        }
+        if (previous.snippetBeingEdited != current.snippetBeingEdited) {
           return true;
+        }
         if (previous.snippetBeingEdited?.selectedNode !=
             current.snippetBeingEdited?.selectedNode) {
           print('new node selection');
@@ -159,7 +166,7 @@ class EditablePageState extends State<EditablePage> {
         }
         if (previous.isSignedIn != current.isSignedIn) return true;
         if (current.onlyTargetsWrappers) return false;
-         return false;
+        return false;
       },
       // bool selectWidgetModeChanged =
       //     previous.snippetNameShowingTappableOverlaysFor !=
@@ -257,9 +264,7 @@ class EditablePageState extends State<EditablePage> {
     }
 
     if (SnippetRootNode.isHotspotCalloutContent(snippetName)) {
-      final cc = fco
-          .findOE(snippetName)
-          ?.calloutConfig;
+      final cc = fco.findOE(snippetName)?.calloutConfig;
       cc?.rebuild(() {
         cc
           ..barrier = null
@@ -270,11 +275,13 @@ class EditablePageState extends State<EditablePage> {
     pushThenShowNamedSnippetWithNodeSelected(rootNode, node);
   }
 
-  void pushThenShowNamedSnippetWithNodeSelected(SnippetRootNode rootNode,
-      SNode selectedNode, {
-        TargetModel? targetBeingConfigured,
-      }) {
-    if (rootNode.child?.nodeWidgetGK?.currentContext == null) {
+  void pushThenShowNamedSnippetWithNodeSelected(
+    SnippetRootNode rootNode,
+    SNode selectedNode, {
+    TargetModel? targetBeingConfigured,
+  }) {
+    var snippetRootContext = rootNode.child?.nodeWidgetGK?.currentContext;
+    if (snippetRootContext == null) {
       fco.showToast(
         msg: "This node is not visible right now",
         bgColor: Colors.white,
@@ -299,7 +306,10 @@ class EditablePageState extends State<EditablePage> {
       }
 
       // point out the selected node widget
-      SNodeWidget.pointOutSelectedNode();
+      var selectedNodeContext = selectedNode.nodeWidgetGK?.currentContext;
+      if (selectedNodeContext != null) {
+        SNodeWidget.pointOutSelectedNode();
+      }
 
       // // point out the selected node in the snippet tree
       // fco.afterMsDelayDo(1000, () {
@@ -322,39 +332,35 @@ class EditablePageState extends State<EditablePage> {
     List<Area> areas = [];
     areas.add(
       Area(
-        builder: (ctx, area) =>
-            LayoutBuilder(
-              builder: (_, BoxConstraints constraints) {
-                sNodeTreeAreaMaxWidth = constraints.maxWidth;
-                return _sNodeTreeArea();
-              },
-            ),
+        builder: (ctx, area) => LayoutBuilder(
+          builder: (_, BoxConstraints constraints) {
+            sNodeTreeAreaMaxWidth = constraints.maxWidth;
+            return _sNodeTreeArea();
+          },
+        ),
         flex: 1,
       ),
     );
     if (fco.capiBloc.state.snippetBeingEdited?.selectedNode?.pTreeC != null) {
       areas.add(
         Area(
-          builder: (ctx, area) =>
-              LayoutBuilder(
-                builder: (_, BoxConstraints constraints) {
-                  pNodeTreeAreaMaxWidth = constraints.maxWidth;
-                  return _propertiesPanel();
-                },
-              ),
+          builder: (ctx, area) => LayoutBuilder(
+            builder: (_, BoxConstraints constraints) {
+              pNodeTreeAreaMaxWidth = constraints.maxWidth;
+              return _propertiesPanel();
+            },
+          ),
           flex: 1,
         ),
       );
     }
     areas.add(
       Area(
-        builder: (ctx, area) =>
-            SnippetBuilder(
-              snippetName: fco.capiBloc.state.snippetBeingEdited
-                  ?.getRootNode()
-                  .name,
-              scName: widget.routePath,
-            ),
+        builder: (ctx, area) => SnippetBuilder(
+          snippetName: fco.capiBloc.state.snippetBeingEdited
+              ?.getRootNode()
+              .name,
+        ),
         flex: 2,
       ),
     );
@@ -395,72 +401,69 @@ class EditablePageState extends State<EditablePage> {
     return Center(child: msvt);
   }
 
-  Widget _snippetWidgetStack(CAPIBloC bloc) =>
-      Stack(
-        children: [
-          if (bloc.showTappableBorderRects())
-            SnippetBuilder(
-              snippetName: bloc.state.activeSnippetName,
-              scName: widget.routePath,
-              onLayoutDone: () {
-                // when SnippetBuilder's FutureBuilder finishes.
-                if (_needsToPopulateRects) {
-                  print('SnippetBuilder.onLayoutDone: Populating rects now.');
-                  // We are already in a post-frame callback, so it's safe to measure.
-                  if (mounted) {
-                    setState(() {
-                      _populateNodeBorderRects(bloc);
-                      _needsToPopulateRects = false;
-                    }); // Trigger rebuild to show the new borders
-                  }
-                }
-              },
-              onScrollF: (ScrollNotification event) {
-                // debouncer.run(() {
+  Widget _snippetWidgetStack(CAPIBloC bloc) => Stack(
+    children: [
+      if (bloc.showTappableBorderRects())
+        SnippetBuilder(
+          snippetName: bloc.state.activeSnippetName,
+          onLayoutDone: () {
+            // when SnippetBuilder's FutureBuilder finishes.
+            if (_needsToPopulateRects) {
+              print('SnippetBuilder.onLayoutDone: Populating rects now.');
+              // We are already in a post-frame callback, so it's safe to measure.
+              if (mounted) {
                 setState(() {
-                  _populateNodeBorderRects(bloc);
-                });
-                // });
-              },
-            ),
-          if (bloc.dontShowTappableBorderRects())
-            DevGrid(
-              showGuides: fco.canEditContent(),
-              horizontalSpacing: 100.0,
-              verticalSpacing: 100.0,
-              lineColor: Colors.red.withAlpha(70),
-              // 0.15 * 255
-              lineThickness: 1.0,
+                  populateNodeBorderRects();
+                  _needsToPopulateRects = false;
+                }); // Trigger rebuild to show the new borders
+              }
+            }
+          },
+          onScrollF: (ScrollNotification event) {
+            // debouncer.run(() {
+            setState(() {
+              populateNodeBorderRects();
+            });
+            // });
+          },
+        ),
+      if (bloc.dontShowTappableBorderRects())
+        DevGrid(
+          showGuides: fco.canEditContent(),
+          horizontalSpacing: 100.0,
+          verticalSpacing: 100.0,
+          lineColor: Colors.red.withAlpha(70),
+          // 0.15 * 255
+          lineThickness: 1.0,
 
-              // Show additional guides
-              // showSafeArea: true,
-              // showRuler: true,
-              marginWidth: 0.0,
-              child: Zoomer(key: zoomerGk, child: widget.child),
-            ),
-          if (bloc.showTappableBorderRects() && borderRects.isNotEmpty)
-            TappableNodeBorders(
-              renderData: borderRects,
-              onNodeTapped: (node) {
-                if (bloc.aSnippetIsBeingEdited()) {
-                  // When a node is tapped, fire the existing SelectNode event
-                  bloc.add(CAPIEvent.selectNode(node: node));
-                } else {
-                  _tappedToEditSnippetAndSelectNode(node);
-                }
-              },
-            ),
-          if (bloc.dontShowTappableBorderRects())
-            Align(
-              alignment: Alignment.topRight,
-              child: Padding(
-                padding: EdgeInsets.only(
-                    right: fco.canEditContent() ? 68 : 8.0),
-                child: fco.NavigationDD(pencilIconColor: Colors.red),
-              ),
-            ),
-        ],
-      );
+          // Show additional guides
+          // showSafeArea: true,
+          // showRuler: true,
+          marginWidth: 0.0,
+          child: Zoomer(key: zoomerGk, child: widget.child),
+        ),
+      if (bloc.showTappableBorderRects() && borderRects.isNotEmpty)
+        TappableNodeBorders(
+          renderData: borderRects,
+          onNodeTapped: (node) {
+            if (bloc.aSnippetIsBeingEdited()) {
+              // When a node is tapped, fire the existing SelectNode event
+              bloc.add(CAPIEvent.selectNode(node: node));
+            } else {
+              _tappedToEditSnippetAndSelectNode(node);
+            }
+          },
+        ),
+      if (bloc.dontShowTappableBorderRects())
+        Align(
+          alignment: Alignment.topRight,
+          child: Padding(
+            padding: EdgeInsets.only(right: fco.canEditContent() ? 68 : 8.0),
+            child: fco.NavigationDD(pencilIconColor: Colors.red),
+          ),
+        ),
+    ],
+  );
 
   // Widget _viewingPageInSelectWidgetMode() {
   //   print('_viewingPageInSelectWidgetMode(${nodeBorderRects.length})');
@@ -614,8 +617,8 @@ class EditablePageState extends State<EditablePage> {
                     icon: Icon(
                       Icons.undo,
                       color:
-                      !snippetInfo
-                          .isFirstVersion() //|| fco.capiBloc.canUndo
+                          !snippetInfo
+                              .isFirstVersion() //|| fco.capiBloc.canUndo
                           ? Colors.white
                           : Colors.white54,
                     ),
@@ -633,8 +636,8 @@ class EditablePageState extends State<EditablePage> {
                     icon: Icon(
                       Icons.redo,
                       color:
-                      !snippetInfo
-                          .isLatestVersion() //|| fco.capiBloc.canRedo
+                          !snippetInfo
+                              .isLatestVersion() //|| fco.capiBloc.canRedo
                           ? Colors.white
                           : Colors.white54,
                     ),
@@ -727,33 +730,33 @@ class EditablePageState extends State<EditablePage> {
         return !showingProperties || propertiesPaneSC == null
             ? const Offstage()
             : Scaffold(
-          appBar: AppBar(
-            backgroundColor: Colors.purple,
-            title: fco.coloredText(
-              "Properties (selected node)",
-              color: Colors.white,
-            ),
-          ),
-          body: Material(
-            color: Colors.blue[50],
-            child: Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: InteractiveViewer(
-                transformationController: fco.propertiesTreeTC,
-                alignment: Alignment.topLeft,
-                constrained: false,
-                child: SizedBox(
-                  width: pNodeTreeAreaMaxWidth,
-                  height: 1000,
-                  child: PropertiesTreeView(
-                    treeC: pTreeC!,
-                    sNode: state.snippetBeingEdited!.selectedNode!,
+                appBar: AppBar(
+                  backgroundColor: Colors.purple,
+                  title: fco.coloredText(
+                    "Properties (selected node)",
+                    color: Colors.white,
                   ),
                 ),
-              ),
-            ),
-          ),
-        );
+                body: Material(
+                  color: Colors.blue[50],
+                  child: Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: InteractiveViewer(
+                      transformationController: fco.propertiesTreeTC,
+                      alignment: Alignment.topLeft,
+                      constrained: false,
+                      child: SizedBox(
+                        width: pNodeTreeAreaMaxWidth,
+                        height: 1000,
+                        child: PropertiesTreeView(
+                          treeC: pTreeC!,
+                          sNode: state.snippetBeingEdited!.selectedNode!,
+                        ),
+                      ),
+                    ),
+                  ),
+                ),
+              );
       },
     );
   }
@@ -778,7 +781,7 @@ class EditablePageState extends State<EditablePage> {
   //             node.showTappableNodeWidgetOverlay(
   //               context,
   //               // whiteBarrier: overlayWithABarrier,
-  //               scName: widget.routePath,
+  //               routePath,
   //             );
   //           }
   //         }
@@ -850,7 +853,7 @@ class EditablePageState extends State<EditablePage> {
   //           node.showNonTappableNodeWidgetOverlay(
   //             // selected: false,
   //             borderRect: r,
-  //             scName: widget.routePath,
+  //             routePath,
   //           );
   //         }
   //       }
@@ -945,7 +948,7 @@ class EditablePageState extends State<EditablePage> {
                   children: [
                     TextSpan(
                       text:
-                      'If you\'d like to see how editing works in an\n'
+                          'If you\'d like to see how editing works in an\n'
                           'app built with our ',
                       style: TextStyle(fontWeight: FontWeight.normal),
                     ),
@@ -955,7 +958,7 @@ class EditablePageState extends State<EditablePage> {
                     ),
                     TextSpan(
                       text:
-                      ' package,\nuse password "GUEST".\n'
+                          ' package,\nuse password "GUEST".\n'
                           'Any changes you make will be discarded when\n'
                           'you leave this browser tab, or sign out.',
                       style: TextStyle(fontWeight: FontWeight.normal),
@@ -983,7 +986,6 @@ class EditablePageState extends State<EditablePage> {
         // decorationBorderRadius: 12,
         // // arrowType: ArrowTypeEnumModel.THIN_REVERSED,
         // decorationFillColors: ColorOrGradient.color(Colors.white),
-        scrollControllerName: widget.routePath,
         onDismissedF: () {
           fco.removeKeystrokeHandler(cid_EditorPassword);
         },
@@ -1099,7 +1101,6 @@ class EditablePageState extends State<EditablePage> {
         initialCalloutH: 180,
         decorationBorderRadius: 12,
         decorationFillColors: ColorOrGradient.color(Colors.white),
-        scrollControllerName: widget.routePath,
         onDismissedF: () {
           fco.removeKeystrokeHandler(cid_editablePageName);
         },
@@ -1108,9 +1109,11 @@ class EditablePageState extends State<EditablePage> {
     );
   }
 
-  void revertToVersion(VersionId? versionId,
-      SnippetInfoModel snippetInfo,
-      CAPIState state,) {
+  void revertToVersion(
+    VersionId? versionId,
+    SnippetInfoModel snippetInfo,
+    CAPIState state,
+  ) {
     if (versionId == null) return;
     fco.capiBloc.add(
       CAPIEvent.revertSnippet(
@@ -1169,12 +1172,10 @@ class SelectionCutoutPainter extends CustomPainter {
       ..style = PaintingStyle.fill;
 
     // 2. Create the cutout path
-    final cutoutPath = Path()
-      ..addRect(cutoutRect);
+    final cutoutPath = Path()..addRect(cutoutRect);
 
     // 3. Create the full canvas path
-    final fullCanvasPath = Path()
-      ..addRect(Offset.zero & size);
+    final fullCanvasPath = Path()..addRect(Offset.zero & size);
 
     // 4. Combine the paths using difference
     final combinedPath = Path.combine(

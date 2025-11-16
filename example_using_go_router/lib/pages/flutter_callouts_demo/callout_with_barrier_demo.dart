@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_content/flutter_content.dart';
+import 'package:flutter_callouts/flutter_callouts.dart';
 
 /// it's important to add the mixin, because callouts are animated
 class BarrierDemo extends StatefulWidget {
@@ -22,10 +22,10 @@ class _BarrierDemoState extends State<BarrierDemo> {
     super.initState();
 
     /// auto show a callout pointing at the FAB
-    fco.afterNextBuildDo(() {
+    fca.afterNextBuildDo(() {
       // namedSC.jumpTo(150.0);
       // showOverlay requires a callout config + callout content + optionally, a target widget globalKey
-      fco.showOverlay(
+      fca.showOverlay(
         calloutConfig: _cc = _createFabCalloutConfig(),
         calloutContent: _createFabCalloutContent(),
         targetGkF: () => _gk,
@@ -43,7 +43,7 @@ class _BarrierDemoState extends State<BarrierDemo> {
   /// NOTE - a callout can be updated after it is created by updating properties and rebuilding it.
   CalloutConfig _createFabCalloutConfig() {
     _bc = CalloutBarrierConfig(
-      cutoutPadding: fco.isWeb ? 20 : 10,
+      cutoutPadding: fca.isWeb ? 20 : 10,
       excludeTargetFromBarrier: false,
       roundExclusion: false,
       closeOnTapped: true,
@@ -86,7 +86,7 @@ class _BarrierDemoState extends State<BarrierDemo> {
       // gotitAxis:
       // -- pointer -------------------------------------------------
       // arrowColor: Color.yellow(),
-      targetPointerType: const TargetPointerType.thin_line(),
+      targetPointerType: TargetPointerType.thin_line(),
       animatePointer: true,
       // lineLabel: Text('line label'),
       // fromDelta: -20,
@@ -104,7 +104,7 @@ class _BarrierDemoState extends State<BarrierDemo> {
       // draggable: false,
       // draggableColor: Colors.green,
       // dragHandleHeight: ,
-      scrollControllerName: null,
+      scrollConfig: null,
       // followScroll: false,
       barrier: showBarrier ? _bc : null,
     );
@@ -116,7 +116,7 @@ class _BarrierDemoState extends State<BarrierDemo> {
       mainAxisSize: MainAxisSize.min,
       crossAxisAlignment: CrossAxisAlignment.center,
       children: [
-        const Text('Pointing out the icon widget.\n'),
+        Text('Pointing out the icon widget.\n'),
         SizedBox(
           width: double.infinity,
           child: Row(
@@ -181,7 +181,7 @@ class _BarrierDemoState extends State<BarrierDemo> {
     setState(() {
       showBarrier = !showBarrier;
       _cc.barrier = showBarrier ? _bc : null;
-      fco.rebuild('some-callout-id');
+      fca.rebuild('some-callout-id');
     });
   }
 
@@ -190,7 +190,7 @@ class _BarrierDemoState extends State<BarrierDemo> {
       if (_cc.barrier != null) {
         _cc.barrier!.excludeTargetFromBarrier =
             !_cc.barrier!.excludeTargetFromBarrier;
-        fco.rebuild('some-callout-id');
+        fca.rebuild('some-callout-id');
       }
     });
   }
@@ -199,23 +199,23 @@ class _BarrierDemoState extends State<BarrierDemo> {
     setState(() {
       if (_cc.barrier != null) {
         _cc.barrier!.roundExclusion = !_cc.barrier!.roundExclusion;
-        fco.rebuild('some-callout-id');
+        fca.rebuild('some-callout-id');
       }
     });
   }
 
   @override
   Widget build(BuildContext context) {
-    double fontSize = fco.scrW < 600 ? 12.0 : 18.0;
+    double fontSize = fca.scrW < 600 ? 12.0 : 18.0;
 
     return PopScope(
       canPop: true,
       onPopInvokedWithResult: (_, _) {
-        fco.dismissAll();
+        fca.dismissAll();
       },
       child: Scaffold(
         appBar: AppBar(
-          title: const Text(
+          title: Text(
             'flutter_callouts barrier demo',
             style: TextStyle(fontWeight: FontWeight.bold),
             textScaler: TextScaler.linear(1.4),
@@ -226,7 +226,7 @@ class _BarrierDemoState extends State<BarrierDemo> {
         body: Center(
           child: Column(
             children: [
-              const SizedBox(height: 50),
+              SizedBox(height: 50),
               Text(
                 'A callout can have a barrier underneath.\n\n'
                 'Taps on the barrier can be configured to trigger closing the callout.\n\n'
@@ -240,15 +240,15 @@ class _BarrierDemoState extends State<BarrierDemo> {
                   fontSize: fontSize,
                 ),
               ),
-              const SizedBox(height: 200),
+              SizedBox(height: 200),
               Center(child: Icon(key: _gk, Icons.adb_rounded)),
             ],
           ),
         ),
         bottomSheet: Container(
           color: Colors.black,
-          padding: const EdgeInsets.all(8),
-          child: const Text(
+          padding: EdgeInsets.all(8),
+          child: Text(
             'demonstrating barrier under callout',
             style: TextStyle(color: Colors.white),
           ),

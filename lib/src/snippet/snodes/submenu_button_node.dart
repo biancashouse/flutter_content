@@ -87,15 +87,15 @@ class SubmenuButtonNode extends MC with SubmenuButtonNodeMappable {
   List<Widget> menuAnchorWidgets_WrapWith(BuildContext context,
     NodeAction action,
     bool? skipHeading,
-    ScrollControllerName? scName,
+    
   ) {
     return [
       if (getParent() is! MenuBarNode)
-        ...super.menuAnchorWidgets_Heading(context, action, scName),
+        ...super.menuAnchorWidgets_Heading(context, action),
       if (findNearestAncestor<MenuBarNode>() == null &&
           findNearestAncestor<SubmenuButtonNode>() == null)
-        menuItemButton(context, "MenuBar", MenuBarNode, action, scName),
-      menuItemButton(context, "SubMenu", SubmenuButtonNode, action, scName),
+        menuItemButton(context, "MenuBar", MenuBarNode, action),
+      menuItemButton(context, "SubMenu", SubmenuButtonNode, action),
     ];
   }
 

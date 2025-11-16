@@ -13,14 +13,9 @@ part 'listview_node.mapper.dart';
 
 @MappableClass()
 class ListViewNode extends BoxScrollViewNode with ListViewNodeMappable {
-  String? scrollControllerName; // creates one if not null
   List<SNode> children;
 
   ListViewNode({super.padding, super.shrinkWrap, required this.children});
-
-  @JsonKey(includeFromJson: false, includeToJson: false)
-  // used when a TabBar and TabBarView are used in a snippet's Scaffold
-  ScrollController? _sc;
 
   @override
   List<PNode> propertyNodes(BuildContext context, SNode? parentSNode) => [
@@ -44,31 +39,12 @@ class ListViewNode extends BoxScrollViewNode with ListViewNodeMappable {
         ),
       ],
     ),
-    StringPNode(
-      snode: this,
-      name: 'ScrollController name',
-      stringValue: scrollControllerName,
-      skipHelperText: true,
-      onStringChange: (newValue) {
-        scrollControllerName = newValue;
-        refreshWithUpdate(context, () => scrollControllerName!);
-      },
-      calloutButtonSize: const Size(280, 70),
-      calloutWidth: 400,
-      numLines: 1,
-    ),
-  ];
+    ];
 
   @override
   Widget buildFlutterWidget(BuildContext context, SNode? parentNode) {
-    var scName = EditablePage.maybeScrollControllerName(context);
-    var sc = EditablePage.maybeScrollController(context);
-
     setParent(parentNode);
-    if (true || scrollControllerName != null) {
-      //ScrollControllerName? scName = EditablePage.name(context);
-      //possiblyHighlightSelectedNode(scName);
-      return LayoutBuilder(
+   return LayoutBuilder(
         builder: (context, constraints) {
           if (constraints.maxHeight == double.infinity) {
             return Error(
@@ -85,21 +61,14 @@ class ListViewNode extends BoxScrollViewNode with ListViewNodeMappable {
               .toList();
           return ListView(
             key: createNodeWidgetGK(),
-            controller: sc, //_sc ??= ScrollController(initialScrollOffset: 0.0),
+            controller: sc,
+            shrinkWrap: shrinkWrap??false,
             padding: padding?.toEdgeInsets(),
             children: listViewChildren,
           );
         },
       );
-    } else {
-      return Error(
-        key: createNodeWidgetGK(),
-        FLUTTER_TYPE,
-        color: Colors.red,
-        size: 16,
-        errorMsg: 'You must give the ScrollController a name',
-      );
-    }
+
   }
 
   @override

@@ -11,7 +11,7 @@ mixin PasswordlessMixin {
     TargetKeyFunc? targetGkF,
     required String gcrServerUrl,
     required ValueChanged<String> onSignedInF,
-    required ScrollControllerName? scName,
+    required 
   }) {
     fco.showOverlay(
       targetGkF: targetGkF,
@@ -34,7 +34,7 @@ mixin PasswordlessMixin {
           },
         ),
         notUsingHydratedStorage: true,
-        scrollControllerName: scName,
+        
       ),
     );
   }
@@ -289,7 +289,7 @@ class Step1 extends StatelessWidget {
         decorationFillColors: ColorOrGradient.color(Colors.yellow),
         initialCalloutW: fco.scrW * .8,
         initialCalloutH: 40,
-        scrollControllerName: null,
+        
       ),
       calloutContent: Padding(
           padding: const EdgeInsets.all(10),
@@ -359,7 +359,7 @@ class Step2 extends StatelessWidget {
         decorationFillColors: ColorOrGradient.color(Colors.yellow),
         initialCalloutW: fco.scrW * .8,
         initialCalloutH: 40,
-        scrollControllerName: null,
+        
       ),
       calloutContent: Padding(
           padding: const EdgeInsets.all(10),
@@ -377,7 +377,7 @@ class Step2 extends StatelessWidget {
         decorationFillColors: ColorOrGradient.color(Colors.yellow),
         initialCalloutW: fco.scrW * .8,
         initialCalloutH: 40,
-        scrollControllerName: null,
+        
       ),
       calloutContent: Padding(
           padding: const EdgeInsets.all(10),

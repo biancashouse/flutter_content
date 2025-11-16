@@ -8,13 +8,13 @@
 //   final String? originalName;
 //   final Color? menuBgColor;
 //   final Function(String?) onChangeF;
-//   final ScrollControllerName? scName;
+//   
 //
 //   const PropertyButtonTextStyleName({
 //     required this.originalName,
 //     this.menuBgColor,
 //     required this.onChangeF,
-//     required this.scName,
+//     required 
 //     super.key,
 //   });
 //
@@ -70,7 +70,7 @@
 //       resizeableV: true,
 //       decorationBorderRadius: 16,
 //       onDismissedF: onDismissedF,
-//       scrollControllerName: widget.scName,
+//       scrollControllerName: widget.
 //     );
 //     return Padding(
 //       padding: const EdgeInsets.all(8.0),
@@ -96,7 +96,7 @@
 //       ),
 //       PropertyCalloutButton(
 //         cId: 'named-text-style',
-//         scName: widget.scName,
+//         
 //         notifier: ValueNotifier<int>(0),
 //         labelWidget: namedStyleLabel,
 //         alignment: Alignment.center,
@@ -129,7 +129,7 @@
 //         //           fco.dismiss('te');
 //         //           widget.onChangeF(s);
 //         //         },
-//         //         scName: widget.scName,
+//         //         
 //         //       ),
 //         //       // Column(
 //         //       //     mainAxisAlignment: MainAxisAlignment.spaceEvenly,

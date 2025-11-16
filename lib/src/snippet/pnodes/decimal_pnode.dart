@@ -29,7 +29,7 @@ class DecimalPNode extends PNode {
 
   @override
   Widget toPropertyNodeContents(BuildContext context) {
-    ScrollControllerName? scName = EditablePage.maybeScrollControllerName(context);
+    
     return PropertyButton<double>(
       originalText: decimalValue != null ? decimalValue.toString() : '',
       label: super.name,
@@ -55,7 +55,7 @@ class DecimalPNode extends PNode {
           onDoubleChange.call(decimalValue = double.tryParse(s));
         }
       },
-      scName: scName,
+       
     );
   }
 }

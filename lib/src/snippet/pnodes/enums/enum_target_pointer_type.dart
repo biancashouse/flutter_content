@@ -33,7 +33,7 @@ enum TargetPointerTypeEnum  {
     required SNode snode,
     required String label,
     ValueChanged<int?>? onChangedF,
-    required ScrollControllerName? scName,
+    required 
   }) =>
       PropertyButtonEnum(
         label: label,
@@ -45,7 +45,6 @@ enum TargetPointerTypeEnum  {
         wrap: true,
         calloutButtonSize: const Size(120, 80),
         calloutSize: Size(260, values.length * 50),
-        scName: scName,
       );
 
   Widget toMenuItem() => fco.coloredText(name, color: Colors.white);

@@ -25,10 +25,10 @@ class ScrollViewNodeMapper extends SubClassMapperBase<ScrollViewNode> {
   @override
   final String id = 'ScrollViewNode';
 
-  static AxisEnum _$axis(ScrollViewNode v) => v.axis;
-  static const Field<ScrollViewNode, AxisEnum> _f$axis = Field(
-    'axis',
-    _$axis,
+  static AxisEnum _$scrolDirection(ScrollViewNode v) => v.scrolDirection;
+  static const Field<ScrollViewNode, AxisEnum> _f$scrolDirection = Field(
+    'scrolDirection',
+    _$scrolDirection,
     opt: true,
     def: AxisEnum.vertical,
   );
@@ -82,10 +82,16 @@ class ScrollViewNodeMapper extends SubClassMapperBase<ScrollViewNode> {
     _$nodeWidgetGK,
     mode: FieldMode.member,
   );
+  static ScrollController _$sc(ScrollViewNode v) => v.sc;
+  static const Field<ScrollViewNode, ScrollController> _f$sc = Field(
+    'sc',
+    _$sc,
+    mode: FieldMode.member,
+  );
 
   @override
   final MappableFields<ScrollViewNode> fields = const {
-    #axis: _f$axis,
+    #scrolDirection: _f$scrolDirection,
     #shrinkWrap: _f$shrinkWrap,
     #uid: _f$uid,
     #treeNodeGK: _f$treeNodeGK,
@@ -94,6 +100,7 @@ class ScrollViewNodeMapper extends SubClassMapperBase<ScrollViewNode> {
     #nodeGK: _f$nodeGK,
     #canShowTappableNodeWidgetOverlay: _f$canShowTappableNodeWidgetOverlay,
     #nodeWidgetGK: _f$nodeWidgetGK,
+    #sc: _f$sc,
   };
 
   @override

@@ -30,9 +30,9 @@ class TargetsWrapper extends StatefulWidget {
       context.findAncestorStateOfType<TargetsWrapperState>();
 
   static void configureTarget(
+      BuildContext context,
     TargetModel tc,
-    Rect wrapperRect,
-    ScrollControllerName? scName, {
+    Rect wrapperRect, {
     bool quickly = false,
   }) {
     if (!fco.canEditContent()) return;
@@ -63,34 +63,30 @@ class TargetsWrapper extends StatefulWidget {
         ta,
         afterTransformF: () {
           showHotspotSnippetContentCallout(
+            context,
             tc: tc,
             justPlaying: false,
             wrapperRect: wrapperRect,
-            scName: scName,
           );
-          showConfigToolbar(tc, wrapperRect, scName);
+          showConfigToolbar(tc, wrapperRect);
         },
         quickly: quickly,
       );
     } else {
       showHotspotSnippetContentCallout(
+        context,
         tc: tc,
         justPlaying: false,
         wrapperRect: wrapperRect,
-        scName: scName,
       );
-      showConfigToolbar(tc, wrapperRect, scName);
+      showConfigToolbar(tc, wrapperRect);
     }
   }
 
-  static void showConfigToolbar(
-    TargetModel tc,
-    Rect wrapperRect,
-    ScrollControllerName? scName,
-  ) {
+  static void showConfigToolbar(TargetModel tc, Rect wrapperRect) {
     final cc = CalloutConfig(
       cId: CalloutConfigToolbar.CID,
-      scrollControllerName: null,
+
       decorationFillColors: ColorOrGradient.color(Colors.purpleAccent),
       initialCalloutW: 920,
       initialCalloutH: 80,
@@ -159,9 +155,6 @@ class TargetsWrapperState extends State<TargetsWrapper> {
 
   Offset? pulsingPointPos;
   late GlobalKey pulsingPointGK;
-
-  String? scName(BuildContext context) =>
-      EditablePage.maybeScrollControllerName(context);
 
   // Offset? wrapperPos;
   // Size? _wrapperSize;
@@ -300,6 +293,13 @@ class TargetsWrapperState extends State<TargetsWrapper> {
         // NamedScrollController? sc = scName(context) != null
         //     ? NamedScrollController.instance(scName(context)!)
         //     : null;
+
+        var scrollConfig = fco.findAncestorScrollControllerAndDirection(
+          context,
+        );
+        ScrollController? sc = scrollConfig.$1;
+        Axis? scrollDirection = scrollConfig.$2;
+
         if (foundTc != null && data.$2) {
           foundTc.setBtnStackPosPc(
             details.offset
@@ -308,8 +308,8 @@ class TargetsWrapperState extends State<TargetsWrapper> {
                   TargetsWrapper.CAPI_TARGET_BTN_RADIUS,
                 )
                 .translate(
-                  NamedScrollController.hScrollOffset(scName(context)),
-                  NamedScrollController.vScrollOffset(scName(context)),
+                  scrollDirection == Axis.horizontal ? sc?.offset ?? 0.0 : 0.0,
+                  scrollDirection == Axis.vertical ? sc?.offset ?? 0.0 : 0.0,
                 ),
           );
           foundTc.changed_saveRootSnippet();
@@ -318,8 +318,8 @@ class TargetsWrapperState extends State<TargetsWrapper> {
             details.offset
                 .translate(foundTc.radius, foundTc.radius)
                 .translate(
-                  NamedScrollController.hScrollOffset(scName(context)),
-                  NamedScrollController.vScrollOffset(scName(context)),
+                  scrollDirection == Axis.horizontal ? sc?.offset ?? 0.0 : 0.0,
+                  scrollDirection == Axis.vertical ? sc?.offset ?? 0.0 : 0.0,
                 ),
           );
           foundTc.changed_saveRootSnippet();
@@ -358,7 +358,7 @@ class TargetsWrapperState extends State<TargetsWrapper> {
                   decorationFillColors: ColorOrGradient.color(
                     Colors.purpleAccent.withAlpha(90),
                   ),
-                  scrollControllerName: null,
+
                   showCloseButton: true,
                   closeButtonPos: Offset(10, 10),
                   closeButtonColor: Colors.white,
@@ -383,7 +383,6 @@ class TargetsWrapperState extends State<TargetsWrapper> {
                         details,
                         widget.parentNode,
                         wrapperRect,
-                        scName(context),
                       ),
                     ),
                   );
@@ -429,7 +428,7 @@ class TargetsWrapperState extends State<TargetsWrapper> {
                   tc,
                   _targetIndex(tc),
                   wrapperRect: wrapperRect,
-                  scName: scName(context),
+
                   playing: playingTc == tc,
                 ),
               ),
@@ -441,16 +440,13 @@ class TargetsWrapperState extends State<TargetsWrapper> {
             if (playingTc == null && tc.hasAHotspot())
               Positioned(
                 top:
-                    tc.btnStackPos().dy -
-                    TargetsWrapper.CAPI_TARGET_BTN_RADIUS,
+                    tc.btnStackPos().dy - TargetsWrapper.CAPI_TARGET_BTN_RADIUS,
                 left:
-                    tc.btnStackPos().dx -
-                    TargetsWrapper.CAPI_TARGET_BTN_RADIUS,
+                    tc.btnStackPos().dx - TargetsWrapper.CAPI_TARGET_BTN_RADIUS,
                 child: TargetPlayBtn(
                   initialTC: tc,
                   index: _targetIndex(tc),
                   wrapperRect: wrapperRect,
-                  scName: scName(context),
                 ),
               ),
 
@@ -465,12 +461,11 @@ class TargetsWrapperState extends State<TargetsWrapper> {
                         ..parentTargetsWrapperNode = widget.parentNode,
                       widget.parentNode.targets.length,
                       wrapperRect: wrapperRect,
-                      scName: scName(context),
+
                       playing: false,
                     )
                     .animate(
-                      onPlay: (controller) =>
-                          controller.repeat(reverse: true),
+                      onPlay: (controller) => controller.repeat(reverse: true),
                     )
                     .scale(duration: 500.milliseconds),
           ),
@@ -481,17 +476,16 @@ class TargetsWrapperState extends State<TargetsWrapper> {
   int _targetIndex(TargetModel tc) => widget.parentNode.targets.indexOf(tc);
 
   Widget _childBuild() {
-
     Widget? childWidget;
     if (widget.childNode is AssetImageNode) {
       childWidget = SizeAwareWidget.asset(
         assetPath: (widget.childNode as AssetImageNode).assetPath!,
-          onSizeAvailable: (Size _) {
-            setState(() {
-              measureIWPosAndSize();
-            });
-          },
-        );
+        onSizeAvailable: (Size _) {
+          setState(() {
+            measureIWPosAndSize();
+          });
+        },
+      );
     }
 
     Widget child = IgnorePointer(

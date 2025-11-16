@@ -20,7 +20,7 @@ class ColorOrGradientPNode extends PNode {
 
   @override
   Widget toPropertyNodeContents(BuildContext context) {
-    ScrollControllerName? scName = EditablePage.maybeScrollControllerName(context);
+    
     return Tooltip(
       message: name,
       child: SizedBox(
@@ -53,7 +53,7 @@ class ColorOrGradientPNode extends PNode {
                               ));
                             }
                           },
-                          scName: scName,
+                           
                           calloutButtonSize: const Size(24, 24),
                         );
                       }),
@@ -77,7 +77,7 @@ class ColorOrGradientPNode extends PNode {
                             ));
                           }
                         },
-                        scName: scName,
+                         
                         calloutButtonSize: const Size(24, 24),
                       );
                     },
@@ -102,7 +102,7 @@ class ColorOrGradientPNode extends PNode {
                             ));
                           }
                         },
-                        scName: scName,
+                         
                         calloutButtonSize: const Size(24, 24),
                       );
                     },
@@ -127,7 +127,7 @@ class ColorOrGradientPNode extends PNode {
                             ));
                           }
                         },
-                        scName: scName,
+                         
                         calloutButtonSize: const Size(24, 24),
                       );
                     },
@@ -152,7 +152,7 @@ class ColorOrGradientPNode extends PNode {
                             ));
                           }
                         },
-                        scName: scName,
+                         
                         calloutButtonSize: const Size(24, 24),
                       );
                     },
@@ -177,7 +177,7 @@ class ColorOrGradientPNode extends PNode {
                             ));
                           }
                         },
-                        scName: scName,
+                         
                         calloutButtonSize: const Size(24, 24),
                       );
                     },

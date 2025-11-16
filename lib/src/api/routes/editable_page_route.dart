@@ -38,7 +38,6 @@ class EditablePageRoute extends GoRoute {
                      // provideNamedScrollController: provideNamedScrollController,
                      child: child ?? SnippetBuilder(
                        templateSnippet: SnippetRootNode(name: state.path!, child: PlaceholderNode()),
-                       scName: state.path!,
                      ),
                    );
                  }

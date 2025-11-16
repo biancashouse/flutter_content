@@ -1,12 +1,12 @@
+import 'package:example_using_go_router/pages/flutter_callouts_demo/toast_demo.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_content/flutter_content.dart';
+import 'package:flutter_callouts/flutter_callouts.dart';
 
 import 'callout_following_scroll_demo.dart';
 import 'callout_with_barrier_demo.dart';
 import 'callout_with_pointer_demo.dart';
 import 'decoration_demo.dart';
 import 'iframe_page.dart';
-import 'toast_demo.dart';
 
 class IntroPage extends StatefulWidget {
   const IntroPage({super.key});
@@ -19,7 +19,7 @@ class IntroPage extends StatefulWidget {
 class IntroPageState extends State<IntroPage> {
 
   double get fontSize {
-    double result = fco.scrW < 600 ? 12.0 : 18.0;
+    double result = fca.scrW < 600 ? 12.0 : 18.0;
     return result;
   }
 
@@ -29,13 +29,13 @@ class IntroPageState extends State<IntroPage> {
       body: SingleChildScrollView(
         child: Center(
           child: SizedBox(
-            width: fco.scrW * .6,
-            height: fco.scrH * .95,
+            width: fca.scrW * .6,
+            height: fca.scrH * .95,
             child: Column(
               mainAxisAlignment: MainAxisAlignment.start,
               mainAxisSize: MainAxisSize.max,
               children: [
-                const Text(
+                Text(
                   'Welcome to the flutter_callouts pkg demo\n',
                   style: TextStyle(fontWeight: FontWeight.bold),
                   textScaler: TextScaler.linear(1.4),
@@ -72,38 +72,38 @@ class IntroPageState extends State<IntroPage> {
                       children: [
                         FilledButton(
                           onPressed: () => Navigator.push(context, MaterialPageRoute(builder: (context) => const ScrollingDemo())),
-                          child: const Text('Simple callout demo'),
+                          child: Text('Simple callout demo'),
                         ),
-                        const SizedBox(height: 20),
+                        SizedBox(height: 20),
                         FilledButton(
                           onPressed: () => Navigator.push(context, MaterialPageRoute(builder: (context) => const BarrierDemo())),
-                          child: const Text('Barrier demo'),
+                          child: Text('Barrier demo'),
                         ),
-                        const SizedBox(height: 20),
+                        SizedBox(height: 20),
                         FilledButton(
                           onPressed: () => Navigator.push(context, MaterialPageRoute(builder: (context) => const PointerDemo())),
-                          child: const Text('Target Pointer demo'),
+                          child: Text('Target Pointer demo'),
                         ),
-                        const SizedBox(height: 20),
+                        SizedBox(height: 20),
                         FilledButton(
                           onPressed: () => Navigator.push(context, MaterialPageRoute(builder: (context) => const ToastDemoPage())),
-                          child: const Text('Toasts demo'),
+                          child: Text('Toasts demo'),
                         ),
-                        const SizedBox(height: 20),
+                        SizedBox(height: 20),
                         FilledButton(
                           onPressed: () => Navigator.push(context, MaterialPageRoute(builder: (context) => const IFramePage())),
-                          child: const Text('Iframe demo'),
+                          child: Text('Iframe demo'),
                         ),
-                        const SizedBox(height: 20),
+                        SizedBox(height: 20),
                         FilledButton(
                           onPressed: () => Navigator.push(context, MaterialPageRoute(builder: (context) => const DecorationDemoPage())),
-                          child: const Text('Decoration Shape demo'),
+                          child: Text('Decoration Shape demo'),
                         ),
                       ],
                     ),
                   ),
-                const Spacer(),
-                const Text(
+                Spacer(),
+                Text(
                   "\n\nBTW - We also offer another pkg (flutter_content), "
                       "built on top of this one, "
                       "that extends this API with an accompanying admin UI. It "

@@ -88,7 +88,7 @@ class IconButtonNode extends ButtonNode with IconButtonNodeMappable {
 
   @override
   Widget buildFlutterWidget(BuildContext context, SNode? parentNode) {
-    ScrollControllerName? scName = EditablePage.maybeScrollControllerName(context);
+    
     // ButtonStyle? btnStyle = buttonStyle?.toButtonStyle(context);
     // possible handler
     void Function(BuildContext)? f = onTapHandlerName != null ? fco.namedHandler(onTapHandlerName!) : null;
@@ -101,7 +101,7 @@ class IconButtonNode extends ButtonNode with IconButtonNodeMappable {
     IconButton button = IconButton(
       // if feature specified, must be a callout
       // key: cid != null ? fco.setCalloutGk(cid!, GlobalKey()) : null,
-      onPressed: ()=>onPressed(context, gk, scName),
+      onPressed: ()=>onPressed(context, gk),
       style: btnStyle,
       icon: child?.buildFlutterWidget(context, this) ?? const Icon(Icons.warning, color: Colors.red),
     );

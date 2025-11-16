@@ -47,7 +47,7 @@ enum DecorationShapeEnum {
     required SNode snode,
     required String label,
     ValueChanged<int?>? onChangedF,
-    required ScrollControllerName? scName,
+    required 
   }) => PropertyButtonEnum(
     label: label,
     menuItems: values.map((e) => e.toMenuItem()).toList(),
@@ -58,7 +58,6 @@ enum DecorationShapeEnum {
     wrap: true,
     calloutButtonSize: const Size(150, 40),
     calloutSize: const Size(240, 220),
-    scName: scName,
   );
 
   Widget toMenuItem({bool skipLabel = true}) => SizedBox(

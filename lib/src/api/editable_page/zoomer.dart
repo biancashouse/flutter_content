@@ -5,14 +5,14 @@ import 'package:flutter_content/flutter_content.dart';
 
 class Zoomer extends StatefulWidget {
   final Widget child;
-  final ScrollControllerName? scName;
+  
 
   static const Duration ZOOM_TRANSITION_DURATION_MS = ms500;
   static const Duration ZOOM_IMMEDIATELY = immediate;
 
   const Zoomer({
     required this.child,
-    this.scName,
+    
     super.key,
   }); // : super(key: GlobalKey(debugLabel: "Zoomer"));
 

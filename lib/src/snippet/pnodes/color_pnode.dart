@@ -24,7 +24,7 @@ class ColorPNode extends PNode {
 
   @override
   Widget toPropertyNodeContents(BuildContext context) {
-    ScrollControllerName? scName = EditablePage.maybeScrollControllerName(context);
+    
     return PropertyButtonColor(
       cId: name,
       label: name,
@@ -36,7 +36,7 @@ class ColorPNode extends PNode {
         }
       },
       calloutButtonSize: calloutButtonSize,
-      scName: scName,
+       
     );
   }
 }

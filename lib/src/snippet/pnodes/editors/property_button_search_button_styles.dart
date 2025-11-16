@@ -11,7 +11,7 @@ class PropertyButtonButtonStyleNameSearch extends StatelessWidget {
   final ValueChanged<ButtonStyleProperties> onHoveredF;
   final ValueChanged<ButtonStyleProperties> onChangeF;
   final Size calloutButtonSize;
-  final ScrollControllerName? scName;
+  
 
   const PropertyButtonButtonStyleNameSearch({
     required this.cId,
@@ -20,7 +20,6 @@ class PropertyButtonButtonStyleNameSearch extends StatelessWidget {
     required this.onHoveredF,
     required this.onChangeF,
     required this.calloutButtonSize,
-    required this.scName,
     super.key,
   });
 
@@ -38,7 +37,6 @@ class PropertyButtonButtonStyleNameSearch extends StatelessWidget {
     //     : fco.coloredText('style search...', color: Colors.white);
     return PropertyCalloutButton(
       cId: cId,
-      scName: scName,
       labelWidget: Container(
         padding: const EdgeInsets.symmetric(horizontal: 10.0),
         decoration: BoxDecoration(

@@ -6,10 +6,10 @@ class TargetsWrapperOnTapMenu extends StatelessWidget {
   final TapDownDetails details;
   final TargetsWrapperNode parentNode;
   final Rect wrapperRect;
-  final ScrollControllerName? scName;
+  
 
   const TargetsWrapperOnTapMenu(
-      this.details, this.parentNode, this.wrapperRect, this.scName,
+      this.details, this.parentNode, this.wrapperRect, 
       {super.key});
 
   @override
@@ -33,7 +33,7 @@ class TargetsWrapperOnTapMenu extends StatelessWidget {
               ),
               onPressed: () async {
                 fco.dismissAll();
-                await createTarget(details, true);
+                await createTarget(context, details, true);
               },
               child: Text(
                 'create a Target + Hotspot here',
@@ -56,7 +56,7 @@ class TargetsWrapperOnTapMenu extends StatelessWidget {
 
   static double menuHeight() => 200.0;
 
-  Future<void> createTarget(TapDownDetails details, bool withHotspot) async {
+  Future<void> createTarget(BuildContext context, TapDownDetails details, bool withHotspot) async {
     if (!fco.canEditContent()) return;
     SnippetName? snippetName = parentNode.rootNodeOfSnippet()?.name;
     if (snippetName == null) return;
@@ -65,9 +65,15 @@ class TargetsWrapperOnTapMenu extends StatelessWidget {
     TargetModel newTC = TargetModel(
       uid: newTargetId, //event.wName.hashCode,
     )..parentTargetsWrapperNode = parentNode;
+
+    var scrollConfig = fco.findAncestorScrollControllerAndDirection(context);
+    ScrollController? sc = scrollConfig.$1;
+    Axis? scrollDirection = scrollConfig.$2;
+
+
     Offset newGlobalPos = details.globalPosition.translate(
-      NamedScrollController.hScrollOffset(scName),
-      NamedScrollController.vScrollOffset(scName),
+      scrollDirection == Axis.horizontal ? sc?.offset??0.0 : 0.0,
+      scrollDirection == Axis.vertical ? sc?.offset??0.0 : 0.0,
     );
     newTC.setTargetStackPosPc(
       newGlobalPos,
@@ -97,7 +103,7 @@ class TargetsWrapperOnTapMenu extends StatelessWidget {
 
     if (!withHotspot) {
       fco.afterMsDelayDo(1500, () {
-        TargetPlayBtn.playTarget(newTC, wrapperRect, scName);
+        TargetPlayBtn.playTarget(context, newTC, wrapperRect);
       });
     }
   }

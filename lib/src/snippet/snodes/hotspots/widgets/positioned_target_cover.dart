@@ -7,7 +7,7 @@ class TargetCover extends StatelessWidget {
   final bool playing;
   final int index;
   final Rect wrapperRect;
-  final ScrollControllerName? scName;
+  
   final GlobalKey? gk; // only for pulsingPoint
 
   const TargetCover(
@@ -15,7 +15,7 @@ class TargetCover extends StatelessWidget {
     this.index, {
     this.playing = false,
     required this.wrapperRect,
-    this.scName,
+    
     this.gk,
     super.key,
   });
@@ -30,9 +30,9 @@ class TargetCover extends StatelessWidget {
         ? Draggable<(TargetId, bool)>(
             data: (tc.uid, false),
             feedback:
-                preventDrag ? const Offstage() : _draggableTargetCover(tc),
+                preventDrag ? const Offstage() : _draggableTargetCover(context, tc),
             childWhenDragging: const Offstage(),
-            child: _draggableTargetCover(tc),
+            child: _draggableTargetCover(context, tc),
           )
         : CircleAvatar(
             backgroundColor: const Color.fromRGBO(0, 0, 0, .01),
@@ -41,7 +41,7 @@ class TargetCover extends StatelessWidget {
           );
   }
 
-  Widget _draggableTargetCover(TargetModel tc) {
+  Widget _draggableTargetCover(BuildContext context, TargetModel tc) {
     // fco.logger.i('_draggableTarget');
     double radius = tc.getScale() * tc.radius;
     return Visibility(
@@ -75,17 +75,17 @@ class TargetCover extends StatelessWidget {
               tc.targetsWrapperState()!.widget.parentNode.playList.toList()
                 ..clear()
                 ..add(tc);
-              playTarget(tc, wrapperRect, scName);
+              playTarget(context, tc, wrapperRect);
             }
           },
           onDoubleTap: () async {
             if (fco.snippetBeingEdited != null) return;
             tc.targetsWrapperState()!.setPlayingOrEditingTc(
             tc,
-              ()=>TargetsWrapper.configureTarget(
+              ()=>TargetsWrapper.configureTarget(context,
               tc,
               wrapperRect,
-              scName,
+              
             ),);
           },
           child: Stack(
@@ -127,10 +127,10 @@ class TargetCover extends StatelessWidget {
     );
   }
 
-  static void playTarget(
+  static void playTarget(BuildContext context,
     TargetModel tc,
     Rect wrapperRect,
-    ScrollControllerName? scName,
+    
   ) {
     if (tc.targetsWrapperState() == null) return;
 
@@ -149,11 +149,11 @@ class TargetCover extends StatelessWidget {
     // tc.targetsWrapperState()!.setPlayingOrEditingTc(tc);
 
     fco.ensureContentSnippetPresent(tc.contentCId).then((_) {
-      showHotspotSnippetContentCallout(
+      showHotspotSnippetContentCallout(context,
         tc: tc,
         justPlaying: true,
         wrapperRect: wrapperRect,
-        scName: scName,
+         
       );
     });
   }

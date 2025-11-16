@@ -34,7 +34,7 @@ class _Page_HomeState extends State<Page_Home> {
         decorationFillColors: ColorOrGradient.color(Colors.yellow[700]!),
         targetPointerType: TargetPointerType.bubble(),
         animatePointer: true,
-        scrollControllerName: null,
+        
       );
 
       fco.namedCallbacks['sample-popup'] = (context, gk) => fco.showOverlay(
@@ -114,7 +114,7 @@ class _Page_HomeState extends State<Page_Home> {
       //   name: 'we-create-flutter-apps-and-packages',
       //   child: PlaceholderNode()
       // ),
-      scName: null, //sC.name, because no scrolling used
+       //sC.name, because no scrolling used
     );
 
     int counter = 0;

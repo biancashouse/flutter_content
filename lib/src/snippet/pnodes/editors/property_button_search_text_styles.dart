@@ -10,7 +10,7 @@ class PropertyButtonTextStyleNameSearch extends StatelessWidget {
   final ValueChanged<TextStyleProperties> onHoveredF;
   final ValueChanged<TextStyleProperties> onChangeF;
   final Size calloutButtonSize;
-  final ScrollControllerName? scName;
+  
 
   const PropertyButtonTextStyleNameSearch({
     required this.cId,
@@ -19,7 +19,6 @@ class PropertyButtonTextStyleNameSearch extends StatelessWidget {
     required this.onHoveredF,
     required this.onChangeF,
     required this.calloutButtonSize,
-    required this.scName,
     super.key,
   });
 
@@ -35,7 +34,6 @@ class PropertyButtonTextStyleNameSearch extends StatelessWidget {
     //         ));
     return PropertyCalloutButton(
       cId: cId,
-      scName: scName,
       labelWidget: Container(
         padding: const EdgeInsets.symmetric(horizontal: 10.0),
         decoration: BoxDecoration(

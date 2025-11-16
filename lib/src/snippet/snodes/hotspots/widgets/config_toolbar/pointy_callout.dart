@@ -7,14 +7,14 @@ class PointyTool extends StatefulWidget {
   final CalloutConfig cc;
   final TargetModel tc;
   final Rect wrapperRect;
-  final ScrollControllerName? scName;
+  
   final bool justPlaying;
 
   const PointyTool(
     this.cc,
     this.tc, {
     required this.wrapperRect,
-    this.scName,
+    
     required this.justPlaying,
     super.key,
   });
@@ -26,7 +26,7 @@ class PointyTool extends StatefulWidget {
     CalloutConfig cc,
     TargetModel tc,
     Rect wrapperRect, {
-    ScrollControllerName? scName,
+    
     required bool justPlaying,
   }) {
     GlobalKey? targetGK =
@@ -41,7 +41,7 @@ class PointyTool extends StatefulWidget {
           cc,
           tc,
           wrapperRect: wrapperRect,
-          scName: scName,
+           
           justPlaying: justPlaying,
         ),
         calloutConfig: CalloutConfig(
@@ -58,7 +58,7 @@ class PointyTool extends StatefulWidget {
           decorationBorderRadius: 16,
           targetPointerType: TargetPointerType.none(),
           notUsingHydratedStorage: true,
-          scrollControllerName: scName,
+          
         ));
   }
 
@@ -92,10 +92,9 @@ class _PointyToolState extends State<PointyTool> {
     if (rootNode == null) return;
     final newVersionId = SnippetInfoModel.createNewVersion(rootNode);
     fco.modelRepo.saveSnippetVersion(snippetName: rootNode.name, newVersionId: newVersionId, newVersion: rootNode);
-    CalloutConfigToolbar.closeThenReopenContentCallout(
+    CalloutConfigToolbar.closeThenReopenContentCallout(context,
       tc,
       widget.wrapperRect,
-      widget.scName,
     );
   }
 

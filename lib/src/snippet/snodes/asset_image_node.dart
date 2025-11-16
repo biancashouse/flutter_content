@@ -192,13 +192,13 @@ class AssetImageNode extends CL with AssetImageNodeMappable {
     BuildContext context,
     NodeAction action,
     bool? skipHeading,
-    ScrollControllerName? scName,
+    
   ) {
     return [
-      ...super.menuAnchorWidgets_Heading(context, action, scName),
-      menuItemButton(context, "Carousel", CarouselNode, action, scName),
-      menuItemButton(context, "AspectRatio", AspectRatioNode, action, scName),
-      ...super.menuAnchorWidgets_WrapWith(context, action, true, scName),
+      ...super.menuAnchorWidgets_Heading(context, action),
+      menuItemButton(context, "Carousel", CarouselNode, action),
+      menuItemButton(context, "AspectRatio", AspectRatioNode, action),
+      ...super.menuAnchorWidgets_WrapWith(context, action, true),
     ];
   }
 

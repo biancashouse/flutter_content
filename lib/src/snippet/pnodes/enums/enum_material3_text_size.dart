@@ -33,7 +33,7 @@ enum Material3TextSizeEnum {
     required String label,
     ValueChanged<int?>? onChangedF,
     required ThemeData themeData,
-    required ScrollControllerName? scName,
+    required 
   }) =>
       PropertyButtonEnum(
         label: enumValueIndex != null ? '' : 'Material 3 FontSize',
@@ -46,7 +46,6 @@ enum Material3TextSizeEnum {
         wrap: true,
         calloutButtonSize: const Size(210, 90),
         calloutSize: const Size(275, 800),
-        scName: scName,
       );
 
   TextStyle? materialTextStyle({ThemeData? themeData}) {

@@ -26,7 +26,6 @@ class Page_RowOf2Containers extends StatelessWidget {
                   child: ContainerNode(csPropGroup: ContainerStyleProperties()),
                 ),
               ),
-              scName: null,
             ),
           ),
           Expanded(
@@ -36,7 +35,6 @@ class Page_RowOf2Containers extends StatelessWidget {
                 name: 'container-6',
                 child: CenterNode(),
               ),
-              scName: null,
             ),
           ),
         ],

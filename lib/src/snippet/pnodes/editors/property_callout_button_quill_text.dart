@@ -15,7 +15,7 @@ class PropertyButtonQuillText extends StatelessWidget {
   final Size calloutButtonSize;
   final GlobalKey propertyBtnGK;
   final ValueChanged<String> onChangeF;
-  final ScrollControllerName? scName;
+  
 
   const PropertyButtonQuillText({
     required this.originalDelta,
@@ -23,14 +23,13 @@ class PropertyButtonQuillText extends StatelessWidget {
     required this.calloutButtonSize,
     required this.onChangeF,
     required this.propertyBtnGK,
-    required this.scName,
     super.key,
   });
 
   @override
   Widget build(BuildContext context) {
     return InkWell(
-      onTap: () => showQuillEditor(originalDelta, onChangeF, scName),
+      onTap: () => showQuillEditor(originalDelta, onChangeF),
       child: fco.coloredText(
         'tap here to edit the Quill text',
         color: Colors.white,
@@ -41,13 +40,13 @@ class PropertyButtonQuillText extends StatelessWidget {
   static void showQuillEditor(
     String originalDelta,
     ValueChanged<String> onChangeF,
-    ScrollControllerName? scName,
+    
   ) {
     final QuillController controller = QuillController.basic();
     controller.document = Document.fromJson(jsonDecode(originalDelta));
     CalloutConfig teCC = CalloutConfig(
       cId: 'quill-te',
-      scrollControllerName: scName,
+      
       // containsTextField: true,
       barrier: CalloutBarrierConfig(
         opacity: .25,
@@ -112,7 +111,7 @@ class PropertyButtonQuillText extends StatelessWidget {
                         targetPointerType: TargetPointerType.none(),
                         barrier: CalloutBarrierConfig(opacity: 0.1),
                         notUsingHydratedStorage: true,
-                        scrollControllerName: scName,
+                        
                         onDismissedF: () {},
                       ),
                       calloutContent: ColourPickerTool(
@@ -156,7 +155,7 @@ class PropertyButtonQuillText extends StatelessWidget {
                         targetPointerType: TargetPointerType.none(),
                         barrier: CalloutBarrierConfig(opacity: 0.1),
                         notUsingHydratedStorage: true,
-                        scrollControllerName: scName,
+                        
                       ),
                       calloutContent: ColourPickerTool(
                         originalColor: selectedColor ?? Colors.white,
@@ -187,7 +186,7 @@ class PropertyButtonQuillText extends StatelessWidget {
                             ?.value,
                       );
                     }
-                    showLinkDialog(controller, scName);
+                    showLinkDialog(controller);
                   },
                 ),
               ],
@@ -222,7 +221,7 @@ class PropertyButtonQuillText extends StatelessWidget {
 
   static const cid_linkEditor = 'link-editor';
 
-  static void showLinkDialog(controller, scName) {
+  static void showLinkDialog(controller) {
     fco.registerKeystrokeHandler(cid_linkEditor, (KeyEvent event) {
       if (event.logicalKey == LogicalKeyboardKey.escape) {
         fco.dismiss(cid_linkEditor);
@@ -278,7 +277,7 @@ class PropertyButtonQuillText extends StatelessWidget {
         initialCalloutH: 180,
         decorationBorderRadius: 12,
         decorationFillColors: ColorOrGradient.color(Colors.white),
-        scrollControllerName: scName,
+        
         onDismissedF: () {
           fco.removeKeystrokeHandler(cid_linkEditor);
         },

@@ -43,7 +43,7 @@ class OutlinedButtonNode extends ButtonNode with OutlinedButtonNodeMappable {
 
   @override
   Widget buildFlutterWidget(BuildContext context, SNode? parentNode) {
-    ScrollControllerName? scName = EditablePage.maybeScrollControllerName(context);
+    
     try {
       ButtonStyle? btnStyle = bsPropGroup.toButtonStyle(context, defaultButtonStyle: defaultButtonStyle());
       // possible handler
@@ -60,7 +60,7 @@ class OutlinedButtonNode extends ButtonNode with OutlinedButtonNodeMappable {
             child: OutlinedButton(
               // if feature specified, must be a callout
               // key: cid != null ? fco.setCalloutGk(cid!, GlobalKey()) : null,
-              onPressed: ()=>onPressed(context, gk, scName),
+              onPressed: ()=>onPressed(context, gk),
               onLongPress: () => f?.call(context),
               style: btnStyle,
               child: child?.buildFlutterWidget(context, this),

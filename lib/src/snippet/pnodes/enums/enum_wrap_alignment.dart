@@ -27,7 +27,7 @@ enum WrapAlignmentEnumModel {
     required SNode snode,
     required String label,
     ValueChanged<int?>? onChangedF,
-    required ScrollControllerName? scName,
+    required 
   }) =>
       PropertyButtonEnum(
         label: label,
@@ -39,7 +39,6 @@ enum WrapAlignmentEnumModel {
         wrap: true,
         calloutButtonSize: const Size(260, 60),
         calloutSize: const Size(140, 380),
-        scName: scName,
       );
 
   List<Widget> allItems(w) => values.map((e) => e.toMenuItem()).toList();

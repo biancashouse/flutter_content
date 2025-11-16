@@ -16,7 +16,7 @@ class PropertyButton<T> extends StatelessWidget {
   final bool skipHelperText;
   final GlobalKey propertyBtnGK;
   final ValueChanged<String> onChangeF;
-  final ScrollControllerName? scName;
+  
 
   const PropertyButton({
     required this.originalText,
@@ -31,7 +31,6 @@ class PropertyButton<T> extends StatelessWidget {
     this.skipHelperText = false,
     required this.onChangeF,
     required this.propertyBtnGK,
-    required this.scName,
     super.key,
   });
 
@@ -66,7 +65,7 @@ class PropertyButton<T> extends StatelessWidget {
                     : '$label...';
             CalloutConfig teCC = CalloutConfig(
               cId: 'te',
-              scrollControllerName: scName,
+              
               // containsTextField: true,
               barrier: CalloutBarrierConfig(
                   opacity: .25,
@@ -192,7 +191,7 @@ class PropertyButton<T> extends StatelessWidget {
     //     .toList();
     var matchesMenuCC = CalloutConfig(
       cId: 'matches',
-      scrollControllerName: scName,
+      
       initialCalloutW: 240,
       initialCalloutH: 160,
       targetPointerType: TargetPointerType.none()  ,

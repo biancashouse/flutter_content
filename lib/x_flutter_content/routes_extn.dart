@@ -127,7 +127,7 @@ extension RoutesExtension on FlutterContentMixins {
         //     child: SnippetPanel.fromSnippet(
         //       panelName: "dynamic panel",
         //       snippetName: snippetName,
-        //       scName: null,
+        //       
         //       key: ValueKey<String>(snippetName),
         //     ),
         //   );

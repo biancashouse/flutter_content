@@ -13,7 +13,7 @@ class CustomScrollViewNode extends ScrollViewNode with CustomScrollViewNodeMappa
 
   CustomScrollViewNode({
     required this.slivers,
-    super.axis,
+    super.scrolDirection,
     super.shrinkWrap,
   });
 
@@ -45,16 +45,16 @@ class CustomScrollViewNode extends ScrollViewNode with CustomScrollViewNodeMappa
       BuildContext context,
       NodeAction action,
       bool? skipHeading,
-      ScrollControllerName? scName,
+      
       ) {
     return [
       if (!(skipHeading ?? false))
-        ...menuAnchorWidgets_Heading(context, action, scName),
-      menuItemButton(context, "SliverAppBar", SliverAppBarNode, action, scName),
-      menuItemButton(context, "SliverList.list", SliverListListNode, action, scName),
-      menuItemButton(context, "SliverToBoxAdapter", SliverToBoxAdapterNode, action, scName),
-      menuItemButton(context, "SliverResizingHeader", SliverResizingHeaderNode, action, scName),
-      menuItemButton(context, "SliverFloatingHeader", SliverFloatingHeaderNode, action, scName),
+        ...menuAnchorWidgets_Heading(context, action),
+      menuItemButton(context, "SliverAppBar", SliverAppBarNode, action),
+      menuItemButton(context, "SliverList.list", SliverListListNode, action),
+      menuItemButton(context, "SliverToBoxAdapter", SliverToBoxAdapterNode, action),
+      menuItemButton(context, "SliverResizingHeader", SliverResizingHeaderNode, action),
+      menuItemButton(context, "SliverFloatingHeader", SliverFloatingHeaderNode, action),
     ];
   }
 

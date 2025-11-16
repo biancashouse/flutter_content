@@ -4,7 +4,6 @@ import 'package:flutter_content/flutter_content.dart';
 
 import 'numberic_keypad.dart';
 
-
 bool isShowingTargetDurationCallout() => fco.anyPresent(["duration"]);
 
 void removeTargetDurationCallout() {
@@ -14,53 +13,56 @@ void removeTargetDurationCallout() {
   }
 }
 
-Future<void> showTargetDurationCallout(
-  final TargetModel tc, {
-  final ScrollControllerName? scName,
-}) async {
+Future<void> showTargetDurationCallout(final TargetModel tc) async {
   GlobalKey? targetGK =
-  // tc.single
-  //     ? FCO.getSingleTargetGk(tc.wName)
-  //     :
-  fco.getTargetGk(tc.uid);
+      // tc.single
+      //     ? FCO.getSingleTargetGk(tc.wName)
+      //     :
+      fco.getTargetGk(tc.uid);
 
   fco.showOverlay(
-      targetGkF: () => targetGK,
-      calloutContent: NumericKeypad(
-            label: 'onscreen duration (ms)',
-            initialValue: tc.calloutDurationMs.toString(),
-            onClosedF: (s) {
-              tc.calloutDurationMs = int.tryParse(s)??0;
-              SnippetRootNode? rootNode = tc.parentTargetsWrapperNode?.rootNodeOfSnippet();
-              if (rootNode == null) return;
-              final newVersionId = SnippetInfoModel.createNewVersion(rootNode);
-              fco.modelRepo.saveSnippetVersion(snippetName: rootNode.name, newVersionId: newVersionId, newVersion: rootNode);
-              fco.dismiss("duration");
-            },
-          ),
-      calloutConfig: CalloutConfig(
-        cId: "duration",
-        scrollControllerName: scName,
-        initialTargetAlignment: Alignment.centerRight,
-        initialCalloutAlignment: Alignment.centerLeft,
-        finalSeparation: 30,
-        barrier: CalloutBarrierConfig(
-          opacity: 0.1,
-          onTappedF: () async {
-            removeTargetDurationCallout();
-          },
-        ),
-        targetPointerType: TargetPointerType.bubble()  ,
-        initialCalloutW: 400,
-        initialCalloutH: 450,
-        draggable: true,
-        decorationFillColors: ColorOrGradient.color(Colors.purpleAccent),
-        // showCloseButton: true,
-        // onTopRightButtonPressF: () {
-        //   fco.logger.i("closed");
-        // },
-        // closeButtonColor: Colors.white,
-        scaleTarget: tc.transformScale,
-        notUsingHydratedStorage: true,
-      ));
+    targetGkF: () => targetGK,
+    calloutContent: NumericKeypad(
+      label: 'onscreen duration (ms)',
+      initialValue: tc.calloutDurationMs.toString(),
+      onClosedF: (s) {
+        tc.calloutDurationMs = int.tryParse(s) ?? 0;
+        SnippetRootNode? rootNode = tc.parentTargetsWrapperNode
+            ?.rootNodeOfSnippet();
+        if (rootNode == null) return;
+        final newVersionId = SnippetInfoModel.createNewVersion(rootNode);
+        fco.modelRepo.saveSnippetVersion(
+          snippetName: rootNode.name,
+          newVersionId: newVersionId,
+          newVersion: rootNode,
+        );
+        fco.dismiss("duration");
+      },
+    ),
+    calloutConfig: CalloutConfig(
+      cId: "duration",
+
+      initialTargetAlignment: Alignment.centerRight,
+      initialCalloutAlignment: Alignment.centerLeft,
+      finalSeparation: 30,
+      barrier: CalloutBarrierConfig(
+        opacity: 0.1,
+        onTappedF: () async {
+          removeTargetDurationCallout();
+        },
+      ),
+      targetPointerType: TargetPointerType.bubble(),
+      initialCalloutW: 400,
+      initialCalloutH: 450,
+      draggable: true,
+      decorationFillColors: ColorOrGradient.color(Colors.purpleAccent),
+      // showCloseButton: true,
+      // onTopRightButtonPressF: () {
+      //   fco.logger.i("closed");
+      // },
+      // closeButtonColor: Colors.white,
+      scaleTarget: tc.transformScale,
+      notUsingHydratedStorage: true,
+    ),
+  );
 }

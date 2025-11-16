@@ -25,7 +25,7 @@ class GridViewNode extends BoxScrollViewNode with GridViewNodeMappable {
     this.crossAxisCount,
     required this.children,
     super.padding,
-    super.axis,
+    super.scrolDirection,
     super.shrinkWrap,
   });
 
@@ -79,7 +79,6 @@ class GridViewNode extends BoxScrollViewNode with GridViewNodeMappable {
   Widget buildFlutterWidget(BuildContext context, SNode? parentNode) {
     try {
       setParent(parentNode);
-      //ScrollControllerName? scName = EditablePage.name(context);
       //possiblyHighlightSelectedNode(scName);
       return LayoutBuilder(
         builder: (context, constraints) {
@@ -94,6 +93,7 @@ class GridViewNode extends BoxScrollViewNode with GridViewNodeMappable {
             "Parent ${toString()} has an infinite 'maxHeight'} Constraints Error!",
           )
               : GridView.count(
+            controller: sc,
             crossAxisCount: crossAxisCount ?? 2,
             mainAxisSpacing: mainAxisSpacing??0.0,
             crossAxisSpacing: crossAxisSpacing??0.0,

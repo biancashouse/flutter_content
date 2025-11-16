@@ -5,6 +5,7 @@ import 'package:flutter_content/src/snippet/pnodes/bool_pnode.dart';
 import 'package:flutter_content/src/snippet/pnodes/enum_pnode.dart';
 import 'package:flutter_content/src/snippet/snodes/custom_scrollview_node.dart';
 import 'package:flutter_content/src/snippet/snodes/pageview_node.dart';
+import 'package:freezed_annotation/freezed_annotation.dart';
 
 import '../pnodes/fyi_pnodes.dart';
 import 'abstract_boxscrollview_node.dart';
@@ -13,13 +14,16 @@ part 'abstract_scrollview_node.mapper.dart';
 
 @MappableClass(discriminatorKey: 'DK:scrollview', includeSubClasses: [BoxScrollViewNode,CustomScrollViewNode])
 abstract class ScrollViewNode extends CL with ScrollViewNodeMappable {
-  AxisEnum axis;
+  AxisEnum scrolDirection;
   bool? shrinkWrap;
 
   ScrollViewNode({
-    this.axis = AxisEnum.vertical,
+    this.scrolDirection = AxisEnum.vertical,
     this.shrinkWrap,
   });
+
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  ScrollController sc = ScrollController();
 
   @override
   List<PNode> propertyNodes(BuildContext context, SNode? parentSNode) => [
@@ -31,11 +35,11 @@ abstract class ScrollViewNode extends CL with ScrollViewNodeMappable {
     ),
     EnumPNode<AxisEnum?>(
       snode: this,
-      name: 'axis',
-      valueIndex: axis.index,
+      name: 'scrolDirection',
+      valueIndex: scrolDirection.index,
       onIndexChange: (newValue) => refreshWithUpdate(
         context,
-        () => axis = AxisEnum.of(newValue) ?? AxisEnum.vertical,
+        () => scrolDirection = AxisEnum.of(newValue) ?? AxisEnum.vertical,
       ),
     ),
     BoolPNode(

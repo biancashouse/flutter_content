@@ -39,7 +39,7 @@
 //     required SNode snode,
 //     required String label,
 //     ValueChanged<int?>? onChangedF,
-//     required ScrollControllerName? scName,
+//     required 
 //   }) =>
 //       PropertyButtonEnum(
 //         label: label,
@@ -51,7 +51,7 @@
 //         wrap: true,
 //         calloutButtonSize: const Size(120, 40),
 //         calloutSize: const Size(240, 200),
-//         scName: scName,
+//          
 //       );
 //
 //   Widget toMenuItem() => Row(

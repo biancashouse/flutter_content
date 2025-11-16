@@ -156,11 +156,11 @@ class PollNode extends MC with PollNodeMappable {
   List<Widget> menuAnchorWidgets_Append(BuildContext context,
     NodeAction action,
     bool? skipHeading,
-    ScrollControllerName? scName,
+    
   ) {
     return [
-      ...super.menuAnchorWidgets_Heading(context, action, scName),
-      menuItemButton(context, "PollOption", PollNode, action, scName),
+      ...super.menuAnchorWidgets_Heading(context, action),
+      menuItemButton(context, "PollOption", PollNode, action),
     ];
   }
 

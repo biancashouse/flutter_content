@@ -9,7 +9,7 @@ class ColourPickerTool extends StatelessWidget {
   final ColorPickedCallback onColorPickedF;
   // final TargetModel tc;
   // final VoidCallback onParentBarrierTappedF;
-  // final ScrollControllerName? scName;
+  // 
   // final bool justPlaying;
 
   const ColourPickerTool({
@@ -17,7 +17,7 @@ class ColourPickerTool extends StatelessWidget {
     required this.originalColor,
     required this.onColorPickedF,
     // this.onParentBarrierTappedF,
-    // this.scName,
+    // 
     // required this.justPlaying,
     super.key,
   });

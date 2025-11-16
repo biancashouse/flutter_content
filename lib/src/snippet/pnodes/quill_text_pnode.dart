@@ -26,7 +26,7 @@ class QuillTextPNode extends PNode {
 
   @override
   Widget toPropertyNodeContents(BuildContext context) {
-    ScrollControllerName? scName = EditablePage.maybeScrollControllerName(context);
+    
     // fco.logger.i('toPropertyNodeContents');
     return PropertyButtonQuillText(
       originalDelta: deltaValue,
@@ -38,7 +38,7 @@ class QuillTextPNode extends PNode {
         fco.dismiss('te');
         onDeltaChange(deltaValue = s);
       },
-      scName: scName,
+       
     );
   }
 }

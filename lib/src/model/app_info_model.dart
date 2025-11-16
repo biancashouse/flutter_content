@@ -49,7 +49,7 @@ class AppInfoModel with AppInfoModelMappable {
         decorationFillColors: ColorOrGradient.color(Colors.transparent),
         decorationBorderRadius: 16,
         targetPointerType: TargetPointerType.none(),
-        scrollControllerName: null,
+        
       ),
     );
   }

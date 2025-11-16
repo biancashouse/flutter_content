@@ -14,7 +14,7 @@ class SNodeWidget extends StatelessWidget {
   final bool onClipboard;
 
   // final bool allowButtonCallouts;
-  final ScrollControllerName? scName;
+  
 
   const SNodeWidget({
     super.key,
@@ -23,7 +23,7 @@ class SNodeWidget extends StatelessWidget {
     required this.entry,
     this.onClipboard = false,
     // this.allowButtonCallouts = false,
-    this.scName,
+    
   });
 
   @override
@@ -85,7 +85,7 @@ class SNodeWidget extends StatelessWidget {
               if (entry.node is QuillTextNode)
                 InkWell(
                   onTap: () {
-                    _tappedNode();
+                    _tappedNode(context);
                     fco.afterNextBuildDo(() {
                       var quillTextNode = entry.node as QuillTextNode;
                       PropertyButtonQuillText.showQuillEditor(
@@ -97,7 +97,7 @@ class SNodeWidget extends StatelessWidget {
                                 quillTextNode.deltaJsonString = newValue ?? '',
                           );
                         },
-                        scName,
+                        
                       );
                     });
                   },
@@ -106,7 +106,7 @@ class SNodeWidget extends StatelessWidget {
               if (entry.node is UMLImageNode)
                 InkWell(
                   onTap: () {
-                    _tappedNode();
+                    _tappedNode(context);
                     fco.afterNextBuildDo(() {
                       var umlImageNode = entry.node as UMLImageNode;
                       final teC = TextEditingController();
@@ -147,7 +147,7 @@ class SNodeWidget extends StatelessWidget {
               if (entry.node is MarkdownNode)
                 InkWell(
                   onTap: () {
-                    _tappedNode();
+                    _tappedNode(context);
                     fco.afterNextBuildDo(() {
                       var markdownNode = entry.node as MarkdownNode;
                       PropertyButtonMarkdown.showMarkdownEditor(
@@ -240,7 +240,7 @@ class SNodeWidget extends StatelessWidget {
               snippet.name,
               snippet,
               // snippet.child ?? snippet,
-              scName: scName,
+               
             );
           }
         },
@@ -253,7 +253,7 @@ class SNodeWidget extends StatelessWidget {
           // ignore taps to named child property
           if (entry.node.isANamedPropertyNode()) return;
 
-          _tappedNode();
+          _tappedNode(context);
         },
         onSecondaryTapUp: fco.isIOS
             ? null
@@ -283,7 +283,7 @@ class SNodeWidget extends StatelessWidget {
     );
   }
 
-  void _tappedNode() {
+  void _tappedNode(BuildContext context) {
     if (onClipboard /* || entry.node is GenericSingleChildNode*/ ) return;
     // if (entry.node is TextSpanNode) {
     //   fco.logger.i('TextSpan cannot be selected (has no key property!)');
@@ -334,6 +334,11 @@ class SNodeWidget extends StatelessWidget {
         // point out the selected node widget
         pointOutSelectedNode();
       });
+
+      // //testing
+      // var epState = EditablePage.of(context);
+      // if (epState == null) return;
+      // epState.populateNodeBorderRects();
     }
 
     // fco.afterNextBuildDo(() {
@@ -353,7 +358,6 @@ class SNodeWidget extends StatelessWidget {
     if (selectedNode == null) return;
     fco.afterMsDelayDo(100, () {
       var cc = selectedNode.nodeWidgetGK!.currentContext;
-      var namedSC = fco.findAncestorNamedScrollController(cc);
       if (cc != null) {
         Scrollable.ensureVisible(
           cc,
@@ -366,7 +370,7 @@ class SNodeWidget extends StatelessWidget {
         // fco.showOverlay(
         //   calloutConfig: CalloutConfig(
         //     cId: 'selected-node',
-        //     scrollControllerName: scName,
+        //     
         //     initialCalloutW: 100,
         //     initialCalloutH: 40,
         //     initialTargetAlignment: Alignment.centerRight,
@@ -388,9 +392,7 @@ class SNodeWidget extends StatelessWidget {
         Rect? borderRect = selectedNode.calcBorderRect();
         if (borderRect != null) {
           selectedNode.showSelectedNonTappableNodeWidgetOverlay(
-            // selected: true,
             borderRect: borderRect,
-            scName: namedSC?.name,
           );
         }
       });
@@ -418,7 +420,7 @@ class SNodeWidget extends StatelessWidget {
     fco.showOverlay(
       calloutConfig: CalloutConfig(
         cId: 'node-actions',
-        scrollControllerName: scName,
+        
         initialCalloutW: 300,
         initialCalloutH:
             node is! NamedSC && node is! NamedMC && node is! NamedPS
@@ -438,7 +440,7 @@ class SNodeWidget extends StatelessWidget {
         ),
         toDelta: -20,
       ),
-      calloutContent: nodeButtons(context, scName, node),
+      calloutContent: nodeButtons(context, node),
       targetGkF: () => node.treeNodeGK,
     );
   }
@@ -527,7 +529,7 @@ class SNodeWidget extends StatelessWidget {
     );
   }
 
-  Widget nodeButtons(BuildContext context, scName, SNode node) {
+  Widget nodeButtons(BuildContext context, SNode node) {
     var gc = node.getParent(); // may be genericchildnode
 
     double trashButtonOpacity =
@@ -664,7 +666,7 @@ class SNodeWidget extends StatelessWidget {
                             fco.dismiss('node-actions');
                           });
                         },
-                        scName: scName,
+                         
                       );
                     },
                     icon: const Icon(Icons.link, color: Colors.blue),

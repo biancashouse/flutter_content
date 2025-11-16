@@ -177,17 +177,17 @@ class SliverAppBarNode extends AppBarNode with SliverAppBarNodeMappable {
     BuildContext context,
     NodeAction action,
     bool? skipHeading,
-    ScrollControllerName? scName,
+    
   ) {
     return [
       if (!(skipHeading ?? false))
-        ...menuAnchorWidgets_Heading(context, action, scName),
+        ...menuAnchorWidgets_Heading(context, action),
       menuItemButton(
         context,
         "FlexibleSpaceBar",
         FlexibleSpaceBarNode,
         action,
-        scName,
+        
       ),
     ];
   }
@@ -197,13 +197,13 @@ class SliverAppBarNode extends AppBarNode with SliverAppBarNodeMappable {
     BuildContext context,
     NodeAction action,
     bool? skipHeading,
-    ScrollControllerName? scName,
+    
   ) {
     return [
       if (getParent() is! ScaffoldNode)
-        ...super.menuAnchorWidgets_Heading(context, action, scName),
+        ...super.menuAnchorWidgets_Heading(context, action),
       if (getParent() is! ScaffoldNode)
-        menuItemButton(context, "Scaffold", ScaffoldNode, action, scName),
+        menuItemButton(context, "Scaffold", ScaffoldNode, action),
     ];
   }
 

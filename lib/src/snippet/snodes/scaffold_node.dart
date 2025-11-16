@@ -109,14 +109,14 @@ class ScaffoldNode extends CL with ScaffoldNodeMappable {
     BuildContext context,
     NodeAction action,
     bool? skipHeading,
-    ScrollControllerName? scName,
+    
   ) {
     return [
-      ...super.menuAnchorWidgets_Heading(context, action, scName),
-      menuItemButton(context, "AppBar", AppBarNode, action, scName),
-      // menuItemButton(context, "AppBar with TabBar", AppBarWithTabBarNode, action, scName),
-      // menuItemButton(context, "AppBar with MenuBar", AppBarWithMenuBarNode, action, scName),
-      // menuItemButton(context, "PollOption", PollOptionNode, action, scName),
+      ...super.menuAnchorWidgets_Heading(context, action),
+      menuItemButton(context, "AppBar", AppBarNode, action),
+      // menuItemButton(context, "AppBar with TabBar", AppBarWithTabBarNode, action),
+      // menuItemButton(context, "AppBar with MenuBar", AppBarWithMenuBarNode, action),
+      // menuItemButton(context, "PollOption", PollOptionNode, action),
     ];
   }
 

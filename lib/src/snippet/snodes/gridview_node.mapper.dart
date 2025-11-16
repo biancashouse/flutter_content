@@ -54,10 +54,10 @@ class GridViewNodeMapper extends SubClassMapperBase<GridViewNode> {
     _$padding,
     opt: true,
   );
-  static AxisEnum _$axis(GridViewNode v) => v.axis;
-  static const Field<GridViewNode, AxisEnum> _f$axis = Field(
-    'axis',
-    _$axis,
+  static AxisEnum _$scrolDirection(GridViewNode v) => v.scrolDirection;
+  static const Field<GridViewNode, AxisEnum> _f$scrolDirection = Field(
+    'scrolDirection',
+    _$scrolDirection,
     opt: true,
     def: AxisEnum.vertical,
   );
@@ -109,6 +109,12 @@ class GridViewNodeMapper extends SubClassMapperBase<GridViewNode> {
     _$nodeWidgetGK,
     mode: FieldMode.member,
   );
+  static ScrollController _$sc(GridViewNode v) => v.sc;
+  static const Field<GridViewNode, ScrollController> _f$sc = Field(
+    'sc',
+    _$sc,
+    mode: FieldMode.member,
+  );
 
   @override
   final MappableFields<GridViewNode> fields = const {
@@ -117,7 +123,7 @@ class GridViewNodeMapper extends SubClassMapperBase<GridViewNode> {
     #crossAxisCount: _f$crossAxisCount,
     #children: _f$children,
     #padding: _f$padding,
-    #axis: _f$axis,
+    #scrolDirection: _f$scrolDirection,
     #shrinkWrap: _f$shrinkWrap,
     #uid: _f$uid,
     #treeNodeGK: _f$treeNodeGK,
@@ -126,6 +132,7 @@ class GridViewNodeMapper extends SubClassMapperBase<GridViewNode> {
     #nodeGK: _f$nodeGK,
     #canShowTappableNodeWidgetOverlay: _f$canShowTappableNodeWidgetOverlay,
     #nodeWidgetGK: _f$nodeWidgetGK,
+    #sc: _f$sc,
   };
 
   @override
@@ -149,7 +156,7 @@ class GridViewNodeMapper extends SubClassMapperBase<GridViewNode> {
       crossAxisCount: data.dec(_f$crossAxisCount),
       children: data.dec(_f$children),
       padding: data.dec(_f$padding),
-      axis: data.dec(_f$axis),
+      scrolDirection: data.dec(_f$scrolDirection),
       shrinkWrap: data.dec(_f$shrinkWrap),
     );
   }
@@ -226,7 +233,7 @@ abstract class GridViewNodeCopyWith<$R, $In extends GridViewNode, $Out>
     int? crossAxisCount,
     List<SNode>? children,
     EdgeInsetsValue? padding,
-    AxisEnum? axis,
+    AxisEnum? scrolDirection,
     bool? shrinkWrap,
   });
   GridViewNodeCopyWith<$R2, $In, $Out2> $chain<$R2, $Out2>(Then<$Out2, $R2> t);
@@ -257,7 +264,7 @@ class _GridViewNodeCopyWithImpl<$R, $Out>
     Object? crossAxisCount = $none,
     List<SNode>? children,
     Object? padding = $none,
-    AxisEnum? axis,
+    AxisEnum? scrolDirection,
     Object? shrinkWrap = $none,
   }) => $apply(
     FieldCopyWithData({
@@ -266,7 +273,7 @@ class _GridViewNodeCopyWithImpl<$R, $Out>
       if (crossAxisCount != $none) #crossAxisCount: crossAxisCount,
       if (children != null) #children: children,
       if (padding != $none) #padding: padding,
-      if (axis != null) #axis: axis,
+      if (scrolDirection != null) #scrolDirection: scrolDirection,
       if (shrinkWrap != $none) #shrinkWrap: shrinkWrap,
     }),
   );
@@ -277,7 +284,7 @@ class _GridViewNodeCopyWithImpl<$R, $Out>
     crossAxisCount: data.get(#crossAxisCount, or: $value.crossAxisCount),
     children: data.get(#children, or: $value.children),
     padding: data.get(#padding, or: $value.padding),
-    axis: data.get(#axis, or: $value.axis),
+    scrolDirection: data.get(#scrolDirection, or: $value.scrolDirection),
     shrinkWrap: data.get(#shrinkWrap, or: $value.shrinkWrap),
   );
 

@@ -26,7 +26,7 @@ class SizePNode extends PNode {
 
   @override
   Widget toPropertyNodeContents(BuildContext context) {
-    ScrollControllerName? scName = EditablePage.maybeScrollControllerName(context);
+    
     return SizedBox(
       width: 200,
       child: Row(
@@ -56,7 +56,7 @@ class SizePNode extends PNode {
                     .call((widthValue = double.tryParse(s), heightValue));
               }
             },
-            scName: scName,
+             
             propertyBtnGK: GlobalKey(debugLabel: 'width'),
           ),
           const SizedBox(width: 40, child: Text('x')),
@@ -85,7 +85,7 @@ class SizePNode extends PNode {
                     .call((widthValue, heightValue = double.tryParse(s)));
               }
             },
-            scName: scName,
+             
             propertyBtnGK: GlobalKey(debugLabel: 'height'),
           ),
         ],

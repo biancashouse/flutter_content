@@ -26,7 +26,7 @@ class OffsetPNode extends PNode {
 
   @override
   Widget toPropertyNodeContents(BuildContext context) {
-    ScrollControllerName? scName = EditablePage.maybeScrollControllerName(context);
+    
     return SizedBox(
       width: 200,
       child: Row(
@@ -57,7 +57,7 @@ class OffsetPNode extends PNode {
                 onOffsetChange.call((topValue = double.tryParse(s), leftValue));
               }
             },
-            scName: scName,
+             
           ),
           const SizedBox(width: 40, child: Text('x')),
           PropertyButton<double>(
@@ -86,7 +86,7 @@ class OffsetPNode extends PNode {
                 onOffsetChange.call((topValue, leftValue = double.tryParse(s)));
               }
             },
-            scName: scName,
+             
           ),
         ],
       ),

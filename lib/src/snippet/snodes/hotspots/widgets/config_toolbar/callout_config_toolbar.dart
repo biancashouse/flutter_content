@@ -19,14 +19,14 @@ class CalloutConfigToolbar extends StatefulWidget {
   final TargetModel tc;
   final Rect wrapperRect;
   final VoidCallback onCloseF;
-  final ScrollControllerName? scName;
+
 
   const CalloutConfigToolbar({
     required this.cc,
     required this.tc,
     required this.wrapperRect,
     required this.onCloseF,
-    this.scName,
+
     super.key,
   });
 
@@ -37,11 +37,9 @@ class CalloutConfigToolbar extends StatefulWidget {
 
   static double CALLOUT_CONFIG_TOOLBAR_H(TargetModel tc) => 60.0;
 
-  static void closeThenReopenContentCallout(
-    TargetModel tc,
-    Rect wrapperRect,
-    ScrollControllerName? scName,
-  ) async {
+  static void closeThenReopenContentCallout(BuildContext context,
+      TargetModel tc,
+      Rect wrapperRect,) async {
     removeSnippetContentCallout(tc, skipOnDismiss: true);
 
     // tc
@@ -52,20 +50,23 @@ class CalloutConfigToolbar extends StatefulWidget {
     // Alignment? ta = fco.calcTargetAlignmentWithinWrapper(
     //     wrapperRect: wrapperRect, targetRect: cc.tR());
 
-    tc.targetsWrapperState()?.zoomer?.zoomImmediately(
+    tc
+        .targetsWrapperState()
+        ?.zoomer
+        ?.zoomImmediately(
       tc.transformScale,
       tc.transformScale,
     );
 
-    showHotspotSnippetContentCallout(
+    showHotspotSnippetContentCallout(context,
       tc: tc,
       justPlaying: false,
       wrapperRect: wrapperRect,
-      scName: scName,
+
     );
 
     fco.dismiss(CalloutConfigToolbar.CID, skipOnDismiss: true);
-    TargetsWrapper.showConfigToolbar(tc, wrapperRect, scName);
+    TargetsWrapper.showConfigToolbar(tc, wrapperRect);
   }
 
   @override
@@ -81,8 +82,11 @@ class CalloutConfigToolbarState extends State<CalloutConfigToolbar> {
   Widget build(BuildContext context) {
     TargetModel tc = widget.tc;
     Size ivSize =
-        tc.targetsWrapperState()?.wrapperRect.size ??
-        MediaQuery.sizeOf(context);
+        tc
+            .targetsWrapperState()
+            ?.wrapperRect
+            .size ??
+            MediaQuery.sizeOf(context);
     return SizedBox(
       width: CalloutConfigToolbar.CALLOUT_CONFIG_TOOLBAR_W(tc),
       height: CalloutConfigToolbar.CALLOUT_CONFIG_TOOLBAR_H(tc),
@@ -116,7 +120,7 @@ class CalloutConfigToolbarState extends State<CalloutConfigToolbar> {
                       //     tc: tc,
                       //     justPlaying: false,
                       //     wrapperRect: widget.wrapperRect,
-                      //     scName: widget.scName,
+                      //     
                       //   );
                       // },
                       onChangeF: (value) {
@@ -164,13 +168,13 @@ class CalloutConfigToolbarState extends State<CalloutConfigToolbar> {
                     //   TargetsWrapper.configureTarget(
                     //     tc,
                     //     widget.wrapperRect,
-                    //     widget.scName,
+                    //     widget.
                     //   );
                     // },
                     onChangeF: (value) {
                       // Cancel previous debounce timer, if any
                       tc.targetsWrapperState()?.refresh(
-                        () => tc.radiusPc = value / ivSize.width,
+                            () => tc.radiusPc = value / ivSize.width,
                       );
                     },
                     min: 16.0,
@@ -194,7 +198,7 @@ class CalloutConfigToolbarState extends State<CalloutConfigToolbar> {
                     alignment: Alignment.center,
                     child: Text(
                       'x: ${tc.targetAlignmentX?.toStringAsFixed(3)},\n'
-                      'y: ${tc.targetAlignmentY?.toStringAsFixed(3)}',
+                          'y: ${tc.targetAlignmentY?.toStringAsFixed(3)}',
                       style: const TextStyle(fontSize: 14, color: Colors.white),
                     ),
                   ),
@@ -233,10 +237,9 @@ class CalloutConfigToolbarState extends State<CalloutConfigToolbar> {
                   //   widget.onParentBarrierTappedF.call();
                   //   fco.refreshOverlay(tc.snippetName, f: () {});
                   fco.dismiss('color-picker');
-                  CalloutConfigToolbar.closeThenReopenContentCallout(
-                    widget.tc,
-                    widget.wrapperRect,
-                    widget.scName,
+                  CalloutConfigToolbar.closeThenReopenContentCallout(context,
+                      widget.tc,
+                      widget.wrapperRect,
                   );
                 },
               );
@@ -269,7 +272,7 @@ class CalloutConfigToolbarState extends State<CalloutConfigToolbar> {
                 tc,
                 widget.wrapperRect,
                 // onBarrierTappedF: onParentBarrierTappedF,
-                scName: widget.scName,
+
                 justPlaying: false,
               );
             },
@@ -288,7 +291,7 @@ class CalloutConfigToolbarState extends State<CalloutConfigToolbar> {
                 fco.dismiss('shape');
                 tc.calloutDecorationShapeEnum =
                     DecorationShapeEnum.of(newIndex) ??
-                    DecorationShapeEnum.rectangle;
+                        DecorationShapeEnum.rectangle;
                 if (tc.calloutDecorationShapeEnum == DecorationShapeEnum.star) {
                   tc.targetPointerTypeEnum = TargetPointerTypeEnum.NONE;
                 }
@@ -297,12 +300,14 @@ class CalloutConfigToolbarState extends State<CalloutConfigToolbar> {
                 SnippetRootNode? rootNode = tc.parentTargetsWrapperNode
                     ?.rootNodeOfSnippet();
                 if (rootNode == null) return;
-                final newVersionId = SnippetInfoModel.createNewVersion(rootNode);
-                fco.modelRepo.saveSnippetVersion(snippetName: rootNode.name, newVersionId: newVersionId, newVersion: rootNode);
-                CalloutConfigToolbar.closeThenReopenContentCallout(
-                  tc,
-                  widget.wrapperRect,
-                  widget.scName,
+                final newVersionId = SnippetInfoModel.createNewVersion(
+                    rootNode);
+                fco.modelRepo.saveSnippetVersion(snippetName: rootNode.name,
+                    newVersionId: newVersionId,
+                    newVersion: rootNode);
+                CalloutConfigToolbar.closeThenReopenContentCallout(context,
+                    tc,
+                    widget.wrapperRect,
                 );
                 // fco.capiBloc.add(CAPIEvent.TargetModelChanged(newTC: tc));
                 // fco.afterNextBuildDo(() {
@@ -319,7 +324,7 @@ class CalloutConfigToolbarState extends State<CalloutConfigToolbar> {
               wrap: true,
               calloutButtonSize: const Size(70, 40),
               calloutSize: const Size(240, 220),
-              scName: widget.scName,
+
             ),
           ),
           IconButton(
@@ -330,7 +335,7 @@ class CalloutConfigToolbarState extends State<CalloutConfigToolbar> {
                 widget.cc,
                 widget.tc,
                 widget.wrapperRect,
-                scName: widget.scName,
+
                 justPlaying: false,
               );
             },
@@ -343,9 +348,16 @@ class CalloutConfigToolbarState extends State<CalloutConfigToolbar> {
               SnippetRootNode? rootNode = tc.parentTargetsWrapperNode
                   ?.rootNodeOfSnippet();
               if (rootNode == null) return;
-              tc.targetsWrapperState()?.widget.parentNode.targets.remove(tc);
+              tc
+                  .targetsWrapperState()
+                  ?.widget
+                  .parentNode
+                  .targets
+                  .remove(tc);
               final newVersionId = SnippetInfoModel.createNewVersion(rootNode);
-              fco.modelRepo.saveSnippetVersion(snippetName: rootNode.name, newVersionId: newVersionId, newVersion: rootNode);
+              fco.modelRepo.saveSnippetVersion(snippetName: rootNode.name,
+                  newVersionId: newVersionId,
+                  newVersion: rootNode);
               // fco.cacheAndSaveANewSnippetVersion(
               //   snippetName: rootNode.name, // tc.snippetName,
               //   rootNode: rootNode,
@@ -369,24 +381,24 @@ class CalloutConfigToolbarState extends State<CalloutConfigToolbar> {
     );
   }
 
-  Widget toolbarVFlipIcon() => IconButton(
-    onPressed: () {
-      fco.dismiss(CalloutConfigToolbar.CID, skipOnDismiss: true);
-      fco.calloutConfigToolbarAtTopOfScreen =
+  Widget toolbarVFlipIcon() =>
+      IconButton(
+        onPressed: () {
+          fco.dismiss(CalloutConfigToolbar.CID, skipOnDismiss: true);
+          fco.calloutConfigToolbarAtTopOfScreen =
           !fco.calloutConfigToolbarAtTopOfScreen;
-      TargetsWrapper.showConfigToolbar(
-        widget.tc,
-        widget.wrapperRect,
-        widget.scName,
+          TargetsWrapper.showConfigToolbar(
+              widget.tc,
+              widget.wrapperRect,
+          );
+        },
+        icon: Icon(
+          fco.calloutConfigToolbarAtTopOfScreen
+              ? Icons.arrow_downward
+              : Icons.arrow_upward,
+          color: Colors.white70,
+        ),
       );
-    },
-    icon: Icon(
-      fco.calloutConfigToolbarAtTopOfScreen
-          ? Icons.arrow_downward
-          : Icons.arrow_upward,
-      color: Colors.white70,
-    ),
-  );
 
   // used by both slider
   void _onDragStartF(TargetModel tc) {
@@ -400,16 +412,16 @@ class CalloutConfigToolbarState extends State<CalloutConfigToolbar> {
   // used by both slider
   void _onDragEndF(TargetModel tc) {
     tc.changed_saveRootSnippet();
-    CalloutConfigToolbar.closeThenReopenContentCallout(
-      tc,
-      widget.wrapperRect,
-      widget.scName,
+    CalloutConfigToolbar.closeThenReopenContentCallout(context,
+        tc,
+        widget.wrapperRect,
     );
   }
 
   void _closeCalloutConfigToolbar(TargetModel tc) {
     if (tc.calloutLeftPc == null || tc.calloutTopPc == null
-    || tc.targetLocalPosLeftPc == null || tc.targetLocalPosTopPc == null) return;
+        || tc.targetLocalPosLeftPc == null || tc.targetLocalPosTopPc == null)
+      return;
 
     // Offset globalCalloutContentPos = Offset(
     //   widget.wrapperRect.left + tc.calloutLeftPc! * widget.wrapperRect.width,
@@ -460,39 +472,38 @@ class CalloutConfigToolbarState extends State<CalloutConfigToolbar> {
     fco.showOverlay(
       targetGkF: () => targetGK,
       calloutConfig: CalloutConfig(
-        cId: 'color-picker',
-        initialCalloutW: 320,
-        initialCalloutH: 380,
-        decorationFillColors: ColorOrGradient.color(Colors.purpleAccent),
-        decorationBorderRadius: 16,
-        targetPointerType: TargetPointerType.none(),
-        barrier: CalloutBarrierConfig(opacity: 0.1),
-        notUsingHydratedStorage: true,
-        scrollControllerName: widget.scName,
+          cId: 'color-picker',
+          initialCalloutW: 320,
+          initialCalloutH: 380,
+          decorationFillColors: ColorOrGradient.color(Colors.purpleAccent),
+          decorationBorderRadius: 16,
+          targetPointerType: TargetPointerType.none(),
+          barrier: CalloutBarrierConfig(opacity: 0.1),
+          notUsingHydratedStorage: true,
       ),
       calloutContent: ColourPickerTool(
         originalColor:
-            widget.tc.calloutFillColors?.color1?.flutterValue ?? Colors.white,
+        widget.tc.calloutFillColors?.color1?.flutterValue ?? Colors.white,
         onColorPickedF: onColorPickedF,
       ),
     );
   }
 
-  // @override
-  // void didChangeDependencies() {
-  //   // FCO.instance.initWithContext(context);
-  //   updatedContext = context;
-  //   super.didChangeDependencies();
-  // }
+// @override
+// void didChangeDependencies() {
+//   // FCO.instance.initWithContext(context);
+//   updatedContext = context;
+//   super.didChangeDependencies();
+// }
 
-  // Offset _topLeft(TargetModel tc) {
-  //   Rect calloutRect = Rect.fromLTWH(widget.parent.left!, widget.parent.top!,
-  //       widget.parent.calloutW!, widget.parent.calloutH!);
-  //   if (widget.side == Side.TOP) {
-  //     return (calloutRect.topLeft
-  //         .translate(0, -CalloutConfigToolbar.CALLOUT_CONFIG_TOOLBAR_H(tc)));
-  //   } else {
-  //     return (calloutRect.bottomLeft.translate(0, 0));
-  //   }
-  // }
+// Offset _topLeft(TargetModel tc) {
+//   Rect calloutRect = Rect.fromLTWH(widget.parent.left!, widget.parent.top!,
+//       widget.parent.calloutW!, widget.parent.calloutH!);
+//   if (widget.side == Side.TOP) {
+//     return (calloutRect.topLeft
+//         .translate(0, -CalloutConfigToolbar.CALLOUT_CONFIG_TOOLBAR_H(tc)));
+//   } else {
+//     return (calloutRect.bottomLeft.translate(0, 0));
+//   }
+// }
 }

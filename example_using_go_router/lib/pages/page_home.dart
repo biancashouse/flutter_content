@@ -113,7 +113,6 @@ class _Page_HomeState extends State<Page_Home> {
       //   name: 'we-create-flutter-apps-and-packages',
       //   child: PlaceholderNode()
       // ),
-      scName: null, //sC.name, because no scrolling used
     );
 
     int counter = 0;

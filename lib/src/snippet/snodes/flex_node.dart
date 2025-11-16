@@ -71,13 +71,13 @@ class FlexNode extends MC with FlexNodeMappable {
     BuildContext context,
     NodeAction action,
     bool? skipHeading,
-    ScrollControllerName? scName,
+    
   ) {
     return [
-      ...super.menuAnchorWidgets_Heading(context, action, scName),
-      menuItemButton(context, "Expanded", ExpandedNode, action, scName),
-      menuItemButton(context, "Flexible", FlexibleNode, action, scName),
-      ...super.menuAnchorWidgets_WrapWith(context, action, true, scName),
+      ...super.menuAnchorWidgets_Heading(context, action),
+      menuItemButton(context, "Expanded", ExpandedNode, action),
+      menuItemButton(context, "Flexible", FlexibleNode, action),
+      ...super.menuAnchorWidgets_WrapWith(context, action, true),
     ];
   }
 

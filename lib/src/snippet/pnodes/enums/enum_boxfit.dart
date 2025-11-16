@@ -53,7 +53,7 @@ enum BoxFitEnum {
     required SNode snode,
     required String label,
     ValueChanged<int?>? onChangedF,
-    required ScrollControllerName? scName,
+    required 
   }) =>
       PropertyButtonEnum(
         label: label,
@@ -65,7 +65,6 @@ enum BoxFitEnum {
         wrap: true,
         calloutButtonSize: const Size(280, 80),
         calloutSize: Size(300, values.length * 80),
-        scName: scName,
       );
 
   static BoxFitEnum? of(int? index) => index != null ? BoxFitEnum.values.elementAtOrNull(index) : null;

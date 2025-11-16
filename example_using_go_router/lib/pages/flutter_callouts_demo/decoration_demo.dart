@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_content/flutter_content.dart';
+import 'package:flutter_callouts/flutter_callouts.dart';
 
 class DecorationDemoPage extends StatefulWidget {
   const DecorationDemoPage({super.key});
@@ -17,7 +17,7 @@ class DecorationDemoPageState extends State<DecorationDemoPage> {
   void initState() {
     super.initState();
 
-    fco.afterNextBuildDo(() => _show(const DecorationShape.rectangle()));
+    fca.afterNextBuildDo(() => _show(DecorationShape.rectangle()));
   }
 
   void _show(DecorationShape shape) {
@@ -80,7 +80,7 @@ class DecorationDemoPageState extends State<DecorationDemoPage> {
         Colors.cyan,
       ], isLinear: false);
     }
-    fco.showOverlay(
+    fca.showOverlay(
       calloutConfig: CalloutConfig(
         cId: 'some-callout-id',
         decorationShape: shape,
@@ -97,7 +97,7 @@ class DecorationDemoPageState extends State<DecorationDemoPage> {
             borderColors ?? ColorOrGradient.color(Colors.blue),
         // elevation: 10,
         onDismissedF: () => setState(() => justShowNextDemoButton = true),
-        scrollControllerName: null,
+        scrollConfig: null,
       ),
       calloutContent: Center(
         child: DropdownMenu<DecorationShape>(
@@ -111,15 +111,15 @@ class DecorationDemoPageState extends State<DecorationDemoPage> {
             selectedDecorationShape == null
                 ? "no decoration"
                 : 'DecorationShape: ${selectedDecorationShape!.name}',
-            style: const TextStyle(color: Colors.blueGrey, fontSize: 12),
+            style: TextStyle(color: Colors.blueGrey, fontSize: 12),
           ),
           onSelected: (DecorationShape? newShape) {
-            fco.dismiss("some-callout-id");
+            fca.dismiss("some-callout-id");
             _show(
-              selectedDecorationShape = newShape ?? const DecorationShape.rectangle(),
+              selectedDecorationShape = newShape ?? DecorationShape.rectangle(),
             );
           },
-          dropdownMenuEntries: const [
+          dropdownMenuEntries: [
             DropdownMenuEntry<DecorationShape>(
               value: DecorationShape.rectangle(),
               label: "DecorationShape.rectangle",
@@ -162,7 +162,7 @@ class DecorationDemoPageState extends State<DecorationDemoPage> {
   Widget build(BuildContext context) => PopScope(
     canPop: true,
     onPopInvokedWithResult: (_, __) {
-      fco.dismissAll();
+      fca.dismissAll();
     },
     child: SafeArea(
       child: Scaffold(
@@ -176,15 +176,15 @@ class DecorationDemoPageState extends State<DecorationDemoPage> {
             child: Column(
               children: [
                 if (!justShowNextDemoButton)
-                  const Text('Try changing the "DecorationShape" pulldown...'),
+                  Text('Try changing the "DecorationShape" pulldown...'),
               ],
             ),
           ),
         ),
         bottomSheet: Container(
           color: Colors.black,
-          padding: const EdgeInsets.all(8),
-          child: const Text(
+          padding: EdgeInsets.all(8),
+          child: Text(
             'This is a callout, centred on screen, i.e. no initialTargetAlignment, \n'
             'initialCalloutAlignment, nor initialCalloutPos).\n\n'
             'It has no target. It\'s still draggable.\n\n'

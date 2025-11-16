@@ -43,13 +43,13 @@ class StepNode extends CL with StepNodeMappable {
   List<Widget> menuAnchorWidgets_WrapWith(BuildContext context,
     NodeAction action,
     bool? skipHeading,
-    ScrollControllerName? scName,
+    
   ) {
     return [
       if (getParent() is! StepperNode)
-        ...super.menuAnchorWidgets_Heading(context, action, scName),
+        ...super.menuAnchorWidgets_Heading(context, action),
       if (getParent() is! StepperNode)
-        menuItemButton(context, "Stepper", StepperNode, action, scName),
+        menuItemButton(context, "Stepper", StepperNode, action),
     ];
   }
 

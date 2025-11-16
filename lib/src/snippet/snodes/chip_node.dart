@@ -208,9 +208,6 @@ class ChipNode extends CL with ChipNodeMappable {
 
   @override
   Widget buildFlutterWidget(BuildContext context, SNode? parentNode) {
-    ScrollControllerName? scName = EditablePage.maybeScrollControllerName(
-      context,
-    );
     try {
       // possible handler
       // void Function(BuildContext)? f =
@@ -223,7 +220,7 @@ class ChipNode extends CL with ChipNodeMappable {
       GlobalKey? gk = createNodeWidgetGK();
 
       return InkWell(
-        onTap: () => onPressed(context, gk, scName),
+        onTap: () => onPressed(context, gk),
         child: Chip(
           key: gk,
           label: Text(label),
@@ -247,7 +244,7 @@ class ChipNode extends CL with ChipNodeMappable {
   void onPressed(
     BuildContext context,
     GlobalKey? gk,
-    ScrollControllerName? scName,
+    
   ) {
     if (onTapHandlerName != null) {
       fco.namedCallbacks[onTapHandlerName!]?.call(context, gk);
@@ -263,7 +260,7 @@ class ChipNode extends CL with ChipNodeMappable {
     //         // panelName: calloutConfig!.cId,
     //         snippetName: BODY_PLACEHOLDER,
     //         // allowButtonCallouts: false,
-    //         scName: scName,
+    //          
     //       ),
     //       calloutConfig: CalloutConfig(
     //         cId: feature!,
@@ -287,7 +284,7 @@ class ChipNode extends CL with ChipNodeMappable {
     //           },
     //         ),
     //         fillColor: calloutConfig?.fillColor,
-    //         scrollControllerName: scName,
+    //         
     //       ),
     //     ),
     //   );
