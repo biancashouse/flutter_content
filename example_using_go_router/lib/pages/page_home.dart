@@ -34,7 +34,6 @@ class _Page_HomeState extends State<Page_Home> {
         decorationFillColors: ColorOrGradient.color(Colors.yellow[700]!),
         targetPointerType: TargetPointerType.bubble(),
         animatePointer: true,
-        scrollControllerName: null,
       );
 
       fco.namedCallbacks['sample-popup'] = (context, gk) => fco.showOverlay(

@@ -30,7 +30,6 @@ class SnippetBuilder extends StatefulWidget {
 
   final void Function(ScrollNotification)? onScrollF;
 
-  final ScrollControllerName? scName;
   final VoidCallback? onLayoutDone;
 
   const SnippetBuilder({
@@ -38,7 +37,6 @@ class SnippetBuilder extends StatefulWidget {
     this.templateSnippet,
     this.handlers,
     this.onScrollF,
-    required this.scName, // force dev to be scroll aware
     this.justPlaying = false,
     this.tc,
     this.onLayoutDone,

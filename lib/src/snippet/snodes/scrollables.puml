@@ -20,11 +20,13 @@ class CustomScrollView
 class ListView
 class GridView
 class PageView
+class SingleChildScrollView
 
 ' --- Define Inheritance Relationships ---
 ' Using "<|--" for inheritance (Child <|-- Parent)
 StatelessWidget <|-- ScrollView
 StatelessWidget <|-- PageView
+StatelessWidget <|-- SingleChildScrollView
 Widget <|-- StatelessWidget
 
 ScrollView <|-- CustomScrollView

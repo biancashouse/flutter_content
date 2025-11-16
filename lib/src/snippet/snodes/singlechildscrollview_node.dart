@@ -15,14 +15,12 @@ class SingleChildScrollViewNode extends SC
   AxisEnum? scrollDirection;
 
   EdgeInsetsValue? padding;
-  bool? useThisSnippetsScrollController;
   ScrollControllerName? scName;
 
   SingleChildScrollViewNode({
     this.scrollDirection,
     this.padding,
-    this.useThisSnippetsScrollController,
-    this.scName,
+    this.scName,  // if not supplied, creates its own named scroll controller
     super.child,
   });
 
@@ -44,16 +42,7 @@ class SingleChildScrollViewNode extends SC
         () => scrollDirection = AxisEnum.of(newValue) ?? AxisEnum.vertical,
       ),
     ),
-    BoolPNode(
-      snode: this,
-      name: 'listen to its ScrollController ?',
-      boolValue: useThisSnippetsScrollController,
-      onBoolChange: (newValue) => refreshWithUpdate(
-        context,
-        () => useThisSnippetsScrollController = newValue ?? true,
-      ),
-    ),
-    StringPNode(
+     StringPNode(
       snode: this,
       name: 'ScrollController name',
       stringValue: scName,
@@ -91,13 +80,13 @@ class SingleChildScrollViewNode extends SC
   @override
   Widget buildFlutterWidget(BuildContext context, SNode? parentNode) {
 
-    if (scName != null && !NamedScrollController.exists(scName!)) {
-      NamedScrollController(scName!, Axis.vertical);
+    Axis axis = scrollDirection?.flutterValue ?? Axis.vertical;
+    // scName is either what the dev specifies, or the node's id
+    if (!NamedScrollController.exists(scName??uid)) {
+      NamedScrollController(scName??uid, axis);
     }
 
-    ScrollController? sc = scName != null
-    ? NamedScrollController.instance(scName!)
-        : null;
+    ScrollController? sc = NamedScrollController.instance(scName??uid);
 
     try {
       setParent(parentNode);
@@ -108,7 +97,7 @@ class SingleChildScrollViewNode extends SC
       return SingleChildScrollView(
         key: createNodeWidgetGK(),
         controller: sc,
-        scrollDirection: scrollDirection?.flutterValue ?? Axis.vertical,
+        scrollDirection: axis,
         // descendants of this view can access it by:
         // ScrollableState? scrollableState = Scrollable.of(context);
         // ScrollController? scrollController = scrollableState?.position.scrollController;

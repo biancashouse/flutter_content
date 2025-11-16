@@ -24,8 +24,6 @@ class Page_BHState extends State<Page_BH> with TickerProviderStateMixin {
   late Animation<Color?> _bgColorAnimation;
   late Animation<Color?> _fgColorAnimation;
 
-  NamedScrollController? namedSC(ctx) => EditablePage.of(ctx)?.namedSC;
-
   @override
   void initState() {
     super.initState();
@@ -139,13 +137,7 @@ class Page_BHState extends State<Page_BH> with TickerProviderStateMixin {
     //   sC.jumpTo(NamedScrollController.vScrollOffset(pagePath));
     // }
 
-    if (mounted && (namedSC(context)?.hasClients ?? false)) {
-      fco.logger.i(
-        '******************************************************************************************** ${namedSC(context)?.name}.offset = ${namedSC(context)?.offset}',
-      );
-    }
-
-    final scaffold = Scaffold(
+     final scaffold = Scaffold(
       body: SafeArea(
         child: SingleChildScrollView(
           child: Column(
@@ -252,21 +244,18 @@ class Page_BHState extends State<Page_BH> with TickerProviderStateMixin {
 
   Widget _whatWeDoSnippet() => SnippetBuilder(
     templateSnippet: SnippetRootNode(name: 'we-create', child: PlaceholderNode()),
-    scName: namedSC(context)?.name,
   );
 
   Widget _aboutHotspotsSnippet() => Padding(
     padding: const EdgeInsets.all(18.0),
     child: SnippetBuilder(
       templateSnippet: SnippetRootNode(name: 'about-hotspots', child: PlaceholderNode()),
-      scName: namedSC(context)?.name,
     ),
   );
 
   Widget _aboutAlgCSnippet() => SnippetBuilder(
     // panelName: 'about-algc',
     templateSnippet: SnippetRootNode(name: 'about-algc', child: PlaceholderNode()),
-    scName: namedSC(context)?.name,
   );
 
   Align _findOutMoreAboutAlgCLink() => Align(

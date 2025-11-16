@@ -83,14 +83,7 @@ class EditablePageState extends State<EditablePage> {
     // });
   }
 
-  @override
-  void dispose() {
-    if (!mounted) return;
-    namedSC.dispose(); // Dispose of the ScrollController
-    super.dispose();
-  }
-
-  // also allow for a selected node
+   // also allow for a selected node
   void _populateNodeBorderRects(CAPIBloC bloc) {
     if (bloc.state.activeSnippetName == null) return;
     List<SNode> nodes = [];
@@ -274,13 +267,12 @@ class EditablePageState extends State<EditablePage> {
       });
     }
 
-    pushThenShowNamedSnippetWithNodeSelected(rootNode, node, scName: namedSC.name);
+    pushThenShowNamedSnippetWithNodeSelected(rootNode, node);
   }
 
   void pushThenShowNamedSnippetWithNodeSelected(SnippetRootNode rootNode,
       SNode selectedNode, {
         TargetModel? targetBeingConfigured,
-        ScrollControllerName? scName,
       }) {
     if (rootNode.child?.nodeWidgetGK?.currentContext == null) {
       fco.showToast(
@@ -307,7 +299,7 @@ class EditablePageState extends State<EditablePage> {
       }
 
       // point out the selected node widget
-      SNodeWidget.pointOutSelectedNode(scName);
+      SNodeWidget.pointOutSelectedNode();
 
       // // point out the selected node in the snippet tree
       // fco.afterMsDelayDo(1000, () {
@@ -691,7 +683,7 @@ class EditablePageState extends State<EditablePage> {
                         return SizedBox(
                           width: 700,
                           height: 1200,
-                          child: SnippetTreeView(scName: namedSC.name),
+                          child: SnippetTreeView(),
                         );
                       },
                     ),

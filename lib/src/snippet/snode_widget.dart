@@ -332,7 +332,7 @@ class SNodeWidget extends StatelessWidget {
 
       fco.afterNextBuildDo(() {
         // point out the selected node widget
-        pointOutSelectedNode(scName);
+        pointOutSelectedNode();
       });
     }
 
@@ -348,11 +348,12 @@ class SNodeWidget extends StatelessWidget {
     // });
   }
 
-  static void pointOutSelectedNode(scName) {
+  static void pointOutSelectedNode() {
     var selectedNode = fco.capiBloc.state.snippetBeingEdited!.selectedNode;
     if (selectedNode == null) return;
     fco.afterMsDelayDo(100, () {
       var cc = selectedNode.nodeWidgetGK!.currentContext;
+      var namedSC = fco.findAncestorNamedScrollController(cc);
       if (cc != null) {
         Scrollable.ensureVisible(
           cc,
@@ -389,7 +390,7 @@ class SNodeWidget extends StatelessWidget {
           selectedNode.showSelectedNonTappableNodeWidgetOverlay(
             // selected: true,
             borderRect: borderRect,
-            scName: scName,
+            scName: namedSC?.name,
           );
         }
       });

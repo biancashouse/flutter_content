@@ -6,14 +6,12 @@ import 'package:flutter_content/src/snippet/fancy_tree/tree_view.dart';
 import 'package:flutter_content/src/snippet/snode_widget.dart';
 
 class SnippetTreeView extends StatelessWidget {
-  final ScrollControllerName? scName;
 
   // final VoidCallback onChangedF;
   // final VoidCallback onExpiredF;
   // final bool allowButtonCallouts;
 
   const SnippetTreeView({
-    required this.scName,
     // required this.onChangedF,
     // required this.onExpiredF,
     // this.allowButtonCallouts = false,
@@ -69,7 +67,7 @@ class SnippetTreeView extends StatelessWidget {
       treeController: treeC,
       entry: entry,
       // allowButtonCallouts: allowButtonCallouts,
-      scName: scName,
+      scName: null,
     ),
   );
 }

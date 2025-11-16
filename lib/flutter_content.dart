@@ -858,27 +858,7 @@ class FlutterContentMixins
         .toUpperCase();
   }
 
-  /// Finds the nearest [ScrollController] from an ancestor [Scrollable] widget.
-  ///
-  /// Returns the [ScrollController] if found, otherwise returns `null`.
-  ScrollController? findScrollController(BuildContext context) {
-    // Scrollable.of(context) finds the state of the nearest ancestor Scrollable widget.
-    // This state is of type ScrollableState.
-    final scrollableState = Scrollable.of(context);
-
-    // The ScrollableState has a 'position' property, which is a ScrollPosition.
-    // The ScrollPosition itself holds a reference to the ScrollController.
-    // If no Scrollable is found, scrollableState will be null.
-    return scrollableState?.position.context.notificationContext
-                ?.findAncestorWidgetOfExactType<Scrollbar>() !=
-            null
-        ? scrollableState?.position.context.notificationContext
-              ?.findAncestorWidgetOfExactType<Scrollbar>()
-              ?.controller
-        : scrollableState?.widget.controller;
-  }
-
-  void initializeMappers() {
+   void initializeMappers() {
     // This function just needs to exist. Its primary purpose is to force the
     // dart analyzer to process all the imports. Inside each .mapper.dart file,
     // there is code that self-registers the mapper.
