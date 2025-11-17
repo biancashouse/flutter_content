@@ -441,7 +441,7 @@ class SNodeWidget extends StatelessWidget {
         toDelta: -20,
       ),
       calloutContent: nodeButtons(context, node),
-      targetGkF: () => node.treeNodeGK,
+      targetGK: node.treeNodeGK,
     );
   }
 

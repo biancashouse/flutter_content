@@ -54,7 +54,7 @@ class GridViewNodeMapper extends SubClassMapperBase<GridViewNode> {
     _$padding,
     opt: true,
   );
-  static AxisEnum _$scrolDirection(GridViewNode v) => v.scrolDirection;
+  static AxisEnum _$scrolDirection(GridViewNode v) => v.scrollDirection;
   static const Field<GridViewNode, AxisEnum> _f$scrolDirection = Field(
     'scrolDirection',
     _$scrolDirection,
@@ -156,7 +156,7 @@ class GridViewNodeMapper extends SubClassMapperBase<GridViewNode> {
       crossAxisCount: data.dec(_f$crossAxisCount),
       children: data.dec(_f$children),
       padding: data.dec(_f$padding),
-      scrolDirection: data.dec(_f$scrolDirection),
+      scrollDirection: data.dec(_f$scrolDirection),
       shrinkWrap: data.dec(_f$shrinkWrap),
     );
   }
@@ -284,7 +284,7 @@ class _GridViewNodeCopyWithImpl<$R, $Out>
     crossAxisCount: data.get(#crossAxisCount, or: $value.crossAxisCount),
     children: data.get(#children, or: $value.children),
     padding: data.get(#padding, or: $value.padding),
-    scrolDirection: data.get(#scrolDirection, or: $value.scrolDirection),
+    scrollDirection: data.get(#scrolDirection, or: $value.scrollDirection),
     shrinkWrap: data.get(#shrinkWrap, or: $value.shrinkWrap),
   );
 

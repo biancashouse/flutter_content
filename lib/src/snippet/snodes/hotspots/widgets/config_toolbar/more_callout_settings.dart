@@ -9,13 +9,12 @@ class MoreCalloutConfigSettings extends StatefulWidget {
   final CalloutConfig cc;
   final TargetModel tc;
   final Rect wrapperRect;
-  
 
   const MoreCalloutConfigSettings(
     this.cc,
     this.tc,
     this.wrapperRect, {
-    
+
     super.key,
   });
 
@@ -27,23 +26,14 @@ class MoreCalloutConfigSettings extends StatefulWidget {
     CalloutConfig cc,
     TargetModel tc,
     Rect wrapperRect, {
-    
+
     required bool justPlaying,
   }) {
-    GlobalKey? targetGK =
-        // tc.single
-        //     ? FCO.getSingleTargetGk(tc.wName)
-        //     :
-        fco.getTargetGk(tc.uid);
+    GlobalKey? targetGK = tc.gk;
 
     fco.showOverlay(
-      targetGkF: () => targetGK,
-      calloutContent: MoreCalloutConfigSettings(
-        cc,
-        tc,
-        wrapperRect,
-         
-      ),
+      targetGK: targetGK,
+      calloutContent: MoreCalloutConfigSettings(cc, tc, wrapperRect),
       calloutConfig: CalloutConfig(
         cId: "more-cc-settings",
         initialCalloutW: 200,
@@ -69,7 +59,6 @@ class MoreCalloutConfigSettings extends StatefulWidget {
         decorationBorderRadius: 16,
         targetPointerType: TargetPointerType.none(),
         notUsingHydratedStorage: true,
-        
       ),
     );
   }
@@ -114,7 +103,8 @@ class _MoreCalloutConfigSettingsState extends State<MoreCalloutConfigSettings> {
                       tc.calloutBorderRadius = double.tryParse(newValue) ?? 0;
                       tc.changed_saveRootSnippet();
                       fco.dismiss("more-cc-settings");
-                      CalloutConfigToolbar.closeThenReopenContentCallout(context,
+                      CalloutConfigToolbar.closeThenReopenContentCallout(
+                        context,
                         tc,
                         widget.wrapperRect,
                       );
@@ -145,7 +135,8 @@ class _MoreCalloutConfigSettingsState extends State<MoreCalloutConfigSettings> {
                           double.tryParse(newValue) ?? 0;
                       tc.changed_saveRootSnippet();
                       fco.dismiss("more-cc-settings");
-                      CalloutConfigToolbar.closeThenReopenContentCallout(context,
+                      CalloutConfigToolbar.closeThenReopenContentCallout(
+                        context,
                         tc,
                         widget.wrapperRect,
                       );
@@ -172,7 +163,8 @@ class _MoreCalloutConfigSettingsState extends State<MoreCalloutConfigSettings> {
                       tc.setCalloutStarPoints(int.tryParse(newValue));
                       tc.changed_saveRootSnippet();
                       fco.dismiss("more-cc-settings");
-                      CalloutConfigToolbar.closeThenReopenContentCallout(context,
+                      CalloutConfigToolbar.closeThenReopenContentCallout(
+                        context,
                         tc,
                         widget.wrapperRect,
                       );
@@ -197,7 +189,8 @@ class _MoreCalloutConfigSettingsState extends State<MoreCalloutConfigSettings> {
                   tc.canResizeH = newValue;
                   tc.changed_saveRootSnippet();
                   fco.dismiss("more-cc-settings");
-                  CalloutConfigToolbar.closeThenReopenContentCallout(context,
+                  CalloutConfigToolbar.closeThenReopenContentCallout(
+                    context,
                     tc,
                     widget.wrapperRect,
                   );
@@ -217,7 +210,8 @@ class _MoreCalloutConfigSettingsState extends State<MoreCalloutConfigSettings> {
                   tc.canResizeV = newValue;
                   tc.changed_saveRootSnippet();
                   fco.dismiss("more-cc-settings");
-                  CalloutConfigToolbar.closeThenReopenContentCallout(context,
+                  CalloutConfigToolbar.closeThenReopenContentCallout(
+                    context,
                     tc,
                     widget.wrapperRect,
                   );
@@ -237,7 +231,8 @@ class _MoreCalloutConfigSettingsState extends State<MoreCalloutConfigSettings> {
                   tc.followScroll = newValue;
                   tc.changed_saveRootSnippet();
                   fco.dismiss("more-cc-settings");
-                  CalloutConfigToolbar.closeThenReopenContentCallout(context,
+                  CalloutConfigToolbar.closeThenReopenContentCallout(
+                    context,
                     tc,
                     widget.wrapperRect,
                   );

@@ -25,7 +25,7 @@ class ScrollViewNodeMapper extends SubClassMapperBase<ScrollViewNode> {
   @override
   final String id = 'ScrollViewNode';
 
-  static AxisEnum _$scrolDirection(ScrollViewNode v) => v.scrolDirection;
+  static AxisEnum _$scrolDirection(ScrollViewNode v) => v.scrollDirection;
   static const Field<ScrollViewNode, AxisEnum> _f$scrolDirection = Field(
     'scrolDirection',
     _$scrolDirection,

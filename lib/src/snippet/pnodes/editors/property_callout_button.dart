@@ -83,7 +83,6 @@ class PropertyCalloutButton extends StatelessWidget {
           calloutConfig: config,
           calloutContent: calloutContents(context),
           wrapInPointerInterceptor: true,
-          targetGkF: null,
         );
       },
       child: MouseRegion(

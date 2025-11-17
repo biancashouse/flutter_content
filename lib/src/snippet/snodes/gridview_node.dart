@@ -25,7 +25,7 @@ class GridViewNode extends BoxScrollViewNode with GridViewNodeMappable {
     this.crossAxisCount,
     required this.children,
     super.padding,
-    super.scrolDirection,
+    super.scrollDirection,
     super.shrinkWrap,
   });
 
@@ -94,6 +94,7 @@ class GridViewNode extends BoxScrollViewNode with GridViewNodeMappable {
           )
               : GridView.count(
             controller: sc,
+            scrollDirection: scrollDirection.flutterValue ?? Axis.vertical,
             crossAxisCount: crossAxisCount ?? 2,
             mainAxisSpacing: mainAxisSpacing??0.0,
             crossAxisSpacing: crossAxisSpacing??0.0,

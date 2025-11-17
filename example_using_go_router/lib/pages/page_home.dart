@@ -47,7 +47,7 @@ class _Page_HomeState extends State<Page_Home> {
             ],
           ),
         ),
-        targetGkF: () => gk,
+        targetGK: gk,
       );
     });
 

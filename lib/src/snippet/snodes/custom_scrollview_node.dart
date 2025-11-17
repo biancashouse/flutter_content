@@ -13,7 +13,7 @@ class CustomScrollViewNode extends ScrollViewNode with CustomScrollViewNodeMappa
 
   CustomScrollViewNode({
     required this.slivers,
-    super.scrolDirection,
+    super.scrollDirection,
     super.shrinkWrap,
   });
 
@@ -34,6 +34,9 @@ class CustomScrollViewNode extends ScrollViewNode with CustomScrollViewNodeMappa
     setParent(parentNode);
 
     return CustomScrollView(
+      key: createNodeWidgetGK(),
+      controller: sc,
+      scrollDirection: scrollDirection.flutterValue ?? Axis.vertical,
       slivers: slivers
           .map((childNode) => childNode.buildFlutterWidget(context, this))
           .toList(),

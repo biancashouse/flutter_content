@@ -225,6 +225,9 @@ class TargetModelMapper extends ClassMapperBase<TargetModel> {
     _$parentTargetsWrapperNode,
     mode: FieldMode.member,
   );
+  static GlobalKey<State<StatefulWidget>>? _$gk(TargetModel v) => v.gk;
+  static const Field<TargetModel, GlobalKey<State<StatefulWidget>>> _f$gk =
+      Field('gk', _$gk, mode: FieldMode.member);
   static GlobalKey<State<StatefulWidget>>? _$targetsWrapperGK(TargetModel v) =>
       v.targetsWrapperGK;
   static const Field<TargetModel, GlobalKey<State<StatefulWidget>>>
@@ -284,6 +287,7 @@ class TargetModelMapper extends ClassMapperBase<TargetModel> {
     #animatePointer: _f$animatePointer,
     #autoPlay: _f$autoPlay,
     #parentTargetsWrapperNode: _f$parentTargetsWrapperNode,
+    #gk: _f$gk,
     #targetsWrapperGK: _f$targetsWrapperGK,
     #radius: _f$radius,
     #contentCId: _f$contentCId,

@@ -142,7 +142,7 @@ class PropertyButton<T> extends StatelessWidget {
                       ),
                     )
                   : teContent,
-              targetGkF: () => propertyBtnGK,
+              targetGK: propertyBtnGK,
             );
             // show options, if any
             if ((options.isNotEmpty) &&
@@ -230,7 +230,7 @@ class PropertyButton<T> extends StatelessWidget {
     fco.showOverlay(
       calloutConfig: matchesMenuCC,
       calloutContent: matchesMenuBoxContent(matches),
-      targetGkF: () => propertyBtnGK,
+      targetGK: propertyBtnGK,
     );
   }
 

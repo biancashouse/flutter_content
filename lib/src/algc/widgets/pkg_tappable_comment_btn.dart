@@ -105,7 +105,7 @@ class TappableCommentBtn extends StatelessWidget {
         
       ),
       calloutContent: commentSnippetWidget,
-      targetGkF: () => flowchart.stepGK(stepId),
+      targetGK: flowchart.stepGK(stepId),
     );
   }
 }

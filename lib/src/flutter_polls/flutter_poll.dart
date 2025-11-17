@@ -310,7 +310,7 @@ class FlutterPollState extends State<FlutterPoll> {
 
   // called by pollOption(s) when tapped
   // void voterEmailAddressDlg(gk, VoidCallback onGotEa) => fco.showOverlay(
-  //       targetGkF: () => gk,
+  //       targetGK: gk,
   //       calloutContent: InputEa(
   //         onValidEmailF: (ea) {
   //           pollBloc.add(PollEvent.voterIdCreated(newVoterId: ea));

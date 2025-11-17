@@ -30,7 +30,7 @@ class CustomScrollViewNodeMapper
     'slivers',
     _$slivers,
   );
-  static AxisEnum _$scrolDirection(CustomScrollViewNode v) => v.scrolDirection;
+  static AxisEnum _$scrolDirection(CustomScrollViewNode v) => v.scrollDirection;
   static const Field<CustomScrollViewNode, AxisEnum> _f$scrolDirection = Field(
     'scrolDirection',
     _$scrolDirection,
@@ -128,7 +128,7 @@ class CustomScrollViewNodeMapper
   static CustomScrollViewNode _instantiate(DecodingData data) {
     return CustomScrollViewNode(
       slivers: data.dec(_f$slivers),
-      scrolDirection: data.dec(_f$scrolDirection),
+      scrollDirection: data.dec(_f$scrolDirection),
       shrinkWrap: data.dec(_f$shrinkWrap),
     );
   }
@@ -241,7 +241,7 @@ class _CustomScrollViewNodeCopyWithImpl<$R, $Out>
   @override
   CustomScrollViewNode $make(CopyWithData data) => CustomScrollViewNode(
     slivers: data.get(#slivers, or: $value.slivers),
-    scrolDirection: data.get(#scrolDirection, or: $value.scrolDirection),
+    scrollDirection: data.get(#scrolDirection, or: $value.scrollDirection),
     shrinkWrap: data.get(#shrinkWrap, or: $value.shrinkWrap),
   );
 

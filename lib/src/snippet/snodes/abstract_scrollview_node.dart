@@ -14,11 +14,11 @@ part 'abstract_scrollview_node.mapper.dart';
 
 @MappableClass(discriminatorKey: 'DK:scrollview', includeSubClasses: [BoxScrollViewNode,CustomScrollViewNode])
 abstract class ScrollViewNode extends CL with ScrollViewNodeMappable {
-  AxisEnum scrolDirection;
+  AxisEnum scrollDirection;
   bool? shrinkWrap;
 
   ScrollViewNode({
-    this.scrolDirection = AxisEnum.vertical,
+    this.scrollDirection = AxisEnum.vertical,
     this.shrinkWrap,
   });
 
@@ -36,10 +36,10 @@ abstract class ScrollViewNode extends CL with ScrollViewNodeMappable {
     EnumPNode<AxisEnum?>(
       snode: this,
       name: 'scrolDirection',
-      valueIndex: scrolDirection.index,
+      valueIndex: scrollDirection.index,
       onIndexChange: (newValue) => refreshWithUpdate(
         context,
-        () => scrolDirection = AxisEnum.of(newValue) ?? AxisEnum.vertical,
+        () => scrollDirection = AxisEnum.of(newValue) ?? AxisEnum.vertical,
       ),
     ),
     BoolPNode(

@@ -200,7 +200,7 @@ class TargetPlayBtn extends StatelessWidget {
     if (tc.targetsWrapperState() == null) return;
 
     // cover will now have been rendered with its gk
-    var coverGK = fco.getTargetGk(tc.uid);
+    var coverGK = tc.gk;
     // fco.logger.i('getTargetGK: $coverGK');
     if (coverGK == null) return;
     // var cc = coverGK?.currentContext;
@@ -225,7 +225,6 @@ class TargetPlayBtn extends StatelessWidget {
         afterTransformF: () async {
           await fco.ensureContentSnippetPresent(tc.contentCId);
           showHotspotSnippetContentCallout(
-            context,
             tc: tc,
             justPlaying: true,
             wrapperRect: wrapperRect,

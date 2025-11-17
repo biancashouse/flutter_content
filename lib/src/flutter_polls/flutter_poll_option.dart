@@ -141,7 +141,7 @@ class FlutterPollOption extends HookWidget {
                           final gcrServerUrl = fco.gcrServerUrl;
                           if (gcrServerUrl != null) {
                             fco.showPasswordlessStepper(
-                              targetGkF: () => key as GlobalKey?,
+                              targetGK: key as GlobalKey?,
                               gcrServerUrl: gcrServerUrl,
                               onSignedInF: (ea) {
                                 pollBloc.add(

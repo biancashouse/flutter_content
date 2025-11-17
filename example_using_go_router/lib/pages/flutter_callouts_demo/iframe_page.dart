@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_callouts/flutter_callouts.dart';
+import 'package:flutter_content/flutter_content.dart';
 
 import 'sample_iframe.dart';
 
@@ -20,16 +21,16 @@ class _IFramePageState extends State<IFramePage> {
     super.initState();
 
     /// auto show a callout pointing at the FAB
-    fca.afterNextBuildDo(() {
+    fco.afterNextBuildDo(() {
       // namedSC.jumpTo(150.0);
       // showOverlay requires a callout config + callout content + optionally, a target widget globalKey
-      fca.showOverlay(
+      fco.showOverlay(
         calloutConfig: _createCalloutConfig1(),
         calloutContent: _createCalloutContent1(),
-        targetGkF: () => _gk,
+        targetGK:  _gk,
         wrapInPointerInterceptor: true, // THIS IS THE MOST IMPORTANT LINE
       );
-      fca.showToast(
+      fco.showToast(
         gravity: Alignment.bottomCenter,
         msg: 'demonstrating that a callout is still draggable even when over an Iframe',
         textColor: Colors.white,
@@ -47,7 +48,7 @@ class _IFramePageState extends State<IFramePage> {
   }
 
   double get fontSize {
-    double result = fca.scrW < 600 ? 12.0 : 24.0;
+    double result = fco.scrW < 600 ? 12.0 : 24.0;
     return result;
   }
 
@@ -125,7 +126,7 @@ class _IFramePageState extends State<IFramePage> {
     return PopScope(
       canPop: true,
       onPopInvokedWithResult: (_, _) {
-        fca.dismissAll();
+        fco.dismissAll();
       },
       child: SafeArea(
         child: Scaffold(
@@ -150,7 +151,7 @@ class _IFramePageState extends State<IFramePage> {
                         controller: sc,
                         child: SizedBox(
                             width: double.infinity,
-                            height: fca.scrH - 100,
+                            height: fco.scrH - 100,
                             child: Center(child: SampleIFrame())),
                       ),
         ),

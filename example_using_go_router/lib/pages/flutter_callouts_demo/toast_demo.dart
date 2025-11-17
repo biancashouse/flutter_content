@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_callouts/flutter_callouts.dart';
+import 'package:flutter_content/flutter_content.dart';
 
 class ToastDemoPage extends StatefulWidget {
   const ToastDemoPage({super.key});
@@ -18,7 +19,7 @@ class ToastDemoPageState extends State<ToastDemoPage> {
   void initState() {
     super.initState();
 
-    fca.afterNextBuildDo(() => _showToast(Alignment.topCenter));
+    fco.afterNextBuildDo(() => _showToast(Alignment.topCenter));
   }
 
   void _showToast(Alignment gravity, {int showForMs = 0}) {
@@ -58,12 +59,12 @@ class ToastDemoPageState extends State<ToastDemoPage> {
         break;
     }
 
-    fca.showToastOverlay(
+    fco.showToastOverlay(
       removeAfterMs: showForMs,
       calloutConfig: CalloutConfig(
         cId: 'toast-${gravity.toString()}',
         gravity: gravity,
-        initialCalloutW: fca.isAndroid ? 200 : 500,
+        initialCalloutW: fco.isAndroid ? 200 : 500,
         initialCalloutH: 240,
         decorationFillColors: ColorOrGradient.color(Colors.black),
         showCloseButton: true,
@@ -71,7 +72,6 @@ class ToastDemoPageState extends State<ToastDemoPage> {
         decorationBorderRadius: 16,
         decorationBorderColors: ColorOrGradient.color(Colors.yellow),
         elevation: 10,
-        scrollConfig: null,
         contentTranslateX: contentTranslateX,
         contentTranslateY: contentTranslateY,
         onDismissedF: () => setState(() => justShowNextDemoButton = true),
@@ -101,7 +101,7 @@ class ToastDemoPageState extends State<ToastDemoPage> {
                   style: TextStyle(color: Colors.blueGrey),
                 ),
                 onSelected: (Alignment? newGravity) {
-                  fca.dismissToast(gravity);
+                  fco.dismissToast(gravity);
                   _showToast(
                     selectedGravity = newGravity ?? Alignment.topCenter,
                   );
@@ -156,7 +156,7 @@ class ToastDemoPageState extends State<ToastDemoPage> {
   Widget build(BuildContext context) => PopScope(
     canPop: true,
     onPopInvokedWithResult: (_, __) {
-      fca.dismissAll();
+      fco.dismissAll();
     },
     child: SafeArea(
       child: Scaffold(

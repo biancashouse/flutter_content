@@ -30,6 +30,9 @@ class TargetModel with TargetModelMappable {
   @JsonKey(includeFromJson: false, includeToJson: false)
   TargetsWrapperNode? parentTargetsWrapperNode;
 
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  GlobalKey? gk;
+
   double? targetLocalPosLeftPc;
   double? targetLocalPosTopPc;
   double? radiusPc; // target cover radius (not nutton)
@@ -282,8 +285,8 @@ class TargetModel with TargetModelMappable {
     // fco.logger.i("${btnLocalLeftPc}, ${btnLocalTopPc}");
   }
 
-  Offset getCalloutPos() =>
-      Offset(fco.scrW * (calloutLeftPc ?? .5), fco.scrH * (calloutTopPc ?? .5));
+  // Offset getCalloutPos() =>
+  //     Offset(fco.scrW * (calloutLeftPc ?? .5), fco.scrH * (calloutTopPc ?? .5));
 
   // setTextCalloutPos(Offset newGlobalPos) {
   //   calloutTopPc = newGlobalPos.dy / FCO.scrH;

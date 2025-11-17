@@ -14,14 +14,10 @@ void removeTargetDurationCallout() {
 }
 
 Future<void> showTargetDurationCallout(final TargetModel tc) async {
-  GlobalKey? targetGK =
-      // tc.single
-      //     ? FCO.getSingleTargetGk(tc.wName)
-      //     :
-      fco.getTargetGk(tc.uid);
+  GlobalKey? targetGK = tc.gk;
 
   fco.showOverlay(
-    targetGkF: () => targetGK,
+    targetGK: targetGK,
     calloutContent: NumericKeypad(
       label: 'onscreen duration (ms)',
       initialValue: tc.calloutDurationMs.toString(),

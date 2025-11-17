@@ -1,6 +1,6 @@
 import 'package:example_using_go_router/pages/flutter_callouts_demo/toast_demo.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_callouts/flutter_callouts.dart';
+import 'package:flutter_content/flutter_content.dart';
 
 import 'callout_following_scroll_demo.dart';
 import 'callout_with_barrier_demo.dart';
@@ -19,7 +19,7 @@ class IntroPage extends StatefulWidget {
 class IntroPageState extends State<IntroPage> {
 
   double get fontSize {
-    double result = fca.scrW < 600 ? 12.0 : 18.0;
+    double result = fco.scrW < 600 ? 12.0 : 18.0;
     return result;
   }
 
@@ -29,8 +29,8 @@ class IntroPageState extends State<IntroPage> {
       body: SingleChildScrollView(
         child: Center(
           child: SizedBox(
-            width: fca.scrW * .6,
-            height: fca.scrH * .95,
+            width: fco.scrW * .6,
+            height: fco.scrH * .95,
             child: Column(
               mainAxisAlignment: MainAxisAlignment.start,
               mainAxisSize: MainAxisSize.max,

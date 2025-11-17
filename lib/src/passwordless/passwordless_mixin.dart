@@ -8,13 +8,13 @@ import 'package:http/http.dart' as http;
 
 mixin PasswordlessMixin {
   void showPasswordlessStepper({
-    TargetKeyFunc? targetGkF,
+    GlobalKey? targetGK,
     required String gcrServerUrl,
     required ValueChanged<String> onSignedInF,
     required 
   }) {
     fco.showOverlay(
-      targetGkF: targetGkF,
+      targetGK: targetGK,
       calloutContent: PasswordlessStepper(
           gcrServerUrl: gcrServerUrl, onSignedInF: onSignedInF),
       calloutConfig: CalloutConfig(

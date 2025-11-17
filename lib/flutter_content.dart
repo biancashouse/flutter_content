@@ -11,7 +11,6 @@ import 'package:firebase_storage/firebase_storage.dart'
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_callouts/flutter_callouts.dart';
-import 'package:flutter_content/src/bloc/capi_state.dart';
 import 'package:flutter_content/src/bloc/snippet_being_edited.dart';
 import 'package:flutter_content/src/model/firestore_model_repo.dart';
 import 'package:flutter_content/src/snippet/fancy_tree/tree_controller.dart';
@@ -25,9 +24,7 @@ import 'package:flutter_content/src/snippet/snodes/aspect_ratio_node.dart';
 import 'package:flutter_content/src/snippet/snodes/asset_image_node.dart';
 import 'package:flutter_content/src/snippet/snodes/button_node.dart';
 import 'package:flutter_content/src/snippet/snodes/carousel_node.dart';
-import 'package:flutter_content/src/snippet/snodes/interactiveviewer_node.dart';
 
-// import 'package:flutter_content/src/snippet/pnodes/groups/text_style_properties.dart';
 import 'package:flutter_content/src/snippet/snodes/center_node.dart';
 import 'package:flutter_content/src/snippet/snodes/abstract_cl_node.dart';
 import 'package:flutter_content/src/snippet/snodes/chip_node.dart';
@@ -267,7 +264,6 @@ export 'src/snippet/snodes/rich_text_node.dart';
 export 'src/snippet/snodes/row_node.dart';
 export 'src/snippet/snodes/scaffold_node.dart';
 export 'src/snippet/snodes/abstract_sc_node.dart';
-export 'src/snippet/snodes/listview_node.dart';
 export 'src/snippet/snodes/singlechildscrollview_node.dart';
 export 'src/snippet/snodes/sizedbox_node.dart';
 export 'src/snippet/snodes/constrainedbox_node.dart';
@@ -614,70 +610,70 @@ class FlutterContentMixins
   // }
 
   // create new snippet version in cache, then write through to FB
-  Future<void> _cacheAndSaveANewSnippetVersion({
-    required SnippetName snippetName,
-    required SnippetRootNode rootNode,
-  }) async {
-    logger.i('cacheAndSaveANewSnippetVersion($snippetName)');
-
-    // snippet has changed
-    VersionId newVersionId = DateTime.now().millisecondsSinceEpoch.toString();
-
-    // update or create SnippetInfo
-    SnippetInfoModel? snippetInfo = SnippetInfoModel.cachedSnippetInfo(
-      snippetName,
-    );
-
-    VersionId currVersionId = snippetInfo?.currentVersionId() ?? '?!';
-
-    // NEW snippet - initial version
-    if (snippetInfo == null) {
-      // update FB appInfo
-      // jsArray issue
-      // List<String> newList = appInfo.snippetNames;
-      appInfo.snippetNames = [...appInfo.snippetNames, snippetName];
-      snippetInfo = SnippetInfoModel(
-        snippetName,
-        editingVersionId: newVersionId,
-        publishedVersionId: newVersionId,
-        // routePath: pagePath,
-        autoPublish: appInfo.autoPublishDefault,
-        versionIds: [],
-      );
-      SnippetInfoModel.cacheSnippetInfo(snippetName, snippetInfo);
-    } else {
-      snippetInfo.editingVersionId = newVersionId;
-      if (snippetInfo.autoPublish ?? appInfo.autoPublishDefault) {
-        snippetInfo.publishedVersionId = newVersionId;
-      }
-    }
-
-    snippetInfo.versionIds!.add(newVersionId);
-    snippetInfo.cachedVersions[newVersionId] = rootNode;
-
-    // try to write new version to FB
-    bool fbSuccess = await modelRepo.saveSnippetVersion(
-      snippetName: snippetName,
-      newVersionId: newVersionId,
-      newVersion: rootNode,
-    );
-
-    if (!fbSuccess) {
-      logger.i(
-        'cacheAndSaveANewSnippetVersion($snippetName) -  not fbSuccess !',
-      );
-    } else {
-      // reset current version to before change
-      String? origSnippetJson = snippetBeingEdited?.jsonBeforeAnyChange;
-      if (origSnippetJson != null) {
-        SnippetRootNode? origSnippet = SnippetRootNodeMapper.fromJson(
-          origSnippetJson,
-        );
-        snippetInfo.cachedVersions[currVersionId] = origSnippet;
-        snippetBeingEdited!.jsonBeforeAnyChange = rootNode.toJson();
-      }
-    }
-  }
+  // Future<void> _cacheAndSaveANewSnippetVersion({
+  //   required SnippetName snippetName,
+  //   required SnippetRootNode rootNode,
+  // }) async {
+  //   logger.i('cacheAndSaveANewSnippetVersion($snippetName)');
+  //
+  //   // snippet has changed
+  //   VersionId newVersionId = DateTime.now().millisecondsSinceEpoch.toString();
+  //
+  //   // update or create SnippetInfo
+  //   SnippetInfoModel? snippetInfo = SnippetInfoModel.cachedSnippetInfo(
+  //     snippetName,
+  //   );
+  //
+  //   VersionId currVersionId = snippetInfo?.currentVersionId() ?? '?!';
+  //
+  //   // NEW snippet - initial version
+  //   if (snippetInfo == null) {
+  //     // update FB appInfo
+  //     // jsArray issue
+  //     // List<String> newList = appInfo.snippetNames;
+  //     appInfo.snippetNames = [...appInfo.snippetNames, snippetName];
+  //     snippetInfo = SnippetInfoModel(
+  //       snippetName,
+  //       editingVersionId: newVersionId,
+  //       publishedVersionId: newVersionId,
+  //       // routePath: pagePath,
+  //       autoPublish: appInfo.autoPublishDefault,
+  //       versionIds: [],
+  //     );
+  //     SnippetInfoModel.cacheSnippetInfo(snippetName, snippetInfo);
+  //   } else {
+  //     snippetInfo.editingVersionId = newVersionId;
+  //     if (snippetInfo.autoPublish ?? appInfo.autoPublishDefault) {
+  //       snippetInfo.publishedVersionId = newVersionId;
+  //     }
+  //   }
+  //
+  //   snippetInfo.versionIds!.add(newVersionId);
+  //   snippetInfo.cachedVersions[newVersionId] = rootNode;
+  //
+  //   // try to write new version to FB
+  //   bool fbSuccess = await modelRepo.saveSnippetVersion(
+  //     snippetName: snippetName,
+  //     newVersionId: newVersionId,
+  //     newVersion: rootNode,
+  //   );
+  //
+  //   if (!fbSuccess) {
+  //     logger.i(
+  //       'cacheAndSaveANewSnippetVersion($snippetName) -  not fbSuccess !',
+  //     );
+  //   } else {
+  //     // reset current version to before change
+  //     String? origSnippetJson = snippetBeingEdited?.jsonBeforeAnyChange;
+  //     if (origSnippetJson != null) {
+  //       SnippetRootNode? origSnippet = SnippetRootNodeMapper.fromJson(
+  //         origSnippetJson,
+  //       );
+  //       snippetInfo.cachedVersions[currVersionId] = origSnippet;
+  //       snippetBeingEdited!.jsonBeforeAnyChange = rootNode.toJson();
+  //     }
+  //   }
+  // }
 
   bool isEditingVersionPublished(SnippetName name) {
     var snippetInfo = SnippetInfoModel.cachedSnippetInfo(name);
@@ -807,21 +803,21 @@ class FlutterContentMixins
     return gk;
   }
 
-  final GksByTargetId _targetGK = {};
-
-  GlobalKey? getTargetGk(TargetId targetId) {
-    // fco.logger.d('getTargetGk($targetId)');
-    return _targetGK[targetId];
-  }
-
-  GlobalKey setTargetGk(TargetId targetId, GlobalKey gk) {
-    // if (_targetGK.containsKey(targetId) && _targetGK != gk) {
-    //   logi('target changed.');
-    // }
-    // fco.logger.d('setTargetGk($targetId)');
-    _targetGK[targetId] = gk;
-    return gk;
-  }
+  // final GksByTargetId _targetGK = {};
+  //
+  // GlobalKey? getTargetGk(TargetId targetId) {
+  //   // fco.logger.d('getTargetGk($targetId)');
+  //   return _targetGK[targetId];
+  // }
+  //
+  // GlobalKey setTargetGk(TargetId targetId, GlobalKey gk) {
+  //   // if (_targetGK.containsKey(targetId) && _targetGK != gk) {
+  //   //   logi('target changed.');
+  //   // }
+  //   // fco.logger.d('setTargetGk($targetId)');
+  //   _targetGK[targetId] = gk;
+  //   return gk;
+  // }
 
   // stolen from quill, because not exported
   Color hexToColor(String? hexString) {
@@ -880,9 +876,20 @@ class FlutterContentMixins
     // }
 
     // try to find a ListView, GridView, or CustomScrollView
-    ScrollView? sv = ctx?.findAncestorWidgetOfExactType<ScrollView>();
-    if (sv != null) {
-      return (sv.controller, sv.scrollDirection);
+    ListView? lv = ctx?.findAncestorWidgetOfExactType<ListView>();
+    if (lv != null) {
+      return (lv.controller, lv.scrollDirection);
+    }
+
+    // try to find a ListView, GridView, or CustomScrollView
+    GridView? gv = ctx?.findAncestorWidgetOfExactType<GridView>();
+    if (gv != null) {
+      return (gv.controller, gv.scrollDirection);
+    }
+
+    CustomScrollView? csv = ctx?.findAncestorWidgetOfExactType<CustomScrollView>();
+    if (csv != null) {
+      return (csv.controller, csv.scrollDirection);
     }
 
     return (null, null);

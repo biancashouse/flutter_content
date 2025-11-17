@@ -29,14 +29,11 @@ class PointyTool extends StatefulWidget {
     
     required bool justPlaying,
   }) {
-    GlobalKey? targetGK =
-        // tc.single
-        //     ? FCO.getSingleTargetGk(tc.wName)
-        //     :
-        fco.getTargetGk(tc.uid);
+    GlobalKey? targetGK = tc.gk;
+
 
     fco.showOverlay(
-        targetGkF: () => targetGK,
+        targetGK: targetGK,
         calloutContent: PointyTool(
           cc,
           tc,

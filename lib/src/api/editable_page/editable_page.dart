@@ -72,7 +72,7 @@ class EditablePageState extends State<EditablePage> {
   }
 
   // also allow for a selected node
-  void populateNodeBorderRects() {
+  void _populateNodeBorderRects() {
     if (fco.capiBloc.state.activeSnippetName == null &&
         fco.capiBloc.aSnippetIsNotBeingEdited())
       return;
@@ -413,7 +413,7 @@ class EditablePageState extends State<EditablePage> {
               // We are already in a post-frame callback, so it's safe to measure.
               if (mounted) {
                 setState(() {
-                  populateNodeBorderRects();
+                  _populateNodeBorderRects();
                   _needsToPopulateRects = false;
                 }); // Trigger rebuild to show the new borders
               }
@@ -422,7 +422,7 @@ class EditablePageState extends State<EditablePage> {
           onScrollF: (ScrollNotification event) {
             // debouncer.run(() {
             setState(() {
-              populateNodeBorderRects();
+              _populateNodeBorderRects();
             });
             // });
           },
@@ -992,7 +992,7 @@ class EditablePageState extends State<EditablePage> {
       ),
       // targetGkF: ()=> fco.authIconGK,
       wrapInPointerInterceptor: true,
-      targetGkF: () => gk,
+      targetGK: gk,
     );
   }
 

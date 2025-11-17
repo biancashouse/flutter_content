@@ -20,17 +20,14 @@ void refreshSnippetContentCallout(TargetModel tc) {
 }
 
 /// returning false means user tapped the x
-Future<void> showHotspotSnippetContentCallout(BuildContext context, {
+Future<void> showHotspotSnippetContentCallout({
   required TargetModel tc,
   required bool justPlaying,
   required Rect wrapperRect,
-  
 }) async {
   // possibly transform before showing callout
 
-  Rect? targetRect = fco
-      .getTargetGk(tc.uid)!
-      .globalPaintBounds(); //Measuring.findGlobalRect(GetIt.I.get<GKMap>(instanceName: getIt_multiTargets)[tc.uid]!);
+  Rect? targetRect = tc.gk?.globalPaintBounds(); //Measuring.findGlobalRect(GetIt.I.get<GKMap>(instanceName: getIt_multiTargets)[tc.uid]!);
 
   if (targetRect == null) return;
 
@@ -59,7 +56,7 @@ Future<void> showHotspotSnippetContentCallout(BuildContext context, {
 
   Widget content() => SnippetBuilder(
     snippetName: tc.contentCId,
-     
+
     justPlaying: justPlaying,
     tc: tc,
   );
@@ -82,23 +79,20 @@ Future<void> showHotspotSnippetContentCallout(BuildContext context, {
 
   final snippetBeingEdited = fco.snippetBeingEdited != null;
 
-  var scrollConfig = fco.findAncestorScrollControllerAndDirection(
-    context,
-  );
-  ScrollController? sc = scrollConfig.$1;
-  Axis? scrollDirection = scrollConfig.$2;
-
-  Offset initialPosScrollAware =
-      OffsetModel.fromOffset(
-        tc.getCalloutPos().translate(1 - tc.getScale(), 1 - tc.getScale()),
-      ).translate(
-        scrollDirection == Axis.horizontal ? sc?.offset ?? 0.0 : 0.0,
-        scrollDirection == Axis.vertical ? sc?.offset ?? 0.0 : 0.0,
-      );
+  // ScrollController? sc = scrollConfig?.$1;
+  // Axis? scrollDirection = scrollConfig?.$2;
+  //
+  // Offset initialPosScrollAware =
+  //     OffsetModel.fromOffset(
+  //       tc.getCalloutPos().translate(1 - tc.getScale(), 1 - tc.getScale()),
+  //     ).translate(
+  //       scrollDirection == Axis.horizontal ? sc?.offset ?? 0.0 : 0.0,
+  //       scrollDirection == Axis.vertical ? sc?.offset ?? 0.0 : 0.0,
+  //     );
 
   fco.showOverlay(
     skipOnScreenCheck: justPlaying,
-    targetGkF: () => fco.getTargetGk(tc.uid)!,
+    targetGK: tc.gk,
     calloutContent: BlocBuilder<CAPIBloC, CAPIState>(
       builder: (context, state) {
         // return const CircularProgressIndicator();
@@ -108,7 +102,7 @@ Future<void> showHotspotSnippetContentCallout(BuildContext context, {
     ),
     calloutConfig: CalloutConfig(
       cId: tc.contentCId,
-      
+
       // finalSeparation: 50,
       decorationFillColors: tc.calloutFillColors?.getColorOrGradient(),
       decorationShape: tc.calloutDecorationShapeEnum?.decorationShape,
@@ -125,9 +119,9 @@ Future<void> showHotspotSnippetContentCallout(BuildContext context, {
           : null,
       animatePointer: tc.animatePointer,
       // https://stackoverflow.com/questions/11671100/scale-path-from-center
-      initialCalloutPos: initialPosScrollAware,
-      // initialCalloutAlignment: Alignment.bottomCenter,
-      // initialTargetAlignment: Alignment.topCenter,
+      // initialCalloutPos: initialPosScrollAware,
+      initialTargetAlignment: Alignment(tc.targetAlignmentX??0.0, tc.targetAlignmentY??0.0),
+      initialCalloutAlignment: -Alignment(tc.targetAlignmentX??0.0, tc.targetAlignmentY??0.0),
       initialCalloutW: tc.calloutWidth,
       initialCalloutH: tc.calloutHeight,
       minHeight: minHeight + 4,
@@ -143,10 +137,9 @@ Future<void> showHotspotSnippetContentCallout(BuildContext context, {
         tc.changed_saveRootSnippet();
       },
       onDragEndedF: (Offset newPos) {
-        // Offset newPosScrollAware = newPos.translate(
-        //   -NamedScrollController.hScrollOffset(scName),
-        //   -NamedScrollController.vScrollOffset(scName),
-        // );
+        print('wrapperRect: ${wrapperRect.toString()}');
+        print('newPos: ${newPos.toString()}');
+
         Offset newPosScrollAware = newPos;
         if (newPosScrollAware.dy / fco.scrH != tc.calloutTopPc ||
             newPosScrollAware.dx / fco.scrW != tc.calloutLeftPc) {

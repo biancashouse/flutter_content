@@ -41,7 +41,7 @@ class TargetsWrapper extends StatefulWidget {
 
     // fco.dismissAll();
 
-    var coverGK = fco.getTargetGk(tc.uid);
+    var coverGK = tc.gk;
     Rect? targetRect = coverGK!.globalPaintBounds();
 
     if (targetRect == null) return;
@@ -63,7 +63,6 @@ class TargetsWrapper extends StatefulWidget {
         ta,
         afterTransformF: () {
           showHotspotSnippetContentCallout(
-            context,
             tc: tc,
             justPlaying: false,
             wrapperRect: wrapperRect,
@@ -74,7 +73,6 @@ class TargetsWrapper extends StatefulWidget {
       );
     } else {
       showHotspotSnippetContentCallout(
-        context,
         tc: tc,
         justPlaying: false,
         wrapperRect: wrapperRect,
@@ -371,7 +369,7 @@ class TargetsWrapperState extends State<TargetsWrapper> {
                 setState(() {
                   pulsingPointPos = details.localPosition.translate(-32, -32);
                   fco.showOverlay(
-                    targetGkF: () => pulsingPointGK,
+                    targetGK: pulsingPointGK,
                     calloutConfig: cc,
                     calloutContent: Padding(
                       padding: const EdgeInsets.only(
@@ -417,10 +415,7 @@ class TargetsWrapperState extends State<TargetsWrapper> {
               // + hScrollOffset,
               // + (_playingOrEditingTc != null ? scrollOffsetX()/tc.getScale() : 0.00),
               child: Visibility.maintain(
-                key: fco.setTargetGk(
-                  tc.uid,
-                  GlobalKey(debugLabel: 'Target ${tc.uid.toString()}'),
-                ),
+                key: tc.gk ??= GlobalKey(debugLabel: 'Target ${tc.uid.toString()}'),
                 visible:
                     fco.canEditContent() &&
                     (playingTc == null || playingTc == tc),
@@ -428,7 +423,6 @@ class TargetsWrapperState extends State<TargetsWrapper> {
                   tc,
                   _targetIndex(tc),
                   wrapperRect: wrapperRect,
-
                   playing: playingTc == tc,
                 ),
               ),
@@ -461,7 +455,6 @@ class TargetsWrapperState extends State<TargetsWrapper> {
                         ..parentTargetsWrapperNode = widget.parentNode,
                       widget.parentNode.targets.length,
                       wrapperRect: wrapperRect,
-
                       playing: false,
                     )
                     .animate(

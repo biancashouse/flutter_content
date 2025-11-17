@@ -364,7 +364,6 @@ abstract class SNode extends Node with SNodeMappable {
     // if (this is AppBarNode || this is ScaffoldNode) return;
     CalloutConfig cc = CalloutConfig(
       cId: '${nodeWidgetGK.hashCode}-pink-overlay',
-      scrollConfig: fco.findAncestorScrollControllerAndDirection(fco.selectedNode!.nodeWidgetGK?.currentContext),
       initialCalloutW: borderRect.width.abs(),
       // + BORDER,
       initialCalloutH: borderRect.height.abs(),
@@ -397,7 +396,7 @@ abstract class SNode extends Node with SNodeMappable {
       ),
       calloutConfig: cc,
       wrapInPointerInterceptor: isHtmlElementViewOrPlatformView(),
-      targetGkF: () => this.nodeWidgetGK,
+      targetGK: this.nodeWidgetGK,
       skipOnScreenCheck: true,
     );
   }

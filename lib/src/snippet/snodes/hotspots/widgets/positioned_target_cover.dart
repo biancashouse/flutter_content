@@ -7,7 +7,7 @@ class TargetCover extends StatelessWidget {
   final bool playing;
   final int index;
   final Rect wrapperRect;
-  
+
   final GlobalKey? gk; // only for pulsingPoint
 
   const TargetCover(
@@ -15,7 +15,7 @@ class TargetCover extends StatelessWidget {
     this.index, {
     this.playing = false,
     required this.wrapperRect,
-    
+
     this.gk,
     super.key,
   });
@@ -51,6 +51,7 @@ class TargetCover extends StatelessWidget {
         height: tc.radius * 2,
         child: GestureDetector(
           onTap: () {
+            print("tap");
             if (tc.targetsWrapperState() == null ||
                 fco.snippetBeingEdited != null) {
               return;
@@ -135,7 +136,7 @@ class TargetCover extends StatelessWidget {
     if (tc.targetsWrapperState() == null) return;
 
     // cover will now have been rendered with its gk
-    var coverGK = fco.getTargetGk(tc.uid);
+    var coverGK = tc.gk;
     // fco.logger.i('getTargetGK: $coverGK');
     if (coverGK == null) return;
     // var cc = coverGK?.currentContext;
@@ -149,7 +150,7 @@ class TargetCover extends StatelessWidget {
     // tc.targetsWrapperState()!.setPlayingOrEditingTc(tc);
 
     fco.ensureContentSnippetPresent(tc.contentCId).then((_) {
-      showHotspotSnippetContentCallout(context,
+      showHotspotSnippetContentCallout(
         tc: tc,
         justPlaying: true,
         wrapperRect: wrapperRect,

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_callouts/flutter_callouts.dart';
+import 'package:flutter_content/flutter_content.dart';
 
 /// it's important to add the mixin, because callouts are animated
 class BarrierDemo extends StatefulWidget {
@@ -22,13 +23,13 @@ class _BarrierDemoState extends State<BarrierDemo> {
     super.initState();
 
     /// auto show a callout pointing at the FAB
-    fca.afterNextBuildDo(() {
+    fco.afterNextBuildDo(() {
       // namedSC.jumpTo(150.0);
       // showOverlay requires a callout config + callout content + optionally, a target widget globalKey
-      fca.showOverlay(
+      fco.showOverlay(
         calloutConfig: _cc = _createFabCalloutConfig(),
         calloutContent: _createFabCalloutContent(),
-        targetGkF: () => _gk,
+        targetGK:  _gk,
       );
     });
   }
@@ -43,7 +44,7 @@ class _BarrierDemoState extends State<BarrierDemo> {
   /// NOTE - a callout can be updated after it is created by updating properties and rebuilding it.
   CalloutConfig _createFabCalloutConfig() {
     _bc = CalloutBarrierConfig(
-      cutoutPadding: fca.isWeb ? 20 : 10,
+      cutoutPadding: fco.isWeb ? 20 : 10,
       excludeTargetFromBarrier: false,
       roundExclusion: false,
       closeOnTapped: true,
@@ -104,7 +105,6 @@ class _BarrierDemoState extends State<BarrierDemo> {
       // draggable: false,
       // draggableColor: Colors.green,
       // dragHandleHeight: ,
-      scrollConfig: null,
       // followScroll: false,
       barrier: showBarrier ? _bc : null,
     );
@@ -181,7 +181,7 @@ class _BarrierDemoState extends State<BarrierDemo> {
     setState(() {
       showBarrier = !showBarrier;
       _cc.barrier = showBarrier ? _bc : null;
-      fca.rebuild('some-callout-id');
+      fco.rebuild('some-callout-id');
     });
   }
 
@@ -190,7 +190,7 @@ class _BarrierDemoState extends State<BarrierDemo> {
       if (_cc.barrier != null) {
         _cc.barrier!.excludeTargetFromBarrier =
             !_cc.barrier!.excludeTargetFromBarrier;
-        fca.rebuild('some-callout-id');
+        fco.rebuild('some-callout-id');
       }
     });
   }
@@ -199,19 +199,19 @@ class _BarrierDemoState extends State<BarrierDemo> {
     setState(() {
       if (_cc.barrier != null) {
         _cc.barrier!.roundExclusion = !_cc.barrier!.roundExclusion;
-        fca.rebuild('some-callout-id');
+        fco.rebuild('some-callout-id');
       }
     });
   }
 
   @override
   Widget build(BuildContext context) {
-    double fontSize = fca.scrW < 600 ? 12.0 : 18.0;
+    double fontSize = fco.scrW < 600 ? 12.0 : 18.0;
 
     return PopScope(
       canPop: true,
       onPopInvokedWithResult: (_, _) {
-        fca.dismissAll();
+        fco.dismissAll();
       },
       child: Scaffold(
         appBar: AppBar(

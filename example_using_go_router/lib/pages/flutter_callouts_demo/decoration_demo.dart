@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_callouts/flutter_callouts.dart';
+import 'package:flutter_content/flutter_content.dart';
 
 class DecorationDemoPage extends StatefulWidget {
   const DecorationDemoPage({super.key});
@@ -17,7 +18,7 @@ class DecorationDemoPageState extends State<DecorationDemoPage> {
   void initState() {
     super.initState();
 
-    fca.afterNextBuildDo(() => _show(DecorationShape.rectangle()));
+    fco.afterNextBuildDo(() => _show(DecorationShape.rectangle()));
   }
 
   void _show(DecorationShape shape) {
@@ -80,7 +81,7 @@ class DecorationDemoPageState extends State<DecorationDemoPage> {
         Colors.cyan,
       ], isLinear: false);
     }
-    fca.showOverlay(
+    fco.showOverlay(
       calloutConfig: CalloutConfig(
         cId: 'some-callout-id',
         decorationShape: shape,
@@ -97,7 +98,6 @@ class DecorationDemoPageState extends State<DecorationDemoPage> {
             borderColors ?? ColorOrGradient.color(Colors.blue),
         // elevation: 10,
         onDismissedF: () => setState(() => justShowNextDemoButton = true),
-        scrollConfig: null,
       ),
       calloutContent: Center(
         child: DropdownMenu<DecorationShape>(
@@ -114,7 +114,7 @@ class DecorationDemoPageState extends State<DecorationDemoPage> {
             style: TextStyle(color: Colors.blueGrey, fontSize: 12),
           ),
           onSelected: (DecorationShape? newShape) {
-            fca.dismiss("some-callout-id");
+            fco.dismiss("some-callout-id");
             _show(
               selectedDecorationShape = newShape ?? DecorationShape.rectangle(),
             );
@@ -162,7 +162,7 @@ class DecorationDemoPageState extends State<DecorationDemoPage> {
   Widget build(BuildContext context) => PopScope(
     canPop: true,
     onPopInvokedWithResult: (_, __) {
-      fca.dismissAll();
+      fco.dismissAll();
     },
     child: SafeArea(
       child: Scaffold(

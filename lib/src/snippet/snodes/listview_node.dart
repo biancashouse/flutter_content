@@ -62,6 +62,7 @@ class ListViewNode extends BoxScrollViewNode with ListViewNodeMappable {
           return ListView(
             key: createNodeWidgetGK(),
             controller: sc,
+            scrollDirection: scrollDirection.flutterValue ?? Axis.vertical,
             shrinkWrap: shrinkWrap??false,
             padding: padding?.toEdgeInsets(),
             children: listViewChildren,

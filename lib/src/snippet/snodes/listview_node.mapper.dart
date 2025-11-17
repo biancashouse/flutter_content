@@ -83,7 +83,7 @@ class ListViewNodeMapper extends SubClassMapperBase<ListViewNode> {
     _$nodeWidgetGK,
     mode: FieldMode.member,
   );
-  static AxisEnum _$scrolDirection(ListViewNode v) => v.scrolDirection;
+  static AxisEnum _$scrolDirection(ListViewNode v) => v.scrollDirection;
   static const Field<ListViewNode, AxisEnum> _f$scrolDirection = Field(
     'scrolDirection',
     _$scrolDirection,
