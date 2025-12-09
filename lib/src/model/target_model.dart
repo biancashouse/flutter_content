@@ -4,46 +4,43 @@ import 'package:dart_mappable/dart_mappable.dart';
 import 'package:flutter/material.dart';
 
 import 'package:flutter_content/flutter_content.dart';
+import 'package:flutter_content/src/model/size_model.dart';
 import 'package:flutter_content/src/snippet/pnodes/enums/enum_decoration_shape.dart';
 import 'package:json_annotation/json_annotation.dart';
 
 import '../snippet/pnodes/enums/enum_target_pointer_type.dart';
+import '../snippet/snodes/target_model_hook.dart.dart';
+import 'alignment_model.dart';
 
 part 'target_model.mapper.dart';
 
 /// TargetModel is used to model either:
 ///
-///   1. A Hotspot (has a hotspot target + play btn + callout config props)
+///   1. A Target with play button (hotspot)
 ///     or
-///   2. An Auto-played Callout (has a hotspot target + callout config props)
-///     or
-///   3. A non-hotspot target + callout config props
-@MappableClass()
+///   2. A Target with no play button (Auto-plays Callout)
+@MappableClass(hook: TargetModelHook())
 class TargetModel with TargetModelMappable {
   TargetId uid;
   double transformScale;
 
-  // double transformTranslateX;
-  // double transformTranslateY;
-  //
-  // if target is part of a TargetsWrapper, it's parent node will be this property
-  @JsonKey(includeFromJson: false, includeToJson: false)
-  TargetsWrapperNode? parentTargetsWrapperNode;
-
   @JsonKey(includeFromJson: false, includeToJson: false)
   GlobalKey? gk;
 
-  double? targetLocalPosLeftPc;
-  double? targetLocalPosTopPc;
-  double? radiusPc; // target cover radius (not nutton)
-  double? btnLocalTopPc;
-  double? btnLocalLeftPc;
-  double? calloutTopPc;
-  double? calloutLeftPc;
+  // rel to wrapperRect
+  OffsetModel? targetCLocalPc;
+  double? targetRadiusPC; // target cover radius (not button)
+  static double DEFAULT_TARGET_RADIUS = 50;
+  OffsetModel? btnCLocalPosPc;
+  double? btnRadiusPc; // target cover radius (not button)
+  static double DEFAULT_BTN_RADIUS = 15;
+
   // target alignment gets set when the config toolbar is closed
   // it is used when playing the callout to align the callout with the target
-  double? targetAlignmentX;
-  double? targetAlignmentY;
+  AlignmentModel? tcAlignment;
+  // double? tcSeparation;
+  SizeModel? calloutSize;
+
   @JsonKey(includeFromJson: false, includeToJson: false)
   bool showCover;
   @JsonKey(includeFromJson: false, includeToJson: false)
@@ -51,8 +48,6 @@ class TargetModel with TargetModelMappable {
   bool canResizeH;
   bool canResizeV;
   bool followScroll;
-  double calloutWidth;
-  double calloutHeight;
   int calloutDurationMs;
 
   // decoration
@@ -80,18 +75,13 @@ class TargetModel with TargetModelMappable {
     this.transformScale = 1.0,
     // this.transformTranslateX = 0.0,
     // this.transformTranslateY = 0.0,
-    this.radiusPc,
+    this.targetCLocalPc,
+    this.btnCLocalPosPc,
+    this.targetRadiusPC,
+    this.btnRadiusPc,
+    this.tcAlignment,
+    this.calloutSize,
     this.calloutDurationMs = 1500,
-    this.calloutWidth = 400,
-    this.calloutHeight = 85,
-    this.calloutTopPc,
-    this.calloutLeftPc,
-    this.targetAlignmentX,
-    this.targetAlignmentY,
-    this.btnLocalTopPc, // initially shown directly over target
-    this.btnLocalLeftPc,
-    this.targetLocalPosLeftPc,
-    this.targetLocalPosTopPc,
     this.showCover = true,
     this.showBtn = true,
     this.canResizeH = true,
@@ -107,8 +97,12 @@ class TargetModel with TargetModelMappable {
     this.targetPointerTypeEnum,
     this.bubbleOrTargetPointerColor,
     this.animatePointer = false,
+    // this.tcSeparation,
     this.autoPlay = false,
-  });
+  }) {
+    calloutSize ??= SizeModel(200,80);
+    tcAlignment ??= AlignmentModel(1.5,0);
+  }
 
   // for now, assumes a single fill color
   Color bgColor() => calloutFillColors?.color1?.flutterValue ?? Colors.white;
@@ -117,13 +111,7 @@ class TargetModel with TargetModelMappable {
       calloutBorderColors?.color1?.flutterValue ?? Colors.grey;
 
   // if target does not have a hotspot, callout will autoplay
-  bool hasAHotspot() => btnLocalTopPc != null && btnLocalLeftPc != null;
-
-  GlobalKey? get targetsWrapperGK => parentTargetsWrapperNode?.nodeWidgetGK;
-
-  TargetsWrapperState? targetsWrapperState() {
-    return targetsWrapperGK?.currentState as TargetsWrapperState?;
-  }
+  bool hasAHotspot() => btnCLocalPosPc != null;
 
   /// https://gist.github.com/pskink/aa0b0c80af9a986619845625c0e87a67
   Matrix4 composeMatrix({
@@ -150,23 +138,28 @@ class TargetModel with TargetModelMappable {
     return Matrix4(c, s, 0, 0, -s, c, 0, 0, 0, 0, 1, 0, dx, dy, 0, 1);
   }
 
-  bool playingOrSelected() =>
-      targetsWrapperState()?.widget.parentNode.playList.isNotEmpty ??
+  bool playingOrSelected(TargetsWrapperState targetsWrapperState) =>
+      targetsWrapperState.widget.parentNode.playList.isNotEmpty ??
       false; // || (_bloc.state.aTargetIsSelected() && _bloc.state.selectedTarget!.uid == uid);
 
-  double getScale({bool testing = false}) =>
-      playingOrSelected() || testing ? max(transformScale, 0.01) : 1.0;
-
+  double getScale(
+    TargetsWrapperState targetsWrapperState, {
+    bool testing = false,
+  }) => //playingOrSelected(targetsWrapperState) || testing
+      // ?
+  max(transformScale, 0.01)
+      // : 1.0;
+;
   // Offset getTranslate(CAPIState state, {bool testing = false}) {
-  //   Size ivSize = TargetsWrapper.iwSize(wName);
+  //   Size wrapperSize = TargetsWrapper.iwSize(wName);
   //   Offset translate =
-  //       playingOrSelected(state) || testing ? Offset(transformTranslateX * ivSize.width, transformTranslateY * ivSize.height) : Offset.zero;
+  //       playingOrSelected(state) || testing ? Offset(transformTranslateX * wrapperSize.width, transformTranslateY * wrapperSize.height) : Offset.zero;
   //   return translate;
   // }
 
-  double get radius {
-    Size ivSize = targetsWrapperState()!.wrapperRect.size;
-    return radiusPc != null ? radiusPc! * ivSize.width : 30.0;
+  double coverRadius(TargetsWrapperState targetsWrapperState) {
+    Size wrapperSize = targetsWrapperState.wrapperRect.size;
+    return targetRadiusPC != null ? targetRadiusPC! * wrapperSize.width : 30.0;
   }
 
   // CAPIBloc get bloc => _bloc;
@@ -206,83 +199,88 @@ class TargetModel with TargetModelMappable {
   //   required Size wrapperSize,
   //   required Offset wrapperPos,
   // }) {
-  //   // iv rect should always be measured
-  //   Offset ivTopLeft = wrapperPos;
-  //   Size ivSize = wrapperSize;
+  //   // wrapper rect should always be measured
+  //   Offset wrapperTopLeft = wrapperPos;
+  //   Size wrapperSize = wrapperSize;
   //
   //   // calc from matrix
   //   double scale = getScale();
   //   // Offset translate = getTranslate(state);
   //
   //   double globalPosX =
-  //       ivTopLeft.dx + /* translate.dx + */
-  //       ((targetLocalPosLeftPc ?? 0.0) * ivSize.width * scale);
+  //       wrapperTopLeft.dx + /* translate.dx + */
+  //       ((targetLocalPosLeftPc ?? 0.0) * wrapperSize.width * scale);
   //   double globalPosY =
-  //       ivTopLeft.dy + /* translate.dy + */
-  //       ((targetLocalPosTopPc ?? 0.0) * ivSize.height * scale);
+  //       wrapperTopLeft.dy + /* translate.dy + */
+  //       ((targetLocalPosTopPc ?? 0.0) * wrapperSize.height * scale);
   //
   //   // in prod, target callout will be much smaller
   //   // if (bloc.state.isPlaying(name)) {
-  //   //   globalPosX += bloc.state.CC_TARGET_SIZE_OUTER(!bloc.state.isPlaying(name), ivSize) * scale / 2 - bloc.state.CC_TARGET_SIZE(bloc.state.isPlaying(name), ivSize) * scale / 2;
-  //   //   globalPosY += bloc.state.CC_TARGET_SIZE_OUTER(!bloc.state.isPlaying(name), ivSize) * scale / 2 - bloc.state.CC_TARGET_SIZE(bloc.state.isPlaying(name), ivSize) * scale / 2;
+  //   //   globalPosX += bloc.state.CC_TARGET_SIZE_OUTER(!bloc.state.isPlaying(name), wrapperSize) * scale / 2 - bloc.state.CC_TARGET_SIZE(bloc.state.isPlaying(name), wrapperSize) * scale / 2;
+  //   //   globalPosY += bloc.state.CC_TARGET_SIZE_OUTER(!bloc.state.isPlaying(name), wrapperSize) * scale / 2 - bloc.state.CC_TARGET_SIZE(bloc.state.isPlaying(name), wrapperSize) * scale / 2;
   //   // }
   //   return Offset(globalPosX, globalPosY);
   // }
 
-  Offset btnStackPos() {
-    // iv rect should always be measured
-    Size ivSize = targetsWrapperState()?.wrapperRect.size ?? fco.scrSize;
+  double targetRadius(TargetsWrapperState targetsWrapperState) {
+    double longestSide = targetsWrapperState.wrapperRect.longestSide;
+    return targetRadiusPC != null ? targetRadiusPC! * longestSide : DEFAULT_TARGET_RADIUS;
+  }
 
-    double stackPosX = (btnLocalLeftPc ?? 0.0) * ivSize.width;
-    double stackPosY = (btnLocalTopPc ?? 0.0) * ivSize.height;
+  double btnRadius(TargetsWrapperState targetsWrapperState) {
+    double longestSide = targetsWrapperState.wrapperRect.longestSide;
+    return btnRadiusPc != null ? btnRadiusPc! * longestSide : DEFAULT_BTN_RADIUS;
+  }
+
+  Offset btnLocalPos(TargetsWrapperState targetsWrapperState) {
+    // wrapper rect should always have been measured
+    Size wrapperSize = targetsWrapperState.wrapperRect.size;
+
+    double stackPosX = (btnCLocalPosPc?.dx ?? 0.0) * wrapperSize.width;
+    double stackPosY = (btnCLocalPosPc?.dy ?? 0.0) * wrapperSize.height;
 
     return Offset(stackPosX, stackPosY);
   }
 
-  Offset targetStackPos() {
-    Size ivSize = targetsWrapperState()!.wrapperRect.size;
+  Offset targetLocalPos(TargetsWrapperState targetsWrapperState) {
+    Size wrapperSize = targetsWrapperState.wrapperRect.size;
 
-    double stackPosX = (targetLocalPosLeftPc ?? 0.0) * ivSize.width;
-    double stackPosY = (targetLocalPosTopPc ?? 0.0) * ivSize.height;
+    double stackPosX = (targetCLocalPc?.dx ?? 0.0) * wrapperSize.width;
+    double stackPosY = (targetCLocalPc?.dy ?? 0.0) * wrapperSize.height;
 
     return Offset(stackPosX, stackPosY);
   }
 
-  void setTargetStackPosPc(Offset globalPos) {
-    if (targetsWrapperState() == null) return;
+  void setTargetLocalPosPc(TargetsWrapperState targetsWrapperState, Offset globalPos) {
+    // wrapperRect rect should always have been measured
+    Offset wrapperTopLeft = targetsWrapperState.wrapperRect.topLeft;
+    Size wrapperSize = targetsWrapperState.wrapperRect.size;
 
-    // iv rect should always be measured
-    Offset ivTopLeft = targetsWrapperState()!.wrapperRect.topLeft;
-    Size ivSize = targetsWrapperState()!.wrapperRect.size;
+    targetCLocalPc = OffsetModel(
+      (globalPos.dx - wrapperTopLeft.dx) / wrapperSize.width,
+      (globalPos.dy - wrapperTopLeft.dy) / wrapperSize.height,
+    );
 
-    double targetLocalPosTop = globalPos.dy - ivTopLeft.dy;
-    double targetLocalPosLeft = globalPos.dx - ivTopLeft.dx;
-
-    targetLocalPosTopPc = targetLocalPosTop / ivSize.height;
-    targetLocalPosLeftPc = targetLocalPosLeft / ivSize.width;
-
-    targetLocalPosTopPc = max(0, targetLocalPosTopPc!);
-    targetLocalPosTopPc = min(targetLocalPosTopPc!, 1);
-    targetLocalPosLeftPc = max(0, targetLocalPosLeftPc!);
-    targetLocalPosLeftPc = min(targetLocalPosLeftPc!, 1);
+    targetCLocalPc = OffsetModel(max(0, targetCLocalPc!.dx), min(targetCLocalPc!.dy, 1));
+    // fco.logger.i("${targetCLocalPc?.$1}, ${targetCLocalPc?.$2}");
   }
 
-  void setBtnStackPosPc(Offset globalPos) {
-    if (targetsWrapperState() == null) return;
+  void setBtnLocalPosPc(TargetsWrapperState targetsWrapperState, Offset globalPos) {
+    // wrapperRect rect should always have been measured
+    Offset wrapperTopLeft = targetsWrapperState.wrapperRect.topLeft;
+    Size wrapperSize = targetsWrapperState.wrapperRect.size;
 
-    // iv rect should always be measured
-    Offset ivTopLeft = targetsWrapperState()!.wrapperRect.topLeft;
-    Size ivSize = targetsWrapperState()!.wrapperRect.size;
+    btnCLocalPosPc = OffsetModel(
+      (globalPos.dx - wrapperTopLeft.dx) / (wrapperSize.width),
+      (globalPos.dy - wrapperTopLeft.dy) / (wrapperSize.height),
+    );
 
-    btnLocalTopPc = (globalPos.dy - ivTopLeft.dy) / (ivSize.height);
-    btnLocalLeftPc = (globalPos.dx - ivTopLeft.dx) / (ivSize.width);
-
-    btnLocalTopPc = max(0, btnLocalTopPc!);
-    btnLocalTopPc = min(btnLocalTopPc!, 1);
-    btnLocalLeftPc = max(0, btnLocalLeftPc!);
-    btnLocalLeftPc = min(btnLocalLeftPc!, 1);
-
+    btnCLocalPosPc = OffsetModel(max(0, btnCLocalPosPc!.dx), min(btnCLocalPosPc!.dy, 1));
     // fco.logger.i("${btnLocalLeftPc}, ${btnLocalTopPc}");
+  }
+
+  void setAlignment(AlignmentModel newAlignment) {
+    tcAlignment = newAlignment;
   }
 
   // Offset getCalloutPos() =>
@@ -310,8 +308,7 @@ class TargetModel with TargetModelMappable {
 
   // GlobalKey generateNewGK() => _gk = GlobalKey();
 
-  Future<void> changed_saveRootSnippet() async {
-    SnippetRootNode? rootNode = parentTargetsWrapperNode?.rootNodeOfSnippet();
+  Future<void> changed_saveRootSnippet(SnippetRootNode? rootNode) async {
     if (rootNode != null) {
       fco.dismissAll(onlyToasts: true);
       // HydratedBloc.storage.write('flutter-content', rootNode.toJson());
@@ -323,7 +320,11 @@ class TargetModel with TargetModelMappable {
         textColor: Colors.black,
       );
       final newVersionId = SnippetInfoModel.createNewVersion(rootNode);
-      fco.modelRepo.saveSnippetVersion(snippetName: rootNode.name, newVersionId: newVersionId, newVersion: rootNode);
+      fco.modelRepo.saveSnippetVersion(
+        snippetName: rootNode.name,
+        newVersionId: newVersionId,
+        newVersion: rootNode,
+      );
       fco.dismissToast(Alignment.topCenter);
     }
 

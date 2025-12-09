@@ -63,12 +63,6 @@ class EditablePageState extends State<EditablePage> {
 
     // fco.pageGKs[widget.routePath] = widget.key as GlobalKey;
     fco.currentEditablePagePath = widget.routePath;
-
-    // fco.afterNextBuildDo(() {
-    //   setState(() {
-    //     fabPosition = Offset(fco.scrW - 90, 10); // Initial position of the FAB
-    //   });
-    // });
   }
 
   // also allow for a selected node
@@ -164,7 +158,9 @@ class EditablePageState extends State<EditablePage> {
           print('new node selection');
           return true;
         }
-        if (previous.isSignedIn != current.isSignedIn) return true;
+        if ((previous.isSignedIn != current.isSignedIn) && !fco.canEditContent()) {
+          return true;
+        }
         if (current.onlyTargetsWrappers) return false;
         return false;
       },
@@ -432,7 +428,8 @@ class EditablePageState extends State<EditablePage> {
           showGuides: fco.canEditContent(),
           horizontalSpacing: 100.0,
           verticalSpacing: 100.0,
-          lineColor: Colors.red.withAlpha(70),
+          lineColor: Colors.white,
+          // lineColor: Colors.red.withAlpha(70),
           // 0.15 * 255
           lineThickness: 1.0,
 
@@ -454,14 +451,14 @@ class EditablePageState extends State<EditablePage> {
             }
           },
         ),
-      if (bloc.dontShowTappableBorderRects())
-        Align(
-          alignment: Alignment.topRight,
-          child: Padding(
-            padding: EdgeInsets.only(right: fco.canEditContent() ? 68 : 8.0),
-            child: fco.NavigationDD(pencilIconColor: Colors.red),
-          ),
-        ),
+      // if (bloc.dontShowTappableBorderRects())
+      //   Align(
+      //     alignment: Alignment.topRight,
+      //     child: Padding(
+      //       padding: EdgeInsets.only(right: fco.canEditContent() ? 68 : 8.0),
+      //       child: fco.NavigationDD(pencilIconColor: Colors.red),
+      //     ),
+      //   ),
     ],
   );
 
@@ -889,8 +886,7 @@ class EditablePageState extends State<EditablePage> {
 
       return false;
     });
-    // give the callout a gk so it can be measured
-    final gk = GlobalKey();
+    // final gk = GlobalKey();
     fco.showOverlay(
       calloutContent: Card(
         color: Colors.white,
@@ -919,7 +915,8 @@ class EditablePageState extends State<EditablePage> {
                     return;
                   }
                   // if (!kDebugMode && !(fco.editorPasswords.contains(s))) return;
-                  fco.dismiss(cid_EditorPassword);
+                  // fco.dismiss(cid_EditorPassword);
+                  fco.dismissAll();
                   fco.capiBloc.add(
                     CAPIEvent.signedIn(asGuestEditor: s == "GUEST"),
                   );
@@ -992,7 +989,7 @@ class EditablePageState extends State<EditablePage> {
       ),
       // targetGkF: ()=> fco.authIconGK,
       wrapInPointerInterceptor: true,
-      targetGK: gk,
+      // targetGK: gk,
     );
   }
 

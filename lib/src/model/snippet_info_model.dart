@@ -47,11 +47,9 @@ class SnippetInfoModel with SnippetInfoModelMappable {
   //   }
   // }
 
-  @JsonKey(includeFromJson: false, includeToJson: false)
   Map<VersionId, SnippetRootNode?> cachedVersions = {};
 
-  SnippetInfoModel(
-    this.name, {
+  SnippetInfoModel(this.name, {
     required this.editingVersionId,
     required this.publishedVersionId,
     this.autoPublish,
@@ -103,46 +101,54 @@ class SnippetInfoModel with SnippetInfoModelMappable {
 
   static VersionId createNewVersion(SnippetRootNode snippet) {
     // may require a new SnippetInfo
-    SnippetInfoModel? snippetInfo =
-        SnippetInfoModel.cachedSnippetInfo(snippet.name) ??
-        createAndCacheNewSnippetInfo(snippet);
+    fco.modelRepo.ensureSnippetInfoCached(snippetName: snippet.name);
+    SnippetInfoModel? snippetInfo = SnippetInfoModel.cachedSnippetInfo(
+      snippet.name,
+    );
 
-    // remove all subsequent versions following the current version
-    // before saving new version
-    List<VersionId> newIdCache = [];
-    List<VersionId> tbd = [];
-    for (VersionId v in snippetInfo.versionIds ?? []) {
-      try {
-        if (int.parse(v.isEmpty ? "0" : v) >
-            int.parse(snippetInfo.currentVersionId() ?? "-1")) {
-          tbd.add(v);
-        } else {
-          newIdCache.add(v);
+    if (snippetInfo != null) {
+      // remove all subsequent versions following the current version
+      // before saving new version
+      List<VersionId> newIdCache = [];
+      List<VersionId> tbd = [];
+      for (VersionId v in snippetInfo.versionIds ?? []) {
+        try {
+          if (int.parse(v.isEmpty ? "0" : v) >
+              int.parse(snippetInfo.currentVersionId() ?? "-1")) {
+            tbd.add(v);
+          } else {
+            newIdCache.add(v);
+          }
+        } catch (e) {
+          fco.logger.e('$e');
         }
-      } catch (e) {
-        fco.logger.e('$e');
       }
-    }
-    if (tbd.isNotEmpty) {
-      // delete from FB and also from cache
-      for (VersionId vId in tbd) {
-        snippetInfo.versionIds?.remove(vId);
-        snippetInfo.cachedVersions.remove(vId);
+      if (tbd.isNotEmpty) {
+        // delete from FB and also from cache
+        for (VersionId vId in tbd) {
+          snippetInfo.versionIds?.remove(vId);
+          snippetInfo.cachedVersions.remove(vId);
+        }
       }
     }
 
-    VersionId newVersionId = DateTime.now().millisecondsSinceEpoch.toString();
+    VersionId newVersionId = DateTime
+        .now()
+        .millisecondsSinceEpoch
+        .toString();
 
     // update FB appInfo
     // jsArray issue
     // List<String> newList = appInfo.snippetNames;
-    if (!fco.appInfo.snippetNames.contains(snippetInfo.name)) {
-      fco.appInfo.snippetNames = [
-        ...fco.appInfo.snippetNames,
-        snippetInfo.name,
-      ];
+    if (!fco.appInfo.snippetNames.contains(snippet.name)) {
+      fco.appInfo.snippetNames = [...fco.appInfo.snippetNames, snippet.name];
       AppInfoModel.needToSave = true;
     }
+    snippetInfo ??= ensureSnippetInfoPresent(
+        snippetName: snippet.name,
+        firstSnippetVersion: SnippetRootNode(name: snippet.name, child: PlaceholderNode())
+    );
+
     snippetInfo.editingVersionId = newVersionId;
     if (snippetInfo.autoPublish ?? fco.appInfo.autoPublishDefault) {
       snippetInfo.publishedVersionId = newVersionId;
@@ -153,19 +159,33 @@ class SnippetInfoModel with SnippetInfoModelMappable {
     return newVersionId;
   }
 
-  static SnippetInfoModel createAndCacheNewSnippetInfo(
-    SnippetRootNode firstVersion,
-  ) {
-    VersionId firstVersionId = DateTime.now().millisecondsSinceEpoch.toString();
-
-    final newSnippetInfo = SnippetInfoModel(
-      firstVersion.name,
-      editingVersionId: firstVersionId,
-      publishedVersionId: firstVersionId,
-      autoPublish: fco.appInfo.autoPublishDefault,
-      versionIds: [firstVersionId],
+  //
+  static SnippetInfoModel ensureSnippetInfoPresent({required String snippetName,
+      required SnippetRootNode firstSnippetVersion}) {
+    SnippetInfoModel? snippetInfo = SnippetInfoModel.cachedSnippetInfo(
+      snippetName,
     );
-    SnippetInfoModel.cacheSnippetInfo(firstVersion.name, newSnippetInfo);
-    return newSnippetInfo;
+    // only uses firstVersion if snippet does not already exist
+    if (snippetInfo == null) {
+      // create a first version of the content, then it's snippetInfo
+      VersionId firstVersionId = DateTime
+          .now()
+          .millisecondsSinceEpoch
+          .toString();
+
+      final newSnippetInfo = SnippetInfoModel(
+        snippetName,
+        editingVersionId: firstVersionId,
+        publishedVersionId: firstVersionId,
+        autoPublish: fco.appInfo.autoPublishDefault,
+        versionIds: [firstVersionId],
+      );
+      // cache SnippetINFO
+      SnippetInfoModel.cacheSnippetInfo(snippetName, newSnippetInfo);
+      // cache snippet root node (initial version)
+      newSnippetInfo.cachedVersions[firstVersionId] = firstSnippetVersion;
+      return newSnippetInfo;
+    }
+    return snippetInfo;
   }
 }

@@ -44,7 +44,7 @@ class _BarrierDemoState extends State<BarrierDemo> {
   /// NOTE - a callout can be updated after it is created by updating properties and rebuilding it.
   CalloutConfig _createFabCalloutConfig() {
     _bc = CalloutBarrierConfig(
-      cutoutPadding: fco.isWeb ? 20 : 10,
+      // cutoutPadding: fco.isWeb ? 20 : 10,
       excludeTargetFromBarrier: false,
       roundExclusion: false,
       closeOnTapped: true,

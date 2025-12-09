@@ -14,6 +14,9 @@ class TargetModelMapper extends ClassMapperBase<TargetModel> {
   static TargetModelMapper ensureInitialized() {
     if (_instance == null) {
       MapperContainer.globals.use(_instance = TargetModelMapper._());
+      OffsetModelMapper.ensureInitialized();
+      AlignmentModelMapper.ensureInitialized();
+      SizeModelMapper.ensureInitialized();
       UpTo6ColorsMapper.ensureInitialized();
       DecorationShapeEnumMapper.ensureInitialized();
       TargetPointerTypeEnumMapper.ensureInitialized();
@@ -34,10 +37,40 @@ class TargetModelMapper extends ClassMapperBase<TargetModel> {
     opt: true,
     def: 1.0,
   );
-  static double? _$radiusPc(TargetModel v) => v.radiusPc;
-  static const Field<TargetModel, double> _f$radiusPc = Field(
-    'radiusPc',
-    _$radiusPc,
+  static OffsetModel? _$targetCLocalPc(TargetModel v) => v.targetCLocalPc;
+  static const Field<TargetModel, OffsetModel> _f$targetCLocalPc = Field(
+    'targetCLocalPc',
+    _$targetCLocalPc,
+    opt: true,
+  );
+  static OffsetModel? _$btnCLocalPosPc(TargetModel v) => v.btnCLocalPosPc;
+  static const Field<TargetModel, OffsetModel> _f$btnCLocalPosPc = Field(
+    'btnCLocalPosPc',
+    _$btnCLocalPosPc,
+    opt: true,
+  );
+  static double? _$targetRadiusPC(TargetModel v) => v.targetRadiusPC;
+  static const Field<TargetModel, double> _f$targetRadiusPC = Field(
+    'targetRadiusPC',
+    _$targetRadiusPC,
+    opt: true,
+  );
+  static double? _$btnRadiusPc(TargetModel v) => v.btnRadiusPc;
+  static const Field<TargetModel, double> _f$btnRadiusPc = Field(
+    'btnRadiusPc',
+    _$btnRadiusPc,
+    opt: true,
+  );
+  static AlignmentModel? _$tcAlignment(TargetModel v) => v.tcAlignment;
+  static const Field<TargetModel, AlignmentModel> _f$tcAlignment = Field(
+    'tcAlignment',
+    _$tcAlignment,
+    opt: true,
+  );
+  static SizeModel? _$calloutSize(TargetModel v) => v.calloutSize;
+  static const Field<TargetModel, SizeModel> _f$calloutSize = Field(
+    'calloutSize',
+    _$calloutSize,
     opt: true,
   );
   static int _$calloutDurationMs(TargetModel v) => v.calloutDurationMs;
@@ -46,69 +79,6 @@ class TargetModelMapper extends ClassMapperBase<TargetModel> {
     _$calloutDurationMs,
     opt: true,
     def: 1500,
-  );
-  static double _$calloutWidth(TargetModel v) => v.calloutWidth;
-  static const Field<TargetModel, double> _f$calloutWidth = Field(
-    'calloutWidth',
-    _$calloutWidth,
-    opt: true,
-    def: 400,
-  );
-  static double _$calloutHeight(TargetModel v) => v.calloutHeight;
-  static const Field<TargetModel, double> _f$calloutHeight = Field(
-    'calloutHeight',
-    _$calloutHeight,
-    opt: true,
-    def: 85,
-  );
-  static double? _$calloutTopPc(TargetModel v) => v.calloutTopPc;
-  static const Field<TargetModel, double> _f$calloutTopPc = Field(
-    'calloutTopPc',
-    _$calloutTopPc,
-    opt: true,
-  );
-  static double? _$calloutLeftPc(TargetModel v) => v.calloutLeftPc;
-  static const Field<TargetModel, double> _f$calloutLeftPc = Field(
-    'calloutLeftPc',
-    _$calloutLeftPc,
-    opt: true,
-  );
-  static double? _$targetAlignmentX(TargetModel v) => v.targetAlignmentX;
-  static const Field<TargetModel, double> _f$targetAlignmentX = Field(
-    'targetAlignmentX',
-    _$targetAlignmentX,
-    opt: true,
-  );
-  static double? _$targetAlignmentY(TargetModel v) => v.targetAlignmentY;
-  static const Field<TargetModel, double> _f$targetAlignmentY = Field(
-    'targetAlignmentY',
-    _$targetAlignmentY,
-    opt: true,
-  );
-  static double? _$btnLocalTopPc(TargetModel v) => v.btnLocalTopPc;
-  static const Field<TargetModel, double> _f$btnLocalTopPc = Field(
-    'btnLocalTopPc',
-    _$btnLocalTopPc,
-    opt: true,
-  );
-  static double? _$btnLocalLeftPc(TargetModel v) => v.btnLocalLeftPc;
-  static const Field<TargetModel, double> _f$btnLocalLeftPc = Field(
-    'btnLocalLeftPc',
-    _$btnLocalLeftPc,
-    opt: true,
-  );
-  static double? _$targetLocalPosLeftPc(TargetModel v) =>
-      v.targetLocalPosLeftPc;
-  static const Field<TargetModel, double> _f$targetLocalPosLeftPc = Field(
-    'targetLocalPosLeftPc',
-    _$targetLocalPosLeftPc,
-    opt: true,
-  );
-  static double? _$targetLocalPosTopPc(TargetModel v) => v.targetLocalPosTopPc;
-  static const Field<TargetModel, double> _f$targetLocalPosTopPc = Field(
-    'targetLocalPosTopPc',
-    _$targetLocalPosTopPc,
-    opt: true,
   );
   static bool _$showCover(TargetModel v) => v.showCover;
   static const Field<TargetModel, bool> _f$showCover = Field(
@@ -217,31 +187,9 @@ class TargetModelMapper extends ClassMapperBase<TargetModel> {
     opt: true,
     def: false,
   );
-  static TargetsWrapperNode? _$parentTargetsWrapperNode(TargetModel v) =>
-      v.parentTargetsWrapperNode;
-  static const Field<TargetModel, TargetsWrapperNode>
-  _f$parentTargetsWrapperNode = Field(
-    'parentTargetsWrapperNode',
-    _$parentTargetsWrapperNode,
-    mode: FieldMode.member,
-  );
   static GlobalKey<State<StatefulWidget>>? _$gk(TargetModel v) => v.gk;
   static const Field<TargetModel, GlobalKey<State<StatefulWidget>>> _f$gk =
       Field('gk', _$gk, mode: FieldMode.member);
-  static GlobalKey<State<StatefulWidget>>? _$targetsWrapperGK(TargetModel v) =>
-      v.targetsWrapperGK;
-  static const Field<TargetModel, GlobalKey<State<StatefulWidget>>>
-  _f$targetsWrapperGK = Field(
-    'targetsWrapperGK',
-    _$targetsWrapperGK,
-    mode: FieldMode.member,
-  );
-  static double _$radius(TargetModel v) => v.radius;
-  static const Field<TargetModel, double> _f$radius = Field(
-    'radius',
-    _$radius,
-    mode: FieldMode.member,
-  );
   static String _$contentCId(TargetModel v) => v.contentCId;
   static const Field<TargetModel, String> _f$contentCId = Field(
     'contentCId',
@@ -259,18 +207,13 @@ class TargetModelMapper extends ClassMapperBase<TargetModel> {
   final MappableFields<TargetModel> fields = const {
     #uid: _f$uid,
     #transformScale: _f$transformScale,
-    #radiusPc: _f$radiusPc,
+    #targetCLocalPc: _f$targetCLocalPc,
+    #btnCLocalPosPc: _f$btnCLocalPosPc,
+    #targetRadiusPC: _f$targetRadiusPC,
+    #btnRadiusPc: _f$btnRadiusPc,
+    #tcAlignment: _f$tcAlignment,
+    #calloutSize: _f$calloutSize,
     #calloutDurationMs: _f$calloutDurationMs,
-    #calloutWidth: _f$calloutWidth,
-    #calloutHeight: _f$calloutHeight,
-    #calloutTopPc: _f$calloutTopPc,
-    #calloutLeftPc: _f$calloutLeftPc,
-    #targetAlignmentX: _f$targetAlignmentX,
-    #targetAlignmentY: _f$targetAlignmentY,
-    #btnLocalTopPc: _f$btnLocalTopPc,
-    #btnLocalLeftPc: _f$btnLocalLeftPc,
-    #targetLocalPosLeftPc: _f$targetLocalPosLeftPc,
-    #targetLocalPosTopPc: _f$targetLocalPosTopPc,
     #showCover: _f$showCover,
     #showBtn: _f$showBtn,
     #canResizeH: _f$canResizeH,
@@ -286,30 +229,24 @@ class TargetModelMapper extends ClassMapperBase<TargetModel> {
     #bubbleOrTargetPointerColor: _f$bubbleOrTargetPointerColor,
     #animatePointer: _f$animatePointer,
     #autoPlay: _f$autoPlay,
-    #parentTargetsWrapperNode: _f$parentTargetsWrapperNode,
     #gk: _f$gk,
-    #targetsWrapperGK: _f$targetsWrapperGK,
-    #radius: _f$radius,
     #contentCId: _f$contentCId,
     #hashCode: _f$hashCode,
   };
 
+  @override
+  final MappingHook hook = const TargetModelHook();
   static TargetModel _instantiate(DecodingData data) {
     return TargetModel(
       uid: data.dec(_f$uid),
       transformScale: data.dec(_f$transformScale),
-      radiusPc: data.dec(_f$radiusPc),
+      targetCLocalPc: data.dec(_f$targetCLocalPc),
+      btnCLocalPosPc: data.dec(_f$btnCLocalPosPc),
+      targetRadiusPC: data.dec(_f$targetRadiusPC),
+      btnRadiusPc: data.dec(_f$btnRadiusPc),
+      tcAlignment: data.dec(_f$tcAlignment),
+      calloutSize: data.dec(_f$calloutSize),
       calloutDurationMs: data.dec(_f$calloutDurationMs),
-      calloutWidth: data.dec(_f$calloutWidth),
-      calloutHeight: data.dec(_f$calloutHeight),
-      calloutTopPc: data.dec(_f$calloutTopPc),
-      calloutLeftPc: data.dec(_f$calloutLeftPc),
-      targetAlignmentX: data.dec(_f$targetAlignmentX),
-      targetAlignmentY: data.dec(_f$targetAlignmentY),
-      btnLocalTopPc: data.dec(_f$btnLocalTopPc),
-      btnLocalLeftPc: data.dec(_f$btnLocalLeftPc),
-      targetLocalPosLeftPc: data.dec(_f$targetLocalPosLeftPc),
-      targetLocalPosTopPc: data.dec(_f$targetLocalPosTopPc),
       showCover: data.dec(_f$showCover),
       showBtn: data.dec(_f$showBtn),
       canResizeH: data.dec(_f$canResizeH),
@@ -388,6 +325,10 @@ extension TargetModelValueCopy<$R, $Out>
 
 abstract class TargetModelCopyWith<$R, $In extends TargetModel, $Out>
     implements ClassCopyWith<$R, $In, $Out> {
+  OffsetModelCopyWith<$R, OffsetModel, OffsetModel>? get targetCLocalPc;
+  OffsetModelCopyWith<$R, OffsetModel, OffsetModel>? get btnCLocalPosPc;
+  AlignmentModelCopyWith<$R, AlignmentModel, AlignmentModel>? get tcAlignment;
+  SizeModelCopyWith<$R, SizeModel, SizeModel>? get calloutSize;
   UpTo6ColorsCopyWith<$R, UpTo6Colors, UpTo6Colors>? get calloutFillColors;
   UpTo6ColorsCopyWith<$R, UpTo6Colors, UpTo6Colors>? get calloutBorderColors;
   ColorModelCopyWith<$R, ColorModel, ColorModel>?
@@ -395,18 +336,13 @@ abstract class TargetModelCopyWith<$R, $In extends TargetModel, $Out>
   $R call({
     int? uid,
     double? transformScale,
-    double? radiusPc,
+    OffsetModel? targetCLocalPc,
+    OffsetModel? btnCLocalPosPc,
+    double? targetRadiusPC,
+    double? btnRadiusPc,
+    AlignmentModel? tcAlignment,
+    SizeModel? calloutSize,
     int? calloutDurationMs,
-    double? calloutWidth,
-    double? calloutHeight,
-    double? calloutTopPc,
-    double? calloutLeftPc,
-    double? targetAlignmentX,
-    double? targetAlignmentY,
-    double? btnLocalTopPc,
-    double? btnLocalLeftPc,
-    double? targetLocalPosLeftPc,
-    double? targetLocalPosTopPc,
     bool? showCover,
     bool? showBtn,
     bool? canResizeH,
@@ -435,6 +371,18 @@ class _TargetModelCopyWithImpl<$R, $Out>
   late final ClassMapperBase<TargetModel> $mapper =
       TargetModelMapper.ensureInitialized();
   @override
+  OffsetModelCopyWith<$R, OffsetModel, OffsetModel>? get targetCLocalPc =>
+      $value.targetCLocalPc?.copyWith.$chain((v) => call(targetCLocalPc: v));
+  @override
+  OffsetModelCopyWith<$R, OffsetModel, OffsetModel>? get btnCLocalPosPc =>
+      $value.btnCLocalPosPc?.copyWith.$chain((v) => call(btnCLocalPosPc: v));
+  @override
+  AlignmentModelCopyWith<$R, AlignmentModel, AlignmentModel>? get tcAlignment =>
+      $value.tcAlignment?.copyWith.$chain((v) => call(tcAlignment: v));
+  @override
+  SizeModelCopyWith<$R, SizeModel, SizeModel>? get calloutSize =>
+      $value.calloutSize?.copyWith.$chain((v) => call(calloutSize: v));
+  @override
   UpTo6ColorsCopyWith<$R, UpTo6Colors, UpTo6Colors>? get calloutFillColors =>
       $value.calloutFillColors?.copyWith.$chain(
         (v) => call(calloutFillColors: v),
@@ -452,18 +400,13 @@ class _TargetModelCopyWithImpl<$R, $Out>
   $R call({
     int? uid,
     double? transformScale,
-    Object? radiusPc = $none,
+    Object? targetCLocalPc = $none,
+    Object? btnCLocalPosPc = $none,
+    Object? targetRadiusPC = $none,
+    Object? btnRadiusPc = $none,
+    Object? tcAlignment = $none,
+    Object? calloutSize = $none,
     int? calloutDurationMs,
-    double? calloutWidth,
-    double? calloutHeight,
-    Object? calloutTopPc = $none,
-    Object? calloutLeftPc = $none,
-    Object? targetAlignmentX = $none,
-    Object? targetAlignmentY = $none,
-    Object? btnLocalTopPc = $none,
-    Object? btnLocalLeftPc = $none,
-    Object? targetLocalPosLeftPc = $none,
-    Object? targetLocalPosTopPc = $none,
     bool? showCover,
     bool? showBtn,
     bool? canResizeH,
@@ -483,20 +426,13 @@ class _TargetModelCopyWithImpl<$R, $Out>
     FieldCopyWithData({
       if (uid != null) #uid: uid,
       if (transformScale != null) #transformScale: transformScale,
-      if (radiusPc != $none) #radiusPc: radiusPc,
+      if (targetCLocalPc != $none) #targetCLocalPc: targetCLocalPc,
+      if (btnCLocalPosPc != $none) #btnCLocalPosPc: btnCLocalPosPc,
+      if (targetRadiusPC != $none) #targetRadiusPC: targetRadiusPC,
+      if (btnRadiusPc != $none) #btnRadiusPc: btnRadiusPc,
+      if (tcAlignment != $none) #tcAlignment: tcAlignment,
+      if (calloutSize != $none) #calloutSize: calloutSize,
       if (calloutDurationMs != null) #calloutDurationMs: calloutDurationMs,
-      if (calloutWidth != null) #calloutWidth: calloutWidth,
-      if (calloutHeight != null) #calloutHeight: calloutHeight,
-      if (calloutTopPc != $none) #calloutTopPc: calloutTopPc,
-      if (calloutLeftPc != $none) #calloutLeftPc: calloutLeftPc,
-      if (targetAlignmentX != $none) #targetAlignmentX: targetAlignmentX,
-      if (targetAlignmentY != $none) #targetAlignmentY: targetAlignmentY,
-      if (btnLocalTopPc != $none) #btnLocalTopPc: btnLocalTopPc,
-      if (btnLocalLeftPc != $none) #btnLocalLeftPc: btnLocalLeftPc,
-      if (targetLocalPosLeftPc != $none)
-        #targetLocalPosLeftPc: targetLocalPosLeftPc,
-      if (targetLocalPosTopPc != $none)
-        #targetLocalPosTopPc: targetLocalPosTopPc,
       if (showCover != null) #showCover: showCover,
       if (showBtn != null) #showBtn: showBtn,
       if (canResizeH != null) #canResizeH: canResizeH,
@@ -524,26 +460,15 @@ class _TargetModelCopyWithImpl<$R, $Out>
   TargetModel $make(CopyWithData data) => TargetModel(
     uid: data.get(#uid, or: $value.uid),
     transformScale: data.get(#transformScale, or: $value.transformScale),
-    radiusPc: data.get(#radiusPc, or: $value.radiusPc),
+    targetCLocalPc: data.get(#targetCLocalPc, or: $value.targetCLocalPc),
+    btnCLocalPosPc: data.get(#btnCLocalPosPc, or: $value.btnCLocalPosPc),
+    targetRadiusPC: data.get(#targetRadiusPC, or: $value.targetRadiusPC),
+    btnRadiusPc: data.get(#btnRadiusPc, or: $value.btnRadiusPc),
+    tcAlignment: data.get(#tcAlignment, or: $value.tcAlignment),
+    calloutSize: data.get(#calloutSize, or: $value.calloutSize),
     calloutDurationMs: data.get(
       #calloutDurationMs,
       or: $value.calloutDurationMs,
-    ),
-    calloutWidth: data.get(#calloutWidth, or: $value.calloutWidth),
-    calloutHeight: data.get(#calloutHeight, or: $value.calloutHeight),
-    calloutTopPc: data.get(#calloutTopPc, or: $value.calloutTopPc),
-    calloutLeftPc: data.get(#calloutLeftPc, or: $value.calloutLeftPc),
-    targetAlignmentX: data.get(#targetAlignmentX, or: $value.targetAlignmentX),
-    targetAlignmentY: data.get(#targetAlignmentY, or: $value.targetAlignmentY),
-    btnLocalTopPc: data.get(#btnLocalTopPc, or: $value.btnLocalTopPc),
-    btnLocalLeftPc: data.get(#btnLocalLeftPc, or: $value.btnLocalLeftPc),
-    targetLocalPosLeftPc: data.get(
-      #targetLocalPosLeftPc,
-      or: $value.targetLocalPosLeftPc,
-    ),
-    targetLocalPosTopPc: data.get(
-      #targetLocalPosTopPc,
-      or: $value.targetLocalPosTopPc,
     ),
     showCover: data.get(#showCover, or: $value.showCover),
     showBtn: data.get(#showBtn, or: $value.showBtn),

@@ -29,7 +29,6 @@ class FlutterContentApp extends StatefulWidget {
   final MaterialAppThemeFunc materialAppThemeF;
   final FirebaseOptions? fbOptions;
   final bool useEmulator;
-  final bool useFBStorage;
   final Map<String, void Function(BuildContext)>? namedVoidCallbacks;
   final bool hideStatusBar;
   final VoidCallback? onReadyF;
@@ -68,7 +67,6 @@ class FlutterContentApp extends StatefulWidget {
     required this.materialAppThemeF,
     this.fbOptions,
     this.useEmulator = false,
-    this.useFBStorage = false,
     this.hideStatusBar = true,
     // @visibleForTesting this.testModelRepo,
     // @visibleForTesting this.testWidget,
@@ -87,7 +85,6 @@ class FlutterContentApp extends StatefulWidget {
     required this.materialAppThemeF,
     this.fbOptions,
     this.useEmulator = false,
-    this.useFBStorage = false,
     this.hideStatusBar = true,
     // @visibleForTesting this.testModelRepo,
     // @visibleForTesting this.testWidget,
@@ -168,7 +165,6 @@ class FlutterContentAppState extends State<FlutterContentApp>
       appName: widget.appName,
       fbOptions: widget.fbOptions,
       useEmulator: widget.useEmulator,
-      useFBStorage: widget.useFBStorage,
       routingConfig: widget.routingConfig,
       initialRoutePath: widget.initialRoutePath,
     );

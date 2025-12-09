@@ -42,7 +42,7 @@ dependencies:
   flutter_bloc: ^9.1.1
   hydrated_bloc: ^10.0.0
   path_provider: ^2.1.5
-  google_fonts: ^6.2.1
+  google_fonts: ^6.3.2
   watcher: ^1.1.0
   multi_split_view: ^3.5.0
   # compals
@@ -111,18 +111,20 @@ dependencies:
   url_launcher: ^6.3.1
   flutter_animate: ^4.5.2
 
-  firebase_core: ^3.14.0
-  firebase_auth: ^5.6.2
+  firebase_core: ^4.2.1
+  firebase_auth: ^6.1.2
 
-  firebase_storage: ^12.4.8
-  cloud_firestore: ^5.6.11
+  firebase_storage: ^13.0.4
+  firebase_cached_image: ^0.10.0
+  firebase_ui_storage: ^3.0.1
+  firebase_ui_shared: ^1.4.2
+  firebase_ui_firestore: ^2.0.1
+  firebase_ui_localizations: ^2.0.1
+  file_selector: ^1.1.0
 
-  firebase_ui_storage: ^2.1.2
+  cloud_firestore: ^6.1.0
 
-  firebase_ui_shared: ^1.4.1
-  file_selector_platform_interface: ^2.6.2
-  firebase_ui_localizations: ^1.14.0
-  file_selector: ^1.0.3
+
 
 #  markdown: ^7.3.0
 #  flutter_markdown: ^0.7.2+1
@@ -175,3 +177,8 @@ flutter:
     - lib/assets/images/
     - lib/assets/images/google-icons/
     - lib/assets/images/carousel-demo/
+
+cider:
+  link_template:
+    tag: https://github.com/flutter_content/project/releases/tag/%tag% # initial release link template
+    diff: https://github.com/flutter_content/project/compare/%from%...%to% # subsequent releases link template

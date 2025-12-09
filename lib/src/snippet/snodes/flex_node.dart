@@ -160,17 +160,6 @@ class FlexNode extends MC with FlexNodeMappable {
     }
   }
 
-  @override
-  List<Type> wrapWithRecommendations() => [
-    ExpandedNode,
-    FlexibleNode,
-    // PositionedNode,
-    // AlignNode,
-  ];
-
-  @override
-  List<Type> addChildRecommendations() => [ExpandedNode, FlexibleNode];
-
   // bool get isRow {
   //   throw UnimplementedError('FlexNode.isRow !');
   // }

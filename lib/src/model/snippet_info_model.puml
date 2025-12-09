@@ -1,0 +1,46 @@
+@startuml
+title Class Diagram for SnippetInfoModel
+
+class SnippetInfoModel {
+  +name: SnippetName
+  +editingVersionId: VersionId
+  +publishedVersionId: VersionId
+  +autoPublish: bool?
+  +hide: bool?
+  +versionIds: List<VersionId>?
+  - {static} _snippetInfoCache: Map<SnippetName, SnippetInfoModel>
+  +cachedVersions: Map<VersionId, SnippetRootNode?>
+
+  +SnippetInfoModel(name, editingVersionId, publishedVersionId, autoPublish, hide, versionIds)
+  + {static} cachedSnippetInfo(snippetName: String): SnippetInfoModel?
+  + {static} cacheSnippetInfo(snippetName: String, sni: SnippetInfoModel): void
+  + {static} cachedSnippetNames(): List<String>
+  + {static} removeFromCache(snippetName: String): void
+  +currentVersionId(): VersionId?
+  +currentVersionFromCacheOrFB(): Future<SnippetRootNode?>
+  +currentVersionFromCache(): SnippetRootNode?
+  +previousVersionId(): VersionId?
+  +nextVersionId(): VersionId?
+  +earliestVersionId(): VersionId?
+  +latestVersionId(): VersionId?
+  +isFirstVersion(): bool
+  +isLatestVersion(): bool
+  + {static} createNewVersion(snippet: SnippetRootNode): VersionId
+  + {static} createAndCacheNewSnippetInfo(firstVersion: SnippetRootNode): SnippetInfoModel
+}
+
+class SnippetRootNode {
+  +name: String
+  .. Other properties and methods ..
+}
+
+SnippetInfoModel "1" o--> "*" SnippetRootNode : "manages versions of"
+
+note "A SnippetInfoModel holds metadata about a snippet, including all its versions.\nEach version is represented by a SnippetRootNode." as N1
+SnippetInfoModel .. N1
+
+note "The class maintains a static cache of itself." as N2
+'(SnippetInfoModel, SnippetInfoModel._snippetInfoCache) .. N2
+
+
+@enduml

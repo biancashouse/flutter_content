@@ -176,17 +176,6 @@ class StackNode extends MC with StackNodeMappable {
 
 
   @override
-  List<Type> wrapWithRecommendations() => [
-    ExpandedNode,
-    FlexibleNode,
-    // PositionedNode,
-    // AlignNode,
-  ];
-
-  @override
-  List<Type> addChildRecommendations() => [PositionedNode, AlignNode];
-
-  @override
   String toString() => FLUTTER_TYPE;
 
   static const String FLUTTER_TYPE = "Stack";

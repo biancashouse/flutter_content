@@ -67,7 +67,6 @@ void main({bool useEmulator = false}) {
           ),
           fbOptions: BH_APPS_DefaultFirebaseOptions.currentPlatform,
           useEmulator: useEmulator,
-          useFBStorage: true,
           // onReadyF: () {},
         ),
       );

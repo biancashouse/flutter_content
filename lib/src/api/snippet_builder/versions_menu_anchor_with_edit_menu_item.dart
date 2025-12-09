@@ -96,57 +96,76 @@ class SnippetMenuAnchor extends StatelessWidget {
             ],
           ),
         ),
-        _menuItemButtonWithPI(
-          onPressed: () {
-            final bloc = context.read<CAPIBloC>();
-            print('entering node selection mode');
-            //
-            // enter select widget mode
-            //
-            bloc.add(
-              CAPIEvent.enterNodeSelectionMode(
-                snippetName: snippetInfo.name,
-              ),
-            );
-            // fco.afterNextBuildDo(() {
-            // setup key handler to exit widget selection mode
-            fco.removeKeystrokeHandler('key-handler-exit-Select-Widget-Mode');
-            fco.registerKeystrokeHandler(
-              'key-handler-exit-Select-Widget-Mode',
-              (KeyEvent event) {
-                if (event.logicalKey == LogicalKeyboardKey.escape) {
-                  // if (bloc.showTappableBorderRects()) {
+        if (!SnippetRootNode.isHotspotCalloutContent(snippetInfo.name))
+          _menuItemButtonWithPI(
+            onPressed: () {
+              final bloc = context.read<CAPIBloC>();
+              print('entering node selection mode');
+              //
+              // enter select widget mode
+              //
+              bloc.add(
+                CAPIEvent.enterNodeSelectionMode(
+                  snippetName: snippetInfo.name,
+                ),
+              );
+              // fco.afterNextBuildDo(() {
+              // setup key handler to exit widget selection mode
+              fco.removeKeystrokeHandler('key-handler-exit-Select-Widget-Mode');
+              fco.registerKeystrokeHandler(
+                'key-handler-exit-Select-Widget-Mode',
+                    (KeyEvent event) {
+                  if (event.logicalKey == LogicalKeyboardKey.escape) {
+                    // if (bloc.showTappableBorderRects()) {
                     bloc.add(CAPIEvent.exitNodeSelectionMode());
-                  // }
-                }
-                return false;
-              },
-            );
-            // // build stack of dotted rects to show widget boundaries
-            // var rootNode = snippetInfo.currentVersionFromCache();
-            // if (rootNode == null) return;
-            // parentBuilderState.stackOfNodeBorderRects = _buildStackOfNodeRects(rootNode);
-            // // start listening to the scroll controller
-            // rootNode.scrollController?.addListener(parentBuilderState.refresh);
-            // parentBuilderState.refresh();
-            // });
-            // // after rendering just this snippet, show its tappable overlays
-            // fco.afterNextBuildDo((){
-            //   var snippet = snippetInfo.currentVersionFromCache();
-            //   context.showSnippetNodeWidgetTappableOverlays();
-            // });
-          },
-          child: Row(
-            children: [
-              const Text(
-                'enter widget selection mode',
-                style: TextStyle(color: Colors.purple, fontSize: 16),
-              ),
-              Gap(10),
-              Icon(Icons.select_all, color: Colors.purple),
-            ],
+                    // }
+                  }
+                  return false;
+                },
+              );
+              // // build stack of dotted rects to show widget boundaries
+              // var rootNode = snippetInfo.currentVersionFromCache();
+              // if (rootNode == null) return;
+              // parentBuilderState.stackOfNodeBorderRects = _buildStackOfNodeRects(rootNode);
+              // // start listening to the scroll controller
+              // rootNode.scrollController?.addListener(parentBuilderState.refresh);
+              // parentBuilderState.refresh();
+              // });
+              // // after rendering just this snippet, show its tappable overlays
+              // fco.afterNextBuildDo((){
+              //   var snippet = snippetInfo.currentVersionFromCache();
+              //   context.showSnippetNodeWidgetTappableOverlays();
+              // });
+            },
+            child: Row(
+              children: [
+                const Text(
+                  'enter widget selection mode',
+                  style: TextStyle(color: Colors.purple, fontSize: 16),
+                ),
+                Gap(10),
+                Icon(Icons.select_all, color: Colors.purple),
+              ],
+            ),
           ),
-        ),
+        if (SnippetRootNode.isHotspotCalloutContent(snippetInfo.name))
+          _menuItemButtonWithPI(
+            onPressed: (){
+              snippetInfo
+                  .currentVersionFromCache()
+                  ?.tappedToEditSnippetNode();
+            },
+            child: Row(
+              children: [
+                const Text(
+                  'edit callout content',
+                  style: TextStyle(color: Colors.purple, fontSize: 16),
+                ),
+                Gap(10),
+                Icon(Icons.edit, color: Colors.purple),
+              ],
+            ),
+          ),
         if (snippetInfo.editingVersionId != snippetInfo.publishedVersionId)
           _menuItemButtonWithPI(
             onPressed: () {
@@ -193,6 +212,7 @@ class SnippetMenuAnchor extends StatelessWidget {
           },
           child: const Text('rebuild snippet from JSON...'),
         ),
+        if (!SnippetRootNode.isHotspotCalloutContent(snippetInfo.name))
         _menuItemButtonWithPI(
           onPressed: () async {
             fco.capiBloc.add(

@@ -7,7 +7,7 @@ class Zoomer extends StatefulWidget {
   final Widget child;
   
 
-  static const Duration ZOOM_TRANSITION_DURATION_MS = ms500;
+  static const Duration ZOOM_TRANSITION_DURATION_MS = ms200;
   static const Duration ZOOM_IMMEDIATELY = immediate;
 
   const Zoomer({

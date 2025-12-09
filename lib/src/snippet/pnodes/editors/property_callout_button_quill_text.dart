@@ -68,7 +68,6 @@ class PropertyButtonQuillText extends StatelessWidget {
       onResizeF: (Size newSize) {},
       onDragF: (Offset newOffset) {},
       draggable: false,
-      notUsingHydratedStorage: true,
     );
     Widget calloutContent = Padding(
       padding: const EdgeInsets.all(16.0),
@@ -110,8 +109,6 @@ class PropertyButtonQuillText extends StatelessWidget {
                         decorationBorderRadius: 16,
                         targetPointerType: TargetPointerType.none(),
                         barrier: CalloutBarrierConfig(opacity: 0.1),
-                        notUsingHydratedStorage: true,
-                        
                         onDismissedF: () {},
                       ),
                       calloutContent: ColourPickerTool(
@@ -154,8 +151,6 @@ class PropertyButtonQuillText extends StatelessWidget {
                         decorationBorderRadius: 16,
                         targetPointerType: TargetPointerType.none(),
                         barrier: CalloutBarrierConfig(opacity: 0.1),
-                        notUsingHydratedStorage: true,
-                        
                       ),
                       calloutContent: ColourPickerTool(
                         originalColor: selectedColor ?? Colors.white,

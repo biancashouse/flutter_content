@@ -16,7 +16,8 @@ class FSFoldersAndImagePicker extends StatefulWidget {
   const FSFoldersAndImagePicker({required this.onSelectedFileF, super.key});
 
   @override
-  State<FSFoldersAndImagePicker> createState() => FSFoldersAndImagePickerState();
+  State<FSFoldersAndImagePicker> createState() =>
+      FSFoldersAndImagePickerState();
 }
 
 class FSFoldersAndImagePickerState extends State<FSFoldersAndImagePicker> {
@@ -29,7 +30,7 @@ class FSFoldersAndImagePickerState extends State<FSFoldersAndImagePicker> {
         FirebaseUIStorageConfiguration(
           storage: FirebaseStorage.instance,
           uploadRoot: folderNode.ref,
-          namingPolicy: const UuidFileUploadNamingPolicy(),
+          namingPolicy: const KeepOriginalNameUploadPolicy(),
           // optional, will generate a UUID for each uploaded file
         ),
       );
@@ -49,7 +50,9 @@ class FSFoldersAndImagePickerState extends State<FSFoldersAndImagePicker> {
     setState(() {
       fco.fsTreeC.rebuild();
       fco.refresh('fs-browser');
-      ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('Upload complete: ${selectedFileRef.fullPath}')));
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text('Upload complete: ${selectedFileRef.fullPath}')),
+      );
     });
   }
 
@@ -71,7 +74,11 @@ class FSFoldersAndImagePickerState extends State<FSFoldersAndImagePicker> {
               resizeToAvoidBottomInset: false,
               appBar: AppBar(
                 backgroundColor: Colors.black,
-                title: fco.coloredText('Firebase Storage Image Picker (${fco.folderPathRef('/').bucket})', fontSize: 16.0, color: Colors.white),
+                title: fco.coloredText(
+                  'Firebase Storage Image Picker (${fco.folderPathRef('/').bucket})',
+                  fontSize: 16.0,
+                  color: Colors.white,
+                ),
               ),
               body: Padding(
                 padding: const EdgeInsets.only(right: 8.0),
@@ -81,12 +88,27 @@ class FSFoldersAndImagePickerState extends State<FSFoldersAndImagePicker> {
                     axis: Axis.horizontal,
                     // controller: msvC.value,
                     // onWeightChange: () => setState(() {}),
-                    dividerBuilder: (axis, index, resizable, dragging, highlighted, themeData) {
-                      return Container(
-                        color: dragging ? Colors.purpleAccent[200] : Colors.purpleAccent[100],
-                        child: Icon(Icons.drag_indicator, color: highlighted ? Colors.blueAccent : Colors.white),
-                      );
-                    },
+                    dividerBuilder:
+                        (
+                          axis,
+                          index,
+                          resizable,
+                          dragging,
+                          highlighted,
+                          themeData,
+                        ) {
+                          return Container(
+                            color: dragging
+                                ? Colors.purpleAccent[200]
+                                : Colors.purpleAccent[100],
+                            child: Icon(
+                              Icons.drag_indicator,
+                              color: highlighted
+                                  ? Colors.blueAccent
+                                  : Colors.white,
+                            ),
+                          );
+                        },
                     initialAreas: [
                       Area(
                         builder: (ctx, area) {
@@ -101,7 +123,12 @@ class FSFoldersAndImagePickerState extends State<FSFoldersAndImagePicker> {
                       ),
                       Area(
                         builder: (ctx, area) {
-                          return FolderImagesGridView(storage: FirebaseStorage.instance, folderNode: folderNode, onSelectedFileF: widget.onSelectedFileF, parentState: this,);
+                          return FSFilesGridView(
+                            storage: FirebaseStorage.instance,
+                            folderNode: folderNode,
+                            onSelectedFileF: widget.onSelectedFileF,
+                            parentState: this,
+                          );
                         },
                       ),
                     ],
@@ -139,10 +166,16 @@ class FSFoldersAndImagePickerState extends State<FSFoldersAndImagePicker> {
                   child: Row(
                     crossAxisAlignment: CrossAxisAlignment.center,
                     children: [
-                      Icon(entry.isExpanded ? Icons.folder_open : Icons.folder, color: Colors.white, size: 30),
+                      Icon(
+                        entry.isExpanded ? Icons.folder_open : Icons.folder,
+                        color: Colors.white,
+                        size: 30,
+                      ),
                       fco.coloredText(
                         entry.node.ref.name.isEmpty ? '/' : entry.node.ref.name,
-                        color: entry.node == folderNode ? Colors.blue : Colors.white,
+                        color: entry.node == folderNode
+                            ? Colors.blue
+                            : Colors.white,
                       ),
                       // if (entry.hasChildren)
                       //   ExpandIcon(
@@ -172,13 +205,19 @@ class FSFoldersAndImagePickerState extends State<FSFoldersAndImagePicker> {
   }
 }
 
-class FolderImagesGridView extends StatelessWidget {
+class FSFilesGridView extends StatelessWidget {
   final FirebaseStorage storage;
   final FSFolderNode folderNode;
   final FSFoldersAndImagePickerState parentState;
   final ValueChanged<String?> onSelectedFileF;
 
-  const FolderImagesGridView({required this.storage, required this.folderNode, super.key, required this.onSelectedFileF, required this.parentState});
+  const FSFilesGridView({
+    required this.storage,
+    required this.folderNode,
+    super.key,
+    required this.onSelectedFileF,
+    required this.parentState,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -189,7 +228,9 @@ class FolderImagesGridView extends StatelessWidget {
         children: [
           TextButton.icon(
             onPressed: () async {
-              final Uri url = Uri.parse('https://console.cloud.google.com/storage/browser/bh-apps.appspot.com/${fco.appName}?project=bh-apps');
+              final Uri url = Uri.parse(
+                'https://console.cloud.google.com/storage/browser/${fco.firebaseOptions!.storageBucket}/${fco.appName}?project=bh-apps',
+              );
               if (!await launchUrl(url)) {
                 throw Exception('Could not launch $url');
               }
@@ -202,9 +243,9 @@ class FolderImagesGridView extends StatelessWidget {
             child: FSFileUploadButton(
               storage: storage,
               uploadFolderNode: folderNode,
-              extensions: const ['jpg', 'png', 'gif'],
-              mimeTypes: const ['image/jpeg', 'image/png', 'image/gif'],
-              onError: (e, s) => ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(e.toString()))),
+              onError: (e, s) => ScaffoldMessenger.of(
+                context,
+              ).showSnackBar(SnackBar(content: Text(e.toString()))),
               onUploadComplete: (ref) {
                 parentState.refresh(ref);
               },
@@ -217,7 +258,9 @@ class FolderImagesGridView extends StatelessWidget {
             height: 400,
             child: StorageGridView(
               key: UniqueKey(),
-              loadingController: PaginatedLoadingController(ref: folderNode.ref),
+              loadingController: PaginatedLoadingController(
+                ref: folderNode.ref,
+              ),
               ref: folderNode.ref,
               // loadingBuilder: (context) {
               //   return const Center(

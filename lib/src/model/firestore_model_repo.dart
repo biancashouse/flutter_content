@@ -63,85 +63,54 @@ class FireStoreModelRepository implements IModelRepository {
   // }
 
   @override
-  Future<SnippetInfoModel?> getSnippetInfoFromCacheOrFB({
+  Future<void> ensureSnippetInfoCached({
     required SnippetName snippetName,
   }) async {
-    SnippetInfoModel? snippetInfo = SnippetInfoModel.cachedSnippetInfo(
-      snippetName,
-    );
-    if (snippetInfo != null) {
-      // fco.logger.d("getSnippetInfoFromCacheOrFB($snippetName) - from CACHE");
-      return snippetInfo;
+
+    // return if already in cache
+    if (SnippetInfoModel.cachedSnippetInfo(snippetName) != null) {
+      return;
     }
 
+    // try to read from FB
+    SnippetInfoModel? snippetInfo;
     DocumentReference snippetInfoDocRef = appDocRef
         .collection('snippets')
         .doc(snippetName);
-    final sw = Stopwatch();
-    sw.start();
     DocumentSnapshot snippetInfoDoc = await snippetInfoDocRef.get();
     late Map<String, dynamic> snippetInfoData;
     try {
-      print(
-        'getSnippetInfoFromCacheOrFB() await snippetInfoDocRef.get() took: ${sw.elapsedMilliseconds}ms',
-      );
-      sw.reset();
       snippetInfoData = snippetInfoDoc.data() as Map<String, dynamic>;
       snippetInfo = SnippetInfoModelMapper.fromMap(snippetInfoData);
       SnippetInfoModel.cacheSnippetInfo(snippetName, snippetInfo);
-      // fco.logger.d(
-      //   "getSnippetInfoFromCacheOrFB($snippetName) - from FB (cached)",
-      // );
-      // fco.logger.d("getSnippetInfoFromCacheOrFB($snippetName) - SnippetInfoModel.cachedSnippet($snippetName) is ${SnippetInfoModel.cachedSnippetInfo(snippetName)}");
-      // introduce a delay to allow for the cache to be populated
-      // await Future.delayed(Duration(milliseconds: 200));
-      // fco.logger.i('$snippetName CACHED ----------');
-      print(
-        'getSnippetInfoFromCacheOrFB() caching snippetInfo took: ${sw.elapsedMilliseconds}ms',
-      );
     } catch (e) {
-      // must be a new snippet
-      return null;
-      // create a new SnippetInfo, but don't save the AppInfo yet
-      // fco.appInfo.snippetNames = [...fco.appInfo.snippetNames, snippetName];
-      // // await modelRepo.saveAppInfo(); might not be needed
-      // VersionId newVersionId = DateTime.now().millisecondsSinceEpoch.toString();
-      // snippetInfo = SnippetInfoModel(
-      //   snippetName,
-      //   editingVersionId: newVersionId,
-      //   publishedVersionId: newVersionId,
-      //   // routePath: pagePath,
-      //   autoPublish: fco.appInfo.autoPublishDefault,
-      //   versionIds: [],
-      // );
-      // SnippetInfoModel.cacheSnippetInfo(snippetName, snippetInfo);
+      fco.logger.e('snippetInfo for $snippetName not cached! (MISSING?)', error: e);
     }
-    // populate snippetInfo with its version ids (legacy code - model now stores list inside snippetInfo)
-    if (snippetInfo.versionIds?.isEmpty ?? true) {
-      try {
-        sw.reset();
-        // nasty - fetchs all the docs !
-        // TODO create an index collection on the versions collection
-        final versionsSnapshot = await snippetInfoDocRef
-            .collection('versions')
-            .get();
-        List<VersionId> versionIds = versionsSnapshot.docs
-            .map((doc) => doc.id)
-            .toList();
-        snippetInfo.cachedVersions = {};
-        snippetInfo.versionIds = [...versionIds];
-        print(
-          'getSnippetInfoFromCacheOrFB() caching versionIds took: ${sw.elapsedMilliseconds}ms',
-        );
-      } catch (e) {
-        // Handle errors
-        fco.logger.w(e.toString());
-      }
-    }
+
+    // // populate snippetInfo with its version ids (legacy code - model now stores list inside snippetInfo)
+    // if (snippetInfo?.versionIds?.isEmpty ?? true) {
+    //   try {
+    //     // nasty - fetchs all the docs !
+    //     // TODO create an index collection on the versions collection
+    //     final versionsSnapshot = await snippetInfoDocRef
+    //         .collection('versions')
+    //         .get();
+    //     List<VersionId> versionIds = versionsSnapshot.docs
+    //         .map((doc) => doc.id)
+    //         .toList();
+    //     snippetInfo.cachedVersions = {};
+    //     snippetInfo.versionIds = [...versionIds];
+    //     print(
+    //       'getSnippetInfoFromCacheOrFB() caching versionIds took: ${sw.elapsedMilliseconds}ms',
+    //     );
+    //   } catch (e) {
+    //     // Handle errors
+    //     fco.logger.w(e.toString());
+    //   }
+    // }
     // }
     //
     // fco.logger.e('snippet "$snippetName" not found!');
-    return snippetInfo;
   }
 
   @override
@@ -151,7 +120,7 @@ class FireStoreModelRepository implements IModelRepository {
     required VersionId versionId,
   }) async {
     // try to fetch the specified version from cache, otherwise try to fetch from FB
-    SnippetRootNode? version = snippetInfo.cachedVersions[versionId];
+    SnippetRootNode?  version = snippetInfo.cachedVersions[versionId];
 
     if (version != null) {
       // ALREADY IN CACHE
@@ -182,7 +151,7 @@ class FireStoreModelRepository implements IModelRepository {
       if (versionDoc.exists) {
         try {
           data = versionDoc.data() as Map<String, dynamic>;
-          var childMap = data['child'];
+          // var childMap = data['child'];
           version = SnippetRootNodeMapper.fromMap(data);
           // cache it
           snippetInfo.cachedVersions[versionId] = version;
@@ -255,6 +224,15 @@ class FireStoreModelRepository implements IModelRepository {
     fco.appInfo.userTextStyles = fco.namedTextStyles;
     fco.appInfo.userButtonStyles = fco.namedButtonStyles;
     fco.appInfo.userContainerStyles = fco.namedContainerStyles;
+    // admin - remove refs to snippets with names starting with T-
+    // and then remove those snippets
+    for (var name in fco.appInfo.snippetNames) {
+      if (name.startsWith('T-')) {
+        fco.appInfo.snippetNames.remove(name);
+        await deleteSnippet(name);
+      }
+    }
+    // admin
     var map = fco.appInfoAsMap;
     await appDocRef.set(map);
   }

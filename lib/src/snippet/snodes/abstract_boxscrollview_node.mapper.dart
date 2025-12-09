@@ -26,10 +26,10 @@ class BoxScrollViewNodeMapper extends SubClassMapperBase<BoxScrollViewNode> {
   @override
   final String id = 'BoxScrollViewNode';
 
-  static AxisEnum _$scrolDirection(BoxScrollViewNode v) => v.scrollDirection;
-  static const Field<BoxScrollViewNode, AxisEnum> _f$scrolDirection = Field(
-    'scrolDirection',
-    _$scrolDirection,
+  static AxisEnum _$scrollDirection(BoxScrollViewNode v) => v.scrollDirection;
+  static const Field<BoxScrollViewNode, AxisEnum> _f$scrollDirection = Field(
+    'scrollDirection',
+    _$scrollDirection,
     opt: true,
     def: AxisEnum.vertical,
   );
@@ -99,7 +99,7 @@ class BoxScrollViewNodeMapper extends SubClassMapperBase<BoxScrollViewNode> {
 
   @override
   final MappableFields<BoxScrollViewNode> fields = const {
-    #scrolDirection: _f$scrolDirection,
+    #scrollDirection: _f$scrollDirection,
     #shrinkWrap: _f$shrinkWrap,
     #padding: _f$padding,
     #uid: _f$uid,

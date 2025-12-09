@@ -1,4 +1,6 @@
 import 'package:dart_mappable/dart_mappable.dart';
+// import 'package:firebase_storage/firebase_storage.dart' show FirebaseStorage;
+import 'package:firebase_ui_storage/firebase_ui_storage.dart' show StorageImage;
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_content/flutter_content.dart';
@@ -54,7 +56,7 @@ class UMLImageNode extends CL with UMLImageNodeMappable {
 
     StringPNode(
       snode: this,
-      name: 'name',
+      name: 'name (in firebase storage)',
       stringValue: name,
       skipHelperText: true,
       onStringChange: (newValue) =>
@@ -98,12 +100,33 @@ class UMLImageNode extends CL with UMLImageNodeMappable {
   ];
 
   @override
+  /// use version in fs storage for non-editors
   Widget buildFlutterWidget(BuildContext context, SNode? parentNode) {
-    try {
-      setParent(parentNode); // propagating parents down from root
-      // ScrollControllerName? scName = EditablePage.name(context);
-      // possiblyHighlightSelectedNode(scName);
+    setParent(parentNode);
 
+    if (!fco.canEditContent() && name != null) {
+      // can't edit, so just retrieve from firebase storage
+      final ref = fco.folderPathRef("/plantuml-images").child("$name");
+      try {
+        return Center(
+          child: StorageImage(
+            key: createNodeWidgetGK(),
+            fit: fit?.flutterValue,
+            width: width,
+            height: height,
+            ref: ref,
+          ),
+        );
+      } catch (e) {
+        return Error(
+          key: _gk,
+          FLUTTER_TYPE,
+          color: Colors.red,
+          size: 16,
+          errorMsg: e.toString(),
+        );
+      }
+    } else {
       return FutureBuilder<UMLRecord>(
         future: PlantUMLMSVState.encodeThenFetchPng(umlText ?? '', (
           UMLRecord newValue,
@@ -122,33 +145,22 @@ class UMLImageNode extends CL with UMLImageNodeMappable {
             fco.afterMsDelayDo(100, () => fco.forceRefresh());
           }
 
-          // UMLRecord? umlRecord = snapshot.data;
-          return GestureDetector(
-            child: Image.memory(
-              key: _gk,
-              // scale: 3.0,
-              cachedPngBytes ?? Uint8List.fromList(missingPng.codeUnits),
-              fit: fit?.flutterValue,
-              errorBuilder: (context, o, stackTrace) {
-                return Error(
-                  key: GlobalKey(),
-                  "PlantUMLTextEditor Image.memory",
-                  color: Colors.red,
-                  size: 18,
-                  errorMsg: 'Bad pngBytes',
-                );
-              },
-            ),
+          return Image.memory(
+            key: _gk,
+            // scale: 3.0,
+            cachedPngBytes ?? Uint8List.fromList(missingPng.codeUnits),
+            fit: fit?.flutterValue,
+            errorBuilder: (context, o, stackTrace) {
+              return Error(
+                key: GlobalKey(),
+                "PlantUMLTextEditor Image.memory",
+                color: Colors.red,
+                size: 18,
+                errorMsg: 'Bad pngBytes',
+              );
+            },
           );
         },
-      );
-    } catch (e) {
-      return Error(
-        key: _gk,
-        FLUTTER_TYPE,
-        color: Colors.red,
-        size: 16,
-        errorMsg: e.toString(),
       );
     }
   }
@@ -199,9 +211,6 @@ class UMLImageNode extends CL with UMLImageNodeMappable {
   @override
   Widget? widgetLogo() =>
       Image.asset(fco.asset('lib/assets/images/pub.dev.png'), width: 16);
-
-  @override
-  List<Type> wrapWithRecommendations() => [CarouselNode];
 
   @override
   String toString() => FLUTTER_TYPE;

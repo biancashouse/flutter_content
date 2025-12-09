@@ -33,8 +33,6 @@ mixin PasswordlessMixin {
             fco.dismiss("passwordless-stepper");
           },
         ),
-        notUsingHydratedStorage: true,
-        
       ),
     );
   }

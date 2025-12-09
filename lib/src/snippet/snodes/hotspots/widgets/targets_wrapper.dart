@@ -2,8 +2,11 @@
 
 import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_content/flutter_content.dart';
 import 'package:flutter_content/src/measuring/size_aware_widget.dart';
+import 'package:flutter_content/src/model/alignment_model.dart';
+import 'package:flutter_content/src/snippet/snodes/fs_image_node.dart';
 import 'package:flutter_content/src/snippet/snodes/hotspots/widgets/targets_wrapper_ontap_menu.dart';
 
 import 'positioned_target_cover.dart';
@@ -13,8 +16,6 @@ class TargetsWrapper extends StatefulWidget {
   final TargetsWrapperNode parentNode;
   final SNode? childNode;
   final bool hardEdge;
-
-  static double CAPI_TARGET_BTN_RADIUS = 15.0;
 
   const TargetsWrapper({
     required this.parentNode,
@@ -30,16 +31,12 @@ class TargetsWrapper extends StatefulWidget {
       context.findAncestorStateOfType<TargetsWrapperState>();
 
   static void configureTarget(
-      BuildContext context,
+    BuildContext context,
     TargetModel tc,
-    Rect wrapperRect, {
+    TargetsWrapperState wrapperState, {
     bool quickly = false,
   }) {
     if (!fco.canEditContent()) return;
-
-    if (tc.targetsWrapperState() == null) return;
-
-    // fco.dismissAll();
 
     var coverGK = tc.gk;
     Rect? targetRect = coverGK!.globalPaintBounds();
@@ -52,12 +49,12 @@ class TargetsWrapper extends StatefulWidget {
     // );
 
     Alignment? ta = fco.calcTargetAlignmentWithinWrapper(
-      wrapperRect: wrapperRect,
+      wrapperRect: wrapperState.wrapperRect,
       targetRect: targetRect,
     );
 
     if (tc.hasAHotspot()) {
-      tc.targetsWrapperState()?.zoomer?.applyTransform(
+      wrapperState.zoomer?.applyTransform(
         tc.transformScale,
         tc.transformScale,
         ta,
@@ -65,9 +62,9 @@ class TargetsWrapper extends StatefulWidget {
           showHotspotSnippetContentCallout(
             tc: tc,
             justPlaying: false,
-            wrapperRect: wrapperRect,
+            wrapperState: wrapperState,
           );
-          showConfigToolbar(tc, wrapperRect);
+          showConfigToolbar(tc, wrapperState);
         },
         quickly: quickly,
       );
@@ -75,13 +72,16 @@ class TargetsWrapper extends StatefulWidget {
       showHotspotSnippetContentCallout(
         tc: tc,
         justPlaying: false,
-        wrapperRect: wrapperRect,
+        wrapperState: wrapperState,
       );
-      showConfigToolbar(tc, wrapperRect);
+      showConfigToolbar(tc, wrapperState);
     }
   }
 
-  static void showConfigToolbar(TargetModel tc, Rect wrapperRect) {
+  static void showConfigToolbar(
+    TargetModel tc,
+    TargetsWrapperState wrapperState,
+  ) {
     final cc = CalloutConfig(
       cId: CalloutConfigToolbar.CID,
 
@@ -117,10 +117,8 @@ class TargetsWrapper extends StatefulWidget {
           // });
         }
 
-        tc.targetsWrapperState()?.refresh(() {
-          tc.targetsWrapperState()?.zoomer?.resetTransform(
-            afterTransformF: resetZoom,
-          );
+        wrapperState.refresh(() {
+          wrapperState.zoomer?.resetTransform(afterTransformF: resetZoom);
         });
       },
     );
@@ -131,9 +129,9 @@ class TargetsWrapper extends StatefulWidget {
       calloutContent: CalloutConfigToolbar(
         cc: cc,
         tc: tc,
-        wrapperRect: wrapperRect,
+        wrapperState: wrapperState,
         onCloseF: () {
-          tc.targetsWrapperState()!.setPlayingOrEditingTc(null, () {
+          wrapperState.setPlayingOrEditingTc(null, () {
             removeSnippetContentCallout(tc);
           });
           // fco.dismiss(CalloutConfigToolbar.CALLOUT_CONFIG_TOOLBAR);
@@ -149,10 +147,16 @@ class TargetsWrapperState extends State<TargetsWrapper> {
   // bool _needToMeasureSize = true;
   // bool _needToMeasurePos = true;
   late bool _needToMeasureChild;
+  late bool _canAutoPlay;
   late Rect wrapperRect;
 
   Offset? pulsingPointPos;
-  late GlobalKey pulsingPointGK;
+  GlobalKey? pulsingPointGK;
+
+  ScrollController? sc;
+  Axis? scrollDirection;
+
+  bool canAutoPlay() => _canAutoPlay && !fco.canEditContent();
 
   // Offset? wrapperPos;
   // Size? _wrapperSize;
@@ -204,21 +208,36 @@ class TargetsWrapperState extends State<TargetsWrapper> {
     super.initState();
 
     _needToMeasureChild = true;
-
-    pulsingPointGK = GlobalKey();
-
-    for (TargetModel tc in widget.parentNode.targets) {
-      tc.parentTargetsWrapperNode = widget.parentNode;
-    }
+    _canAutoPlay = false;
 
     fco.afterNextBuildDo(() {
       if (!mounted) return;
+      var scrollConfig = fco.findAncestorScrollControllerAndDirection(context);
+      sc = scrollConfig.$1;
+      scrollDirection = scrollConfig.$2;
+
       // fco.afterMsDelayDo(1000, (){
       // setState(() {
       measureIWPosAndSize();
-      // });
-      // });
+
+      // after 2nd build can auto play callouts if not signed in
+      fco.afterMsDelayDo(2000, () {
+        if (mounted && !fco.canEditContent()) _canAutoPlay = true;
+      });
     });
+  }
+
+  void autoPlayTargets() {
+    if (fco.canEditContent()) return;
+    for (TargetModel tc in widget.parentNode.targets) {
+      if (!tc.hasAHotspot() && !fco.anyPresent([tc.contentCId])) {
+        showHotspotSnippetContentCallout(
+          tc: tc,
+          justPlaying: true,
+          wrapperState: this,
+        );
+      }
+    }
   }
 
   // double scrollOffsetX() =>
@@ -272,8 +291,19 @@ class TargetsWrapperState extends State<TargetsWrapper> {
     }
   }
 
+  Offset translateForScroll(Offset pos) => pos.translate(
+    scrollDirection == Axis.horizontal ? sc?.offset ?? 0.0 : 0.0,
+    scrollDirection == Axis.vertical ? sc?.offset ?? 0.0 : 0.0,
+  );
+
   @override
   Widget build(BuildContext context) {
+    // possibly autoplay callouts
+    if (canAutoPlay()) {
+      // fco.afterNextBuildDo(autoPlayTargets);
+      autoPlayTargets();
+      _canAutoPlay = false;
+    }
     // when dragging a btn or cover ends
     void droppedBtnOrCover(DragTargetDetails<(TargetId, bool)> details) {
       // ignore drags when toolbar showing
@@ -292,187 +322,266 @@ class TargetsWrapperState extends State<TargetsWrapper> {
         //     ? NamedScrollController.instance(scName(context)!)
         //     : null;
 
-        var scrollConfig = fco.findAncestorScrollControllerAndDirection(
-          context,
-        );
-        ScrollController? sc = scrollConfig.$1;
-        Axis? scrollDirection = scrollConfig.$2;
-
         if (foundTc != null && data.$2) {
-          foundTc.setBtnStackPosPc(
-            details.offset
-                .translate(
-                  TargetsWrapper.CAPI_TARGET_BTN_RADIUS,
-                  TargetsWrapper.CAPI_TARGET_BTN_RADIUS,
-                )
-                .translate(
-                  scrollDirection == Axis.horizontal ? sc?.offset ?? 0.0 : 0.0,
-                  scrollDirection == Axis.vertical ? sc?.offset ?? 0.0 : 0.0,
-                ),
+          foundTc.setBtnLocalPosPc(
+            this,
+            details.offset.translate(
+              TargetModel.DEFAULT_BTN_RADIUS,
+              TargetModel.DEFAULT_BTN_RADIUS,
+            ),
           );
-          foundTc.changed_saveRootSnippet();
+          foundTc.changed_saveRootSnippet(
+            widget.parentNode.rootNodeOfSnippet(),
+          );
         } else if (foundTc != null) {
-          foundTc.setTargetStackPosPc(
-            details.offset
-                .translate(foundTc.radius, foundTc.radius)
-                .translate(
-                  scrollDirection == Axis.horizontal ? sc?.offset ?? 0.0 : 0.0,
-                  scrollDirection == Axis.vertical ? sc?.offset ?? 0.0 : 0.0,
-                ),
+          foundTc.setTargetLocalPosPc(
+            this,
+            details.offset.translate(
+              foundTc.targetRadius(this),
+              foundTc.targetRadius(this),
+            ),
           );
-          foundTc.changed_saveRootSnippet();
+          foundTc.changed_saveRootSnippet(
+            widget.parentNode.rootNodeOfSnippet(),
+          );
         }
-        // fco.capiBloc
-        //     .add(const CAPIEvent.forceRefresh(onlyTargetsWrappers: true));
       });
     }
 
-    return Stack(
-      clipBehavior: widget.hardEdge ? Clip.hardEdge : Clip.none,
-      children: [
-        DragTarget<(TargetId, bool)>(
-          builder: (_, __, ___) {
-            return GestureDetector(
-              onTapDown: (TapDownDetails details) async {
-                // ignore if not in editing mode or if currently showing config toolbar
-                if (!fco.canEditContent() ||
-                    fco.anyPresent([CalloutConfigToolbar.CID]) ||
-                    fco.snippetBeingEdited != null) {
-                  return;
-                }
-                CalloutConfig cc = CalloutConfig(
-                  cId: 'create-target-menu',
-                  initialTargetAlignment: Alignment.topRight,
-                  initialCalloutAlignment: Alignment.bottomLeft,
-                  initialCalloutW: TargetsWrapperOnTapMenu.menuWidth(),
-                  initialCalloutH: TargetsWrapperOnTapMenu.menuHeight(),
-                  // contentTranslateX: 1,
-                  // contentTranslateY: 1,
-                  barrier: CalloutBarrierConfig(opacity: 0.1),
-                  finalSeparation: 30,
-                  targetPointerType: TargetPointerType.thin_line(),
-                  bubbleOrTargetPointerColor: Colors.purpleAccent,
-                  animatePointer: true,
-                  decorationFillColors: ColorOrGradient.color(
-                    Colors.purpleAccent.withAlpha(90),
-                  ),
-
-                  showCloseButton: true,
-                  closeButtonPos: Offset(10, 10),
-                  closeButtonColor: Colors.white,
-                  decorationBorderRadius: 16,
-                  onDismissedF: () {
-                    hidePossibleNewTarget();
-                  },
-                );
-                // show pulsing indicator
-                setState(() {
-                  pulsingPointPos = details.localPosition.translate(-32, -32);
-                  fco.showOverlay(
-                    targetGK: pulsingPointGK,
-                    calloutConfig: cc,
-                    calloutContent: Padding(
-                      padding: const EdgeInsets.only(
-                        top: 48.0,
-                        left: 48,
-                        right: 48,
-                      ),
-                      child: TargetsWrapperOnTapMenu(
-                        details,
-                        widget.parentNode,
-                        wrapperRect,
-                      ),
-                    ),
-                  );
-                });
-
-                // hide pulsing indicator
-                // setState(() {
-                //   pulsingPointPos = null;
-                // });
-              },
-              child: _childBuild(),
-              // onLongPressEnd: (LongPressEndDetails details) async =>
-              //     await longPressedeBarrier(details),
-            );
-          },
-          onAcceptWithDetails: fco.anyPresent([CalloutConfigToolbar.CID])
-              ? null
-              : droppedBtnOrCover,
-        ),
-
-        // CHILD, typically an image
-        // _childBuild(),
-
-        // TARGET COVERS
-        if (!_needToMeasureChild)
-          for (TargetModel tc in widget.parentNode.targets)
+    // prepare list of play btns and target covers
+    final btns = <Widget>[];
+    if (!_needToMeasureChild) {
+      for (TargetModel tc in widget.parentNode.targets) {
+        if (playingTc == null && tc.hasAHotspot()) {
+          btns.add(
             Positioned(
-              top: tc.targetStackPos().dy - tc.radius,
-              // + vScrollOffset,
-              // + (_playingOrEditingTc !=null ? scrollOffsetY()/tc.getScale() : 0.00),
-              left: tc.targetStackPos().dx - tc.radius,
-              // + hScrollOffset,
-              // + (_playingOrEditingTc != null ? scrollOffsetX()/tc.getScale() : 0.00),
-              child: Visibility.maintain(
-                key: tc.gk ??= GlobalKey(debugLabel: 'Target ${tc.uid.toString()}'),
-                visible:
-                    fco.canEditContent() &&
-                    (playingTc == null || playingTc == tc),
-                child: TargetCover(
-                  tc,
-                  _targetIndex(tc),
-                  wrapperRect: wrapperRect,
-                  playing: playingTc == tc,
-                ),
+              top: tc.btnLocalPos(this).dy - tc.btnRadius(this),
+              left: tc.btnLocalPos(this).dx - tc.btnRadius(this),
+              child: TargetPlayBtn(
+                tc: tc,
+                index: _targetIndex(tc),
+                wrapperState: this,
               ),
             ),
+          );
+        }
+      }
+    }
 
-        // TARGET BUTTONS
-        if (!_needToMeasureChild)
-          for (TargetModel tc in widget.parentNode.targets)
-            if (playingTc == null && tc.hasAHotspot())
+    final covers = <Widget>[];
+    if (!_needToMeasureChild) {
+      for (TargetModel tc in widget.parentNode.targets) {
+        if ((playingTc == null || playingTc == tc)) {
+          covers.add(
+            Positioned(
+              top: tc.targetLocalPos(this).dy - tc.targetRadius(this),
+              left: tc.targetLocalPos(this).dx - tc.targetRadius(this),
+
+              // + hScrollOffset,
+              // + (_playingOrEditingTc != null ? scrollOffsetX()/tc.getScale() : 0.00),
+              child: TargetCover(
+                key: tc.gk ??= GlobalKey(
+                  debugLabel: 'Target Cover ${tc.uid.toString()}',
+                ),
+                tc,
+                _targetIndex(tc),
+                wrapperState: this,
+                playing: playingTc == tc,
+              ),
+            ),
+          );
+        }
+      }
+    }
+
+    return BlocConsumer<CAPIBloC, CAPIState>(
+      // autoPlay callouts when just signed out
+      listenWhen: (prev, curr) {
+        return prev.isSignedIn != curr.isSignedIn && !curr.isSignedIn;
+      },
+      listener: (context, state) {
+        autoPlayTargets();
+      },
+
+      builder: (BuildContext context, CAPIState state) {
+        return Stack(
+          clipBehavior: widget.hardEdge ? Clip.hardEdge : Clip.none,
+          children: [
+            DragTarget<(TargetId, bool)>(
+              builder: (_, __, ___) {
+                return GestureDetector(
+                  onTapDown: (TapDownDetails details) async {
+                    // ignore if not in editing mode or if currently showing config toolbar
+                    if (!fco.canEditContent() ||
+                        fco.anyPresent([CalloutConfigToolbar.CID]) ||
+                        fco.snippetBeingEdited != null) {
+                      return;
+                    }
+                    // dismiss any auto-played target callouts
+                    if (fco.canEditContent()) {
+                      bool hidACallout = false;
+                      for (TargetModel tc in widget.parentNode.targets) {
+                        if (!tc.hasAHotspot() &&
+                            fco.anyPresent([tc.contentCId])) {
+                          removeSnippetContentCallout(tc);
+                          hidACallout = true;
+                        }
+                      }
+                      if (hidACallout) return;
+                    }
+                    // show create target dlg
+                    pulsingPointPos = details.localPosition;
+                    pulsingPointGK = GlobalKey();
+                    // TODO wrapperRect.center is not necc on screen: the image
+                    // TODO could be very tall
+                    //
+                    double alX = 0;
+                    double alY = 0;
+                    alX = (details.globalPosition.dx < wrapperRect.center.dx)
+                        ? 1.5
+                        : -1.5;
+                    alY = (details.globalPosition.dy < wrapperRect.center.dy)
+                        ? 1.5
+                        : -1.5;
+                    CalloutConfig cc = CalloutConfig(
+                      cId: 'create-target-menu',
+                      initialTargetAlignment: Alignment(alX, alY),
+                      initialCalloutAlignment: -Alignment(alX, alY),
+                      initialCalloutW: TargetsWrapperOnTapMenu.menuWidth(),
+                      initialCalloutH: TargetsWrapperOnTapMenu.menuHeight(),
+                      // contentTranslateX: 1,
+                      // contentTranslateY: 1,
+                      barrier: CalloutBarrierConfig(opacity: 0.1),
+                      finalSeparation: 30,
+                      targetPointerType: TargetPointerType.thin_line(),
+                      bubbleOrTargetPointerColor: Colors.purpleAccent,
+                      // animatePointer: true,
+                      decorationFillColors: ColorOrGradient.color(
+                        Colors.purpleAccent.withAlpha(90),
+                      ),
+
+                      showCloseButton: true,
+                      closeButtonPos: Offset(10, 10),
+                      closeButtonColor: Colors.white,
+                      decorationBorderRadius: 16,
+                      onDismissedF: () {
+                        hidePossibleNewTarget();
+                      },
+                    );
+                    // show pulsing indicator
+                    setState(() {
+                      fco.afterNextBuildDo(() {
+                        fco.showOverlay(
+                          targetGK: pulsingPointGK,
+                          calloutConfig: cc,
+                          calloutContent: Padding(
+                            padding: const EdgeInsets.only(
+                              top: 48.0,
+                              left: 48,
+                              right: 48,
+                            ),
+                            child: TargetsWrapperOnTapMenu(
+                              details,
+                              widget.parentNode,
+                              this,
+                            ),
+                          ),
+                        );
+                      });
+                    });
+                  },
+                  child: _childBuild(),
+                );
+              },
+              onAcceptWithDetails: fco.anyPresent([CalloutConfigToolbar.CID])
+                  ? null
+                  : droppedBtnOrCover,
+            ),
+
+            // for guests, just show target as a 1x1 with a gk
+            // if (canAutoPlay())
+            //   for (TargetModel tc in widget.parentNode.targets)
+            //     if (!tc.hasAHotspot())
+            //       Positioned(
+            //         top: tc.targetLocalPos(this).dy,
+            //         left: tc.targetLocalPos(this).dx,
+            //         key: tc.gk = GlobalKey(debugLabel: 'dot ${tc.uid.toString()}'),
+            //         child: SizedBox(width: 1, height: 1),
+            //       ),
+            ...btns,
+
+            ...covers,
+
+            // PULSING POINT animation
+            if (!_needToMeasureChild &&
+                pulsingPointPos != null &&
+                pulsingPointGK != null)
               Positioned(
-                top:
-                    tc.btnStackPos().dy - TargetsWrapper.CAPI_TARGET_BTN_RADIUS,
-                left:
-                    tc.btnStackPos().dx - TargetsWrapper.CAPI_TARGET_BTN_RADIUS,
-                child: TargetPlayBtn(
-                  initialTC: tc,
-                  index: _targetIndex(tc),
-                  wrapperRect: wrapperRect,
+                    top:
+                        pulsingPointPos!.dy - TargetModel.DEFAULT_TARGET_RADIUS,
+                    left:
+                        pulsingPointPos!.dx - TargetModel.DEFAULT_TARGET_RADIUS,
+                    child: TargetCover(
+                      // key: pulsingPointGK,
+                      TargetModel(uid: -1),
+                      widget.parentNode.targets.length,
+                      wrapperState: this,
+                      playing: false,
+                    ),
+                  )
+                  .animate(
+                    onPlay: (controller) => controller.repeat(reverse: true),
+                  )
+                  .scale(duration: 500.milliseconds),
+
+            // PULSING POINT INDICATOR with globalKey - need separate widget so
+            // as not to bugger up the pointing arrow animation
+            if (!_needToMeasureChild &&
+                pulsingPointPos != null &&
+                pulsingPointGK != null)
+              Positioned(
+                top: pulsingPointPos!.dy - TargetModel.DEFAULT_TARGET_RADIUS,
+                left: pulsingPointPos!.dx - TargetModel.DEFAULT_TARGET_RADIUS,
+                child: TargetCover(
+                  key: pulsingPointGK,
+                  TargetModel(uid: -1),
+                  widget.parentNode.targets.length,
+                  wrapperState: this,
+                  playing: false,
                 ),
               ),
-
-        if (!_needToMeasureChild && pulsingPointPos != null)
-          Positioned(
-            top: pulsingPointPos!.dy,
-            left: pulsingPointPos!.dx,
-            child:
-                TargetCover(
-                      gk: pulsingPointGK,
-                      TargetModel(uid: -1)
-                        ..parentTargetsWrapperNode = widget.parentNode,
-                      widget.parentNode.targets.length,
-                      wrapperRect: wrapperRect,
-                      playing: false,
-                    )
-                    .animate(
-                      onPlay: (controller) => controller.repeat(reverse: true),
-                    )
-                    .scale(duration: 500.milliseconds),
-          ),
-      ],
+          ],
+        );
+      },
     );
   }
 
   int _targetIndex(TargetModel tc) => widget.parentNode.targets.indexOf(tc);
 
   Widget _childBuild() {
+    final childNode = widget.childNode;
     Widget? childWidget;
-    if (widget.childNode is AssetImageNode) {
+
+    if (childNode is AssetImageNode) {
       childWidget = SizeAwareWidget.asset(
-        assetPath: (widget.childNode as AssetImageNode).assetPath!,
+        assetPath: childNode.assetPath!,
+        fit: childNode.fit?.flutterValue,
+        scale: childNode.scale,
+        alignment: childNode.alignment?.alignment,
+        onSizeAvailable: (Size _) {
+          setState(() {
+            measureIWPosAndSize();
+          });
+        },
+      );
+    }
+
+    if (childNode is FSImageNode) {
+      childWidget = SizeAwareWidget.storage(
+        fsFullPath: childNode.fsFullPath!,
+        fit: childNode.fit?.flutterValue,
+        scale: childNode.scale,
+        alignment: childNode.alignment?.alignment,
         onSizeAvailable: (Size _) {
           setState(() {
             measureIWPosAndSize();

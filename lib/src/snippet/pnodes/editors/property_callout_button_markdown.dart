@@ -55,7 +55,6 @@ class PropertyButtonMarkdown extends StatelessWidget {
     onResizeF: (Size newSize) {},
     onDragF: (Offset newOffset) {},
     draggable: false,
-    notUsingHydratedStorage: true,
   );
 
   Widget calloutContent = MarkdownMSV(

@@ -67,7 +67,13 @@ class SnippetBuilderState extends State<SnippetBuilder>
   Map<String, TabBarNode> tabBars = {};
 
   // will be supplied directly as snippetName arg or supplied via the template
-  String snippetName() => widget.snippetName ?? widget.templateSnippet?.name??'???';
+  String snippetName() {
+    final name = widget.snippetName ?? widget.templateSnippet?.name;
+    if (name == null || name.isEmpty) {
+      throw Exception('SnippetBuilderState.snippetName() is null!');
+    }
+    return name;
+  }
 
   // ZoomerState? get parentTSState => Zoomer.of(context);
 
@@ -231,20 +237,22 @@ class SnippetBuilderState extends State<SnippetBuilder>
               // optimise by first checking whether already in memory
               // can avoid unnecessary futurebuilder
               var appInfo = fco.appInfo;
-              if (appInfo.snippetNames.contains(snippetName())) {
-                // ALREADY IM CACHE ?
-                var name = snippetName();
-                var snippetInfo = SnippetInfoModel.cachedSnippetInfo(
-                  snippetName(),
+              bool snippetExists = appInfo.snippetNames.contains(snippetName());
+              // must supply a template when if snippet does not exist
+              if (!snippetExists && widget.templateSnippet == null) {
+                return _stackWidget(
+                  SnippetRootNode(
+                    name: snippetName(),
+                    child: TextNode(
+                      text: 'Must supply a template for a new snippet!',
+                      tsPropGroup: TextStyleProperties(),
+                    ),
+                  ),
                 );
-                 if (snippetInfo != null) {
-                  var snippet = snippetInfo.currentVersionFromCache();
-                  if (snippet != null) {
-                    return _stackWidget(snippet);
-                  }
-                }
-              } else if (widget.templateSnippet != null) {
-                // CREATE FROM TEMPLATE
+              }
+              if (!snippetExists) {
+                // SNIPPET DOES NOT YET EXIST - use template to create
+                // first version as a clone of the template
                 fco.pageList.add(widget.templateSnippet!.name);
                 VersionId newVersionId = SnippetInfoModel.createNewVersion(
                   widget.templateSnippet!,
@@ -261,14 +269,26 @@ class SnippetBuilderState extends State<SnippetBuilder>
                 return _stackWidget(widget.templateSnippet!);
               }
 
+              // ALREADY EXIST - SNIPPET MAY BE IN CACHE (avoid Future)
+              SnippetInfoModel? snippetInfo =
+                  SnippetInfoModel.cachedSnippetInfo(snippetName());
+              if (snippetInfo != null) {
+                // SNIPPET EXISTS, TRY TO GET FROM SNIPPET CACHE
+                // A SNIPPET INFO ALWAYS HAS AT LEAST 1 VERSION
+                SnippetRootNode? snippet = snippetInfo
+                    .currentVersionFromCache();
+                if (snippet != null) {
+                  return _stackWidget(snippet);
+                }
+              }
+
               // EXISTS, BUT NOT PRESENT IN CACHE, so go fetch...
               return FutureBuilder<SnippetRootNode?>(
                 future: SnippetRootNode.loadSnippetFromCacheOrFromFB(
                   snippetName: snippetName(),
                 ),
                 builder: (futureContext, snapshot) {
-                  if (snapshot.connectionState != ConnectionState.done ||
-                      !snapshot.hasData) {
+                  if (snapshot.connectionState != ConnectionState.done) {
                     return const Center(child: CircularProgressIndicator());
                   }
 
@@ -278,7 +298,7 @@ class SnippetBuilderState extends State<SnippetBuilder>
 
                   if (snapshot.data == null) {
                     return Error(
-                      "SnippetPanel",
+                      "SnippetBuilder",
                       color: Colors.red,
                       size: 32,
                       errorMsg: "null snippet! ${snapshot.error.toString()}",
@@ -301,7 +321,6 @@ class SnippetBuilderState extends State<SnippetBuilder>
   }
 
   Widget _stackWidget(SnippetRootNode snippet) {
-
     // triggers AFTER layout of this widget
     WidgetsBinding.instance.addPostFrameCallback((_) {
       widget.onLayoutDone?.call();
@@ -352,7 +371,7 @@ class SnippetBuilderState extends State<SnippetBuilder>
               this,
               anchorWidget: AnchorWidgetEnum.Triangle,
               triangleColor: triangleColor,
-              snippetInfo: snippetInfo!,
+              snippetInfo: snippetInfo,
             ),
           ),
         ),
@@ -372,7 +391,7 @@ class SnippetBuilderState extends State<SnippetBuilder>
           alignment: Alignment.topRight,
           child: PointerInterceptor(
             child: Tooltip(
-              message: 'show Snippet menu\n${snippetInfo?.name}',
+              message: 'show Snippet menu\n${snippetInfo.name}',
               child: Container(
                 width: 20,
                 height: 20,
@@ -380,7 +399,7 @@ class SnippetBuilderState extends State<SnippetBuilder>
                 child: SnippetMenuAnchor(
                   this,
                   anchorWidget: AnchorWidgetEnum.IconButton,
-                  snippetInfo: snippetInfo!,
+                  snippetInfo: snippetInfo,
                 ),
               ),
             ),

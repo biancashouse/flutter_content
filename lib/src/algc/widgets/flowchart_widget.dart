@@ -12,7 +12,7 @@ import 'package:flutter_content/src/algc/widgets/pkg_tappable_comment_btn.dart';
 
 class FlowchartWidget extends StatelessWidget {
   final String jsonString;
-  final String fbUID;
+  final String? fbUID;
 
   const FlowchartWidget(this.jsonString, this.fbUID, {super.key});
 
@@ -42,7 +42,7 @@ class FlowchartWidget extends StatelessWidget {
 
 class FlowchartWidgetStack extends StatelessWidget {
   final FlowchartM f;
-  final String fbUID;
+  final String? fbUID;
 
   const FlowchartWidgetStack(this.f, this.fbUID, {super.key});
 

@@ -46,7 +46,6 @@ mixin NavMixin {
                 underline: Offstage(),
                 icon: PointerInterceptor(child: Icon(Icons.edit, color: pencilIconColor, size: 24)),
                 dropdownColor: Colors.white,
-                // focusColor: ,
                 onChanged: (value) {
                   switch (value) {
                     case 'sign-in-as-editor':

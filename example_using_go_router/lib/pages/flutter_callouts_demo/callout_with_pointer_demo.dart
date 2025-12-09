@@ -87,7 +87,7 @@ class _PointerDemoState extends State<PointerDemo> {
   /// NOTE - a callout can be updated after it is created by updating properties and rebuilding it.
   CalloutConfig _createCalloutConfig1() {
     _barrierC = CalloutBarrierConfig(
-      cutoutPadding: fco.isWeb ? 20 : 10,
+      // cutoutPadding: fco.isWeb ? 20 : 10,
       excludeTargetFromBarrier: false,
       roundExclusion: false,
       closeOnTapped: false,
@@ -137,7 +137,7 @@ class _PointerDemoState extends State<PointerDemo> {
       // arrowColor: Color.yellow(),
       targetPointerType: _pointerType,
       animatePointer: false,
-      lineLabel: _showLineLabel ? Text('line label') : null,
+      lineLabelBuilder: _showLineLabel ? ()=>Text('line label') : null,
       // frameTarget: true,
       // fromDelta: -20,
       // toDelta: -20,
@@ -375,7 +375,7 @@ class _PointerDemoState extends State<PointerDemo> {
     setState(() {
       _showLineLabel = newVal;
       fco.dismiss('some-callout-id');
-      _cc.lineLabel = newVal ? Text('line label') : null;
+      _cc.lineLabelBuilder = newVal ? ()=>Text('line label') : null;
       fco.showOverlay(
         calloutConfig: _cc,
         calloutContent: _createCalloutContent1(),

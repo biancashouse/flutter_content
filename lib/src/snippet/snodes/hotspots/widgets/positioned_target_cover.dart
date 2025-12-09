@@ -1,140 +1,130 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_content/flutter_content.dart';
+import 'package:flutter_content/src/snippet/snodes/hotspots/widgets/positioned_target_play_btn.dart';
 
 // Btn has 2 uses: Tap to play, and DoubleTap to configure, plus it is draggable
 class TargetCover extends StatelessWidget {
   final TargetModel tc;
   final bool playing;
   final int index;
-  final Rect wrapperRect;
-
-  final GlobalKey? gk; // only for pulsingPoint
+  final TargetsWrapperState wrapperState;
 
   const TargetCover(
     this.tc,
     this.index, {
     this.playing = false,
-    required this.wrapperRect,
-
-    this.gk,
+    required this.wrapperState,
     super.key,
   });
 
   @override
   Widget build(BuildContext context) {
-    // in case initialTC replaced by a build ? huh!
-    // if (tc != null) {
-    // double radius = tc.radius;
-    bool preventDrag = fco.anyPresent([CalloutConfigToolbar.CID]);
-    return fco.canEditContent() && !playing
-        ? Draggable<(TargetId, bool)>(
-            data: (tc.uid, false),
-            feedback:
-                preventDrag ? const Offstage() : _draggableTargetCover(context, tc),
-            childWhenDragging: const Offstage(),
-            child: _draggableTargetCover(context, tc),
-          )
-        : CircleAvatar(
+
+    bool toolbarPresent = fco.anyPresent([
+      CalloutConfigToolbar.CID,
+    ], includeHidden: true);
+
+    return fco.aSnippetIsBeingEdited || !fco.canEditContent()
+        ? CircleAvatar(
             backgroundColor: const Color.fromRGBO(0, 0, 0, .01),
-            // backgroundColor: Colors.red,
-            radius: tc.radius + 2,
+            radius: tc.targetRadius(wrapperState),
+          )
+        : Draggable<(TargetId, bool)>(
+            data: (tc.uid, false),
+            feedback: _targetCover(context, tc),
+            childWhenDragging: const Offstage(),
+            // The child of the Draggable is the visual representation.
+            child: DoubleTappable(
+              onTap: () => _targetCoverTapped(context),
+              onDoubleTap: () => _targetCoverDoubleTapped(context),
+              child: _targetCover(context, tc),
+            ),
           );
   }
 
-  Widget _draggableTargetCover(BuildContext context, TargetModel tc) {
+  void _targetCoverTapped(BuildContext context) {
+    if (fco.snippetBeingEdited != null) {
+      return;
+    }
+
+    if (tc.hasAHotspot() && !fco.anyPresent([CalloutConfigToolbar.CID])) {
+      fco.showToast(
+        textColor: Colors.purple,
+        bgColor: Colors.lightGreenAccent,
+        msg:
+            "\nTap this target's hotspot instead\n(or double-tap to configure it's callout)\n",
+        removeAfterMs: 5000,
+        width: fco.scrW * .4,
+      );
+      return;
+    }
+
+    if (fco.anyPresent([tc.contentCId]) && fco.canEditContent()) {
+      fco.dismiss(tc.contentCId);
+    } else {
+      wrapperState.widget.parentNode.playList.toList()
+        ..clear()
+        ..add(tc);
+      playTarget(context, tc, wrapperState);
+    }
+  }
+
+  void _targetCoverDoubleTapped(BuildContext context) {
+    if (fco.snippetBeingEdited != null) return;
+    wrapperState.setPlayingOrEditingTc(
+      tc,
+      () => TargetsWrapper.configureTarget(context, tc, wrapperState),
+    );
+  }
+
+  Widget _targetCover(BuildContext context, TargetModel tc) {
     // fco.logger.i('_draggableTarget');
-    double radius = tc.getScale() * tc.radius;
-    return Visibility(
-      visible: true, //fco.snippetBeingEdited == null,
-      child: SizedBox(
-        width: tc.radius * 2,
-        height: tc.radius * 2,
-        child: GestureDetector(
-          onTap: () {
-            print("tap");
-            if (tc.targetsWrapperState() == null ||
-                fco.snippetBeingEdited != null) {
-              return;
-            }
-
-            if (tc.hasAHotspot() &&
-                !fco.anyPresent([CalloutConfigToolbar.CID])) {
-              fco.showToast(
-                textColor: Colors.purple,
-                bgColor: Colors.lightGreenAccent,
-                msg:
-                    "\nTap this target's hotspot instead\n(or double-tap to configure it's callout)\n",
-                removeAfterMs: 5000,
-                width: fco.scrW*.4,
-              );
-              return;
-            }
-
-            if (fco.anyPresent([tc.contentCId])) {
-              fco.dismiss(tc.contentCId);
-            } else {
-              tc.targetsWrapperState()!.widget.parentNode.playList.toList()
-                ..clear()
-                ..add(tc);
-              playTarget(context, tc, wrapperRect);
-            }
-          },
-          onDoubleTap: () async {
-            if (fco.snippetBeingEdited != null) return;
-            tc.targetsWrapperState()!.setPlayingOrEditingTc(
-            tc,
-              ()=>TargetsWrapper.configureTarget(context,
-              tc,
-              wrapperRect,
-              
-            ),);
-          },
-          child: Stack(
-            key: gk,
-            children: [
-              Align(
-                alignment: Alignment.center,
-                child: Container(
-                  width: 2 * radius,
-                  height: 2 * radius,
-                  decoration: BoxDecoration(
-                    color: Colors.white.withValues(alpha: .25),
-                    shape: BoxShape.circle,
-                  ),
-                ),
+    double radius = tc.targetRadius(wrapperState);
+    return SizedBox(
+      width: radius * 2,
+      height: radius * 2,
+      child: Stack(
+        children: [
+          Align(
+            alignment: Alignment.center,
+            child: Container(
+              width: 2 * radius,
+              height: 2 * radius,
+              decoration: BoxDecoration(
+                color: tc.hasAHotspot()
+                    ? Colors.white.withValues(alpha: .25)
+                    : Colors.red.withAlpha(50),
+                shape: BoxShape.circle,
               ),
-              Align(
-                alignment: Alignment.center,
-                child: CustomPaint(
-                  foregroundPainter: TargetPainter(),
-                  size: Size(10 + radius * 2, 10 + radius * 2),
-                ),
-              ),
-              Align(
-                alignment: Alignment.center,
-                child: IntegerCircleAvatar(
-                  tc,
-                  num: index + 1,
-                  bgColor:
-                      tc.bgColor().withValues(alpha: .5),
-                  radius: radius,
-                  fontSize: 16,
-                ),
-              ),
-            ],
+            ),
           ),
-        ),
+          Align(
+            alignment: Alignment.center,
+            child: CustomPaint(
+              foregroundPainter: TargetPainter(),
+              size: Size(radius * 2, radius * 2),
+            ),
+          ),
+          Align(
+            alignment: Alignment.center,
+            child: IntegerCircleAvatar(
+              tc,
+              num: index + 1,
+              bgColor: tc.bgColor().withValues(alpha: .5),
+              radius: radius,
+              fontSize: 16,
+            ),
+          ),
+        ],
       ),
     );
   }
 
-  static void playTarget(BuildContext context,
+  static void playTarget(
+    BuildContext context,
     TargetModel tc,
-    Rect wrapperRect,
-    
+    TargetsWrapperState wrapperState,
   ) {
-    if (tc.targetsWrapperState() == null) return;
-
     // cover will now have been rendered with its gk
     var coverGK = tc.gk;
     // fco.logger.i('getTargetGK: $coverGK');
@@ -149,14 +139,18 @@ class TargetCover extends StatelessWidget {
 
     // tc.targetsWrapperState()!.setPlayingOrEditingTc(tc);
 
-    fco.ensureContentSnippetPresent(tc.contentCId).then((_) {
-      showHotspotSnippetContentCallout(
-        tc: tc,
-        justPlaying: true,
-        wrapperRect: wrapperRect,
-         
-      );
-    });
+    // SnippetInfoModel.ensureSnippetInfoPresent(
+    //   snippetName: tc.contentCId,
+    //   firstSnippetVersion: SnippetRootNode(
+    //     name: tc.contentCId,
+    //     child: PlaceholderNode(),
+    //   ),
+    // );
+    showHotspotSnippetContentCallout(
+      tc: tc,
+      justPlaying: true,
+      wrapperState: wrapperState,
+    );
   }
 }
 
@@ -179,19 +173,37 @@ class TargetPainter extends CustomPainter {
       ..style = PaintingStyle.stroke;
     canvas.drawCircle(Offset(radius, radius), radius - 10, paintWhite());
     canvas.drawCircle(Offset(radius, radius), radius - 9, paintPurple());
-    canvas.drawCircle(Offset(radius, radius), radius - 8, paintWhite());
-    canvas.drawLine(Offset(radius - 1, 20),
-        Offset(radius - 1, size.height - 20), paintWhite());
+    // canvas.drawCircle(Offset(radius, radius), radius - 8, paintWhite());
     canvas.drawLine(
-        Offset(radius, 20), Offset(radius, size.height - 20), paintPurple());
-    canvas.drawLine(Offset(radius + 1, 20),
-        Offset(radius + 1, size.height - 20), paintWhite());
-    canvas.drawLine(Offset(20, radius - 1), Offset(size.width - 20, radius - 1),
-        paintWhite());
+      Offset(radius - 1, 20),
+      Offset(radius - 1, size.height - 20),
+      paintWhite(),
+    );
     canvas.drawLine(
-        Offset(20, radius), Offset(size.width - 20, radius), paintPurple());
-    canvas.drawLine(Offset(20, radius + 1), Offset(size.width - 20, radius + 1),
-        paintWhite());
+      Offset(radius, 20),
+      Offset(radius, size.height - 20),
+      paintPurple(),
+    );
+    canvas.drawLine(
+      Offset(radius + 1, 20),
+      Offset(radius + 1, size.height - 20),
+      paintWhite(),
+    );
+    canvas.drawLine(
+      Offset(20, radius - 1),
+      Offset(size.width - 20, radius - 1),
+      paintWhite(),
+    );
+    canvas.drawLine(
+      Offset(20, radius),
+      Offset(size.width - 20, radius),
+      paintPurple(),
+    );
+    canvas.drawLine(
+      Offset(20, radius + 1),
+      Offset(size.width - 20, radius + 1),
+      paintWhite(),
+    );
   }
 
   @override

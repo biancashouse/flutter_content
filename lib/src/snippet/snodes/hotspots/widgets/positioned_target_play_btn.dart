@@ -1,51 +1,47 @@
+import 'dart:async';
+
+import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_content/flutter_content.dart';
 
 // Btn has 2 uses: Tap to play, and DoubleTap to configure, plus it is draggable
 class TargetPlayBtn extends StatelessWidget {
-  final TargetModel initialTC;
+  final TargetModel tc;
   final int index;
-  final Rect wrapperRect;
+  final TargetsWrapperState wrapperState;
 
   const TargetPlayBtn({
-    required this.initialTC,
+    required this.tc,
     required this.index,
-    required this.wrapperRect,
+    required this.wrapperState,
 
     super.key,
   });
 
   @override
   Widget build(BuildContext context) {
-    TargetModel? tc = initialTC; //bloc.state.tcByUid(initialTC);
-    //   bool toolbarPresent = fco.anyPresent([CalloutConfigToolbar.CID]);
-    //   if (toolbarPresent) {
-    //     hideAllTargetBtns();
-    //     hideAllTargetCovers();
-    //   }
-
     var snippetBeingEdited = fco.snippetBeingEdited;
+
     bool toolbarPresent = fco.anyPresent([
       CalloutConfigToolbar.CID,
     ], includeHidden: true);
+
     bool isVisible = snippetBeingEdited == null && !toolbarPresent;
 
     return Visibility(
       visible: isVisible,
-      child: _draggableSelectTargetBtn(context, tc),
+      child: _draggableTargetBtn(context, tc, toolbarPresent),
     );
   }
 
-  Widget _draggableSelectTargetBtn(BuildContext context, TargetModel tc) {
-    bool preventDrag = fco.anyPresent([CalloutConfigToolbar.CID]);
+  Widget _draggableTargetBtn(BuildContext context, TargetModel tc, bool toolbarPresent) {
     return !fco.canEditContent()
         ? GestureDetector(
             onTap: () {
-              if (tc.targetsWrapperState() == null) return;
-              tc.targetsWrapperState()!.widget.parentNode.playList.toList()
+              wrapperState.widget.parentNode.playList.toList()
                 ..clear()
                 ..add(tc);
-              playTarget(context, tc, wrapperRect);
+              playTarget(context, tc, wrapperState);
             },
             child: IntegerCircleAvatar(
               tc,
@@ -53,104 +49,46 @@ class TargetPlayBtn extends StatelessWidget {
               bgColor:
                   tc.calloutFillColors?.color1?.flutterValue ?? Colors.black,
               //tc.calloutFillColor!.decorationShapeEnum,
-              radius: TargetsWrapper.CAPI_TARGET_BTN_RADIUS,
+              radius: TargetModel.DEFAULT_BTN_RADIUS,
               fontSize: 14,
             ),
           )
         : Draggable<(TargetId, bool)>(
             data: (tc.uid, true),
             childWhenDragging: const Offstage(),
-            feedback: preventDrag
+            feedback: toolbarPresent
                 ? const Offstage()
                 : IntegerCircleAvatar(
                     tc,
                     num: index + 1,
                     bgColor: tc.bgColor(),
-                    radius: TargetsWrapper.CAPI_TARGET_BTN_RADIUS,
+                    radius: TargetModel.DEFAULT_BTN_RADIUS,
                     fontSize: 14,
                   ),
-            // onDragUpdate: (DragUpdateDetails details) {
-            //   fco.logger.i("${details.globalPosition}");
-            //   Offset newGlobalPos =
-            //       details.globalPosition; //.translate(iwPos.dx, iwPos.dy);
-            //   tc.setBtnStackPosPc(
-            //     newGlobalPos
-            //         // .translate(
-            //         //   bloc.state.CAPI_TARGET_BTN_RADIUS,
-            //         //   bloc.state.CAPI_TARGET_BTN_RADIUS,
-            //         // )
-            //         // .translate(
-            //         //   parentWrapperState!
-            //         //           .zoomer?.widget.ancestorHScrollController?.offset ??
-            //         //       0.0,
-            //         //   parentWrapperState!
-            //         //           .zoomer?.widget.ancestorVScrollController?.offset ??
-            //         //       0.0,
-            //         // ),
-            //   );
-            //   fco.logger.i("${tc.btnLocalLeftPc}, ${tc.btnLocalTopPc}");
-            // },
-            // onDragStarted: () {
-            //   fco.logger.i("drag started");
-            //   //bloc.add(CAPIEvent.showOnlyOneTarget(tc: tc));
-            // },
-            // onDraggableCanceled: (_, offset) {
-            //   fco.logger.i("drag ended");
-            //   Offset newGlobalPos = offset; //.translate(iwPos.dx, iwPos.dy);
-            //   tc.setBtnStackPosPc(
-            //     newGlobalPos
-            //         .translate(
-            //           bloc.state.CAPI_TARGET_BTN_RADIUS,
-            //           bloc.state.CAPI_TARGET_BTN_RADIUS,
-            //         )
-            //         .translate(
-            //           parentWrapperState!
-            //                   .zoomer?.widget.ancestorHScrollController?.offset ??
-            //               0.0,
-            //           parentWrapperState!
-            //                   .zoomer?.widget.ancestorVScrollController?.offset ??
-            //               0.0,
-            //         ),
-            //   );
-            //   bloc.add(CAPIEvent.TargetChanged(newTC: tc));
-            //
-            //   // parentTW!.bloc.add(CAPIEvent.btnMoved(tc: tc, newGlobalPos: newGlobalPos));
-            // },
-            child: GestureDetector(
+             child: DoubleTappable(
               onTap: () {
-                if (tc.targetsWrapperState() == null ||
-                    fco.snippetBeingEdited != null) {
+                if (fco.snippetBeingEdited != null) {
                   return;
                 }
 
-                final playList = tc
-                    .targetsWrapperState()!
-                    .widget
-                    .parentNode
-                    .playList
+                final playList = wrapperState.widget.parentNode.playList
                     .toList();
                 playList.add(tc);
-                playTarget(context, tc, wrapperRect);
+                playTarget(context, tc, wrapperState);
               },
-              // onLongPress: () {
-              //   tc.setTargetStackPosPc(
-              //     tc.btnStackPos(),
-              //   );
-              //   bloc.add(CAPIEvent.TargetChanged(newTC: tc));
-              // },
               onDoubleTap: () {
                 if (fco.snippetBeingEdited != null) return;
-                tc.targetsWrapperState()!.setPlayingOrEditingTc(
+                wrapperState.setPlayingOrEditingTc(
                   tc,
                   () =>
-                      TargetsWrapper.configureTarget(context, tc, wrapperRect),
+                      TargetsWrapper.configureTarget(context, tc, wrapperState),
                 );
               },
               child: IntegerCircleAvatar(
                 tc,
                 num: index + 1,
                 bgColor: tc.bgColor(),
-                radius: TargetsWrapper.CAPI_TARGET_BTN_RADIUS,
+                radius: TargetModel.DEFAULT_BTN_RADIUS,
                 fontSize: 14,
               ),
             ),
@@ -195,10 +133,8 @@ class TargetPlayBtn extends StatelessWidget {
   static void playTarget(
     BuildContext context,
     TargetModel tc,
-    Rect wrapperRect,
+    TargetsWrapperState wrapperState,
   ) {
-    if (tc.targetsWrapperState() == null) return;
-
     // cover will now have been rendered with its gk
     var coverGK = tc.gk;
     // fco.logger.i('getTargetGK: $coverGK');
@@ -208,31 +144,40 @@ class TargetPlayBtn extends StatelessWidget {
     Rect? targetRect = coverGK.globalPaintBounds();
     if (targetRect == null) return;
 
-    Alignment? ta = fco.calcTargetAlignmentWithinWrapper(
-      wrapperRect: wrapperRect,
+    // NOTE - this alignment is only for scaling the wrapper (image)
+    // as opposed to tc.calloutAlignment, which is for positioning
+    // the callout relative to the target.
+    Alignment? transformAlignment = fco.calcTargetAlignmentWithinWrapper(
+      wrapperRect: wrapperState.wrapperRect,
       targetRect: targetRect,
     );
 
     // IMPORTANT applyTransform will destroy this context, so make state available for afterwards
-    var zoomer = tc.targetsWrapperState()!.zoomer;
+    var zoomer = wrapperState.zoomer;
     // var savedKey = tc.targetsWrapperGK;
 
-    tc.targetsWrapperState()!.setPlayingOrEditingTc(tc, () {
+    wrapperState.setPlayingOrEditingTc(tc, () {
       zoomer?.applyTransform(
         tc.transformScale,
         tc.transformScale,
-        ta,
+        transformAlignment,
         afterTransformF: () async {
-          await fco.ensureContentSnippetPresent(tc.contentCId);
+          // SnippetInfoModel.ensureSnippetInfoPresent(
+          //   snippetName: tc.contentCId,
+          //   firstSnippetVersion: SnippetRootNode(
+          //     name: tc.contentCId,
+          //     child: PlaceholderNode(),
+          //   ),
+          // );
           showHotspotSnippetContentCallout(
             tc: tc,
             justPlaying: true,
-            wrapperRect: wrapperRect,
+            wrapperState: wrapperState,
           );
           fco.afterMsDelayDo(tc.calloutDurationMs, () {
-            tc.targetsWrapperState()!.zoomer?.resetTransform(
+            wrapperState.zoomer?.resetTransform(
               afterTransformF: () {
-                tc.targetsWrapperState()!.setPlayingOrEditingTc(null, () {});
+                wrapperState.setPlayingOrEditingTc(null, () {});
               },
             );
           });

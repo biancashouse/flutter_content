@@ -1,17 +1,24 @@
 import 'dart:convert';
 
+import 'package:firebase_storage/firebase_storage.dart';
+import 'package:firebase_ui_shared/firebase_ui_shared.dart';
+import 'package:firebase_ui_storage/firebase_ui_storage.dart' show FirebaseUIStorage, FirebaseUIStorageConfiguration, UuidFileUploadNamingPolicy, KeepOriginalNameUploadPolicy;
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_content/flutter_content.dart';
+import 'package:flutter_content/src/snippet/snodes/widget/fs_uint8list_upload_btn.dart';
 import 'package:http/http.dart' as http;
 import 'package:multi_split_view/multi_split_view.dart';
 
+
 class PlantUMLMSV extends StatefulWidget {
+  final SNode snode;
   final TextEditingController teC;
   final ValueChanged<UMLRecord> onChangeF;
   final ValueChanged<Size> onSizedF;
 
   const PlantUMLMSV({
+    required this.snode,
     required this.teC,
     required this.onChangeF,
     required this.onSizedF,
@@ -26,12 +33,30 @@ class PlantUMLMSVState extends State<PlantUMLMSV> {
   late FocusNode focusNode;
   late GlobalKey gkForSizing;
   UMLRecord? umlRecord;
+  late Future<void> fConfigureStorageUIForFolder;
+
+  Future<void> _fbStorageConfigure() async {
+    final folderRef = fco.folderPathRef('/plantuml-images');
+     try {
+      await FirebaseUIStorage.configure(
+        FirebaseUIStorageConfiguration(
+          storage: FirebaseStorage.instance,
+          uploadRoot: folderRef,
+          namingPolicy: const KeepOriginalNameUploadPolicy(),
+          // optional, will generate a UUID for each uploaded file
+        ),
+      );
+    } catch (e) {
+      fco.logger.e('', error: e);
+    }
+  }
 
   @override
   void initState() {
+    super.initState();
     focusNode = FocusNode();
     gkForSizing = GlobalKey();
-    super.initState();
+    fConfigureStorageUIForFolder = _fbStorageConfigure();
   }
 
   @override
@@ -59,11 +84,14 @@ class PlantUMLMSVState extends State<PlantUMLMSV> {
 
         UMLRecord? umlRecord = snapshot.data;
 
+        UMLImageNode umlNode = widget.snode as UMLImageNode;
+
         List<Area> areas = [
           Area(builder: (ctx, area) => _textArea()),
           Area(
             builder: (ctx, area) => _plantUMLImageArea(
               umlRecord?.bytes ?? Uint8List.fromList(missingPng.codeUnits),
+              umlNode.name?.isNotEmpty??false ? umlNode.name! : umlNode.uid,
             ),
           ),
         ];
@@ -120,32 +148,134 @@ class PlantUMLMSVState extends State<PlantUMLMSV> {
   //   });
   // }
 
-  Widget _plantUMLImageArea(Uint8List pngBytes) => Center(
-    child: SingleChildScrollView(
-      child: Image.memory(
-        key: gkForSizing,
-        pngBytes,
-        errorBuilder: (context, o, stackTrace) {
-          return Error(
-            key: GlobalKey(),
-            "PlantUMLTextEditor Image.memory",
-            color: Colors.red,
-            size: 18,
-            errorMsg: 'Bad pngBytes',
-          );
-        },
+  Widget _plantUMLImageArea(Uint8List pngBytes, String fsFileName) => Stack(
+    children: [
+      SizedBox(
+        height: 80,
+        child: Align(
+          alignment: Alignment.topRight,
+          child: Row(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              TextButton.icon(
+                onPressed: () async {
+                  if (fco.firebaseOptions == null) return;
+
+                  final Uri url = Uri.parse(
+                    'https://console.cloud.google.com/storage/browser/${fco.firebaseOptions!.storageBucket}/${fco.appName}?${fco.firebaseOptions!.projectId}',
+                  );
+                  if (!await launchUrl(url)) {
+                    throw Exception('Could not launch $url');
+                  }
+                },
+                label: const Icon(Icons.link),
+                icon: const Text(' Cloud Storage Console'),
+              ),
+              Tooltip(
+                message: 'to folder: /plantuml-images',
+                child: FSBytesUploadButton(
+                  fileName: fsFileName,
+                  bytes: pngBytes,
+                  onError: (e, s) => ScaffoldMessenger.of(
+                    context,
+                  ).showSnackBar(SnackBar(content: Text(e.toString()))),
+                  onUploadComplete: (ref) {
+                    setState(() {});
+                  },
+                  variant: ButtonVariant.text,
+                ),
+              ),
+              // FilledButton(
+              //   onPressedressed: () async {
+              //     // 1. Show a loading indicator to the user
+              //     fco.showToast(msg: 'Uploading UML image...');
+              //
+              //     // 2. Define the path in Firebase Storage.
+              //     // It's good practice to use the snode's unique ID to create a unique path.
+              //     final storagePath = 'plantuml-images/${widget.snode.uid}.png';
+              //
+              //     // 3. Get a reference to the location you want to upload to.
+              //     final storageRef = FirebaseStorage.instance.ref().child(
+              //       storagePath,
+              //     );
+              //
+              //     try {
+              //       // 5. Upload the data using putData.
+              //       // You can also provide metadata like the content type.
+              //       final metadata = SettableMetadata(contentType: "image/png");
+              //       final uploadTask = await storageRef.putData(
+              //         pngBytes,
+              //         metadata,
+              //       );
+              //
+              //       // 6. (Optional) Get the download URL after the upload is complete.
+              //       final downloadUrl = await uploadTask.ref.getDownloadURL();
+              //
+              //       // You could save this URL to Firestore or use it elsewhere.
+              //       fco.logger.i('Upload complete! URL: $downloadUrl');
+              //       fco.showToast(
+              //         msg: 'Upload successful!',
+              //         bgColor: Colors.green,
+              //       );
+              //     } on FirebaseException catch (e) {
+              //       // 7. Handle any errors.
+              //       fco.logger.e('Firebase Storage Error: ${e.message}');
+              //       fco.showToast(
+              //         msg: 'Error uploading: ${e.code}',
+              //         bgColor: Colors.red,
+              //       );
+              //     } catch (e) {
+              //       fco.logger.e('An unknown error occurred: $e');
+              //       fco.showToast(
+              //         msg: 'An unknown error occurred.',
+              //         bgColor: Colors.red,
+              //       );
+              //     }
+              //   },
+              //
+              //   child: Tooltip(
+              //     message:
+              //         'upload to firebase storage\n\n(i.e. cache generated uml image)',
+              //     child: const Icon(Icons.upload),
+              //   ),
+              // ),
+            ],
+          ),
+        ),
       ),
-    ),
+      Center(
+        child: SingleChildScrollView(
+          child: Image.memory(
+            key: gkForSizing,
+            pngBytes,
+            errorBuilder: (context, o, stackTrace) {
+              return Error(
+                key: GlobalKey(),
+                "PlantUMLTextEditor Image.memory",
+                color: Colors.red,
+                size: 18,
+                errorMsg: 'Bad pngBytes',
+              );
+            },
+          ),
+        ),
+      ),
+    ],
   );
 
   static Future<UMLRecord> encodeThenFetchPng(
     String umlText,
     ValueChanged<UMLRecord> onchangeF,
   ) async {
-    String umlTextWithoutStartAndEnd = umlText.replaceAll(RegExp(r'@startuml\n'), '');
+    String umlTextWithoutStartAndEnd = umlText.replaceAll(
+      RegExp(r'@startuml\n'),
+      '',
+    );
     umlTextWithoutStartAndEnd = umlText.replaceAll(RegExp(r'\n@enduml'), '');
 
-    String? encodedText = await _cloudRunEncodeTextForPlantUML(umlTextWithoutStartAndEnd);
+    String? encodedText = await _cloudRunEncodeTextForPlantUML(
+      umlTextWithoutStartAndEnd,
+    );
     encodedText ??= missingPng;
     Uint8List? pngBytes = await _fetchPngFromPlantUML(encodedText);
     UMLRecord umlRecord = (

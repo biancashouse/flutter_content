@@ -1,5 +1,7 @@
 import 'dart:convert'; // Import for base64Decode
 
+import 'package:firebase_storage/firebase_storage.dart';
+import 'package:firebase_ui_storage/firebase_ui_storage.dart';
 import 'package:flutter/material.dart';
 
 /// written by Gemini ;-)
@@ -43,9 +45,9 @@ class SizeAwareWidget extends StatefulWidget {
       onSizeAvailable: onSizeAvailable,
       child: Image.network(
         imageUrl,
-        scale: scale??1.0,
+        scale: scale ?? 1.0,
         fit: fit,
-        alignment: alignment??Alignment.center,
+        alignment: alignment ?? Alignment.center,
         errorBuilder: errorBuilder,
         // The frameBuilder is used to detect when the image is ready.
         frameBuilder: (context, child, frame, wasSynchronouslyLoaded) {
@@ -58,6 +60,38 @@ class SizeAwareWidget extends StatefulWidget {
           return loadingWidget ??
               const Center(child: CircularProgressIndicator());
         },
+      ),
+    );
+  }
+
+  /// Factory constructor to easily create a SizeAwareWidget for a network image.
+  ///
+  /// The [onSizeAvailable] callback will be triggered after the image
+  /// from [imageUrl] has been successfully downloaded and rendered.
+  factory SizeAwareWidget.storage({
+    required String fsFullPath,
+    double? width,
+    double? height,
+    double? scale,
+    BoxFit? fit,
+    Alignment? alignment,
+    Widget Function(BuildContext, Object, StackTrace?)? errorBuilder,
+    Key? key,
+    required Function(Size) onSizeAvailable,
+    Widget? loadingWidget,
+  }) {
+    return SizeAwareWidget(
+      key: key,
+      onSizeAvailable: onSizeAvailable,
+      child: StorageImage(
+        fit: fit,
+        width: width,
+        height: height,
+        scale: scale ?? 1.0,
+        alignment: alignment ?? Alignment.center,
+        ref: FirebaseStorage.instance.ref(
+          fsFullPath, // ?? 'gs://${fco.firebaseOptions!.storageBucket}/flutter-content-pkg/missing-image.png',
+        ),
       ),
     );
   }
@@ -82,7 +116,7 @@ class SizeAwareWidget extends StatefulWidget {
         assetPath,
         scale: scale,
         fit: fit,
-        alignment: alignment??Alignment.center,
+        alignment: alignment ?? Alignment.center,
         errorBuilder: errorBuilder,
         // frameBuilder is still useful for consistency, especially with animated GIFs.
         frameBuilder: (context, child, frame, wasSynchronouslyLoaded) {
@@ -96,8 +130,8 @@ class SizeAwareWidget extends StatefulWidget {
   ///
   /// The [onSizeAvailable] callback will be triggered after the image
   /// from the [base64String] has been decoded and rendered.
-  factory SizeAwareWidget.base64(
-    String base64String, {
+  factory SizeAwareWidget.base64({
+    required String base64String,
     Key? key,
     required Function(Size) onSizeAvailable,
     Widget? errorWidget,

@@ -94,7 +94,6 @@ class PropertyButton<T> extends StatelessWidget {
               targetTranslateX: 0,
               targetTranslateY: 0,
               draggable: false,
-              notUsingHydratedStorage: true,
             );
             Widget teContent = StringOrNumberEditor(
               inputType: T,

@@ -30,10 +30,11 @@ class CustomScrollViewNodeMapper
     'slivers',
     _$slivers,
   );
-  static AxisEnum _$scrolDirection(CustomScrollViewNode v) => v.scrollDirection;
-  static const Field<CustomScrollViewNode, AxisEnum> _f$scrolDirection = Field(
-    'scrolDirection',
-    _$scrolDirection,
+  static AxisEnum _$scrollDirection(CustomScrollViewNode v) =>
+      v.scrollDirection;
+  static const Field<CustomScrollViewNode, AxisEnum> _f$scrollDirection = Field(
+    'scrollDirection',
+    _$scrollDirection,
     opt: true,
     def: AxisEnum.vertical,
   );
@@ -99,7 +100,7 @@ class CustomScrollViewNodeMapper
   @override
   final MappableFields<CustomScrollViewNode> fields = const {
     #slivers: _f$slivers,
-    #scrolDirection: _f$scrolDirection,
+    #scrollDirection: _f$scrollDirection,
     #shrinkWrap: _f$shrinkWrap,
     #uid: _f$uid,
     #treeNodeGK: _f$treeNodeGK,
@@ -128,7 +129,7 @@ class CustomScrollViewNodeMapper
   static CustomScrollViewNode _instantiate(DecodingData data) {
     return CustomScrollViewNode(
       slivers: data.dec(_f$slivers),
-      scrollDirection: data.dec(_f$scrolDirection),
+      scrollDirection: data.dec(_f$scrollDirection),
       shrinkWrap: data.dec(_f$shrinkWrap),
     );
   }
@@ -205,7 +206,7 @@ abstract class CustomScrollViewNodeCopyWith<
     implements ScrollViewNodeCopyWith<$R, $In, $Out> {
   ListCopyWith<$R, SNode, SNodeCopyWith<$R, SNode, SNode>> get slivers;
   @override
-  $R call({List<SNode>? slivers, AxisEnum? scrolDirection, bool? shrinkWrap});
+  $R call({List<SNode>? slivers, AxisEnum? scrollDirection, bool? shrinkWrap});
   CustomScrollViewNodeCopyWith<$R2, $In, $Out2> $chain<$R2, $Out2>(
     Then<$Out2, $R2> t,
   );
@@ -229,19 +230,19 @@ class _CustomScrollViewNodeCopyWithImpl<$R, $Out>
   @override
   $R call({
     List<SNode>? slivers,
-    AxisEnum? scrolDirection,
+    AxisEnum? scrollDirection,
     Object? shrinkWrap = $none,
   }) => $apply(
     FieldCopyWithData({
       if (slivers != null) #slivers: slivers,
-      if (scrolDirection != null) #scrolDirection: scrolDirection,
+      if (scrollDirection != null) #scrollDirection: scrollDirection,
       if (shrinkWrap != $none) #shrinkWrap: shrinkWrap,
     }),
   );
   @override
   CustomScrollViewNode $make(CopyWithData data) => CustomScrollViewNode(
     slivers: data.get(#slivers, or: $value.slivers),
-    scrollDirection: data.get(#scrolDirection, or: $value.scrollDirection),
+    scrollDirection: data.get(#scrollDirection, or: $value.scrollDirection),
     shrinkWrap: data.get(#shrinkWrap, or: $value.shrinkWrap),
   );
 

@@ -3,6 +3,7 @@
 import 'package:dart_mappable/dart_mappable.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_content/flutter_content.dart';
+import 'package:flutter_content/src/snippet/pnodes/enum_pnode.dart';
 import 'package:flutter_content/src/snippet/pnodes/fyi_pnodes.dart';
 import 'package:flutter_content/src/snippet/pnodes/string_pnode.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
@@ -39,7 +40,16 @@ class ListViewNode extends BoxScrollViewNode with ListViewNodeMappable {
         ),
       ],
     ),
-    ];
+    EnumPNode<AxisEnum?>(
+      snode: this,
+      name: 'scrollDirection',
+      valueIndex: scrollDirection.index,
+      onIndexChange: (newValue) => refreshWithUpdate(
+        context,
+            () => scrollDirection = AxisEnum.of(newValue) ?? AxisEnum.vertical,
+      ),
+    ),
+  ];
 
   @override
   Widget buildFlutterWidget(BuildContext context, SNode? parentNode) {
@@ -62,7 +72,7 @@ class ListViewNode extends BoxScrollViewNode with ListViewNodeMappable {
           return ListView(
             key: createNodeWidgetGK(),
             controller: sc,
-            scrollDirection: scrollDirection.flutterValue ?? Axis.vertical,
+            scrollDirection: scrollDirection.flutterValue,
             shrinkWrap: shrinkWrap??false,
             padding: padding?.toEdgeInsets(),
             children: listViewChildren,

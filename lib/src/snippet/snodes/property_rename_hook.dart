@@ -35,7 +35,7 @@ class PropertyRenameHook extends MappingHook {
   void _migrateExpandedNode(Map<String, dynamic> data) {
     // Base Case: Check if the current map is the one we need to migrate.
     if (data['sc'] == 'ExpandedNode') {
-      print('Found and migrating ExpandedNode...');
+      // print('Found and migrating ExpandedNode...');
       // 1. Remove the old key-value pair.
       data.remove('sc');
       // 2. Add the two new key-value pairs.
@@ -46,7 +46,7 @@ class PropertyRenameHook extends MappingHook {
       // when it sees the new 'sc' and 'flexible' fields. No need to manipulate __type.
       return; // Stop recursion for this branch
     } else if (data['DK:sc'] == 'ExpandedNode') {
-      print('Found and migrating ExpandedNode...');
+      // print('Found and migrating ExpandedNode...');
       // 1. Remove the old key-value pair.
       data.remove('DK:sc');
       // 2. Add the two new key-value pairs.

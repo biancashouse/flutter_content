@@ -39,69 +39,64 @@ class FSImageNode extends CL with FSImageNodeMappable {
 
   @override
   List<PNode> propertyNodes(BuildContext context, SNode? parentSNode) => [
-        FSImagePathPNode(
-          snode: this,
-          name: 'image picker',
-          stringValue: fsFullPath,
-          onPathChange: (newValue) => refreshWithUpdate(context,() => fsFullPath =
-              newValue ??
-                  'gs://bh-apps.appspot.com/flutter-content-pkg/missing-image.png'),
-          calloutButtonSize: const Size(280, 70),
-        ),
-        DecimalPNode(
-          snode: this,
-          name: 'width',
-          decimalValue: width,
-          onDoubleChange: (newValue) =>
-              refreshWithUpdate(context,() => width = newValue),
-          calloutButtonSize: const Size(80, 20),
-        ),
-        DecimalPNode(
-          snode: this,
-          name: 'height',
-          decimalValue: height,
-          onDoubleChange: (newValue) =>
-              refreshWithUpdate(context,() => height = newValue),
-          calloutButtonSize: const Size(80, 20),
-        ),
-        DecimalPNode(
-          snode: this,
-          name: 'scale',
-          decimalValue: scale,
-          onDoubleChange: (newValue) =>
-              refreshWithUpdate(context,() => scale = newValue),
-          calloutButtonSize: const Size(80, 20),
-        ),
-        EnumPNode<BoxFitEnum?>(
-          snode: this,
-          name: 'fit',
-          valueIndex: fit?.index,
-          onIndexChange: (newValue) =>
-              refreshWithUpdate(context,() => fit = BoxFitEnum.of(newValue)),
-        ),
-        EnumPNode<AlignmentEnum?>(
-          snode: this,
-          name: 'alignment',
-          valueIndex: alignment?.index,
-          onIndexChange: (newValue) =>
-              refreshWithUpdate(context,() => alignment = AlignmentEnum.of(newValue)),
-        ),
-      ];
+    FSImagePathPNode(
+      snode: this,
+      name: 'image picker',
+      stringValue: fsFullPath,
+      onPathChange: (newValue) => refreshWithUpdate(
+        context,
+        () => fsFullPath =
+            newValue ??
+            'gs://${fco.firebaseOptions!.storageBucket}/flutter-content-pkg/missing-image.png',
+      ),
+      calloutButtonSize: const Size(280, 70),
+    ),
+    DecimalPNode(
+      snode: this,
+      name: 'width',
+      decimalValue: width,
+      onDoubleChange: (newValue) =>
+          refreshWithUpdate(context, () => width = newValue),
+      calloutButtonSize: const Size(80, 20),
+    ),
+    DecimalPNode(
+      snode: this,
+      name: 'height',
+      decimalValue: height,
+      onDoubleChange: (newValue) =>
+          refreshWithUpdate(context, () => height = newValue),
+      calloutButtonSize: const Size(80, 20),
+    ),
+    DecimalPNode(
+      snode: this,
+      name: 'scale',
+      decimalValue: scale,
+      onDoubleChange: (newValue) =>
+          refreshWithUpdate(context, () => scale = newValue),
+      calloutButtonSize: const Size(80, 20),
+    ),
+    EnumPNode<BoxFitEnum?>(
+      snode: this,
+      name: 'fit',
+      valueIndex: fit?.index,
+      onIndexChange: (newValue) =>
+          refreshWithUpdate(context, () => fit = BoxFitEnum.of(newValue)),
+    ),
+    EnumPNode<AlignmentEnum?>(
+      snode: this,
+      name: 'alignment',
+      valueIndex: alignment?.index,
+      onIndexChange: (newValue) => refreshWithUpdate(
+        context,
+        () => alignment = AlignmentEnum.of(newValue),
+      ),
+    ),
+  ];
 
   @override
   Widget buildFlutterWidget(BuildContext context, SNode? parentNode) {
     try {
-      setParent(parentNode); // propagating parents down from root
-      //ScrollControllerName? scName = EditablePage.name(context);
-      //possiblyHighlightSelectedNode(scName);
-
-      // sometimes the image hasn't been loaded yet
-      if (false && _mustReloadedAfter100Ms) {
-        fco.afterMsDelayDo(100, () {
-          fco.forceRefresh();
-          _mustReloadedAfter100Ms = false;
-        });
-      }
+      setParent(parentNode);
 
       GlobalKey? gk;
       if (parentNode is! CarouselNode) {
@@ -115,25 +110,26 @@ class FSImageNode extends CL with FSImageNodeMappable {
         height: height,
         scale: scale ?? 1.0,
         alignment: alignment?.alignment ?? Alignment.center,
-        ref: FirebaseStorage.instance.ref(fsFullPath ??
-            'gs://bh-apps.appspot.com/flutter-content-pkg/missing-image.png'),
+        ref: FirebaseStorage.instance.ref(
+          fsFullPath ??
+              'gs://${fco.firebaseOptions!.storageBucket}/flutter-content-pkg/missing-image.png',
+        ),
       );
       return widget;
     } catch (e) {
       return Error(
-          key: createNodeWidgetGK(),
-          FLUTTER_TYPE,
-          color: Colors.red,
-          size: 16,
-          errorMsg: e.toString());
+        key: createNodeWidgetGK(),
+        FLUTTER_TYPE,
+        color: Colors.red,
+        size: 16,
+        errorMsg: e.toString(),
+      );
     }
   }
 
   @override
-  Widget? widgetLogo() => Image.asset(
-    fco.asset('lib/assets/images/pub.dev.png'),
-    width: 16,
-  );
+  Widget? widgetLogo() =>
+      Image.asset(fco.asset('lib/assets/images/pub.dev.png'), width: 16);
 
   @override
   String toString() => FLUTTER_TYPE;

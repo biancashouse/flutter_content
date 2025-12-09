@@ -123,6 +123,7 @@ class SNodeWidget extends StatelessWidget {
                           ? "@startuml\n${originalUMLRecord.text ?? ''}\n@enduml"
                           : originalUMLRecord.text ?? '';
                       PropertyButtonUML.showUMLEditor(
+                        entry.node,
                         context,
                         originalUMLRecord,
                         teC,
@@ -357,7 +358,7 @@ class SNodeWidget extends StatelessWidget {
     var selectedNode = fco.capiBloc.state.snippetBeingEdited!.selectedNode;
     if (selectedNode == null) return;
     fco.afterMsDelayDo(100, () {
-      var cc = selectedNode.nodeWidgetGK!.currentContext;
+      var cc = selectedNode.nodeWidgetGK?.currentContext;
       if (cc != null) {
         Scrollable.ensureVisible(
           cc,
@@ -436,7 +437,6 @@ class SNodeWidget extends StatelessWidget {
           color: Colors.black,
           opacity: .4,
           // excludeTargetFromBarrier: true,
-          cutoutPadding: 40,
         ),
         toDelta: -20,
       ),

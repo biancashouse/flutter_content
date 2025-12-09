@@ -35,11 +35,7 @@ class PropertyButtonFSBrowser extends StatelessWidget {
       initialCalloutAlignment: Alignment.bottomCenter,
       initialTargetAlignment: Alignment.topCenter,
       calloutContents: (ctx) {
-        // cId:
-        // fco.afterNextBuildDo((){
-        //   fco.zeroHeight(fco.snippetBeingEdited!.rootNode.name);
-        // });
-        return FSFoldersAndImagePicker(onSelectedFileF: onChangeF);
+           return FSFoldersAndImagePicker(onSelectedFileF: onChangeF);
       },
       // onDismissedF: () => fco.restoreHeight(fco.snippetBeingEdited!.rootNode.name),
       calloutSize: const Size(500, 400),

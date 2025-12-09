@@ -6,5 +6,7 @@ extension GoogleFontNamesExtension on FlutterContentMixins {
     'Roboto Mono',
     'Merriweather',
     'Merriweather Sans',
+    'Noto Sans',
+    'Noto Serif',
   ]);
 }

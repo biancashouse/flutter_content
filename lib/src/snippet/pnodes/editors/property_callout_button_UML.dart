@@ -42,7 +42,7 @@ class PropertyButtonUML extends StatelessWidget {
 
     return GestureDetector(
       onTap: () {
-        showUMLEditor(context, originalUMLRecord, teC, onChangeF, onSizedF);
+        showUMLEditor(snode, context, originalUMLRecord, teC, onChangeF, onSizedF);
       },
       child: Container(
         alignment: Alignment.topLeft,
@@ -54,7 +54,7 @@ class PropertyButtonUML extends StatelessWidget {
     );
   }
 
-  static void showUMLEditor(context, originalUMLRecord, teC, onChangeF, onSizedF) {
+  static void showUMLEditor(SNode snode, context, originalUMLRecord, teC, onChangeF, onSizedF) {
 
     CalloutConfig teCC = CalloutConfig(
       cId: 'uml-te',
@@ -74,10 +74,10 @@ class PropertyButtonUML extends StatelessWidget {
       onResizeF: (Size newSize) {},
       onDragF: (Offset newOffset) {},
       draggable: false,
-      notUsingHydratedStorage: true,
     );
 
     Widget calloutContent = PlantUMLMSV(
+      snode: snode,
       teC: teC,
       onChangeF: (UMLRecord newUmlRecord) {
         onChangeF.call(newUmlRecord);

@@ -13,18 +13,17 @@ void removeTargetDurationCallout() {
   }
 }
 
-Future<void> showTargetDurationCallout(final TargetModel tc) async {
-  GlobalKey? targetGK = tc.gk;
+Future<void> showTargetDurationCallout(final TargetModel tc, TargetsWrapperState wrapperState) async {
+  // GlobalKey? targetGK = tc.gk;
 
   fco.showOverlay(
-    targetGK: targetGK,
+    // targetGK: targetGK,
     calloutContent: NumericKeypad(
       label: 'onscreen duration (ms)',
       initialValue: tc.calloutDurationMs.toString(),
       onClosedF: (s) {
         tc.calloutDurationMs = int.tryParse(s) ?? 0;
-        SnippetRootNode? rootNode = tc.parentTargetsWrapperNode
-            ?.rootNodeOfSnippet();
+        SnippetRootNode? rootNode = wrapperState.widget.parentNode.rootNodeOfSnippet();
         if (rootNode == null) return;
         final newVersionId = SnippetInfoModel.createNewVersion(rootNode);
         fco.modelRepo.saveSnippetVersion(
@@ -37,10 +36,9 @@ Future<void> showTargetDurationCallout(final TargetModel tc) async {
     ),
     calloutConfig: CalloutConfig(
       cId: "duration",
-
       initialTargetAlignment: Alignment.centerRight,
       initialCalloutAlignment: Alignment.centerLeft,
-      finalSeparation: 30,
+      // finalSeparation: 30,
       barrier: CalloutBarrierConfig(
         opacity: 0.1,
         onTappedF: () async {
@@ -58,7 +56,6 @@ Future<void> showTargetDurationCallout(final TargetModel tc) async {
       // },
       // closeButtonColor: Colors.white,
       scaleTarget: tc.transformScale,
-      notUsingHydratedStorage: true,
     ),
   );
 }

@@ -75,11 +75,41 @@ class AlgCNode extends CL with AlgCNodeMappable {
   Widget buildFlutterWidget(BuildContext context, SNode? parentNode,
       ) {
     setParent(parentNode); // propagating parents down from root
-    
-    //possiblyHighlightSelectedNode(scName);
 
-    if (flowchartJsonString?.isNotEmpty ?? false) {
-      // use stored json
+    if ((fbUid!= null && fbUid!.isNotEmpty) && (fId?.isNotEmpty ?? false)) {
+      try {
+        return FutureBuilder<String?>(
+            future: cloudRunFetchFlowchartJsonString(fbUid!, fId!),
+            builder: (futureContext, snapshot) {
+              if (snapshot.connectionState != ConnectionState.done) {
+                return const Center(child: CircularProgressIndicator());
+              }
+              // cache fetched json in the node
+              flowchartJsonString = snapshot.data;
+              try {
+                return FlowchartWidget(
+                  key: createNodeWidgetGK(),
+                  flowchartJsonString ?? '',
+                  fbUid!,
+                );
+              } catch (e) {
+                return Error(
+                    key: createNodeWidgetGK(),
+                    FLUTTER_TYPE,
+                    color: Colors.red,
+                    size: 16,
+                    errorMsg: e.toString());
+              }
+            });
+      } catch (e) {
+        return Error(
+            key: createNodeWidgetGK(),
+            FLUTTER_TYPE,
+            color: Colors.red,
+            size: 16,
+            errorMsg: e.toString());
+      }
+    } else if (flowchartJsonString?.isNotEmpty ?? false) {
       try {
         return FlowchartWidget(
           key: createNodeWidgetGK(),
@@ -95,57 +125,13 @@ class AlgCNode extends CL with AlgCNodeMappable {
             errorMsg: e.toString());
       }
     } else {
-      // try to fetch from algc firestore using ea and fid
-      if (fbUid == null || fbUid!.isEmpty) {
-        return Error(
-            key: createNodeWidgetGK(),
-            FLUTTER_TYPE,
-            color: Colors.green,
-            size: 16,
-            errorMsg: "must specify the firebase UID!");
-      }
-      if ((fbUid!= null && fbUid!.isNotEmpty) && (fId?.isNotEmpty ?? false)) {
-        try {
-          return FutureBuilder<String?>(
-              future: cloudRunFetchFlowchartJsonString(fbUid!, fId!),
-              builder: (futureContext, snapshot) {
-                if (snapshot.connectionState != ConnectionState.done) {
-                  return const Center(child: CircularProgressIndicator());
-                }
-                // cache fetched json in the node
-                flowchartJsonString = snapshot.data;
-                try {
-                  return FlowchartWidget(
-                    key: createNodeWidgetGK(),
-                    flowchartJsonString ?? '',
-                    fbUid!,
-                  );
-                } catch (e) {
-                  return Error(
-                      key: createNodeWidgetGK(),
-                      FLUTTER_TYPE,
-                      color: Colors.red,
-                      size: 16,
-                      errorMsg: e.toString());
-                }
-              });
-        } catch (e) {
-          return Error(
-              key: createNodeWidgetGK(),
-              FLUTTER_TYPE,
-              color: Colors.red,
-              size: 16,
-              errorMsg: e.toString());
-        }
-      } else {
-        return Error(
-            key: createNodeWidgetGK(),
-            FLUTTER_TYPE,
-            color: Colors.red,
-            size: 16,
-            errorMsg:
-                "$FLUTTER_TYPE - Either specify your email address and flowchart id, or the json !");
-      }
+      return Error(
+          key: createNodeWidgetGK(),
+          FLUTTER_TYPE,
+          color: Colors.red,
+          size: 16,
+          errorMsg:
+          "$FLUTTER_TYPE - Either specify your email address and flowchart id, or the json !");
     }
   }
 
@@ -169,9 +155,6 @@ class AlgCNode extends CL with AlgCNodeMappable {
         ? encodedText
         : null; // "cloudRunEncodeTextForPlantUML() received a bad response!";
   }
-
-  @override
-  List<Type> wrapWithRecommendations() => [CarouselNode];
 
   @override
   Widget? widgetLogo() => Image.asset(

@@ -1,19 +1,23 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_content/flutter_content.dart';
-import 'package:flutter_content/src/snippet/snodes/hotspots/widgets/positioned_target_play_btn.dart';
+import 'package:flutter_content/src/model/alignment_model.dart';
+import 'package:flutter_content/src/snippet/pnodes/enums/enum_target_pointer_type.dart';
 
 class TargetsWrapperOnTapMenu extends StatelessWidget {
   final TapDownDetails details;
   final TargetsWrapperNode parentNode;
-  final Rect wrapperRect;
-  
+  final TargetsWrapperState wrapperState;
 
   const TargetsWrapperOnTapMenu(
-      this.details, this.parentNode, this.wrapperRect, 
-      {super.key});
+    this.details,
+    this.parentNode,
+    this.wrapperState, {
+    super.key,
+  });
 
   @override
   Widget build(BuildContext context) {
+    bool withHotspot = true;
     return Container(
       padding: EdgeInsets.all(10),
       decoration: BoxDecoration(
@@ -33,78 +37,98 @@ class TargetsWrapperOnTapMenu extends StatelessWidget {
               ),
               onPressed: () async {
                 fco.dismissAll();
-                await createTarget(context, details, true);
+                createTarget(context, details, withHotspot);
               },
               child: Text(
-                'create a Target + Hotspot here',
+                'create a Target here',
                 style: TextStyle(fontSize: 18),
                 textAlign: TextAlign.center,
               ),
             ),
             Gap(16),
-            Text(
-              '(user will be able to tap\nthe hotspot to play its callout)',
-              style: TextStyle(fontSize: 12, color: Colors.white),
-            )
+            StatefulBuilder(
+              builder: (context, setState) => Column(
+                children: [
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      fco.coloredText(
+                        'also create a hotspot ?',
+                        color: Colors.white,
+                      ),
+                      Checkbox(
+                        value: withHotspot,
+                        onChanged: (_) {
+                          setState(() {
+                            withHotspot = !withHotspot;
+                          });
+                        },
+                      ),
+                    ],
+                  ),
+                  if (withHotspot)
+                    Text(
+                      '(user will be able to tap\nthe hotspot to play its callout)',
+                      style: TextStyle(fontSize: 12, color: Colors.white),
+                    )
+                  else
+                    Text(
+                      '(if no hotspot, its callout plays automatically)',
+                      style: TextStyle(fontSize: 12, color: Colors.white),
+                    ),
+                ],
+              ),
+            ),
           ],
         ),
       ),
     );
   }
 
-  static double menuWidth() => 400.0;
+  static double menuWidth() => 320.0;
 
-  static double menuHeight() => 200.0;
+  static double menuHeight() => 220.0;
 
-  Future<void> createTarget(BuildContext context, TapDownDetails details, bool withHotspot) async {
+  void createTarget(
+    BuildContext context,
+    TapDownDetails details,
+    bool withHotspot,
+  ) {
     if (!fco.canEditContent()) return;
     SnippetName? snippetName = parentNode.rootNodeOfSnippet()?.name;
     if (snippetName == null) return;
 
     TargetId newTargetId = DateTime.now().millisecondsSinceEpoch;
     TargetModel newTC = TargetModel(
-      uid: newTargetId, //event.wName.hashCode,
-    )..parentTargetsWrapperNode = parentNode;
-
-    var scrollConfig = fco.findAncestorScrollControllerAndDirection(context);
-    ScrollController? sc = scrollConfig.$1;
-    Axis? scrollDirection = scrollConfig.$2;
-
-
-    Offset newGlobalPos = details.globalPosition.translate(
-      scrollDirection == Axis.horizontal ? sc?.offset??0.0 : 0.0,
-      scrollDirection == Axis.vertical ? sc?.offset??0.0 : 0.0,
+      uid: newTargetId,
+      //event.wName.hashCode,
+      tcAlignment: AlignmentModel(2, 0),
+      calloutDurationMs: 2000,
+      calloutFillColors: UpTo6Colors(color1: ColorModel.white()),
+      targetPointerTypeEnum: TargetPointerTypeEnum.THIN,
     );
-    newTC.setTargetStackPosPc(
-      newGlobalPos,
-    );
+
+    newTC.setTargetLocalPosPc(wrapperState, details.globalPosition);
 
     if (withHotspot) {
-      newTC.btnLocalTopPc = newTC.targetLocalPosTopPc;
-      bool onLeft = newTC.targetLocalPosLeftPc! < .5;
-      newTC.btnLocalLeftPc =
-          newTC.targetLocalPosLeftPc! + (onLeft ? .02 : -.02);
-    } else {
-      newTC.calloutDurationMs = 1000 * 60 * 60 * 24 * 365;
+      newTC.btnCLocalPosPc = newTC.targetCLocalPc;
+      bool onLeft = newTC.targetCLocalPc!.dx < .5;
+      newTC.btnCLocalPosPc = OffsetModel(
+        newTC.targetCLocalPc!.dx + (onLeft ? .02 : -.02),
+        newTC.targetCLocalPc!.dy,
+      );
     }
-
     parentNode.targets = [...parentNode.targets, newTC];
     // widget.parentNode.targets.add(newTC);
-    fco.capiBloc
-        .add(const CAPIEvent.forceRefresh(onlyTargetsWrappers: true));
+    fco.capiBloc.add(const CAPIEvent.forceRefresh(onlyTargetsWrappers: true));
 
-    final newVersionId = SnippetInfoModel.createNewVersion(parentNode.rootNodeOfSnippet()!);
-    fco.modelRepo.saveSnippetVersion(snippetName: parentNode.rootNodeOfSnippet()!.name, newVersionId: newVersionId, newVersion: parentNode.rootNodeOfSnippet()!);
-
-    // fco.cacheAndSaveANewSnippetVersion(
-    //   snippetName: snippetName,
-    //   rootNode: parentNode.rootNodeOfSnippet()!,
-    // );
-
-    if (!withHotspot) {
-      fco.afterMsDelayDo(1500, () {
-        TargetPlayBtn.playTarget(context, newTC, wrapperRect);
-      });
-    }
+    final newVersionId = SnippetInfoModel.createNewVersion(
+      parentNode.rootNodeOfSnippet()!,
+    );
+    fco.modelRepo.saveSnippetVersion(
+      snippetName: parentNode.rootNodeOfSnippet()!.name,
+      newVersionId: newVersionId,
+      newVersion: parentNode.rootNodeOfSnippet()!,
+    );
   }
 }

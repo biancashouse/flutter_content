@@ -35,7 +35,7 @@ abstract class ScrollViewNode extends CL with ScrollViewNodeMappable {
     ),
     EnumPNode<AxisEnum?>(
       snode: this,
-      name: 'scrolDirection',
+      name: 'scrollDirection',
       valueIndex: scrollDirection.index,
       onIndexChange: (newValue) => refreshWithUpdate(
         context,

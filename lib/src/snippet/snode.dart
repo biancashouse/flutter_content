@@ -1408,9 +1408,9 @@ abstract class SNode extends Node with SNodeMappable {
   // List<Type> addChildRecommendations() => [];
 
   List<Type> replaceWithCandidates() => [
-    ...childlessSubClasses,
-    ...singleChildSubClasses,
-    ...multiChildSubClasses,
+    // ...childlessSubClasses,
+    // ...singleChildSubClasses,
+    // ...multiChildSubClasses,
   ];
 
   List<Type> wrapCandidates() => [

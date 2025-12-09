@@ -69,8 +69,8 @@ class PropertyCalloutButton extends StatelessWidget {
         },
       ),
       // containsTextField: true,
-      resizeableH: false,
-      resizeableV: false,
+      resizeableH: true,
+      resizeableV: true,
       decorationBorderRadius: 16,
       onDismissedF: onDismissedF,
       

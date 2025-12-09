@@ -87,6 +87,7 @@ import 'package:flutter_content/src/snippet/snodes/tabbarview_node.dart';
 import 'package:flutter_content/src/snippet/snodes/text_button_node.dart';
 import 'package:flutter_content/src/snippet/snodes/text_node.dart';
 import 'package:flutter_content/src/snippet/snodes/uml_image_node.dart';
+import 'package:flutter_content/src/snippet/snodes/widget/crop_or_resize/crop_image.dart';
 
 // import 'package:flutter_content/src/snippet/snodes/quill_text_node.dart';
 import 'package:flutter_content/src/snippet/snodes/widget/fs_folder_node.dart';
@@ -120,6 +121,7 @@ export 'package:cloud_firestore/cloud_firestore.dart';
 export 'package:firebase_core/firebase_core.dart';
 
 // re-export callout callout related s.t. apps using this package don't need to include the callouts pkg in pubspec
+export 'package:flutter_callouts/src/widget/double_tappable.dart';
 export 'package:flutter_callouts/src/api/callouts/callout_config.dart';
 export 'package:flutter_callouts/src/api/callouts/callout_using_overlayportal.dart';
 export 'package:flutter_callouts/src/api/callouts/dotted_decoration.dart';
@@ -195,6 +197,7 @@ export 'src/snippet/pnodes/editors/string_or_number_editor.dart';
 export 'src/snippet/pnodes/editors/text_editor_with_autocomplete.dart';
 export 'src/snippet/pnodes/enums/enum_axis.dart';
 export 'src/snippet/pnodes/enums/enum_material3_text_size.dart';
+export 'src/snippet/pnodes/enums/enum_decoration_shape.dart';
 export 'src/snippet/snode.dart';
 export 'src/snippet/snodes/align_node.dart';
 export 'src/snippet/snodes/appbar_node.dart';
@@ -349,6 +352,7 @@ class FlutterContentMixins
         KeystrokesMixin,
         LocalStorageMixin,
         WidgetHelperMixin,
+        ImageCaptureMixin,
         CanvasMixin,
         GotitsMixin,
         PasswordlessMixin,
@@ -373,7 +377,6 @@ class FlutterContentMixins
     required String appName,
     FirebaseOptions? fbOptions,
     bool useEmulator = false,
-    bool useFBStorage = false,
     final IModelRepository? testModelRepo,
     // created in tests by a when(mockRepository.getCAPIModel(modelName: modelName...
     final Widget? testWidget,
@@ -393,8 +396,6 @@ class FlutterContentMixins
 
     // Bloc.observer = MyGlobalObserver();
 
-    usingFBStorage = useFBStorage;
-
     // go_router not necc.
     if (routingConfig != null && initialRoutePath != null) {
       initRouter(routingConfig, initialRoutePath);
@@ -412,6 +413,7 @@ class FlutterContentMixins
     if (fbOptions != null) {
       // fco.logger.i('init 1. ${fco.stopwatch.elapsedMilliseconds}');
 
+      firebaseOptions = fbOptions;
       modelRepo = FireStoreModelRepository(fbOptions);
       await (modelRepo as FireStoreModelRepository)
           .possiblyInitFireStoreRelatedAPIs(useEmulator: useEmulator);
@@ -449,19 +451,17 @@ class FlutterContentMixins
     // await initLocalStorage();
     // fco.logger.i('init 6. ${fco.stopwatch.elapsedMilliseconds}');
 
-    if (useFBStorage) {
-      // traverse all nodes starting at root
-      final fsRootFolderNode = await modelRepo.createAndPopulateFolderTree(
-        ref: folderPathRef('/'),
-      );
+    // Firebase Storage traverse all nodes starting at root
+    // refer to FirebaseOptions to see default storage bucket
+    final fsRootFolderNode = await modelRepo.createAndPopulateFolderTree(
+      ref: folderPathRef('/'),
+    );
 
-      fsTreeC = TreeController<FSFolderNode>(
-        roots: [fsRootFolderNode],
-        childrenProvider: (FSFolderNode node) => node.children,
-        parentProvider: (FSFolderNode node) =>
-            node.getParent() as FSFolderNode?,
-      )..expand(fsRootFolderNode);
-    }
+    fsTreeC = TreeController<FSFolderNode>(
+      roots: [fsRootFolderNode],
+      childrenProvider: (FSFolderNode node) => node.children,
+      parentProvider: (FSFolderNode node) => node.getParent() as FSFolderNode?,
+    )..expand(fsRootFolderNode);
 
     // fco.logger.i('init 7. ${fco.stopwatch.elapsedMilliseconds}');
 
@@ -485,6 +485,7 @@ class FlutterContentMixins
   late String appName;
 
   late bool usingFBStorage;
+  FirebaseOptions? firebaseOptions;
   late String currFolderPath;
   late TreeController<FSFolderNode> fsTreeC;
 
@@ -557,21 +558,35 @@ class FlutterContentMixins
 
   bool get showProperties => snippetBeingEdited?.showProperties ?? false;
 
-  Future<void> ensureContentSnippetPresent(String contentCId) async {
-    if (SnippetInfoModel.cachedSnippetInfo(contentCId) != null) {
-      SnippetInfoModel.createAndCacheNewSnippetInfo(
-        SnippetRootNode(
-          name: contentCId,
-          child: CenterNode(
-            child: TextNode(
-              text: contentCId,
-              tsPropGroup: TextStyleProperties(),
-            ),
-          ),
-        ),
-      );
-    }
-  }
+  // Future<void> ensureContentSnippetPresent(String contentCId) async {
+  //
+  //   if (SnippetInfoModel.cachedSnippetInfo(contentCId) == null) {
+  //     // create a first version of the content, then it's snippetInfo
+  //     VersionId firstVersionId = DateTime
+  //         .now()
+  //         .millisecondsSinceEpoch
+  //         .toString();
+  //
+  //     SnippetRootNode firstVersion = SnippetRootNode(
+  //       name: contentCId,
+  //       child: CenterNode(
+  //         child: TextNode(
+  //           text: contentCId,
+  //           tsPropGroup: TextStyleProperties(),
+  //         ),
+  //       ),
+  //     );
+  //
+  //     final newSnippetInfo = SnippetInfoModel(
+  //       firstVersion.name,
+  //       editingVersionId: firstVersionId,
+  //       publishedVersionId: firstVersionId,
+  //       autoPublish: fco.appInfo.autoPublishDefault,
+  //       versionIds: [firstVersionId],
+  //     );
+  //     SnippetInfoModel.cacheSnippetInfo(firstVersion.name, newSnippetInfo);
+  //   }
+  // }
 
   void setAppInfo(AppInfoModel newModel) => appInfo = newModel;
 
@@ -858,9 +873,7 @@ class FlutterContentMixins
   /// Returns the [ScrollController] if found, otherwise returns `null`.
   /// NOTE - only need this if you don't already have the scrollcontroller or
   /// don't know it's scrollDirection
-  ScrollConfig findAncestorScrollControllerAndDirection(
-      BuildContext? ctx,
-      ) {
+  ScrollConfig findAncestorScrollControllerAndDirection(BuildContext? ctx) {
     // try to find a SingleChildScrollView
     SingleChildScrollView? scsv = ctx
         ?.findAncestorWidgetOfExactType<SingleChildScrollView>();
@@ -887,7 +900,8 @@ class FlutterContentMixins
       return (gv.controller, gv.scrollDirection);
     }
 
-    CustomScrollView? csv = ctx?.findAncestorWidgetOfExactType<CustomScrollView>();
+    CustomScrollView? csv = ctx
+        ?.findAncestorWidgetOfExactType<CustomScrollView>();
     if (csv != null) {
       return (csv.controller, csv.scrollDirection);
     }
@@ -895,7 +909,7 @@ class FlutterContentMixins
     return (null, null);
   }
 
-   void initializeMappers() {
+  void initializeMappers() {
     // This function just needs to exist. Its primary purpose is to force the
     // dart analyzer to process all the imports. Inside each .mapper.dart file,
     // there is code that self-registers the mapper.

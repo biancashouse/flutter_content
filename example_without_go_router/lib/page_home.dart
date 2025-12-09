@@ -26,10 +26,7 @@ class Page_Home extends StatelessWidget {
                 ),
               ),
               titleTextStyle: TextStyleProperties(),
-              actions: NamedMC(
-                propertyName: 'actions',
-                children: [],
-              ),
+              actions: NamedMC(propertyName: 'actions', children: []),
               leading: NamedSC(propertyName: 'leading'),
               bottom: NamedPS(
                 propertyName: 'bottom',
@@ -37,8 +34,8 @@ class Page_Home extends StatelessWidget {
                   name: uniqueTabBarName,
                   labelTSPropGroup: TextStyleProperties(),
                   children: [
-                    TextNode(text:'Tab 1', tsPropGroup: TextStyleProperties()),
-                    TextNode(text:'Tab 2', tsPropGroup: TextStyleProperties()),
+                    TextNode(text: 'Tab 1', tsPropGroup: TextStyleProperties()),
+                    TextNode(text: 'Tab 2', tsPropGroup: TextStyleProperties()),
                   ],
                 ),
               ),
@@ -49,8 +46,20 @@ class Page_Home extends StatelessWidget {
             child: TabBarViewNode(
               tabBarName: uniqueTabBarName,
               children: [
-                ContainerNode(csPropGroup: ContainerStyleProperties(width: 100, height: 100, fillColors: UpTo6Colors(color1: ColorModel.red()))),
-                ContainerNode(csPropGroup: ContainerStyleProperties(width: 100, height: 100, fillColors: UpTo6Colors(color1: ColorModel.blue()))),
+                ContainerNode(
+                  csPropGroup: ContainerStyleProperties(
+                    width: 100,
+                    height: 100,
+                    fillColors: UpTo6Colors(color1: ColorModel.red()),
+                  ),
+                ),
+                ContainerNode(
+                  csPropGroup: ContainerStyleProperties(
+                    width: 100,
+                    height: 100,
+                    fillColors: UpTo6Colors(color1: ColorModel.blue()),
+                  ),
+                ),
               ],
             ),
           ),
@@ -67,27 +76,20 @@ class Page_Home extends StatelessWidget {
 
     final scaffold = StatefulBuilder(
       builder: (BuildContext context, st) => Scaffold(
-        appBar: AppBar(title: Text('flutter_callouts demo')),
-        body: Center(
-          // Center is a layout widget. It takes a single child and positions it
-          // in the middle of the parent.
+        appBar: AppBar(
+          title: Text('flutter_callouts demo'),
+          actions: [fco.NavigationDD(pencilIconColor: Colors.red)],
+        ),
+        body: SingleChildScrollView(
           child: Column(
             mainAxisAlignment: MainAxisAlignment.spaceAround,
             children: <Widget>[
-              Flexible(
-                flex: 1,
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    const Text('You have pushed the button this many times:'),
-                    Text(
-                      '$counter',
-                      style: Theme.of(context).textTheme.headlineMedium,
-                    ),
-                  ],
-                ),
+              const Text('You have pushed the button this many times:'),
+              Text(
+                '$counter',
+                style: Theme.of(context).textTheme.headlineMedium,
               ),
-              Flexible(flex: 4, child: sp),
+              sp,
             ],
           ),
         ),
@@ -101,21 +103,6 @@ class Page_Home extends StatelessWidget {
       ),
     );
 
-    return EditablePage(
-      routePath: '/',
-      key: GlobalKey(),
-      child: Stack(
-        children: [
-          scaffold,
-          Align(
-            alignment: Alignment.topRight,
-            child: Padding(
-              padding:  EdgeInsets.only(right:fco.canEditContent() ?  68: 8.0),
-              child: fco.NavigationDD(pencilIconColor: Colors.red),
-            ),
-          ),
-        ],
-      ),
-    );
+    return EditablePage(routePath: '/', key: GlobalKey(), child: scaffold);
   }
 }

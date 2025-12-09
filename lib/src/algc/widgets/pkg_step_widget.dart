@@ -11,7 +11,7 @@ import 'step_text.dart';
 class PkgStepWidget extends StatelessWidget {
   final FlowchartM flowchart;
   final StepM step;
-  final String fbUID;
+  final String? fbUID;
 
   const PkgStepWidget(this.flowchart, this.step, this.fbUID, {super.key});
 
@@ -230,8 +230,8 @@ class PkgStepWidget extends StatelessWidget {
       )
           : InkWell(
         onTap: () async {
-          if (step.flowchartLinkRef != null) {
-            var jsonS = await AlgCNode.cloudRunFetchFlowchartJsonString(fbUID,
+          if (step.flowchartLinkRef != null && fbUID !=  null) {
+            var jsonS = await AlgCNode.cloudRunFetchFlowchartJsonString(fbUID!,
               step.flowchartLinkRef!,
             );
             if (jsonS != null) {

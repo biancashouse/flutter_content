@@ -5,7 +5,7 @@ import 'package:flutter_content/src/snippet/snodes/widget/fs_folder_node.dart';
 // enum FSAction { undo, redo }
 
 abstract class IModelRepository {
-  Future<SnippetInfoModel?> getSnippetInfoFromCacheOrFB(
+  Future<void> ensureSnippetInfoCached(
       {required SnippetName snippetName});
 
   // Future<void> migrateCollection();
