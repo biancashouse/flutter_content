@@ -5,16 +5,7 @@ import 'package:flutter_content/flutter_content.dart';
 class Page_Home extends StatefulWidget {
   const Page_Home({super.key});
 
-  // This widget is the home page of your application. It is stateful, meaning
-  // that it has a State object (defined below) that contains fields that affect
-  // how it looks.
-
-  // This class is the configuration for the state. It holds the values (in this
-  // case the title) provided by the parent (in this case the App widget) and
-  // used by the build method of the State. Fields in a Widget subclass are
-  // always marked "final".
-
-  @override
+   @override
   State<Page_Home> createState() => _Page_HomeState();
 }
 
@@ -80,31 +71,40 @@ class _Page_HomeState extends State<Page_Home> {
       templateSnippet: SnippetRootNode(
         name: 'home-scaffold-with-tabs',
         child: ScaffoldNode(
-          appBar: NamedPS(propertyName: 'appBar', child: AppBarNode(
-            // tabBarName: uniqueTabBarName,
-            bgColor: ColorModel.grey(),
-            title: NamedSC(
-              propertyName: 'title',
-              child: TextNode(text: 'my title', tsPropGroup: TextStyleProperties()),
-            ),
-            titleTextStyle: TextStyleProperties(),
-            actions: NamedMC(propertyName: 'actions', children: []),
-            leading: NamedSC(propertyName: 'leading'),
-            bottom: NamedPS(
-              propertyName: 'bottom',
-              child: TabBarNode(
-                name: uniqueTabBarName,
-                labelTSPropGroup: TextStyleProperties(),
-                children: [
-                  TextNode(text: 'tab 1', tsPropGroup: TextStyleProperties()),
-                  TextNode(text: 'Tab 2', tsPropGroup: TextStyleProperties()),
-                ],
+          appBar: NamedPS(
+            propertyName: 'appBar',
+            child: AppBarNode(
+              // tabBarName: uniqueTabBarName,
+              bgColor: ColorModel.grey(),
+              title: NamedSC(
+                propertyName: 'title',
+                child: TextNode(
+                  text: 'my title',
+                  tsPropGroup: TextStyleProperties(),
+                ),
+              ),
+              titleTextStyle: TextStyleProperties(),
+              actions: NamedMC(propertyName: 'actions', children: []),
+              leading: NamedSC(propertyName: 'leading'),
+              bottom: NamedPS(
+                propertyName: 'bottom',
+                child: TabBarNode(
+                  name: uniqueTabBarName,
+                  labelTSPropGroup: TextStyleProperties(),
+                  children: [
+                    TextNode(text: 'tab 1', tsPropGroup: TextStyleProperties()),
+                    TextNode(text: 'Tab 2', tsPropGroup: TextStyleProperties()),
+                  ],
+                ),
               ),
             ),
-          ),),
+          ),
           body: NamedSC(
             propertyName: 'body',
-            child: TabBarViewNode(tabBarName: uniqueTabBarName, children: [PlaceholderNode(), PlaceholderNode()]),
+            child: TabBarViewNode(
+              tabBarName: uniqueTabBarName,
+              children: [PlaceholderNode(), PlaceholderNode()],
+            ),
           ),
         ),
       ),
@@ -119,7 +119,10 @@ class _Page_HomeState extends State<Page_Home> {
 
     final scaffold = StatefulBuilder(
       builder: (BuildContext context, st) => Scaffold(
-        appBar: AppBar(title: Text(title)),
+        appBar: AppBar(
+          title: Text(title),
+          actions: [fco.NavigationDD(pencilIconColor: Colors.red)],
+        ),
         body: Center(
           // Center is a layout widget. It takes a single child and positions it
           // in the middle of the parent.

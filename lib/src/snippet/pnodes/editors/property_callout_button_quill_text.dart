@@ -40,7 +40,6 @@ class PropertyButtonQuillText extends StatelessWidget {
   static void showQuillEditor(
     String originalDelta,
     ValueChanged<String> onChangeF,
-    
   ) {
     final QuillController controller = QuillController.basic();
     controller.document = Document.fromJson(jsonDecode(originalDelta));

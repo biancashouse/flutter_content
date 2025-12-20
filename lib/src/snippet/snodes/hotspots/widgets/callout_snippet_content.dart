@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_callouts/flutter_callouts.dart';
@@ -5,6 +7,13 @@ import 'package:flutter_content/flutter_content.dart';
 import 'package:flutter_content/src/model/alignment_model.dart';
 import 'package:flutter_content/src/model/size_model.dart';
 import 'package:flutter_content/src/snippet/pnodes/enums/enum_decoration_shape.dart';
+
+/// Calculates the alignment of the center of [other] relative to [target].
+Alignment _getAlignmentBetweenRects(Rect target, Rect other) {
+  // The point for pointToAlignment needs to be relative to the target's top-left corner.
+  final Offset relativeCenter = other.center - target.topLeft;
+  return target.pointToAlignment(relativeCenter);
+}
 
 bool isShowingSnippetCallout(TargetModel tc) => fco.anyPresent([tc.contentCId]);
 
@@ -81,15 +90,25 @@ void showHotspotSnippetContentCallout({
 
   // globalPaintBounds() returns the correctly scaled topLeft, but the
   // rect width and height are the unscaled values!
-  Rect? targetRectGlobal = tc.gk?.globalPaintBounds();
-  if (targetRectGlobal == null) return;
+  Rect? targetRect = tc.gk?.globalPaintBounds();
+  if (targetRect == null) return;
 
-  // scale the dimensions
-  Rect scaledTargetRect = Rect.fromLTWH(
-    targetRectGlobal.left,
-    targetRectGlobal.top,
-    (targetRectGlobal.width) * tc.getScale(wrapperState),
-    (targetRectGlobal.height) * tc.getScale(wrapperState),
+  Rect targetRectGlobal = wrapperState.translateRectForScroll(targetRect);
+
+  Offset initialCalloutPos = calculateCalloutTopLeft(
+    // targetRect: inflateRectByFactor_fromCenter(tc.gk!.globalPaintBounds()!, tc.getScale(wrapperState)),
+    targetRect: targetRect,
+    calloutRect: Rect.fromLTWH(
+      0,
+      0,
+      tc.calloutSize!.width,
+      tc.calloutSize!.height,
+    ),
+    alignment: tc.tcAlignment!,
+  );
+
+  Offset initialCalloutPosSA = wrapperState.translateOffsetForScroll(
+    initialCalloutPos,
   );
 
   late CalloutConfig cc;
@@ -103,7 +122,7 @@ void showHotspotSnippetContentCallout({
     decorationBorderThickness: tc.calloutBorderThickness,
     decorationBorderRadius: tc.calloutBorderRadius,
     bubbleOrTargetPointerColor: tc.bgColor(),
-    targetPointerType: tc.targetPointerTypeEnum?.targetPointerType,
+    targetPointerType: !tc.hasAHotspot() ? TargetPointerType.none(): tc.targetPointerTypeEnum?.targetPointerType,
     fromDelta: tc.calloutDecorationShapeEnum == DecorationShapeEnum.star
         ? 60
         : null,
@@ -114,27 +133,15 @@ void showHotspotSnippetContentCallout({
     // ),
     // https://stackoverflow.com/questions/11671100/scale-path-from-center
     // initialCalloutPos: initialPosScrollAware,
-    initialTargetAlignment: Alignment(
-      tc.tcAlignment?.x ?? 0.0,
-      tc.tcAlignment?.y ?? 0.0,
-    ),
-    initialCalloutAlignment: -Alignment(
-      tc.tcAlignment?.x ?? 0.0,
-      tc.tcAlignment?.y ?? 0.0,
-    ),
-    initialCalloutPos: wrapperState.translateForScroll(
-      getRelativeCalloutTopLeft(
-        // targetRect: inflateRectByFactor_fromCenter(tc.gk!.globalPaintBounds()!, tc.getScale(wrapperState)),
-        targetRect: scaledTargetRect,
-        calloutRect: Rect.fromLTWH(
-          0,
-          0,
-          tc.calloutSize!.width,
-          tc.calloutSize!.height,
-        ),
-        alignment: tc.tcAlignment!,
-      ),
-    ),
+    // initialTargetAlignment: Alignment(
+    //   tc.tcAlignment?.x ?? 0.0,
+    //   tc.tcAlignment?.y ?? 0.0,
+    // ),
+    // initialCalloutAlignment: -Alignment(
+    //   tc.tcAlignment?.x ?? 0.0,
+    //   tc.tcAlignment?.y ?? 0.0,
+    // ),
+    initialCalloutPos: initialCalloutPosSA,
     initialCalloutW: tc.calloutSize?.width,
     initialCalloutH: tc.calloutSize?.height,
     minHeight: minHeight + 4,
@@ -151,9 +158,10 @@ void showHotspotSnippetContentCallout({
       // tc.tcAlignment = AlignmentModel(cc.targetAlignment!.x, cc.targetAlignment!.y);
     },
     onDragEndedF: (Offset newPos) {
-      if (justPlaying) return;
+      if ((justPlaying && tc.hasAHotspot()) || !fco.canEditContent()) return;
+
       // update the targetAlignment
-      final Rect calloutRectGlobal = Rect.fromLTWH(
+      final Rect calloutRect = Rect.fromLTWH(
         newPos.dx,
         newPos.dy,
         tc.calloutSize!.width,
@@ -161,10 +169,19 @@ void showHotspotSnippetContentCallout({
       );
 
       // calc alignment that positions the callout at its final separation
-      var targetRect = cc.tR();
-      Alignment newAlignment = targetRect.pointToAlignment(
-        calloutRectGlobal.center.translate(-targetRect.left, -targetRect.top),
+
+      var scrollDirection = wrapperState.scrollDirection;
+      double scrollOffset = wrapperState.sc?.offset ?? 0.0;
+
+      var targetRectSA = wrapperState.translateRectForScroll(targetRect);
+
+      var calloutRectSA = wrapperState.translateRectForScroll(calloutRect);
+
+      Alignment newAlignment = _getAlignmentBetweenRects(
+        targetRectSA,
+        calloutRect,
       );
+
       tc.setAlignment(AlignmentModel(newAlignment.x, newAlignment.y));
       CalloutConfigToolbar.closeThenReopenContentCallout(tc, wrapperState);
     },
@@ -260,11 +277,12 @@ void showHotspotSnippetContentCallout({
     // skipOnScreenCheck: justPlaying,
     targetGK: tc.gk,
     calloutContent: BlocBuilder<CAPIBloC, CAPIState>(
-      builder: (context, state) => possiblyEditableContent(),
+      builder: (context, state) =>
+          MouseInfoViewer(child: possiblyEditableContent()),
     ),
     calloutConfig: cc,
     // configurableTarget: (kDebugMode && !justPlaying) ? tc : null,
-    removeAfterMs: durationMs,
+    removeAfterMs: durationMs ?? 0,
     onReadyF: () {},
   );
 
@@ -282,42 +300,129 @@ void showHotspotSnippetContentCallout({
 //   );
 // }
 
-/// Calculates the top-left Offset of a calloutRect relative to the targetRect's origin.
+/// Calculates the top-left [Offset] for a [calloutRect] to position it
+/// relative to a [targetRect] based on a given [alignment].
 ///
-/// This function determines where the calloutRect should be placed such that its
-/// center is aligned with a specific point on the targetRect, as defined by
-/// the [alignment] parameter.
-///
-/// - [targetRect]: The rectangle that serves as the anchor point.
-/// - [calloutRect]: The rectangle that needs to be positioned.
-/// - [alignment]: The alignment that describes where the center of the calloutRect
-///   should be placed relative to the targetRect. For example, Alignment.topCenter
-///   places the callout's center at the top-center point of the targetRect.
-///
-/// Returns an [Offset] representing the `calloutRect.topLeft` in the `targetRect`'s
-/// local coordinate system.
-Offset getRelativeCalloutTopLeft({
+/// The function finds the point on the [targetRect] specified by the [alignment]
+/// and then calculates the top-left position for the [calloutRect] so that
+/// its center is at that point.
+Offset calculateCalloutTopLeft({
   required Rect targetRect,
   required Rect calloutRect,
   required Alignment alignment,
 }) {
   // 1. Find the target point on the targetRect based on the alignment.
-  // This point is where the calloutRect's center should be.
-  // The 'withinRect' method calculates this point in the targetRect's local coordinates.
-  final Offset targetPoint = alignment.withinRect(targetRect);
+  final Offset anchorPoint = alignment.withinRect(targetRect);
 
-  // 2. Calculate the position of the callout's center to align it with the target point.
-  // This is simply the targetPoint itself.
-  final Offset calloutCenter = targetPoint;
+  // 2. Calculate the top-left for the calloutRect so its center is at the anchorPoint.
+  return Offset(
+    anchorPoint.dx - calloutRect.width / 2,
+    anchorPoint.dy - calloutRect.height / 2,
+  );
+}
 
-  // 3. Determine the top-left corner of the calloutRect based on its center position.
-  // We subtract half of the callout's width and height from its center point.
-  final double calloutTopLeftX = calloutCenter.dx - calloutRect.width / 2;
-  final double calloutTopLeftY = calloutCenter.dy - calloutRect.height / 2;
+/// Calculates the top-left Offset for a callout, ensuring it remains visible on screen.
+///
+/// This function determines where the calloutRect should be placed such that its
+/// center is aligned with a specific point on the targetRect, as defined by
+/// the [alignment] parameter. It then adjusts this position to prevent the
+/// callout from appearing off-screen.
+///
+/// - [targetRect]: The rectangle that serves as the anchor point, in global coordinates.
+/// - [calloutRect]: The rectangle that needs to be positioned.
+/// - [alignment]: The alignment that describes where the center of the calloutRect
+///   should be placed relative to the targetRect. For example, Alignment.topCenter
+///   places the callout's center at the top-center point of the targetRect.
+///
+/// Returns an [Offset] representing the callout's adjusted top-left position in
+/// global coordinates.
+Offset getRelativeCalloutTopLeft({
+  required Rect targetRect,
+  required Rect calloutRect,
+  required Alignment alignment,
+}) {
+  // 1. Calculate the true intersection point on the targetRect's border,
+  //    respecting alignments outside the [-1, 1] range.
+  final Offset targetPoint = _getIntersectionOnBorder(targetRect, alignment);
 
-  // 4. Return the calculated top-left offset.
-  print('getRelativeCalloutTopLeft: $calloutTopLeftX, $calloutTopLeftY');
-  return Offset(calloutTopLeftX, calloutTopLeftY);
+  // 2. Calculate the ideal top-left corner of the calloutRect based on its center position.
+  final double idealX = targetPoint.dx - calloutRect.width / 2;
+  final double idealY = targetPoint.dy - calloutRect.height / 2;
+
+  // 3. Get screen dimensions and define a padding.
+  final screenWidth = fco.scrW;
+  final screenHeight = fco.scrH;
+  const screenPadding = 8.0;
+
+  // 4. Adjust the position to keep the callout on screen, applying padding.
+  // This ensures the entire callout is visible.
+  final double adjustedX = idealX.clamp(
+    screenPadding,
+    screenWidth - calloutRect.width - screenPadding,
+  );
+  final double adjustedY = idealY.clamp(
+    screenPadding,
+    screenHeight - calloutRect.height - screenPadding,
+  );
+
+  // 5. Return the calculated and adjusted top-left offset.
+  return Offset(adjustedX, adjustedY);
+}
+
+/// Calculates the intersection point of a line, defined by the rectangle's
+/// center and an alignment, with the rectangle's border. This correctly
+/// handles alignments where x or y are outside the [-1, 1] range.
+Offset _getIntersectionOnBorder(Rect rect, Alignment alignment) {
+  // The line starts at the center of the rectangle.
+  final center = rect.center;
+
+  // And it goes towards the point defined by the alignment, which may be outside the rect.
+  final targetPoint = alignment.withinRect(rect);
+
+  // If the alignment point is already strictly inside the rect, no intersection calculation is needed.
+  // Note: We check abs() < 1.0 to handle cases exactly on the border.
+  if (alignment.x.abs() < 1.0 && alignment.y.abs() < 1.0) {
+    return targetPoint;
+  }
+
+  // Vector from the center to the target point.
+  final dx = targetPoint.dx - center.dx;
+  final dy = targetPoint.dy - center.dy;
+
+  // If dx or dy is zero, the point is already on a border axis.
+  if (dx == 0 || dy == 0) {
+    return targetPoint;
+  }
+
+  double t = double.maxFinite;
+
+  // Calculate the 't' parameter for the line equation P = center + t * (direction)
+  // for each of the four rectangle boundaries. We want the smallest positive t.
+  if (dx.abs() > 0) {
+    // Check intersection with vertical boundaries (left and right)
+    // t = (boundary - origin) / direction
+    if (dx > 0) {
+      // Right edge
+      t = min(t, (rect.right - center.dx) / dx);
+    } else {
+      // Left edge
+      t = min(t, (rect.left - center.dx) / dx);
+    }
+  }
+
+  if (dy.abs() > 0) {
+    // Check intersection with horizontal boundaries (top and bottom)
+    if (dy > 0) {
+      // Bottom edge
+      t = min(t, (rect.bottom - center.dy) / dy);
+    } else {
+      // Top edge
+      t = min(t, (rect.top - center.dy) / dy);
+    }
+  }
+
+  // The intersection point is the center plus the scaled direction vector.
+  return center + Offset(dx, dy) * t;
 }
 
 // void showHelpContentPlayCallout(
@@ -355,26 +460,4 @@ Offset getRelativeCalloutTopLeft({
 //     arrowType: tc.getArrowType(),
 //     animate: tc.animateArrow,
 //     initialCalloutPos: tc.getTextCalloutPos(),
-//     // initialCalloutAlignment: Alignment.bottomCenter,
-//     // initialTargetAlignment: Alignment.topCenter,
-//     modal: false,
-//     width: tc.calloutWidth,
-//     height: tc.calloutHeight,
-//     minHeight: minHeight + 4,
-//     resizeableH: true,
-//     resizeableV: true,
-//     draggable: true,
-//     scaleTarget: tc.transformScale,
-//     roundedCorners: 16,
-//     // separation: 50,
-//   );
-//
-//   txtEditorCallout.show(
-//     notUsingHydratedStorage: true,
-//     onReadyF: () {
-//       fco.afterMsDelayDo(500, tc.textFocusNode().requestFocus);
-//     },
-//   );
-//
-//   explainPopupsAreDraggable();
-// }
+//     // i

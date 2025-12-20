@@ -21,7 +21,6 @@ class UMLStringPNode extends PNode {
   void revertToOriginalValue() {
     onUmlChange((
     text: null,
-    encodedText: null,
     bytes: null,
     width: null,
     height: null

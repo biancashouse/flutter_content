@@ -108,10 +108,11 @@ class ContainerNode extends SC with ContainerNodeMappable {
         onGroupChange: (newValue, refreshPTree) {
           refreshWithUpdate(context, () {
             csPropGroup = newValue;
-            // if (refreshPTree) {
-            //   forcePropertyTreeRefresh(context);
-            // }
-          });
+            if (refreshPTree) {
+              forcePropertyTreeRefresh(context);
+            }
+          },
+          alsoRefreshPropertiesView: refreshPTree);
         },
       ),
 

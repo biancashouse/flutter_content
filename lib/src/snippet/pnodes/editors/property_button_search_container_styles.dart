@@ -24,17 +24,7 @@ class PropertyButtonContainerStyleNameSearch extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    // void propagateChangeAndClose(TextStyleProperties? newName) {
-    //   onChangeF(newName);
-    //   fco.dismiss(cId);
-    // }
-
-    // var buttonStyleName = fco.findContainerStyleName(containerStyle);
-
-    // Widget labelWidget = buttonStyleName != null
-    //     ? fco.coloredText('style name: $buttonStyleName', color: Colors.white)
-    //     : fco.coloredText('style search...', color: Colors.white);
-    return PropertyCalloutButton(
+       return PropertyCalloutButton(
       cId: cId,
       labelWidget: Container(
         padding: const EdgeInsets.symmetric(horizontal: 10.0),
@@ -83,9 +73,12 @@ class PropertyButtonContainerStyleNameSearch extends StatelessWidget {
               debouncer: Debouncer(delayMs: 200),
               tooltipMsg: 'find a saved Container style',
             );
-        return anchor;
+        return Padding(
+          padding: const EdgeInsets.all(4.0),
+          child: anchor,
+        );
       },
-      calloutSize: const Size(320, 40),
+      calloutSize: const Size(320, 60),
       // notifier: ValueNotifier<int>(0),
     );
   }

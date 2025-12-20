@@ -1,4 +1,5 @@
 import 'package:dart_mappable/dart_mappable.dart';
+
 // import 'package:firebase_storage/firebase_storage.dart' show FirebaseStorage;
 import 'package:firebase_ui_storage/firebase_ui_storage.dart' show StorageImage;
 import 'package:flutter/material.dart';
@@ -8,7 +9,7 @@ import 'package:flutter_content/src/snippet/pnodes/editors/plantuml_msv.dart';
 import 'package:flutter_content/src/snippet/pnodes/enum_pnode.dart';
 import 'package:flutter_content/src/snippet/pnodes/enums/enum_boxfit.dart';
 import 'package:flutter_content/src/snippet/pnodes/fyi_pnodes.dart'
-    show FlutterDocPNode;
+    show FlutterDocPNode, FYIPNode;
 import 'package:flutter_content/src/snippet/pnodes/string_pnode.dart';
 import 'package:flutter_content/src/snippet/pnodes/uml_string_pnode.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
@@ -25,19 +26,11 @@ const plantUMLRef =
 class UMLImageNode extends CL with UMLImageNodeMappable {
   String? name;
   String? umlText;
-  String? encodedText;
   double? width;
   double? height;
   BoxFitEnum? fit;
 
-  UMLImageNode({
-    this.name,
-    this.umlText,
-    this.encodedText,
-    this.width,
-    this.height,
-    this.fit,
-  });
+  UMLImageNode({this.name, this.umlText, this.width, this.height, this.fit});
 
   @JsonKey(includeFromJson: false, includeToJson: false)
   GlobalKey? _gk;
@@ -53,7 +46,16 @@ class UMLImageNode extends CL with UMLImageNodeMappable {
       snode: this,
       name: 'fyi',
     ),
-
+    FYIPNode(
+      label:
+          "Generated UML image name",
+      msg:
+          "Specify a file name for the\n"
+              "generated UML image file (png)\n"
+              "in Firebase Storage",
+      snode: this,
+      name: 'file-name',
+    ),
     StringPNode(
       snode: this,
       name: 'name (in firebase storage)',
@@ -77,7 +79,6 @@ class UMLImageNode extends CL with UMLImageNodeMappable {
       name: 'uml',
       umlRecord: (
         text: umlText,
-        encodedText: encodedText,
         bytes: cachedPngBytes,
         width: width,
         height: height,
@@ -85,7 +86,6 @@ class UMLImageNode extends CL with UMLImageNodeMappable {
       onUmlChange: (newValue) {
         refreshWithUpdate(context, () {
           umlText = newValue.text;
-          encodedText = newValue.encodedText;
           cachedPngBytes = newValue.bytes;
           width = newValue.width;
           height = newValue.height;
@@ -108,15 +108,7 @@ class UMLImageNode extends CL with UMLImageNodeMappable {
       // can't edit, so just retrieve from firebase storage
       final ref = fco.folderPathRef("/plantuml-images").child("$name");
       try {
-        return Center(
-          child: StorageImage(
-            key: createNodeWidgetGK(),
-            fit: fit?.flutterValue,
-            width: width,
-            height: height,
-            ref: ref,
-          ),
-        );
+        return Center(child: _storageImage(ref));
       } catch (e) {
         return Error(
           key: _gk,
@@ -127,43 +119,56 @@ class UMLImageNode extends CL with UMLImageNodeMappable {
         );
       }
     } else {
-      return FutureBuilder<UMLRecord>(
-        future: PlantUMLMSVState.encodeThenFetchPng(umlText ?? '', (
-          UMLRecord newValue,
-        ) {
-          umlText = newValue.text;
-          encodedText = newValue.encodedText;
-          cachedPngBytes = newValue.bytes;
-        }),
-        builder: (futureContext, snapshot) {
-          if (snapshot.connectionState != ConnectionState.done) {
-            return const Center(child: CircularProgressIndicator());
-          }
+      return cachedPngBytes != null && cachedPngBytes!.isNotEmpty
+          ? _memoryImage()
+          : FutureBuilder<UMLRecord>(
+              future: PlantUMLMSVState.encodeThenFetchPng(umlText ?? '', (
+                UMLRecord newValue,
+              ) {
+                umlText = newValue.text;
+                cachedPngBytes = newValue.bytes;
+                width = newValue.width;
+                height = newValue.height;
+              }),
+              builder: (futureContext, snapshot) {
+                if (snapshot.connectionState != ConnectionState.done) {
+                  return const Center(child: CircularProgressIndicator());
+                }
 
-          if (_gk == null) {
-            _gk = createNodeWidgetGK();
-            fco.afterMsDelayDo(100, () => fco.forceRefresh());
-          }
+                if (_gk == null) {
+                  _gk = createNodeWidgetGK();
+                  fco.afterMsDelayDo(100, () => fco.forceRefresh());
+                }
 
-          return Image.memory(
-            key: _gk,
-            // scale: 3.0,
-            cachedPngBytes ?? Uint8List.fromList(missingPng.codeUnits),
-            fit: fit?.flutterValue,
-            errorBuilder: (context, o, stackTrace) {
-              return Error(
-                key: GlobalKey(),
-                "PlantUMLTextEditor Image.memory",
-                color: Colors.red,
-                size: 18,
-                errorMsg: 'Bad pngBytes',
-              );
-            },
-          );
-        },
-      );
+                return _memoryImage();
+              },
+            );
     }
   }
+
+  Widget _storageImage(ref) => StorageImage(
+    key: createNodeWidgetGK(),
+    fit: fit?.flutterValue,
+    width: width,
+    height: height,
+    ref: ref,
+  );
+
+  Widget _memoryImage() => Image.memory(
+    key: _gk,
+    // scale: 3.0,
+    cachedPngBytes ?? Uint8List.fromList(missingPng.codeUnits),
+    fit: fit?.flutterValue,
+    errorBuilder: (context, o, stackTrace) {
+      return Error(
+        key: GlobalKey(),
+        "PlantUMLTextEditor Image.memory",
+        color: Colors.red,
+        size: 18,
+        errorMsg: 'Bad pngBytes',
+      );
+    },
+  );
 
   // Future<Uint8List?> _fetchPng() async {
   //   encodedText ??= await _cloudRunEncodeTextForPlantUML();

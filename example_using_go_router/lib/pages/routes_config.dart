@@ -16,12 +16,11 @@ final webRoutingConfig = RoutingConfig(
       child: const Page_Home(),
       routes: [
         EditablePageRoute(
-          path: Page_BH.pagePath,
+          path: 'bh',
           child: const Page_BH(),
           // provideNamedScrollController: true,
         ),
         GoRoute(
-            name: 'row-of-2-panels',
             path: 'row-of-2-panels',
             builder: (BuildContext context, GoRouterState state) => const Page_RowOf2Panels(),
         ),

@@ -712,19 +712,22 @@ class EditablePageState extends State<EditablePage> {
           print('new node selection');
           return true;
         }
+        if (current.snippetBeingEdited?.updatesPending??false) {
+          return true;
+        }
         return false;
       },
       builder: (BuildContext context, CAPIState state) {
         // final bloc = fco.capiBloc; //context.read<CAPIBloC>();
         bool showingProperties = fco.aNodeIsSelected;
-        ScrollController? propertiesPaneSC = state
-            .snippetBeingEdited
-            ?.selectedNode
-            ?.propertiesPaneSC();
+        // ScrollController? propertiesPaneSC = state
+        //     .snippetBeingEdited
+        //     ?.selectedNode
+        //     ?.propertiesPaneSC();
         PNodeTreeController? pTreeC = state.snippetBeingEdited?.selectedNode
             ?.pTreeC(context, {});
         // pTreeC!.collapseAll();
-        return !showingProperties || propertiesPaneSC == null
+        return !showingProperties
             ? const Offstage()
             : Scaffold(
                 appBar: AppBar(

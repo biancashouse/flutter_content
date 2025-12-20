@@ -187,8 +187,7 @@ class CAPIEvent with _$CAPIEvent {
   }) = EnterSelectWidgetMode;
 
   // no need to pass snippet name - will already be in state
-  const factory CAPIEvent.updateTappableRects() =
-      UpdateTappableRects;
+  const factory CAPIEvent.updateTappableRects() = UpdateTappableRects;
 
   const factory CAPIEvent.exitNodeSelectionMode() = ExitSelectWidgetMode;
 
@@ -196,6 +195,8 @@ class CAPIEvent with _$CAPIEvent {
     required SnippetRootNode rootNode,
     SNode? selectedNode,
   }) = PushSnippetEditor;
+
+  const factory CAPIEvent.changedSnippet() = ChangedSnippet;
 
   const factory CAPIEvent.popSnippetEditor({@Default(false) bool save}) =
       PopSnippetEditor;
@@ -336,8 +337,10 @@ class CAPIEvent with _$CAPIEvent {
     required SnippetRootNode rootNode,
   }) = CopySnippetJsonToClipboard;
 
-  const factory CAPIEvent.replaceSnippetFromJson({String? snippetJson}) =
-      ReplaceSnippetFromJson;
+  const factory CAPIEvent.replaceSnippetFromJson({
+    required String snippetBeingReplaced,
+    required String? snippetJson,
+  }) = ReplaceSnippetFromJson;
 
   const factory CAPIEvent.copyNode({required SNode node}) = CopyNode;
 

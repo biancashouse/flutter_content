@@ -4,8 +4,6 @@ import 'package:flutter_content/flutter_content.dart';
 import 'package:flutter_content/src/snippet/pnodes/color_pnode.dart';
 import 'package:flutter_content/src/snippet/pnodes/fyi_pnodes.dart';
 
-import 'appbar_hook.dart';
-
 // import 'package:flutter_content/src/snippet/snodes/appbar_with_menubar_node.dart';
 // import 'package:flutter_content/src/snippet/snodes/appbar_with_tabbar_node.dart';
 

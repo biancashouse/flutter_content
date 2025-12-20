@@ -118,6 +118,7 @@ class TargetsWrapperOnTapMenu extends StatelessWidget {
         newTC.targetCLocalPc!.dy,
       );
     }
+
     parentNode.targets = [...parentNode.targets, newTC];
     // widget.parentNode.targets.add(newTC);
     fco.capiBloc.add(const CAPIEvent.forceRefresh(onlyTargetsWrappers: true));

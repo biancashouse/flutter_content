@@ -149,7 +149,7 @@ class VersionsMenuAnchor extends StatelessWidget {
         ),
         MenuItemButton(
           onPressed: () async {
-            rawSnippetJsonDialog();
+            rawSnippetJsonDialog(snippetBeingReplaced: snippetInfo.name);
           },
           child: const Text('rebuild snippet from JSON...'),
         ),
@@ -159,7 +159,7 @@ class VersionsMenuAnchor extends StatelessWidget {
 
   // let user enter json (like that stored in firestore) and recreate
   // the snippet from it
-  static void rawSnippetJsonDialog() {
+  static void rawSnippetJsonDialog({required String snippetBeingReplaced}) {
     fco.registerKeystrokeHandler("raw-snippet-json", (KeyEvent event) {
       if (event.logicalKey == LogicalKeyboardKey.escape) {
         fco.dismiss("raw-snippet-json");
@@ -197,7 +197,7 @@ class VersionsMenuAnchor extends StatelessWidget {
                 onTextChangedF: (_){},
                 onEditingCompleteF: (s) {
                   if (s.isEmpty) return;
-                  fco.capiBloc.add(CAPIEvent.replaceSnippetFromJson(snippetJson: s));
+                  fco.capiBloc.add(CAPIEvent.replaceSnippetFromJson(snippetBeingReplaced: snippetBeingReplaced, snippetJson: null));
                   fco.dismiss("raw-snippet-json");
                 },
               ),

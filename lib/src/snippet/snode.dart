@@ -3,11 +3,8 @@ import 'dart:math';
 import 'package:dart_mappable/dart_mappable.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_content/flutter_content.dart';
-import 'package:flutter_content/src/snippet/pnodes/groups/button_style_properties.dart';
-import 'package:flutter_content/src/snippet/snodes/abstract_scrollview_node.dart';
+import 'package:flutter_content/src/snippet/snode_widget.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
-
-import 'snodes/fs_image_node.dart';
 
 part 'snode.mapper.dart';
 
@@ -19,7 +16,7 @@ const List<Type> childlessSubClasses = [
   FileNode,
   // FirebaseStorageImageNode,
   FlexibleSpaceBarNode,
-  FSImageNode,
+  StorageImageNode,
   GapNode,
   GoogleDriveIFrameNode,
   IFrameNode,
@@ -130,7 +127,8 @@ abstract class SNode extends Node with SNodeMappable {
 
   GlobalKey? treeNodeGK;
   PNodeTreeController? _pTreeC;
-  ScrollController? _propertiesPaneSC;
+
+  // ScrollController? _propertiesPaneSC;
   List<PNode>? _properties;
 
   @JsonKey(includeFromJson: false, includeToJson: false)
@@ -178,10 +176,10 @@ abstract class SNode extends Node with SNodeMappable {
     // pTreeC(context, prevExpansions);
   }
 
-  double propertiesPaneScrollPos() => propertiesPaneSC().offset;
+  // double propertiesPaneScrollPos() => propertiesPaneSC().offset;
 
-  ScrollController propertiesPaneSC() =>
-      _propertiesPaneSC ??= ScrollController();
+  // ScrollController propertiesPaneSC() =>
+  //     _propertiesPaneSC ??= ScrollController();
 
   // FCO get fc => FCO;
 
@@ -354,16 +352,14 @@ abstract class SNode extends Node with SNodeMappable {
     pushThenShowNamedSnippetWithNodeSelected(snippetName, this);
   }
 
-  void showSelectedNonTappableNodeWidgetOverlay({
-    required Rect borderRect,
-  }) {
+  void showSelectedNonTappableNodeWidgetOverlay({required Rect borderRect}) {
     bool isSelected = this == fco.selectedNode;
     if (!isSelected) {
       return;
     }
     // if (this is AppBarNode || this is ScaffoldNode) return;
     CalloutConfig cc = CalloutConfig(
-      cId: '${nodeWidgetGK.hashCode}-pink-overlay',
+      cId: 'pink-overlay',
       initialCalloutW: borderRect.width.abs(),
       // + BORDER,
       initialCalloutH: borderRect.height.abs(),
@@ -543,32 +539,11 @@ abstract class SNode extends Node with SNodeMappable {
     VoidCallback assignF, {
     bool alsoRefreshPropertiesView = false,
   }) {
-    // fco.capiBloc.state.snippetBeingEdited?.newVersion();
-
     assignF.call();
-    // if (alsoRefreshPropertiesView) {
-    //   forcePropertyTreeRefresh(context);
-    // }
-    // final rootNodeBefore = rootNodeOfSnippet();
-    fco.forceRefresh();
-    // final rootNodeAfter = rootNodeOfSnippet();
-    // bool same = rootNodeAfter == rootNodeBefore;
+    fco.capiBloc.add(CAPIEvent.changedSnippet());
     fco.afterNextBuildDo(() {
-      if (!isValid()) {
-        print('oooooops not valid in tree');
-      }
-      final rootNode = rootNodeOfSnippet();
-      if (rootNode != null) {
-        assert(rootNode.isValid());
-        final newVersionId = SnippetInfoModel.createNewVersion(rootNode);
-        fco.modelRepo.saveSnippetVersion(
-          snippetName: rootNode.name,
-          newVersionId: newVersionId,
-          newVersion: rootNode,
-        );
-        // EditablePageState? eps = EditablePage.of(context);
-        // eps?.showNodeWidgetOverlays();
-      }
+      fco.dismiss('pink-overlay');
+      SNodeWidget.pointOutSelectedNode();
     });
   }
 
@@ -660,7 +635,7 @@ abstract class SNode extends Node with SNodeMappable {
     if (this is TextNode) {
       debugLabel += (this as TextNode).text;
     }
-    _nodeWidgetGK ??= GlobalKey(debugLabel: debugLabel);
+    _nodeWidgetGK = GlobalKey(debugLabel: debugLabel);
     fco.nodesByGK[_nodeWidgetGK!] = this;
     return _nodeWidgetGK;
   }
@@ -1680,7 +1655,7 @@ abstract class SNode extends Node with SNodeMappable {
           menuItemButton(
             context,
             "Firebase Storage Image",
-            FSImageNode,
+            StorageImageNode,
             action,
           ),
           menuItemButton(context, "Carousel", CarouselNode, action),
@@ -1751,7 +1726,12 @@ abstract class SNode extends Node with SNodeMappable {
         menuItemButton(context, "AssetImage", AssetImageNode, action),
         menuItemButton(context, "Algorithm", AlgCNode, action),
         menuItemButton(context, "UML", UMLImageNode, action),
-        menuItemButton(context, "FirestoreStorageImage", FSImageNode, action),
+        menuItemButton(
+          context,
+          "FirestoreStorageImage",
+          StorageImageNode,
+          action,
+        ),
       ],
       if (getParent() is TextSpanNode) ...[
         menuItemButton(context, "TextSpanN", TextSpanNode, action),
@@ -1958,7 +1938,7 @@ abstract class SNode extends Node with SNodeMappable {
             menuItemButton(
               context,
               "Firebase Storage Image",
-              FSImageNode,
+              StorageImageNode,
               action,
             ),
             menuItemButton(context, "Carousel", CarouselNode, action),

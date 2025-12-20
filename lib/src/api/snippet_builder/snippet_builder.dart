@@ -300,8 +300,8 @@ class SnippetBuilderState extends State<SnippetBuilder>
                     return Error(
                       "SnippetBuilder",
                       color: Colors.red,
-                      size: 32,
-                      errorMsg: "null snippet! ${snapshot.error.toString()}",
+                      size: 18,
+                      errorMsg: "${snippetName()}: ${snapshot.error.toString()}",
                       key: GlobalKey(),
                     );
                   }

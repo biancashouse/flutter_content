@@ -11,6 +11,27 @@ import 'package:flutter_content/src/snippet/snodes/text_style_hook.dart';
 
 part 'appbar_node.mapper.dart';
 
+class AppBarHook extends MappingHook {
+  const AppBarHook();
+
+  @override
+  Object? beforeDecode(Object? value) {
+    if (value is Map && value.containsKey('snode')) {
+      return NamedPS(
+        propertyName: 'appBar',
+        child: AppBarNode(
+            title: NamedSC(propertyName: 'title'),
+            titleTextStyle: TextStyleProperties(),
+            actions: NamedMC(propertyName: 'actions', children: []),
+            leading: NamedSC(propertyName: 'leading'),
+            bottom: NamedPS(propertyName: 'bottom')
+        ),
+      );
+    }
+    return value;
+  }
+}
+
 @MappableClass(
   discriminatorKey: 'DK:appbar',
   includeSubClasses: [SliverAppBarNode],

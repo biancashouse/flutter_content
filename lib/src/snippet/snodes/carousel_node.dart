@@ -8,7 +8,7 @@ import 'package:flutter_content/src/snippet/pnodes/decimal_pnode.dart';
 import 'package:flutter_content/src/snippet/pnodes/enum_pnode.dart';
 import 'package:flutter_content/src/snippet/pnodes/fyi_pnodes.dart';
 import 'package:flutter_content/src/snippet/pnodes/int_pnode.dart';
-import 'package:flutter_content/src/snippet/snodes/fs_image_node.dart';
+import 'package:flutter_content/src/snippet/snodes/storage_image_node.dart';
 // import 'package:flutter_content/src/carousel_slider_4.2.1x/carousel_options.dart';
 // import 'package:flutter_content/src/carousel_slider_4.2.1x/carousel_slider.dart';
 
@@ -122,7 +122,7 @@ class CarouselNode extends MC with CarouselNodeMappable {
                   .children
                   .map((SNode node) => node is AssetImageNode
                       ? node.buildFlutterWidget(context, this)
-                      : node is FSImageNode
+                      : node is StorageImageNode
                           ? node.buildFlutterWidget(context, this)
                           : const Placeholder(
                               child: Text('not an asset image!'),
@@ -179,7 +179,7 @@ class CarouselNode extends MC with CarouselNodeMappable {
   bool canRemove() => children.isEmpty;
 
   // @override
-  // List<Type> addChildOnly() => [AssetImageNode, FSImageNode];
+  // List<Type> addChildOnly() => [AssetImageNode, StorageImageNode];
 
   @override
   Widget? widgetLogo() => Image.asset(

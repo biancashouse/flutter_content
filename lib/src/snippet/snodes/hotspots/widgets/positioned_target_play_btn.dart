@@ -34,7 +34,11 @@ class TargetPlayBtn extends StatelessWidget {
     );
   }
 
-  Widget _draggableTargetBtn(BuildContext context, TargetModel tc, bool toolbarPresent) {
+  Widget _draggableTargetBtn(
+    BuildContext context,
+    TargetModel tc,
+    bool toolbarPresent,
+  ) {
     return !fco.canEditContent()
         ? GestureDetector(
             onTap: () {
@@ -43,15 +47,19 @@ class TargetPlayBtn extends StatelessWidget {
                 ..add(tc);
               playTarget(context, tc, wrapperState);
             },
-            child: IntegerCircleAvatar(
-              tc,
-              num: index + 1,
-              bgColor:
-                  tc.calloutFillColors?.color1?.flutterValue ?? Colors.black,
-              //tc.calloutFillColor!.decorationShapeEnum,
-              radius: TargetModel.DEFAULT_BTN_RADIUS,
-              fontSize: 14,
+            child: Icon(
+              Icons.question_mark_rounded,
+              size: TargetModel.DEFAULT_BTN_RADIUS * 2,
+              color: tc.calloutFillColors?.color1?.flutterValue ?? Colors.black,
             ),
+            // child: IntegerCircleAvatar(
+            //   num: index + 1,
+            //   bgColor:
+            //       ,
+            //   //tc.calloutFillColor!.decorationShapeEnum,
+            //   radius: TargetModel.DEFAULT_BTN_RADIUS,
+            //   fontSize: 14,
+            // ),
           )
         : Draggable<(TargetId, bool)>(
             data: (tc.uid, true),
@@ -59,13 +67,12 @@ class TargetPlayBtn extends StatelessWidget {
             feedback: toolbarPresent
                 ? const Offstage()
                 : IntegerCircleAvatar(
-                    tc,
                     num: index + 1,
                     bgColor: tc.bgColor(),
                     radius: TargetModel.DEFAULT_BTN_RADIUS,
                     fontSize: 14,
                   ),
-             child: DoubleTappable(
+            child: DoubleTappable(
               onTap: () {
                 if (fco.snippetBeingEdited != null) {
                   return;
@@ -85,7 +92,6 @@ class TargetPlayBtn extends StatelessWidget {
                 );
               },
               child: IntegerCircleAvatar(
-                tc,
                 num: index + 1,
                 bgColor: tc.bgColor(),
                 radius: TargetModel.DEFAULT_BTN_RADIUS,
@@ -156,6 +162,8 @@ class TargetPlayBtn extends StatelessWidget {
     var zoomer = wrapperState.zoomer;
     // var savedKey = tc.targetsWrapperGK;
 
+    hideNonHotspotsCallouts(wrapperState);
+
     wrapperState.setPlayingOrEditingTc(tc, () {
       zoomer?.applyTransform(
         tc.transformScale,
@@ -178,11 +186,28 @@ class TargetPlayBtn extends StatelessWidget {
             wrapperState.zoomer?.resetTransform(
               afterTransformF: () {
                 wrapperState.setPlayingOrEditingTc(null, () {});
+                unhideNonHotspotsCallouts(wrapperState);
               },
             );
           });
         },
       );
     });
+  }
+
+  static void hideNonHotspotsCallouts(TargetsWrapperState wrapperState) {
+    for (TargetModel tc in wrapperState.widget.parentNode.targets) {
+      if (!tc.hasAHotspot()) {
+        fco.hide(tc.contentCId);
+      }
+    }
+  }
+
+  static void unhideNonHotspotsCallouts(TargetsWrapperState wrapperState) {
+    for (TargetModel tc in wrapperState.widget.parentNode.targets) {
+      if (!tc.hasAHotspot()) {
+        fco.unhide(tc.contentCId);
+      }
+    }
   }
 }

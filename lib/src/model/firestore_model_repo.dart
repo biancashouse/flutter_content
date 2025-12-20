@@ -8,6 +8,58 @@ late FirebaseApp fbApp;
 
 // List<SnippetName> alreadyRequestedSnippetInfoNames = [];
 
+final sampleJson = {
+  "tags": "",
+  "DK:sc": "SnippetRootNode",
+  "child": {
+    "width": null,
+    "child": {
+      "padding": null,
+      "DK:scrollview": "BoxScrollViewNode",
+      "DK:snode": "CL",
+      "children": [
+        {
+          "borderRadius": 0,
+          "DK:sc": "TargetsWrapperNode",
+          "aspectRatio": 3.2527497944078947,
+          "child": {
+            "width": 500,
+            "alignment": null,
+            "scale": null,
+            "fsFullPath": "flutter-content-example-without-go-router/30b73067-bb81-4638-a07e-311429194978.jpeg",
+            "DK:snode": "CL",
+            "fit": null,
+            "height": 400,
+            "DK:cl": "StorageImageNode"
+          },
+          "targets":[],
+          "DK:snode": "SC",
+          "playList": []
+        },
+        {
+          "DK:snode": "CL",
+          "DK:cl": "UMLImageNode",
+          "name": "tbd",
+          "fit": null,
+          "umlText": "@startuml\n' some comment\n!theme vibrant\ntitle Flutter Package Development Cycle with Git & Cider\n\nstart\n\npartition \"Development Phase (Iterative)\" {\n    :Write/Modify Code;\n    note right\n        - Add a new feature\n        - Fix a bug\n        - Refactor existing code\n    end note\n\n    :Run Local Tests;\n\n    if (Tests Pass?) then (Yes)\n        :Stage changes with **git add**;\n\n        :Commit code with **git commit**;\n        note left: Captures the **WHAT** (the code snapshot)\n\n        :Log context with **cider log**;\n        note right: Captures the **WHY** & **HOW** (the story behind the code)\n\n        :Push changes with **git push**;\n    else (No)\n        :Fix Code;\n        stop\n    endif\n}\n\npartition \"Release Phase (Pre-Publish)\" {\n    if (Ready to Release?) then (Yes)\n        :Ensure final code is committed and logged;\n        note right: All features for the new version are complete\n\n        :Run **cider bump**;\n        note left\n            This single command automates:\n            1. **Updates CHANGELOG.md** from all `cider log` entries.\n            2. **Creates a Git tag** (e.g., v4.0.0) from pubspec.yaml version.\n            3. **Increments patch version** in pubspec.yaml (e.g., 4.0.0 -> 4.0.1).\n            4. **Commits the version bump**.\n        end note\n\n        :Push commits and tags with **git push --follow-tags**;\n        note right: Shares the release marker with the remote repository (e.g., GitHub)\n\n        partition \"Publication\" {\n            :Publish package with **dart pub publish**;\n            :Create a GitHub Release (copying notes from CHANGELOG.md);\n        }\n\n    else (No)\n        -> Go back to \"Development Phase\";\n    endif\n}\n\nstop\n\n@enduml",
+          "width": null,
+          "height": null
+        }
+      ],
+      "DK:cl": "ScrollViewNode",
+      "shrinkWrap": null,
+      "DK:boxscrollview": "ListViewNode"
+    },
+    "DK:snode": "SC",
+    "expand": null,
+    "height": 900,
+    "DK:sc": "SizedBoxNode"
+  },
+  "DK:snode": "SC",
+  "name": "home-scaffold-with-tabs"
+}
+;
+
 class FireStoreModelRepository implements IModelRepository {
   final FirebaseOptions? fbOptions;
 

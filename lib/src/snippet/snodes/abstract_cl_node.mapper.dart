@@ -21,7 +21,7 @@ class CLMapper extends SubClassMapperBase<CL> {
       ChipNodeMapper.ensureInitialized();
       FileNodeMapper.ensureInitialized();
       FlexibleSpaceBarNodeMapper.ensureInitialized();
-      FSImageNodeMapper.ensureInitialized();
+      StorageImageNodeMapper.ensureInitialized();
       GapNodeMapper.ensureInitialized();
       GoogleDriveIFrameNodeMapper.ensureInitialized();
       IFrameNodeMapper.ensureInitialized();

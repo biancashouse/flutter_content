@@ -5,10 +5,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_content/flutter_content.dart';
 import 'package:flutter_content/src/bloc/snippet_being_edited.dart';
-import 'package:flutter_content/src/snippet/pnodes/enums/enum_decoration_shape.dart';
 import 'package:flutter_content/src/snippet/pnodes/enums/enum_main_axis_size.dart';
 import 'package:flutter_content/src/snippet/pnodes/groups/button_style_properties.dart';
-import 'package:flutter_content/src/snippet/snodes/fs_image_node.dart';
+import 'package:flutter_content/src/snippet/snodes/storage_image_node.dart';
 
 class CAPIBloC extends Bloc<CAPIEvent, CAPIState> {
   // late SnippetUndoRedoStack _ur;
@@ -61,6 +60,7 @@ class CAPIBloC extends Bloc<CAPIEvent, CAPIState> {
       (event, emit) => _exitSelectWidgetMode(event, emit),
     );
     on<PushSnippetEditor>((event, emit) => _pushSnippetEditor(event, emit));
+    on<ChangedSnippet>((event, emit) => _changedSnippet(event, emit));
     on<PopSnippetEditor>((event, emit) => _popSnippetEditor(event, emit));
     // removed snippet place naming functionality - use tab bar instead
     // on<SetPanelSnippet>(
@@ -135,7 +135,6 @@ class CAPIBloC extends Bloc<CAPIEvent, CAPIState> {
         decorationFillColors: ColorOrGradient.color(Colors.yellow),
         initialCalloutW: fco.scrW * .8,
         initialCalloutH: 40,
-        
       ),
       calloutContent: Padding(
         padding: const EdgeInsets.all(10),
@@ -243,7 +242,6 @@ class CAPIBloC extends Bloc<CAPIEvent, CAPIState> {
         decorationFillColors: ColorOrGradient.color(Colors.yellow),
         initialCalloutW: fco.scrW * .8,
         initialCalloutH: 40,
-        
       ),
       calloutContent: Padding(
         padding: const EdgeInsets.all(10),
@@ -323,13 +321,20 @@ class CAPIBloC extends Bloc<CAPIEvent, CAPIState> {
       // var snippetJson = jsonEncode({"name":"we-create-flutter-apps","tags":"","child":{"csPropGroup":{"fillColors":{"color1":{"a":1,"r":1,"g":1,"b":1},"color2":null,"color3":null,"color4":null,"color5":null,"color6":null,"color1Value":null,"color2Value":null,"color3Value":null,"color4Value":null,"color5Value":null,"color6Value":null},"fillColorValues":null,"radialGradient":null,"margin":{"top":30,"left":30,"bottom":30,"right":30},"padding":{"top":30,"left":30,"bottom":30,"right":30},"width":null,"height":440,"alignment":"center","decorationShapeEnum":"rounded_rectangle","borderThickness":8,"borderColors":{"color1":{"a":1,"r":0.12941176470588237,"g":0.5882352941176471,"b":0.9529411764705882},"color2":{"a":1,"r":0.2980392156862745,"g":0.6862745098039216,"b":0.3137254901960784},"color3":{"a":1,"r":1,"g":0.9215686274509803,"b":0.23137254901960785},"color4":{"a":1,"r":0.9137254901960784,"g":0.11764705882352941,"b":0.38823529411764707},"color5":null,"color6":null,"color1Value":null,"color2Value":null,"color3Value":null,"color4Value":null,"color5Value":null,"color6Value":null},"borderColorValues":null,"borderRadius":16,"starPoints":null,"dash":null,"gap":null,"badgeWidth":null,"badgeHeight":null,"badgeCorner":null,"badgeText":null,"outlinedBorderGroup":null},"child":{"padding":null,"child":{"mainAxisAlignment":null,"mainAxisSize":"max","crossAxisAlignment":null,"children":[{"flex":1,"fit":"loose","child":{"deltaJsonString":"[{\"insert\":\"We create Flutter apps\",\"attributes\":{\"size\":\"huge\",\"bold\":true}},{\"insert\":\"\\n\\n\"}]","DK:snode":"CL","DK:cl":"QuillTextNode"},"DK:snode":"SC","DK:sc":"FlexibleNode"},{"flex":1,"fit":"loose","child":{"mainAxisAlignment":null,"mainAxisSize":"max","crossAxisAlignment":"start","children":[{"gap":20,"DK:snode":"CL","DK:cl":"GapNode"},{"name":"assets/images/icon_flutter.png","fit":"cover","alignment":null,"width":37,"height":46,"scale":2,"DK:snode":"CL","DK:cl":"AssetImageNode"},{"gap":20,"DK:snode":"CL","DK:cl":"GapNode"},{"flex":10,"fit":"loose","child":{"deltaJsonString":"[{\"insert\":\"We created \",\"attributes\":{\"size\":\"huge\"}},{\"insert\":\"Algorithm Creator\",\"attributes\":{\"color\":\"#FF2196F3\",\"size\":\"huge\",\"bold\":true,\"link\":\"http://algorithmcreator.com\"}},{\"insert\":\", an app that whose mission is to help resurrect the dying art of algorithm modelling. It does this (a) by redefining the \\\"flowchart notation\\\" - now any algorithm or process can be modelled using just 3 shapes: actions, decisions and loops. \",\"attributes\":{\"size\":\"huge\"}},{\"insert\":\"(\",\"attributes\":{\"size\":\"large\"}},{\"insert\":\"actually there's also a Function and Async Function shape for coders\",\"attributes\":{\"size\":\"large\",\"italic\":true}},{\"insert\":\"), \",\"attributes\":{\"size\":\"large\"}},{\"insert\":\"and (b) by having a ui that make iteration fast.\",\"attributes\":{\"size\":\"huge\"}},{\"insert\":\"\\n\\n\"},{\"insert\":\"Designing your app's logic graphically with \",\"attributes\":{\"size\":\"large\"}},{\"insert\":\"Algorithm Creator\",\"attributes\":{\"size\":\"large\",\"bold\":true}},{\"insert\":\" before starting to write code in your IDE significantly improves code robustness: it's more likely to work first time. Our app makes it easy and fast to iterate (refine) your logic.\",\"attributes\":{\"size\":\"large\"}},{\"insert\":\"\\n\\n\"},{\"insert\":\"A fun app to build, refine, publish, and share logic, it will help youngsters learn how to think about Algorithms.\",\"attributes\":{\"size\":\"large\",\"italic\":true}},{\"insert\":\"\\n\"}]","DK:snode":"CL","DK:cl":"QuillTextNode"},"DK:snode":"SC","DK:sc":"FlexibleNode"},{"gap":20,"DK:snode":"CL","DK:cl":"GapNode"},{"flex":6,"child":{"name":"assets/images/algc-icon-423-233.png","fit":"contain","alignment":"center","width":null,"height":null,"scale":2,"DK:snode":"CL","DK:cl":"AssetImageNode"},"DK:snode":"SC","DK:sc":"FlexibleNode","DK:flexible":"ExpandedNode"}],"DK:snode":"MC","DK:mc":"FlexNode","DK:flex":"RowNode"},"DK:snode":"SC","DK:sc":"FlexibleNode"}],"DK:snode":"MC","DK:mc":"FlexNode","DK:flex":"ColumnNode"},"DK:snode":"SC","DK:sc":"SingleChildScrollViewNode"},"DK:snode":"SC","DK:sc":"ContainerNode"},"DK:snode":"SC","DK:sc":"SnippetRootNode"});
       var snippetJson = await FlutterClipboard.paste();
       rootNode = SnippetRootNodeMapper.fromJson(snippetJson);
+      rootNode.name = event.snippetBeingReplaced;
     } else {
       rootNode = SnippetRootNodeMapper.fromJson(event.snippetJson!);
+      rootNode.name = event.snippetBeingReplaced;
     }
     fco.logger.i('_replaceSnippetFromJson: snippet name is "${rootNode.name}"');
     // save the clipboard snippet
     final newVersionId = SnippetInfoModel.createNewVersion(rootNode);
-    fco.modelRepo.saveSnippetVersion(snippetName: rootNode.name, newVersionId: newVersionId, newVersion: rootNode);
+    fco.modelRepo.saveSnippetVersion(
+      snippetName: rootNode.name,
+      newVersionId: newVersionId,
+      newVersion: rootNode,
+    );
+    emit(state.copyWith(force: state.force + 1));
   }
 
   Future<void> _clearClipboard(ClearClipboard event, emit) async {
@@ -342,7 +347,7 @@ class CAPIBloC extends Bloc<CAPIEvent, CAPIState> {
   // otherwise will get duplicate GK etc.
   Future<void> _updateClipboard(
     SNode? newContent,
-    // 
+    //
   ) async {
     fco.appInfo.clipboard = newContent?.clone();
     // possibly hide or show clipbaord tab
@@ -387,25 +392,41 @@ class CAPIBloC extends Bloc<CAPIEvent, CAPIState> {
     emit(state.copyWith(onlyTargetsWrappers: false));
   }
 
+  Future<void> _changedSnippet(_, emit) async {
+    if (state.snippetBeingEdited?.aNodeIsNotSelected ?? false) return;
+
+     emit(
+      state.copyWith(
+        snippetBeingEdited: state.snippetBeingEdited!
+          ..updatesPending = true,
+        force: state.force + 1,
+      ),
+    );
+  }
+
   Future<void> _popSnippetEditor(PopSnippetEditor event, emit) async {
     // if (state.snippetBeingEdited?.aNodeIsNotSelected??false) return;
-    if (event.save) {
-      //TODO save snippet
+    if (event.save || (state.snippetBeingEdited?.updatesPending ?? false)) {
+      // save) {
+      final rootNode = state.snippetBeingEdited!.getRootNode();
+      assert(rootNode.isValid());
+      final newVersionId = SnippetInfoModel.createNewVersion(rootNode);
+      fco.modelRepo.saveSnippetVersion(
+        snippetName: rootNode.name,
+        newVersionId: newVersionId,
+        newVersion: rootNode,
+      );
     }
     fco.dismiss(CalloutConfigToolbar.CID);
     // fco.dismissAll();
-    emit(
-      state.copyWith(
-        snippetBeingEdited: null,
-      ),
-    );
+    emit(state.copyWith(snippetBeingEdited: null));
   }
 
   void _enterSelectWidgetMode(EnterSelectWidgetMode event, emit) async {
     fco.nodesByGK.clear();
     emit(
       state.copyWith(
-         // This tells the UI to enter the widget select mode.
+        // This tells the UI to enter the widget select mode.
         activeSnippetName: event.snippetName,
       ),
     );
@@ -419,20 +440,15 @@ class CAPIBloC extends Bloc<CAPIEvent, CAPIState> {
         state.copyWith(
           // tappableNodeRects: _populateNodeBorderRects(
           //   state.snippetNameShowingTappableOverlaysFor!,
-          ),
+        ),
         // ),
       );
     }
   }
 
-
   void _exitSelectWidgetMode(ExitSelectWidgetMode event, emit) {
     fco.dismissAll();
-    emit(
-      state.copyWith(
-        activeSnippetName: null,
-      ),
-    );
+    emit(state.copyWith(activeSnippetName: null));
   }
 
   // void _setPanelOrPlaceholderSnippet(SetPanelSnippet event, emit) {
@@ -530,7 +546,11 @@ class CAPIBloC extends Bloc<CAPIEvent, CAPIState> {
 
     final newSnippet = state.snippetBeingEdited!.getRootNode();
     final newVersionId = SnippetInfoModel.createNewVersion(newSnippet);
-    fco.modelRepo.saveSnippetVersion(snippetName: newSnippet.name, newVersionId: newVersionId, newVersion: newSnippet);
+    fco.modelRepo.saveSnippetVersion(
+      snippetName: newSnippet.name,
+      newVersionId: newVersionId,
+      newVersion: newSnippet,
+    );
 
     emit(
       state.copyWith(
@@ -700,7 +720,11 @@ class CAPIBloC extends Bloc<CAPIEvent, CAPIState> {
     emit(state.copyWith(force: state.force + 1));
     final newSnippet = state.snippetBeingEdited!.getRootNode();
     final newVersionId = SnippetInfoModel.createNewVersion(newSnippet);
-    fco.modelRepo.saveSnippetVersion(snippetName: newSnippet.name, newVersionId: newVersionId, newVersion: newSnippet);
+    fco.modelRepo.saveSnippetVersion(
+      snippetName: newSnippet.name,
+      newVersionId: newVersionId,
+      newVersion: newSnippet,
+    );
   }
 
   Future<void> _copyNode(CopyNode event, emit) async {
@@ -760,7 +784,7 @@ class CAPIBloC extends Bloc<CAPIEvent, CAPIState> {
         bottom: NamedPS(propertyName: 'bottom'),
       ),
       const (UMLImageNode) => UMLImageNode(),
-      const (FSImageNode) => FSImageNode(),
+      const (StorageImageNode) => StorageImageNode(),
       // const (FirebaseStorageImageNode) => FirebaseStorageImageNode(),
       const (ConstrainedBoxNode) => ConstrainedBoxNode(),
       const (CarouselNode) => CarouselNode(
@@ -1181,7 +1205,11 @@ class CAPIBloC extends Bloc<CAPIEvent, CAPIState> {
 
     final newSnippet = state.snippetBeingEdited!.getRootNode();
     final newVersionId = SnippetInfoModel.createNewVersion(newSnippet);
-    fco.modelRepo.saveSnippetVersion(snippetName: newSnippet.name, newVersionId: newVersionId, newVersion: newSnippet);
+    fco.modelRepo.saveSnippetVersion(
+      snippetName: newSnippet.name,
+      newVersionId: newVersionId,
+      newVersion: newSnippet,
+    );
 
     emit(state.copyWith(force: state.force + 1));
   }
@@ -1292,7 +1320,11 @@ class CAPIBloC extends Bloc<CAPIEvent, CAPIState> {
 
     final newSnippet = state.snippetBeingEdited!.getRootNode();
     final newVersionId = SnippetInfoModel.createNewVersion(newSnippet);
-    fco.modelRepo.saveSnippetVersion(snippetName: newSnippet.name, newVersionId: newVersionId, newVersion: newSnippet);
+    fco.modelRepo.saveSnippetVersion(
+      snippetName: newSnippet.name,
+      newVersionId: newVersionId,
+      newVersion: newSnippet,
+    );
 
     emit(state.copyWith(force: state.force + 1));
   }
@@ -1385,7 +1417,11 @@ class CAPIBloC extends Bloc<CAPIEvent, CAPIState> {
 
     final newSnippet = state.snippetBeingEdited!.getRootNode();
     final newVersionId = SnippetInfoModel.createNewVersion(newSnippet);
-    fco.modelRepo.saveSnippetVersion(snippetName: newSnippet.name, newVersionId: newVersionId, newVersion: newSnippet);
+    fco.modelRepo.saveSnippetVersion(
+      snippetName: newSnippet.name,
+      newVersionId: newVersionId,
+      newVersion: newSnippet,
+    );
 
     emit(state.copyWith(force: state.force + 1));
   }
@@ -1639,7 +1675,11 @@ class CAPIBloC extends Bloc<CAPIEvent, CAPIState> {
 
     final newSnippet = state.snippetBeingEdited!.getRootNode();
     final newVersionId = SnippetInfoModel.createNewVersion(newSnippet);
-    fco.modelRepo.saveSnippetVersion(snippetName: newSnippet.name, newVersionId: newVersionId, newVersion: newSnippet);
+    fco.modelRepo.saveSnippetVersion(
+      snippetName: newSnippet.name,
+      newVersionId: newVersionId,
+      newVersion: newSnippet,
+    );
 
     emit(state.copyWith(force: state.force + 1));
   }
@@ -1680,7 +1720,11 @@ class CAPIBloC extends Bloc<CAPIEvent, CAPIState> {
 
     final newSnippet = state.snippetBeingEdited!.getRootNode();
     final newVersionId = SnippetInfoModel.createNewVersion(newSnippet);
-    fco.modelRepo.saveSnippetVersion(snippetName: newSnippet.name, newVersionId: newVersionId, newVersion: newSnippet);
+    fco.modelRepo.saveSnippetVersion(
+      snippetName: newSnippet.name,
+      newVersionId: newVersionId,
+      newVersion: newSnippet,
+    );
 
     if (newNode is RichTextNode) {
       state.snippetBeingEdited!.treeC.expand(newNode);
@@ -1710,7 +1754,11 @@ class CAPIBloC extends Bloc<CAPIEvent, CAPIState> {
     );
     // VersionId initialVersionId = DateTime.now().millisecondsSinceEpoch.toString();
     final newVersionId = SnippetInfoModel.createNewVersion(newRootNode);
-    fco.modelRepo.saveSnippetVersion(snippetName: newRootNode.name, newVersionId: newVersionId, newVersion: newRootNode);
+    fco.modelRepo.saveSnippetVersion(
+      snippetName: newRootNode.name,
+      newVersionId: newVersionId,
+      newVersion: newRootNode,
+    );
     // await fco.cacheAndSaveANewSnippetVersion(
     //   snippetName: event.newSnippetName,
     //   rootNode: newRootNode,
@@ -1802,8 +1850,7 @@ class CAPIBloC extends Bloc<CAPIEvent, CAPIState> {
   bool get deleteInProgress =>
       state.snippetBeingEdited?.nodeBeingDeleted != null;
 
-  bool showTappableBorderRects() =>
-      state.activeSnippetName != null;
+  bool showTappableBorderRects() => state.activeSnippetName != null;
 
   bool dontShowTappableBorderRects() =>
       !state.isSignedIn || state.activeSnippetName == null;

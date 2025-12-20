@@ -12,6 +12,7 @@ class StringOrNumberEditor extends StatefulWidget {
   final ValueChanged<String> onTextChangedF;
   final void Function(String) onEditingCompleteF;
   final void Function(String)? onEscapedF;
+  final void Function(String)? onTabF;
   final Widget? prefixIcon;
 
   // final bool expands;
@@ -33,6 +34,7 @@ class StringOrNumberEditor extends StatefulWidget {
     required this.onTextChangedF,
     required this.onEditingCompleteF,
     this.onEscapedF,
+    this.onTabF,
     this.prefixIcon,
     this.maxLines = 1,
     this.canExpand = false,
@@ -93,6 +95,12 @@ class StringOrNumberEditorState extends State<StringOrNumberEditor> {
           // 3. Handle Escape key, but again, only on the initial key down.
           if (event.physicalKey == PhysicalKeyboardKey.escape && event is KeyDownEvent) {
             widget.onEscapedF?.call(widget.originalS);
+            return KeyEventResult.handled;
+          }
+
+          // 4. Handle Tab key, but again, only on the initial key down.
+          if (event.physicalKey == PhysicalKeyboardKey.tab && event is KeyDownEvent) {
+            widget.onTabF?.call(_txtController.text);
             return KeyEventResult.handled;
           }
         }

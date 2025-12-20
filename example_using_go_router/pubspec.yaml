@@ -31,13 +31,9 @@ false_secrets:
   - /lib/bh-apps.firebase_options.dart
 
 flutter:
-
   uses-material-design: true
-
   assets:
     - assets/images/
-
-
 
 
 

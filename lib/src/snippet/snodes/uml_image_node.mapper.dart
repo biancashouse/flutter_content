@@ -35,12 +35,6 @@ class UMLImageNodeMapper extends SubClassMapperBase<UMLImageNode> {
     _$umlText,
     opt: true,
   );
-  static String? _$encodedText(UMLImageNode v) => v.encodedText;
-  static const Field<UMLImageNode, String> _f$encodedText = Field(
-    'encodedText',
-    _$encodedText,
-    opt: true,
-  );
   static double? _$width(UMLImageNode v) => v.width;
   static const Field<UMLImageNode, double> _f$width = Field(
     'width',
@@ -112,7 +106,6 @@ class UMLImageNodeMapper extends SubClassMapperBase<UMLImageNode> {
   final MappableFields<UMLImageNode> fields = const {
     #name: _f$name,
     #umlText: _f$umlText,
-    #encodedText: _f$encodedText,
     #width: _f$width,
     #height: _f$height,
     #fit: _f$fit,
@@ -143,7 +136,6 @@ class UMLImageNodeMapper extends SubClassMapperBase<UMLImageNode> {
     return UMLImageNode(
       name: data.dec(_f$name),
       umlText: data.dec(_f$umlText),
-      encodedText: data.dec(_f$encodedText),
       width: data.dec(_f$width),
       height: data.dec(_f$height),
       fit: data.dec(_f$fit),
@@ -216,7 +208,6 @@ abstract class UMLImageNodeCopyWith<$R, $In extends UMLImageNode, $Out>
   $R call({
     String? name,
     String? umlText,
-    String? encodedText,
     double? width,
     double? height,
     BoxFitEnum? fit,
@@ -236,7 +227,6 @@ class _UMLImageNodeCopyWithImpl<$R, $Out>
   $R call({
     Object? name = $none,
     Object? umlText = $none,
-    Object? encodedText = $none,
     Object? width = $none,
     Object? height = $none,
     Object? fit = $none,
@@ -244,7 +234,6 @@ class _UMLImageNodeCopyWithImpl<$R, $Out>
     FieldCopyWithData({
       if (name != $none) #name: name,
       if (umlText != $none) #umlText: umlText,
-      if (encodedText != $none) #encodedText: encodedText,
       if (width != $none) #width: width,
       if (height != $none) #height: height,
       if (fit != $none) #fit: fit,
@@ -254,7 +243,6 @@ class _UMLImageNodeCopyWithImpl<$R, $Out>
   UMLImageNode $make(CopyWithData data) => UMLImageNode(
     name: data.get(#name, or: $value.name),
     umlText: data.get(#umlText, or: $value.umlText),
-    encodedText: data.get(#encodedText, or: $value.encodedText),
     width: data.get(#width, or: $value.width),
     height: data.get(#height, or: $value.height),
     fit: data.get(#fit, or: $value.fit),

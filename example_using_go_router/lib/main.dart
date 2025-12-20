@@ -56,7 +56,7 @@ void main({bool useEmulator = false}) {
 
       runApp(
         FlutterContentApp.router(
-          appName: 'flutter-content-example',
+          appName: 'flutter-content-example-with-go-router',
           // use web, mobile or desktop routingConfig defined in your routes_config.dart
           routingConfig: webRoutingConfig,
           initialRoutePath: '/',

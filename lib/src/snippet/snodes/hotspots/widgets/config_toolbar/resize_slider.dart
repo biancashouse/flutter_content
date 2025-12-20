@@ -22,8 +22,8 @@ class ResizeSlider extends StatefulWidget {
     required this.onChangeF,
     this.onDragStartF,
     this.onDragEndF,
-    this.min = 0,
-    this.max = 100,
+    this.min,
+    this.max,
     this.showValue = true,
     this.divisions,
   });

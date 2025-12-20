@@ -5,8 +5,6 @@ import 'package:flutter_animate/flutter_animate.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_content/flutter_content.dart';
 import 'package:flutter_content/src/measuring/size_aware_widget.dart';
-import 'package:flutter_content/src/model/alignment_model.dart';
-import 'package:flutter_content/src/snippet/snodes/fs_image_node.dart';
 import 'package:flutter_content/src/snippet/snodes/hotspots/widgets/targets_wrapper_ontap_menu.dart';
 
 import 'positioned_target_cover.dart';
@@ -103,18 +101,6 @@ class TargetsWrapper extends StatefulWidget {
           // fco.dismiss(CalloutConfigToolbar.CID);
           SNode.showAllTargetBtns();
           SNode.showAllHotspotTargetCovers();
-          //TODO save a new version ? not necessary ?
-          // fco.afterNextBuildDo(() {
-          //   // save hotspot's parent snippet
-          //   var rootNode = tc.parentTargetsWrapperNode?.rootNodeOfSnippet();
-          //   if (rootNode != null) {
-          //     fco.saveNewVersion(snippet: rootNode);
-          //     // fco.cacheAndSaveANewSnippetVersion(
-          //     //   snippetName: rootNode.name,
-          //     //   rootNode: rootNode,
-          //     // );
-          //   }
-          // });
         }
 
         wrapperState.refresh(() {
@@ -213,8 +199,8 @@ class TargetsWrapperState extends State<TargetsWrapper> {
     fco.afterNextBuildDo(() {
       if (!mounted) return;
       var scrollConfig = fco.findAncestorScrollControllerAndDirection(context);
-      sc = scrollConfig.$1;
-      scrollDirection = scrollConfig.$2;
+      sc = scrollConfig?.controller;
+      scrollDirection = scrollConfig?.direction;
 
       // fco.afterMsDelayDo(1000, (){
       // setState(() {
@@ -291,9 +277,14 @@ class TargetsWrapperState extends State<TargetsWrapper> {
     }
   }
 
-  Offset translateForScroll(Offset pos) => pos.translate(
+  Offset translateOffsetForScroll(Offset pos) => pos.translate(
     scrollDirection == Axis.horizontal ? sc?.offset ?? 0.0 : 0.0,
     scrollDirection == Axis.vertical ? sc?.offset ?? 0.0 : 0.0,
+  );
+
+  Rect translateRectForScroll(Rect r) => Rect.fromPoints(
+    translateOffsetForScroll(r.topLeft),
+    translateOffsetForScroll(r.bottomRight),
   );
 
   @override
@@ -437,29 +428,55 @@ class TargetsWrapperState extends State<TargetsWrapper> {
                     //
                     double alX = 0;
                     double alY = 0;
-                    alX = (details.globalPosition.dx < wrapperRect.center.dx)
-                        ? 1.5
-                        : -1.5;
-                    alY = (details.globalPosition.dy < wrapperRect.center.dy)
-                        ? 1.5
-                        : -1.5;
+                    // pos on wrapperRect
+                    var tapPosLocal = details.localPosition;
+                    var tapPosGlobal = translateOffsetForScroll(
+                      details.globalPosition,
+                    );
+                    var targetRect = Rect.fromCenter(
+                      center: tapPosGlobal,
+                      width: TargetModel.DEFAULT_TARGET_RADIUS,
+                      height: TargetModel.DEFAULT_TARGET_RADIUS,
+                    );
+                    var screenCenterPos = translateOffsetForScroll(
+                      Offset(
+                        MediaQuery.of(context).size.width / 2,
+                        MediaQuery.of(context).size.height / 2,
+                      ),
+                    );
+                    var wrapperRect = this.wrapperRect;
+                    alX = (tapPosGlobal.dx < screenCenterPos.dx) ? 1 : -1;
+                    alY = (tapPosGlobal.dy < screenCenterPos.dy) ? 1 : -1;
+                    // var relCalloutTopLeft = calculateCalloutTopLeft(
+                    //   targetRect: targetRect,
+                    //   calloutRect: Rect.fromLTWH(
+                    //     0,
+                    //     0,
+                    //     TargetsWrapperOnTapMenu.menuWidth(),
+                    //     TargetsWrapperOnTapMenu.menuHeight(),
+                    //   ),
+                    //   alignment: Alignment(alX, alY),
+                    // );
+                    // Offset initialCalloutPos = translateOffsetForScroll(
+                    //   relCalloutTopLeft,
+                    // );
                     CalloutConfig cc = CalloutConfig(
                       cId: 'create-target-menu',
+                      // initialCalloutPos: initialCalloutPos,
                       initialTargetAlignment: Alignment(alX, alY),
-                      initialCalloutAlignment: -Alignment(alX, alY),
+                      initialCalloutAlignment: Alignment(-alX, -alY),
                       initialCalloutW: TargetsWrapperOnTapMenu.menuWidth(),
                       initialCalloutH: TargetsWrapperOnTapMenu.menuHeight(),
                       // contentTranslateX: 1,
                       // contentTranslateY: 1,
                       barrier: CalloutBarrierConfig(opacity: 0.1),
-                      finalSeparation: 30,
+                      finalSeparation: 150,
                       targetPointerType: TargetPointerType.thin_line(),
                       bubbleOrTargetPointerColor: Colors.purpleAccent,
-                      // animatePointer: true,
+                      animatePointer: true,
                       decorationFillColors: ColorOrGradient.color(
-                        Colors.purpleAccent.withAlpha(90),
+                        Colors.purpleAccent.withValues(alpha: .9),
                       ),
-
                       showCloseButton: true,
                       closeButtonPos: Offset(10, 10),
                       closeButtonColor: Colors.white,
@@ -468,6 +485,7 @@ class TargetsWrapperState extends State<TargetsWrapper> {
                         hidePossibleNewTarget();
                       },
                     );
+
                     // show pulsing indicator
                     setState(() {
                       fco.afterNextBuildDo(() {
@@ -508,9 +526,9 @@ class TargetsWrapperState extends State<TargetsWrapper> {
             //         key: tc.gk = GlobalKey(debugLabel: 'dot ${tc.uid.toString()}'),
             //         child: SizedBox(width: 1, height: 1),
             //       ),
-            ...btns,
-
             ...covers,
+
+            ...btns,
 
             // PULSING POINT animation
             if (!_needToMeasureChild &&
@@ -576,7 +594,7 @@ class TargetsWrapperState extends State<TargetsWrapper> {
       );
     }
 
-    if (childNode is FSImageNode) {
+    if (childNode is StorageImageNode) {
       childWidget = SizeAwareWidget.storage(
         fsFullPath: childNode.fsFullPath!,
         fit: childNode.fit?.flutterValue,
@@ -610,7 +628,6 @@ class TargetsWrapperState extends State<TargetsWrapper> {
 }
 
 class IntegerCircleAvatar extends StatelessWidget {
-  final TargetModel tc;
   final int? num;
 
   // final Color textColor;
@@ -619,8 +636,7 @@ class IntegerCircleAvatar extends StatelessWidget {
   final double fontSize;
   final Widget? child;
 
-  const IntegerCircleAvatar(
-    this.tc, {
+  const IntegerCircleAvatar({
     this.num,
     // required this.textColor,
     required this.bgColor,

@@ -11,10 +11,28 @@ import 'package:flutter_content/src/snippet/pnodes/enums/enum_boxfit.dart';
 import 'package:flutter_content/src/snippet/pnodes/fs_image_path_node.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 
-part 'fs_image_node.mapper.dart';
+part 'storage_image_node.mapper.dart';
 
-@MappableClass()
-class FSImageNode extends CL with FSImageNodeMappable {
+/// A hook to handle the renaming of the class from 'FSImageNode' to 'StorageImageNode'.
+/// This must be registered globally on the `SNodeMapper.container`.
+class StorageImageRenameHook extends MappingHook {
+  const StorageImageRenameHook();
+
+  @override
+  dynamic beforeDecode(dynamic value) {
+    if (value is Map<String, dynamic> && value['type'] == 'FSImageNode') {
+      value['type'] = 'StorageImageNode';
+    }
+    return value;
+  }
+}
+
+@MappableClass(
+  // Use the new class name for encoding. The hook will handle decoding the old name.
+  discriminatorValue: 'StorageImageNode',
+  hook: StorageImageRenameHook(),
+)
+class StorageImageNode extends CL with StorageImageNodeMappable {
   String? fsFullPath;
   double? width;
   double? height;
@@ -22,7 +40,7 @@ class FSImageNode extends CL with FSImageNodeMappable {
   BoxFitEnum? fit;
   AlignmentEnum? alignment;
 
-  FSImageNode({
+  StorageImageNode({
     this.fsFullPath,
     this.fit,
     this.alignment,
@@ -32,7 +50,7 @@ class FSImageNode extends CL with FSImageNodeMappable {
   });
 
   @JsonKey(includeFromJson: false, includeToJson: false)
-  bool _mustReloadedAfter100Ms = true;
+  final _mustReloadedAfter100Ms = true;
 
   // @JsonKey(includeFromJson: false, includeToJson: false)
   // Uint8List? cachedPngBytes;

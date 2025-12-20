@@ -18,7 +18,10 @@ class Pages extends StatelessWidget {
         itemCount: pages.length,
         itemBuilder: (context, index) {
           final label = pages[index];
-          String sandboxIndicator = (fco.appInfo.anonymousUserEditablePages.contains(label)) ? ' *' : "";
+          String sandboxIndicator =
+              (fco.appInfo.anonymousUserEditablePages.contains(label))
+              ? ' *'
+              : "";
           return Row(
             mainAxisSize: MainAxisSize.max,
             mainAxisAlignment: MainAxisAlignment.start,

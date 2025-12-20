@@ -173,7 +173,7 @@ class CalloutConfigToolbarState extends State<CalloutConfigToolbar> {
                       );
                     },
                     min: 16.0,
-                    max: 100.0,
+                    max: 200.0,
                   ),
                 ),
               ),

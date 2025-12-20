@@ -1,0 +1,197 @@
+{
+  "name": "we-create-flutter-packages",
+  "tags": "",
+  "child": {
+    "csPropGroup": {
+      "fillColors": {
+        "color1": {
+          "a": 1,
+          "r": 1,
+          "g": 1,
+          "b": 1
+        },
+        "color2": null,
+        "color3": null,
+        "color4": null,
+        "color5": null,
+        "color6": null,
+        "color1Value": null,
+        "color2Value": null,
+        "color3Value": null,
+        "color4Value": null,
+        "color5Value": null,
+        "color6Value": null
+      },
+      "fillColorValues": null,
+      "radialGradient": null,
+      "margin": {
+        "top": 0,
+        "left": 50,
+        "bottom": 0,
+        "right": 50
+      },
+      "padding": {
+        "top": 0,
+        "left": 30,
+        "bottom": 0,
+        "right": 30
+      },
+      "width": null,
+      "height": 300,
+      "alignment": "center",
+      "decorationShapeEnum": "rounded_rectangle",
+      "borderThickness": 8,
+      "borderColors": {
+        "color1": {
+          "a": 1,
+          "r": 0.12941176470588237,
+          "g": 0.5882352941176471,
+          "b": 0.9529411764705882
+        },
+        "color2": {
+          "a": 1,
+          "r": 0.2980392156862745,
+          "g": 0.6862745098039216,
+          "b": 0.3137254901960784
+        },
+        "color3": {
+          "a": 1,
+          "r": 1,
+          "g": 0.9215686274509803,
+          "b": 0.23137254901960785
+        },
+        "color4": {
+          "a": 1,
+          "r": 0.9137254901960784,
+          "g": 0.11764705882352941,
+          "b": 0.38823529411764707
+        },
+        "color5": null,
+        "color6": null,
+        "color1Value": null,
+        "color2Value": null,
+        "color3Value": null,
+        "color4Value": null,
+        "color5Value": null,
+        "color6Value": null
+      },
+      "borderColorValues": null,
+      "borderRadius": 16,
+      "starPoints": null,
+      "dash": null,
+      "gap": null,
+      "badgeWidth": null,
+      "badgeHeight": null,
+      "badgeCorner": null,
+      "badgeText": null,
+      "outlinedBorderGroup": null
+    },
+    "child": {
+      "mainAxisAlignment": "start",
+      "mainAxisSize": "min",
+      "crossAxisAlignment": "stretch",
+      "children": [
+        {
+          "flex": 1,
+          "fit": "loose",
+          "child": {
+            "deltaJsonString": "[{\"insert\":\"\\n\"},{\"insert\":\"We create Flutter\",\"attributes\":{\"size\":\"large\",\"bold\":true}},{\"insert\":\" \",\"attributes\":{\"size\":\"huge\",\"bold\":true}},{\"insert\":\"packages\",\"attributes\":{\"size\":\"huge\",\"bold\":true,\"font\":\"nunito\"}},{\"insert\":\"\\n\\n\"}]",
+            "DK:snode": "CL",
+            "DK:cl": "QuillTextNode"
+          },
+          "DK:snode": "SC",
+          "DK:sc": "FlexibleNode"
+        },
+        {
+          "gap": 20,
+          "DK:snode": "CL",
+          "DK:cl": "GapNode"
+        },
+        {
+          "flex": 1,
+          "fit": "loose",
+          "child": {
+            "mainAxisAlignment": null,
+            "mainAxisSize": "max",
+            "crossAxisAlignment": "start",
+            "children": [
+              {
+                "gap": 20,
+                "DK:snode": "CL",
+                "DK:cl": "GapNode"
+              },
+              {
+                "assetPath": "assets/images/pub-dev-logo.png",
+                "fit": "cover",
+                "alignment": null,
+                "scale": 2.5,
+                "DK:snode": "CL",
+                "DK:cl": "AssetImageNode"
+              },
+              {
+                "gap": 20,
+                "DK:snode": "CL",
+                "DK:cl": "GapNode"
+              },
+              {
+                "flex": 1,
+                "child": {
+                  "mainAxisAlignment": "start",
+                  "mainAxisSize": "min",
+                  "crossAxisAlignment": "stretch",
+                  "children": [
+                    {
+                      "flex": 1,
+                      "fit": "loose",
+                      "child": {
+                        "deltaJsonString": "[{\"insert\":\"Our \",\"attributes\":{\"size\":\"huge\"}},{\"insert\":\"flutter_callouts\",\"attributes\":{\"color\":\"#FF2196F3\",\"size\":\"huge\",\"bold\":true,\"link\":\"http://biancashouse.com/flutter-callouts-demo\"}},{\"insert\":\" package makes it easy to point things out to your users.\",\"attributes\":{\"size\":\"huge\"}},{\"insert\":\"\\n\"}]",
+                        "DK:snode": "CL",
+                        "DK:cl": "QuillTextNode"
+                      },
+                      "DK:snode": "SC",
+                      "DK:sc": "FlexibleNode"
+                    },
+                    {
+                      "gap": 20,
+                      "DK:snode": "CL",
+                      "DK:cl": "GapNode"
+                    },
+                    {
+                      "flex": 2,
+                      "fit": "loose",
+                      "child": {
+                        "deltaJsonString": "[{\"insert\":\"We also make it easy for you to create and publish content in your apps via our \",\"attributes\":{\"size\":\"huge\"}},{\"insert\":\"flutter_content\",\"attributes\":{\"size\":\"huge\",\"color\":\"#FF2196F3\",\"bold\":true,\"link\":\"http://biancashouse.com/flutter-content-demo\"}},{\"insert\":\" package. \",\"attributes\":{\"size\":\"huge\"}},{\"insert\":\"(In fact, this website is built from these packages.)\",\"attributes\":{\"size\":\"large\"}},{\"insert\":\"\\n\"}]",
+                        "DK:snode": "CL",
+                        "DK:cl": "QuillTextNode"
+                      },
+                      "DK:snode": "SC",
+                      "DK:sc": "FlexibleNode"
+                    }
+                  ],
+                  "DK:snode": "MC",
+                  "DK:mc": "FlexNode",
+                  "DK:flex": "ColumnNode"
+                },
+                "DK:snode": "SC",
+                "DK:sc": "FlexibleNode",
+                "DK:flexible": "ExpandedNode"
+              }
+            ],
+            "DK:snode": "MC",
+            "DK:mc": "FlexNode",
+            "DK:flex": "RowNode"
+          },
+          "DK:snode": "SC",
+          "DK:sc": "FlexibleNode"
+        }
+      ],
+      "DK:snode": "MC",
+      "DK:mc": "FlexNode",
+      "DK:flex": "ColumnNode"
+    },
+    "DK:snode": "SC",
+    "DK:sc": "ContainerNode"
+  },
+  "DK:snode": "SC",
+  "DK:sc": "SnippetRootNode"
+}

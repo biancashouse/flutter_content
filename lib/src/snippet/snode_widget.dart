@@ -112,7 +112,6 @@ class SNodeWidget extends StatelessWidget {
                       final teC = TextEditingController();
                       final originalUMLRecord = (
                         text: umlImageNode.umlText,
-                        encodedText: umlImageNode.encodedText,
                         bytes: umlImageNode.cachedPngBytes,
                         width: umlImageNode.width,
                         height: umlImageNode.height,
@@ -130,7 +129,6 @@ class SNodeWidget extends StatelessWidget {
                         (UMLRecord newValue) {
                           umlImageNode.refreshWithUpdate(context, () {
                             umlImageNode.umlText = newValue.text;
-                            umlImageNode.encodedText = newValue.encodedText;
                             umlImageNode.cachedPngBytes = newValue.bytes;
                             umlImageNode.width = newValue.width;
                             umlImageNode.height = newValue.height;
@@ -358,6 +356,7 @@ class SNodeWidget extends StatelessWidget {
     var selectedNode = fco.capiBloc.state.snippetBeingEdited!.selectedNode;
     if (selectedNode == null) return;
     fco.afterMsDelayDo(100, () {
+      print('pointOutSelectedNode');
       var cc = selectedNode.nodeWidgetGK?.currentContext;
       if (cc != null) {
         Scrollable.ensureVisible(

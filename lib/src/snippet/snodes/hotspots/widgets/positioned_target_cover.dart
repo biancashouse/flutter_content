@@ -80,42 +80,43 @@ class TargetCover extends StatelessWidget {
   Widget _targetCover(BuildContext context, TargetModel tc) {
     // fco.logger.i('_draggableTarget');
     double radius = tc.targetRadius(wrapperState);
-    return SizedBox(
-      width: radius * 2,
-      height: radius * 2,
-      child: Stack(
-        children: [
-          Align(
-            alignment: Alignment.center,
-            child: Container(
-              width: 2 * radius,
-              height: 2 * radius,
-              decoration: BoxDecoration(
-                color: tc.hasAHotspot()
-                    ? Colors.white.withValues(alpha: .25)
-                    : Colors.red.withAlpha(50),
-                shape: BoxShape.circle,
+    return MouseInfoViewer(
+      child: SizedBox(
+        width: radius * 2,
+        height: radius * 2,
+        child: Stack(
+          children: [
+            Align(
+              alignment: Alignment.center,
+              child: Container(
+                width: 2 * radius,
+                height: 2 * radius,
+                decoration: BoxDecoration(
+                  color: tc.hasAHotspot()
+                      ? Colors.white.withValues(alpha: .25)
+                      : Colors.red.withAlpha(50),
+                  shape: BoxShape.circle,
+                ),
               ),
             ),
-          ),
-          Align(
-            alignment: Alignment.center,
-            child: CustomPaint(
-              foregroundPainter: TargetPainter(),
-              size: Size(radius * 2, radius * 2),
+            Align(
+              alignment: Alignment.center,
+              child: CustomPaint(
+                foregroundPainter: TargetPainter(),
+                size: Size(radius * 2, radius * 2),
+              ),
             ),
-          ),
-          Align(
-            alignment: Alignment.center,
-            child: IntegerCircleAvatar(
-              tc,
-              num: index + 1,
-              bgColor: tc.bgColor().withValues(alpha: .5),
-              radius: radius,
-              fontSize: 16,
+            Align(
+              alignment: Alignment.center,
+              child: IntegerCircleAvatar(
+                num: index + 1,
+                bgColor: tc.bgColor().withValues(alpha: .5),
+                radius: radius,
+                fontSize: 16,
+              ),
             ),
-          ),
-        ],
+          ],
+        ),
       ),
     );
   }

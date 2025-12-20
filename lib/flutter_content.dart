@@ -40,7 +40,7 @@ import 'package:flutter_content/src/snippet/snodes/filled_button_node.dart';
 import 'package:flutter_content/src/snippet/snodes/flex_node.dart';
 import 'package:flutter_content/src/snippet/snodes/flexible_node.dart';
 import 'package:flutter_content/src/snippet/snodes/flexible_space_bar_node.dart';
-import 'package:flutter_content/src/snippet/snodes/fs_image_node.dart';
+import 'package:flutter_content/src/snippet/snodes/storage_image_node.dart';
 import 'package:flutter_content/src/snippet/snodes/gap_node.dart';
 import 'package:flutter_content/src/snippet/snodes/named_multi_child_node.dart';
 import 'package:flutter_content/src/snippet/snodes/named_preferredsize_single_child_node.dart';
@@ -122,11 +122,11 @@ export 'package:firebase_core/firebase_core.dart';
 
 // re-export callout callout related s.t. apps using this package don't need to include the callouts pkg in pubspec
 export 'package:flutter_callouts/src/widget/double_tappable.dart';
+export 'src/api/mouse_info_viewer.dart';
 export 'package:flutter_callouts/src/api/callouts/callout_config.dart';
 export 'package:flutter_callouts/src/api/callouts/callout_using_overlayportal.dart';
 export 'package:flutter_callouts/src/api/callouts/dotted_decoration.dart';
 export 'package:flutter_callouts/src/api/callouts/globalkey_extn.dart';
-export 'package:flutter_callouts/src/api/callouts/named_sc.dart';
 export 'package:flutter_callouts/src/canvas/canvas_mixin.dart';
 export 'package:flutter_callouts/src/debouncer/debouncer.dart';
 export 'package:flutter_callouts/src/feature_discovery/discovery_controller.dart';
@@ -198,6 +198,10 @@ export 'src/snippet/pnodes/editors/text_editor_with_autocomplete.dart';
 export 'src/snippet/pnodes/enums/enum_axis.dart';
 export 'src/snippet/pnodes/enums/enum_material3_text_size.dart';
 export 'src/snippet/pnodes/enums/enum_decoration_shape.dart';
+export 'src/snippet/pnodes/groups/button_style_properties.dart';
+export 'src/snippet/snodes/abstract_scrollview_node.dart';
+export 'src/snippet/snodes/storage_image_node.dart';
+export 'src/snippet/snodes/uml_image_node.dart';
 export 'src/snippet/snode.dart';
 export 'src/snippet/snodes/align_node.dart';
 export 'src/snippet/snodes/appbar_node.dart';
@@ -254,7 +258,8 @@ export 'src/snippet/snodes/markdown_node.dart';
 export 'src/snippet/snodes/menu_bar_node.dart';
 export 'src/snippet/snodes/menu_item_button_node.dart';
 export 'src/snippet/snodes/abstract_mc_node.dart';
-// export 'src/snippet/snodes/named_text_style.dart';
+export 'src/snippet/snodes/storage_image_node.dart';
+export 'src/snippet/snodes/widget/crop_or_resize/crop_image.dart';
 
 // content
 export 'src/snippet/snodes/outlined_button_node.dart';
@@ -873,12 +878,14 @@ class FlutterContentMixins
   /// Returns the [ScrollController] if found, otherwise returns `null`.
   /// NOTE - only need this if you don't already have the scrollcontroller or
   /// don't know it's scrollDirection
-  ScrollConfig findAncestorScrollControllerAndDirection(BuildContext? ctx) {
+  ScrollConfig? findAncestorScrollControllerAndDirection(BuildContext? ctx) {
+    ScrollConfig? result;
+
     // try to find a SingleChildScrollView
     SingleChildScrollView? scsv = ctx
         ?.findAncestorWidgetOfExactType<SingleChildScrollView>();
     if (scsv != null) {
-      return (scsv.controller, scsv.scrollDirection);
+      result = ScrollConfig(scsv.controller, scsv.scrollDirection);
     }
 
     // // try to find a PageView
@@ -891,22 +898,22 @@ class FlutterContentMixins
     // try to find a ListView, GridView, or CustomScrollView
     ListView? lv = ctx?.findAncestorWidgetOfExactType<ListView>();
     if (lv != null) {
-      return (lv.controller, lv.scrollDirection);
+      result = ScrollConfig(lv.controller, lv.scrollDirection);
     }
 
     // try to find a ListView, GridView, or CustomScrollView
     GridView? gv = ctx?.findAncestorWidgetOfExactType<GridView>();
     if (gv != null) {
-      return (gv.controller, gv.scrollDirection);
+      result = ScrollConfig(gv.controller, gv.scrollDirection);
     }
 
     CustomScrollView? csv = ctx
         ?.findAncestorWidgetOfExactType<CustomScrollView>();
     if (csv != null) {
-      return (csv.controller, csv.scrollDirection);
+      result = ScrollConfig(csv.controller, csv.scrollDirection);
     }
 
-    return (null, null);
+    return result;
   }
 
   void initializeMappers() {
@@ -928,7 +935,7 @@ class FlutterContentMixins
     DefaultTextStyleNodeMapper.ensureInitialized();
     FileNodeMapper.ensureInitialized();
     FlexibleSpaceBarNodeMapper.ensureInitialized();
-    FSImageNodeMapper.ensureInitialized();
+    StorageImageNodeMapper.ensureInitialized();
     GapNodeMapper.ensureInitialized();
     GoogleDriveIFrameNodeMapper.ensureInitialized();
     IFrameNodeMapper.ensureInitialized();

@@ -34,7 +34,7 @@ abstract class MC extends STreeNode {
 'class ChipNode extends CL
 'class FileNode extends CL
 'class FirebaseStorageImageNode extends CL
-'class FSImageNode extends CL
+'class StorageImageNode extends CL
 'class GapNode extends CL
 'class GoogleDriveIFrameNode extends CL
 'class IFrameNode extends CL

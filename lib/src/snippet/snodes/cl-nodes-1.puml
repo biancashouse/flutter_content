@@ -7,6 +7,6 @@ class AssetImageNode extends CL
 class ChipNode extends CL
 class FileNode extends CL
 class FirebaseStorageImageNode extends CL
-class FSImageNode extends CL
+class StorageImageNode extends CL
 
 @enduml

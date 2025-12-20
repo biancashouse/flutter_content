@@ -1,21 +1,22 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_hooks/flutter_hooks.dart';
 
 import 'package:flutter_content/flutter_content.dart';
 import 'package:flutter_content/src/snippet/pnodes/editors/plantuml_msv.dart';
 
-class PropertyButtonUML extends StatelessWidget {
+class PropertyButtonUML extends HookWidget {
   final SNode snode;
   final UMLRecord originalUMLRecord;
-  final String? label;
+  final String label;
   final Size calloutButtonSize;
   final GlobalKey propertyBtnGK;
   final ValueChanged<UMLRecord> onChangeF;
   final ValueChanged<Size> onSizedF;
-  
 
-  const PropertyButtonUML(this.snode, {
+  const PropertyButtonUML(
+    this.snode, {
     required this.originalUMLRecord,
-    this.label,
+    required this.label,
     required this.calloutButtonSize,
     required this.onChangeF,
     required this.onSizedF,
@@ -25,51 +26,50 @@ class PropertyButtonUML extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final teC = TextEditingController();
-
-    // make sure start and end are present for viewing, but they don't get sent to the encoder
-    teC.text = !(originalUMLRecord.text ?? '').contains('@startuml')
-        ? "@startuml\n${originalUMLRecord.text ?? ''}\n@enduml"
-        : originalUMLRecord.text ?? '';
-
-    String textLabel() =>
-        (originalUMLRecord.text?.isNotEmpty??false) ? teC.text : '$label...';
-    Widget labelWidget = Text(
-      textLabel(),
-      style: const TextStyle(color: Colors.white),
-      // overflow: TextOverflow.ellipsis,
+    final teC = useTextEditingController(
+      text: !(originalUMLRecord.text ?? '').contains('@startuml')
+          ? "@startuml\n${originalUMLRecord.text ?? ''}\n@enduml"
+          : originalUMLRecord.text ?? '',
     );
 
-    return GestureDetector(
-      onTap: () {
-        showUMLEditor(snode, context, originalUMLRecord, teC, onChangeF, onSizedF);
+    return TextButton.icon(
+      label: Text(label),
+      onPressed: () {
+        showUMLEditor(
+          snode,
+          context,
+          originalUMLRecord,
+          teC,
+          onChangeF,
+          onSizedF,
+        );
       },
-      child: Container(
-        alignment: Alignment.topLeft,
-        key: propertyBtnGK,
-        width: calloutButtonSize.width,
-        height: calloutButtonSize.height,
-        child: labelWidget,
-      ),
+      icon: const Icon(Icons.edit),
     );
   }
 
-  static void showUMLEditor(SNode snode, context, originalUMLRecord, teC, onChangeF, onSizedF) {
-
+  static void showUMLEditor(
+    SNode snode,
+    BuildContext context,
+    UMLRecord originalUMLRecord,
+    teC,
+    onChangeF,
+    onSizedF,
+  ) {
     CalloutConfig teCC = CalloutConfig(
       cId: 'uml-te',
-      
+
       // containsTextField: true,
-      barrier: CalloutBarrierConfig(
-        opacity: .25,
-        onTappedF: () {
-          fco.dismiss('uml-te');
-        },
-      ),
+      // barrier: CalloutBarrierConfig(
+      //   opacity: .25,
+      //   onTappedF: () {
+      //     fco.dismiss('uml-te');
+      //   },
+      // ),
       decorationFillColors: ColorOrGradient.color(Colors.purpleAccent),
       targetPointerType: TargetPointerType.none(),
-      initialCalloutW: fco.scrW * .8,
-      initialCalloutH: fco.scrH * .8,
+      initialCalloutW: fco.scrW * .95,
+      initialCalloutH: fco.scrH * .95,
       onAcceptedF: () {},
       onResizeF: (Size newSize) {},
       onDragF: (Offset newOffset) {},
@@ -78,6 +78,7 @@ class PropertyButtonUML extends StatelessWidget {
 
     Widget calloutContent = PlantUMLMSV(
       snode: snode,
+      originalUMLRecord: originalUMLRecord,
       teC: teC,
       onChangeF: (UMLRecord newUmlRecord) {
         onChangeF.call(newUmlRecord);
@@ -85,9 +86,6 @@ class PropertyButtonUML extends StatelessWidget {
       onSizedF: onSizedF,
     );
 
-    fco.showOverlay(
-      calloutConfig: teCC,
-      calloutContent: calloutContent,
-    );
+    fco.showOverlay(calloutConfig: teCC, calloutContent: calloutContent);
   }
 }

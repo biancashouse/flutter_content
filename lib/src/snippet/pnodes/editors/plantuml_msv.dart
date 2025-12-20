@@ -2,7 +2,11 @@ import 'dart:convert';
 
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:firebase_ui_shared/firebase_ui_shared.dart';
-import 'package:firebase_ui_storage/firebase_ui_storage.dart' show FirebaseUIStorage, FirebaseUIStorageConfiguration, UuidFileUploadNamingPolicy, KeepOriginalNameUploadPolicy;
+import 'package:firebase_ui_storage/firebase_ui_storage.dart'
+    show
+        FirebaseUIStorage,
+        FirebaseUIStorageConfiguration /*, UuidFileUploadNamingPolicy*/,
+        KeepOriginalNameUploadPolicy;
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_content/flutter_content.dart';
@@ -10,15 +14,16 @@ import 'package:flutter_content/src/snippet/snodes/widget/fs_uint8list_upload_bt
 import 'package:http/http.dart' as http;
 import 'package:multi_split_view/multi_split_view.dart';
 
-
 class PlantUMLMSV extends StatefulWidget {
   final SNode snode;
+  final UMLRecord originalUMLRecord;
   final TextEditingController teC;
   final ValueChanged<UMLRecord> onChangeF;
   final ValueChanged<Size> onSizedF;
 
   const PlantUMLMSV({
     required this.snode,
+    required this.originalUMLRecord,
     required this.teC,
     required this.onChangeF,
     required this.onSizedF,
@@ -37,7 +42,7 @@ class PlantUMLMSVState extends State<PlantUMLMSV> {
 
   Future<void> _fbStorageConfigure() async {
     final folderRef = fco.folderPathRef('/plantuml-images');
-     try {
+    try {
       await FirebaseUIStorage.configure(
         FirebaseUIStorageConfiguration(
           storage: FirebaseStorage.instance,
@@ -91,7 +96,7 @@ class PlantUMLMSVState extends State<PlantUMLMSV> {
           Area(
             builder: (ctx, area) => _plantUMLImageArea(
               umlRecord?.bytes ?? Uint8List.fromList(missingPng.codeUnits),
-              umlNode.name?.isNotEmpty??false ? umlNode.name! : umlNode.uid,
+              umlNode.name?.isNotEmpty ?? false ? umlNode.name! : umlNode.uid,
             ),
           ),
         ];
@@ -280,7 +285,6 @@ class PlantUMLMSVState extends State<PlantUMLMSV> {
     Uint8List? pngBytes = await _fetchPngFromPlantUML(encodedText);
     UMLRecord umlRecord = (
       text: umlText,
-      encodedText: encodedText,
       bytes: pngBytes,
       width: null,
       height: null,
@@ -351,7 +355,9 @@ class PlantUMLMSVState extends State<PlantUMLMSV> {
                 focusNode.requestFocus();
               },
               onChanged: (s) {},
-              onTapOutside: (_) {},
+              onTapOutside: (_) {
+                focusNode.unfocus();
+              },
               autocorrect: false,
               enableInteractiveSelection: true,
               scrollPadding: const EdgeInsets.all(10),

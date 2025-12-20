@@ -19,7 +19,6 @@ typedef UnconfirmedEaRecord = ({
 
 typedef UMLRecord = ({
   String? text,
-  String? encodedText,
   Uint8List? bytes,
   double? width,
   double? height

@@ -208,7 +208,8 @@ class SnippetMenuAnchor extends StatelessWidget {
         ),
         _menuItemButtonWithPI(
           onPressed: () async {
-            VersionsMenuAnchor.rawSnippetJsonDialog();
+            fco.capiBloc.add(CAPIEvent.replaceSnippetFromJson(snippetBeingReplaced: snippetInfo.name, snippetJson: null));
+            // VersionsMenuAnchor.rawSnippetJsonDialog(snippetBeingReplaced: snippetInfo.name);
           },
           child: const Text('rebuild snippet from JSON...'),
         ),
