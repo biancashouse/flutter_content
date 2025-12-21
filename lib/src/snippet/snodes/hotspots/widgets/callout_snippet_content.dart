@@ -122,8 +122,11 @@ void showHotspotSnippetContentCallout({
     decorationBorderThickness: tc.calloutBorderThickness,
     decorationBorderRadius: tc.calloutBorderRadius,
     bubbleOrTargetPointerColor: tc.bgColor(),
-    targetPointerType: !tc.hasAHotspot() ? TargetPointerType.none(): tc.targetPointerTypeEnum?.targetPointerType,
-    fromDelta: tc.calloutDecorationShapeEnum == DecorationShapeEnum.star
+    // targetPointerType: !tc.hasAHotspot() ? TargetPointerType.none(): tc.targetPointerTypeEnum?.targetPointerType,
+    targetPointerType: tc.targetPointerTypeEnum?.targetPointerType,
+    fromDelta:
+        tc.calloutDecorationShapeEnum == DecorationShapeEnum.star &&
+            tc.hasAHotspot()
         ? 60
         : null,
     animatePointer: tc.animatePointer,
@@ -150,9 +153,6 @@ void showHotspotSnippetContentCallout({
     followScroll: tc.followScroll,
     onResizeF: (Size newSize) {
       tc.calloutSize = SizeModel(newSize.width, newSize.height);
-      tc.changed_saveRootSnippet(
-        wrapperState.widget.parentNode.rootNodeOfSnippet(),
-      );
     },
     onDragF: (Offset newPos) {
       // tc.tcAlignment = AlignmentModel(cc.targetAlignment!.x, cc.targetAlignment!.y);
@@ -175,7 +175,7 @@ void showHotspotSnippetContentCallout({
 
       var targetRectSA = wrapperState.translateRectForScroll(targetRect);
 
-      var calloutRectSA = wrapperState.translateRectForScroll(calloutRect);
+      // var calloutRectSA = wrapperState.translateRectForScroll(calloutRect);
 
       Alignment newAlignment = _getAlignmentBetweenRects(
         targetRectSA,

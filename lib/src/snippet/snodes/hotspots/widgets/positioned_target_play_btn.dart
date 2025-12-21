@@ -1,8 +1,8 @@
-import 'dart:async';
-
-import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_content/flutter_content.dart';
+import 'package:flutter_content/src/snippet/snodes/hotspots/widgets/target_btn_icon_picker.dart';
+
+import 'enum_target_btn_icon.dart';
 
 // Btn has 2 uses: Tap to play, and DoubleTap to configure, plus it is draggable
 class TargetPlayBtn extends StatelessWidget {
@@ -48,7 +48,8 @@ class TargetPlayBtn extends StatelessWidget {
               playTarget(context, tc, wrapperState);
             },
             child: Icon(
-              Icons.question_mark_rounded,
+              tc.btnIcon?.flutterValue ??
+                  TargetButtonIconEnum.question.flutterValue,
               size: TargetModel.DEFAULT_BTN_RADIUS * 2,
               color: tc.calloutFillColors?.color1?.flutterValue ?? Colors.black,
             ),
@@ -90,6 +91,10 @@ class TargetPlayBtn extends StatelessWidget {
                   () =>
                       TargetsWrapper.configureTarget(context, tc, wrapperState),
                 );
+              },
+              onLongPressDown: () {
+                if (fco.canEditContent())
+                  playIconPicker(context, tc, wrapperState);
               },
               child: IntegerCircleAvatar(
                 num: index + 1,
@@ -193,6 +198,38 @@ class TargetPlayBtn extends StatelessWidget {
         },
       );
     });
+  }
+
+  static void playIconPicker(
+    BuildContext context,
+    TargetModel tc,
+    TargetsWrapperState wrapperState,
+  ) {
+    // cover will now have been rendered with its gk
+    var coverGK = tc.gk;
+    if (coverGK == null) return;
+    fco.showOverlay(
+      calloutConfig: CalloutConfig(
+        cId: 'icon-picker',
+        initialTargetAlignment: Alignment.center,
+        initialCalloutAlignment: Alignment.center,
+        // initialCalloutW: 180,
+        // initialCalloutH: 40,
+        targetPointerType: TargetPointerType.none(),
+        barrier: CalloutBarrierConfig(),
+        onDismissedF: () {},
+      ),
+      calloutContent: TargetBtnIconPicker(
+        originalValue: tc.btnIcon ?? TargetButtonIconEnum.question,
+        onChangedF: (TargetButtonIconEnum? newBtnIcon) {
+          tc.btnIcon = newBtnIcon;
+          tc.changed_saveRootSnippet(
+            wrapperState.widget.parentNode.rootNodeOfSnippet(),
+          );
+        },
+      ),
+      targetGK: tc.gk,
+    );
   }
 
   static void hideNonHotspotsCallouts(TargetsWrapperState wrapperState) {

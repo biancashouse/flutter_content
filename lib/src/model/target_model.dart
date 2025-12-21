@@ -9,6 +9,7 @@ import 'package:flutter_content/src/snippet/pnodes/enums/enum_decoration_shape.d
 import 'package:json_annotation/json_annotation.dart';
 
 import '../snippet/pnodes/enums/enum_target_pointer_type.dart';
+import '../snippet/snodes/hotspots/widgets/enum_target_btn_icon.dart';
 import '../snippet/snodes/target_model_hook.dart.dart';
 import 'alignment_model.dart';
 
@@ -41,10 +42,13 @@ class TargetModel with TargetModelMappable {
   // double? tcSeparation;
   SizeModel? calloutSize;
 
+  TargetButtonIconEnum? btnIcon;
+
   @JsonKey(includeFromJson: false, includeToJson: false)
   bool showCover;
   @JsonKey(includeFromJson: false, includeToJson: false)
   bool showBtn;
+
   bool canResizeH;
   bool canResizeV;
   bool followScroll;
@@ -82,6 +86,7 @@ class TargetModel with TargetModelMappable {
     this.tcAlignment,
     this.calloutSize,
     this.calloutDurationMs = 1500,
+    this.btnIcon,
     this.showCover = true,
     this.showBtn = true,
     this.canResizeH = true,
