@@ -17,6 +17,7 @@ class TargetModelMapper extends ClassMapperBase<TargetModel> {
       OffsetModelMapper.ensureInitialized();
       AlignmentModelMapper.ensureInitialized();
       SizeModelMapper.ensureInitialized();
+      TargetButtonIconEnumMapper.ensureInitialized();
       UpTo6ColorsMapper.ensureInitialized();
       DecorationShapeEnumMapper.ensureInitialized();
       TargetPointerTypeEnumMapper.ensureInitialized();
@@ -79,6 +80,12 @@ class TargetModelMapper extends ClassMapperBase<TargetModel> {
     _$calloutDurationMs,
     opt: true,
     def: 1500,
+  );
+  static TargetButtonIconEnum? _$btnIcon(TargetModel v) => v.btnIcon;
+  static const Field<TargetModel, TargetButtonIconEnum> _f$btnIcon = Field(
+    'btnIcon',
+    _$btnIcon,
+    opt: true,
   );
   static bool _$showCover(TargetModel v) => v.showCover;
   static const Field<TargetModel, bool> _f$showCover = Field(
@@ -214,6 +221,7 @@ class TargetModelMapper extends ClassMapperBase<TargetModel> {
     #tcAlignment: _f$tcAlignment,
     #calloutSize: _f$calloutSize,
     #calloutDurationMs: _f$calloutDurationMs,
+    #btnIcon: _f$btnIcon,
     #showCover: _f$showCover,
     #showBtn: _f$showBtn,
     #canResizeH: _f$canResizeH,
@@ -247,6 +255,7 @@ class TargetModelMapper extends ClassMapperBase<TargetModel> {
       tcAlignment: data.dec(_f$tcAlignment),
       calloutSize: data.dec(_f$calloutSize),
       calloutDurationMs: data.dec(_f$calloutDurationMs),
+      btnIcon: data.dec(_f$btnIcon),
       showCover: data.dec(_f$showCover),
       showBtn: data.dec(_f$showBtn),
       canResizeH: data.dec(_f$canResizeH),
@@ -343,6 +352,7 @@ abstract class TargetModelCopyWith<$R, $In extends TargetModel, $Out>
     AlignmentModel? tcAlignment,
     SizeModel? calloutSize,
     int? calloutDurationMs,
+    TargetButtonIconEnum? btnIcon,
     bool? showCover,
     bool? showBtn,
     bool? canResizeH,
@@ -407,6 +417,7 @@ class _TargetModelCopyWithImpl<$R, $Out>
     Object? tcAlignment = $none,
     Object? calloutSize = $none,
     int? calloutDurationMs,
+    Object? btnIcon = $none,
     bool? showCover,
     bool? showBtn,
     bool? canResizeH,
@@ -433,6 +444,7 @@ class _TargetModelCopyWithImpl<$R, $Out>
       if (tcAlignment != $none) #tcAlignment: tcAlignment,
       if (calloutSize != $none) #calloutSize: calloutSize,
       if (calloutDurationMs != null) #calloutDurationMs: calloutDurationMs,
+      if (btnIcon != $none) #btnIcon: btnIcon,
       if (showCover != null) #showCover: showCover,
       if (showBtn != null) #showBtn: showBtn,
       if (canResizeH != null) #canResizeH: canResizeH,
@@ -470,6 +482,7 @@ class _TargetModelCopyWithImpl<$R, $Out>
       #calloutDurationMs,
       or: $value.calloutDurationMs,
     ),
+    btnIcon: data.get(#btnIcon, or: $value.btnIcon),
     showCover: data.get(#showCover, or: $value.showCover),
     showBtn: data.get(#showBtn, or: $value.showBtn),
     canResizeH: data.get(#canResizeH, or: $value.canResizeH),

@@ -41,8 +41,10 @@ class PropertyButtonQuillText extends StatelessWidget {
     String originalDelta,
     ValueChanged<String> onChangeF,
   ) {
+
     final QuillController controller = QuillController.basic();
     controller.document = Document.fromJson(jsonDecode(originalDelta));
+
     CalloutConfig teCC = CalloutConfig(
       cId: 'quill-te',
       
@@ -68,6 +70,7 @@ class PropertyButtonQuillText extends StatelessWidget {
       onDragF: (Offset newOffset) {},
       draggable: false,
     );
+
     Widget calloutContent = Padding(
       padding: const EdgeInsets.all(16.0),
       child: Column(

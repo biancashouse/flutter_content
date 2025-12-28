@@ -73,12 +73,6 @@ class QuillTextNodeMapper extends SubClassMapperBase<QuillTextNode> {
     _$nodeWidgetGK,
     mode: FieldMode.member,
   );
-  static QuillController _$roQC(QuillTextNode v) => v.roQC;
-  static const Field<QuillTextNode, QuillController> _f$roQC = Field(
-    'roQC',
-    _$roQC,
-    mode: FieldMode.member,
-  );
 
   @override
   final MappableFields<QuillTextNode> fields = const {
@@ -90,7 +84,6 @@ class QuillTextNodeMapper extends SubClassMapperBase<QuillTextNode> {
     #nodeGK: _f$nodeGK,
     #canShowTappableNodeWidgetOverlay: _f$canShowTappableNodeWidgetOverlay,
     #nodeWidgetGK: _f$nodeWidgetGK,
-    #roQC: _f$roQC,
   };
 
   @override

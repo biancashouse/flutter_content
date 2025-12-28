@@ -5,11 +5,14 @@ import 'dart:convert';
 import 'package:dart_mappable/dart_mappable.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_content/flutter_content.dart';
+import 'package:flutter_content/src/snippet/pnodes/editors/property_callout_button_quill_text.dart';
 import 'package:flutter_content/src/snippet/pnodes/fyi_pnodes.dart';
 import 'package:flutter_content/src/snippet/pnodes/quill_text_pnode.dart';
 import 'package:flutter_quill/flutter_quill.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:go_router/go_router.dart';
+
+import 'focus_aware_quill_editor.dart';
 
 part 'quill_text_node.mapper.dart';
 
@@ -17,7 +20,7 @@ const k_sampleDeltaJsonString = '''
     [
       {"insert":"Hello "},
       {"attributes":{"bold":true},"insert":"World"},
-      {"insert":"!\\n"}
+      {"insert":"!\n"}
     ]
     ''';
 
@@ -26,9 +29,6 @@ class QuillTextNode extends CL with QuillTextNodeMappable {
   String deltaJsonString;
 
   QuillTextNode({this.deltaJsonString = k_sampleDeltaJsonString});
-
-  @JsonKey(includeFromJson: false, includeToJson: false)
-  final QuillController roQC = QuillController.basic()..readOnly = true;
 
   @override
   List<PNode> propertyNodes(BuildContext context, SNode? parentSNode) {
@@ -57,80 +57,44 @@ class QuillTextNode extends CL with QuillTextNodeMappable {
   Widget buildFlutterWidget(BuildContext context, SNode? parentNode) {
     setParent(parentNode);
 
-    // Parse the JSON string into a List<Map<String, dynamic>>
-    List<dynamic> jsonList = jsonDecode(deltaJsonString);
-
-    // Create a QuillController and load the document from the JSON
-    roQC.document = Document.fromJson(jsonList);
-
-    final linkStyle = DefaultStyles(
-      link: const TextStyle(
-        color: Colors.blue,
-        decoration: TextDecoration.none, // This is the crucial part!
-      ),
-    );
-
-    // WidgetsBinding.instance.addPostFrameCallback((_) {
-    //   // This code runs after the layout and paint phases are complete.
-    //
-    //   // It's now safe to get the RenderObject and its size.
-    //   // Use the GlobalKey of the parent to get its context.
-    //   if (nodeWidgetGK?.currentContext != null) {
-    //     final RenderBox? renderBox =
-    //     nodeWidgetGK?.currentContext!.findRenderObject() as RenderBox?;
-    //     if (renderBox != null && renderBox.hasSize) {
-    //       final Size parentSize = renderBox.size;
-    //       print('${toString()} size is now available: $parentSize');
-    //       // --- YOUR LOGIC THAT NEEDS THE PARENT'S SIZE GOES HERE ---
-    //     } else {
-    //       SnippetRootNode?  srn = this.rootNodeOfSnippet();
-    //       print('Snippet: ${srn?.name}: this (${parentNode.toString()}) size is MISSING!');
-    //     }
-    //   }
-    // });
-
-    var qe = QuillEditor.basic(
-      key: createNodeWidgetGK(),
-      config: QuillEditorConfig(
-        customStyles: linkStyle,
-        scrollable: false,
-        onLaunchUrl: (String url) {
-          // quill seems to prepend https:// if not there already
-          String newUrl = url.startsWith('https:///') ? url.substring(9) : url;
-          if (newUrl.startsWith('http')) {
-            launchUrl(Uri.parse(newUrl));
-          } else {
-            context.go(newUrl.startsWith('/') ? newUrl : '/$newUrl');
+    Widget editor;
+    if (fco.canEditContent() && fco.snippetBeingEdited == null) {
+      editor = FocusAwareQuillEditor(
+        initialDeltaJson: deltaJsonString,
+        onChange: (String newValue) {
+          // save
+          final rootNode = rootNodeOfSnippet();
+          if (rootNode != null) {
+            deltaJsonString = newValue;
+            final newVersionId = SnippetInfoModel.createNewVersion(rootNode);
+            fco.modelRepo.saveSnippetVersion(
+              snippetName: rootNode.name,
+              newVersionId: newVersionId,
+              newVersion: rootNode,
+            );
           }
         },
-      ),
-      controller: roQC,
-    );
-    // for safety, if parent is a flex, wrap with an Expanded widget
-    return parentNode is FlexNode ? Expanded(child: qe) : qe;
+        onEditWithToolbarBtnPressed: () {
+          final rootNode = rootNodeOfSnippet();
+          if (rootNode != null) {
+            PropertyButtonQuillText.showQuillEditor(deltaJsonString, (
+              String? newValue,
+            ) {
+              refreshWithUpdate(
+                context,
+                () => deltaJsonString = newValue ?? '',
+              );
+              fco.forceRefresh();
+            });
+          }
+        },
+      );
+    } else {
+      editor = QuillViewer(deltaJsonString: deltaJsonString);
+    }
 
-    // quill editor's parent must provide a maxWidth constraiunt  that is not infinite
-    // return parentNode is FlexibleNode || parentNode is ExpandedNode
-    //     ? QuillEditor.basic(
-    //         key: createNodeWidgetGK(),
-    //         config: QuillEditorConfig(
-    //           customStyles: linkStyle,
-    //           scrollable: false,
-    //         ),
-    //         controller: roQC,
-    //       )
-    //     : Error(
-    //         key: createNodeWidgetGK(),
-    //         FLUTTER_TYPE,
-    //         color: Colors.pink,
-    //         size: 14,
-    //         errorMsg:
-    //             "Detected an unconstrained (infinite) cross-axis for this vertically scrolling container.\n\n"
-    //             "This scenario is a common source of layout errors, especially when a TextField or Row "
-    //             "is placed inside another Row or a ListView.\n\n"
-    //             "The cross-axis for a vertically scrolling widget (like an editor) is its width.\n\n"
-    //             "*** You need to wrap your QuillEditor inside a Flexible (or Expanded) widget ***",
-    //       );
+    // for safety, if parent is a flex, wrap with an Expanded widget
+    return parentNode is FlexNode ? Expanded(child: editor) : editor;
   }
 
   @override

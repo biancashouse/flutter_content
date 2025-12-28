@@ -239,7 +239,6 @@ class SNodeWidget extends StatelessWidget {
               snippet.name,
               snippet,
               // snippet.child ?? snippet,
-               
             );
           }
         },
@@ -358,7 +357,7 @@ class SNodeWidget extends StatelessWidget {
     fco.afterMsDelayDo(100, () {
       print('pointOutSelectedNode');
       var cc = selectedNode.nodeWidgetGK?.currentContext;
-      if (cc != null) {
+      if (false && cc != null) {
         Scrollable.ensureVisible(
           cc,
           duration: const Duration(milliseconds: 200),

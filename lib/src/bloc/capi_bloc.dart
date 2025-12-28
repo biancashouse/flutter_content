@@ -313,6 +313,7 @@ class CAPIBloC extends Bloc<CAPIEvent, CAPIState> {
 
   /// paste clipboard, or supplied json String to form a snippet
   Future<void> _replaceSnippetFromJson(
+
     ReplaceSnippetFromJson event,
     emit,
   ) async {

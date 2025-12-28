@@ -139,7 +139,7 @@ dependencies:
   flutter_callouts: # Your package name
     path: ../flutter_callouts
 
-  flutter_quill: ^11.4.2
+  flutter_quill: ^11.5.0
   dev_grid: ^0.0.3
 #  flutter_localization: ^0.3.3
 #    path: ../flutter_quill
