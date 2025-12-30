@@ -18,6 +18,7 @@ class ColumnNodeMapper extends SubClassMapperBase<ColumnNode> {
       MainAxisAlignmentEnumModelMapper.ensureInitialized();
       MainAxisSizeEnumMapper.ensureInitialized();
       CrossAxisAlignmentEnumModelMapper.ensureInitialized();
+      AxisEnumMapper.ensureInitialized();
       SNodeMapper.ensureInitialized();
     }
     return _instance!;
@@ -47,6 +48,13 @@ class ColumnNodeMapper extends SubClassMapperBase<ColumnNode> {
     'crossAxisAlignment',
     _$crossAxisAlignment,
     opt: true,
+  );
+  static AxisEnum _$direction(ColumnNode v) => v.direction;
+  static const Field<ColumnNode, AxisEnum> _f$direction = Field(
+    'direction',
+    _$direction,
+    opt: true,
+    def: AxisEnum.vertical,
   );
   static List<SNode> _$children(ColumnNode v) => v.children;
   static const Field<ColumnNode, List<SNode>> _f$children = Field(
@@ -107,6 +115,7 @@ class ColumnNodeMapper extends SubClassMapperBase<ColumnNode> {
     #mainAxisAlignment: _f$mainAxisAlignment,
     #mainAxisSize: _f$mainAxisSize,
     #crossAxisAlignment: _f$crossAxisAlignment,
+    #direction: _f$direction,
     #children: _f$children,
     #uid: _f$uid,
     #treeNodeGK: _f$treeNodeGK,
@@ -137,6 +146,7 @@ class ColumnNodeMapper extends SubClassMapperBase<ColumnNode> {
       mainAxisAlignment: data.dec(_f$mainAxisAlignment),
       mainAxisSize: data.dec(_f$mainAxisSize),
       crossAxisAlignment: data.dec(_f$crossAxisAlignment),
+      direction: data.dec(_f$direction),
       children: data.dec(_f$children),
     );
   }
@@ -208,6 +218,7 @@ abstract class ColumnNodeCopyWith<$R, $In extends ColumnNode, $Out>
     MainAxisAlignmentEnumModel? mainAxisAlignment,
     MainAxisSizeEnum? mainAxisSize,
     CrossAxisAlignmentEnumModel? crossAxisAlignment,
+    AxisEnum? direction,
     List<SNode>? children,
   });
   ColumnNodeCopyWith<$R2, $In, $Out2> $chain<$R2, $Out2>(Then<$Out2, $R2> t);
@@ -233,12 +244,14 @@ class _ColumnNodeCopyWithImpl<$R, $Out>
     Object? mainAxisAlignment = $none,
     Object? mainAxisSize = $none,
     Object? crossAxisAlignment = $none,
+    AxisEnum? direction,
     List<SNode>? children,
   }) => $apply(
     FieldCopyWithData({
       if (mainAxisAlignment != $none) #mainAxisAlignment: mainAxisAlignment,
       if (mainAxisSize != $none) #mainAxisSize: mainAxisSize,
       if (crossAxisAlignment != $none) #crossAxisAlignment: crossAxisAlignment,
+      if (direction != null) #direction: direction,
       if (children != null) #children: children,
     }),
   );
@@ -253,6 +266,7 @@ class _ColumnNodeCopyWithImpl<$R, $Out>
       #crossAxisAlignment,
       or: $value.crossAxisAlignment,
     ),
+    direction: data.get(#direction, or: $value.direction),
     children: data.get(#children, or: $value.children),
   );
 

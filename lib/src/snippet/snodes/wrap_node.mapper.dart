@@ -26,7 +26,7 @@ class WrapNodeMapper extends SubClassMapperBase<WrapNode> {
   @override
   final String id = 'WrapNode';
 
-  static AxisEnum _$direction(WrapNode v) => v.direction;
+  static AxisEnum? _$direction(WrapNode v) => v.direction;
   static const Field<WrapNode, AxisEnum> _f$direction = Field(
     'direction',
     _$direction,
@@ -245,7 +245,7 @@ class _WrapNodeCopyWithImpl<$R, $Out>
       );
   @override
   $R call({
-    AxisEnum? direction,
+    Object? direction = $none,
     Object? spacing = $none,
     Object? runSpacing = $none,
     Object? alignment = $none,
@@ -254,7 +254,7 @@ class _WrapNodeCopyWithImpl<$R, $Out>
     List<SNode>? children,
   }) => $apply(
     FieldCopyWithData({
-      if (direction != null) #direction: direction,
+      if (direction != $none) #direction: direction,
       if (spacing != $none) #spacing: spacing,
       if (runSpacing != $none) #runSpacing: runSpacing,
       if (alignment != $none) #alignment: alignment,

@@ -16,6 +16,7 @@ class ColumnNode extends FlexNode with ColumnNodeMappable {
     super.mainAxisAlignment,
     super.mainAxisSize,
     super.crossAxisAlignment,
+    super.direction = AxisEnum.vertical,
     required super.children,
   });
 

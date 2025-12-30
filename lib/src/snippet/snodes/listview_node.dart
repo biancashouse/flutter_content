@@ -26,60 +26,23 @@ class ListViewNode extends BoxScrollViewNode with ListViewNodeMappable {
       snode: this,
       name: 'fyi',
     ),
-    PNode /*Group*/ (
-      snode: this,
-      name: 'padding',
-      children: [
-        EdgeInsetsPNode(
-          snode: this,
-          name: 'padding',
-          eiValue: padding,
-          onEIChangedF: (newValue) {
-            padding = newValue;
-          },
-        ),
-      ],
-    ),
-    EnumPNode<AxisEnum?>(
-      snode: this,
-      name: 'scrollDirection',
-      valueIndex: scrollDirection.index,
-      onIndexChange: (newValue) => refreshWithUpdate(
-        context,
-            () => scrollDirection = AxisEnum.of(newValue) ?? AxisEnum.vertical,
-      ),
-    ),
+    ...super.propertyNodes(context, parentSNode),
   ];
 
   @override
   Widget buildFlutterWidget(BuildContext context, SNode? parentNode) {
     setParent(parentNode);
-   return LayoutBuilder(
-        builder: (context, constraints) {
-          if (constraints.maxHeight == double.infinity) {
-            return Error(
-              key: createNodeWidgetGK(),
-              "${toString()} $uid",
-              color: Colors.red,
-              size: 16,
-              errorMsg:
-                  "Parent ${toString()} has an infinite 'maxHeight'} Constraints Error!",
-            );
-          }
-          List<Widget> listViewChildren = children
-              .map((childNode) => childNode.buildFlutterWidget(context, this))
-              .toList();
-          return ListView(
-            key: createNodeWidgetGK(),
-            controller: sc,
-            scrollDirection: scrollDirection.flutterValue,
-            shrinkWrap: shrinkWrap??false,
-            padding: padding?.toEdgeInsets(),
-            children: listViewChildren,
-          );
-        },
-      );
-
+    List<Widget> listViewChildren = children
+        .map((childNode) => childNode.buildFlutterWidget(context, this))
+        .toList();
+    return ListView(
+      key: createNodeWidgetGK(),
+      controller: sc,
+      scrollDirection: scrollDirection.flutterValue,
+      shrinkWrap: shrinkWrap ?? false,
+      padding: padding?.toEdgeInsets(),
+      children: listViewChildren,
+    );
   }
 
   @override

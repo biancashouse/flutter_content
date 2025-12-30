@@ -11,10 +11,16 @@ import '../pnodes/fyi_pnodes.dart';
 
 part 'flex_node.mapper.dart';
 
-@MappableClass(discriminatorKey: 'DK:flex', includeSubClasses: flexSubClasses,
-  hook: PropertyRenameHook('flex', 'DK:flex'), // 'first_name' -> JSON key, 'firstName' -> Dart field name
+@MappableClass(
+  discriminatorKey: 'DK:flex',
+  includeSubClasses: flexSubClasses,
+  hook: PropertyRenameHook(
+    'flex',
+    'DK:flex',
+  ), // 'first_name' -> JSON key, 'firstName' -> Dart field name
 )
 class FlexNode extends MC with FlexNodeMappable {
+  AxisEnum direction;
   MainAxisAlignmentEnumModel? mainAxisAlignment;
   MainAxisSizeEnum? mainAxisSize;
   CrossAxisAlignmentEnumModel? crossAxisAlignment;
@@ -23,6 +29,7 @@ class FlexNode extends MC with FlexNodeMappable {
   bool? wrapInExpanded;
 
   FlexNode({
+    required this.direction,
     this.mainAxisAlignment,
     this.mainAxisSize,
     this.crossAxisAlignment,
@@ -36,6 +43,15 @@ class FlexNode extends MC with FlexNodeMappable {
       webLink: 'https://api.flutter.dev/flutter/widgets/Flex-class.html',
       snode: this,
       name: 'fyi',
+    ),
+    EnumPNode<AxisEnum?>(
+      snode: this,
+      name: 'direction',
+      valueIndex: direction.index,
+      onIndexChange: (newValue) => refreshWithUpdate(
+        context,
+        () => direction = AxisEnum.of(newValue) ?? AxisEnum.vertical,
+      ),
     ),
     EnumPNode<MainAxisAlignmentEnumModel?>(
       snode: this,
@@ -71,7 +87,6 @@ class FlexNode extends MC with FlexNodeMappable {
     BuildContext context,
     NodeAction action,
     bool? skipHeading,
-    
   ) {
     return [
       ...super.menuAnchorWidgets_Heading(context, action),
@@ -110,45 +125,47 @@ class FlexNode extends MC with FlexNodeMappable {
       //   }
       // });
 
+      // first get flex children widgets
+      print('getting flex child widgets...');
+      List<Widget> flexChildWidgets = children
+          .map((childNode) => childNode.buildFlutterWidget(context, this))
+          .toList();
+
+      print('getting flex widget...');
       var flex = Flex(
         direction: this is RowNode ? Axis.horizontal : Axis.vertical,
         key: createNodeWidgetGK(),
         mainAxisAlignment:
-        mainAxisAlignment?.flutterValue ??
-            MainAxisAlignment.start,
+            mainAxisAlignment?.flutterValue ?? MainAxisAlignment.start,
         mainAxisSize: mainAxisSize?.flutterValue ?? MainAxisSize.min,
         crossAxisAlignment:
-        crossAxisAlignment?.flutterValue ??
-            CrossAxisAlignment.center,
+            crossAxisAlignment?.flutterValue ?? CrossAxisAlignment.center,
         textBaseline: TextBaseline.alphabetic,
-        children: children
-            .map(
-              (childNode) =>
-              childNode.buildFlutterWidget(context, this),
-        )
-            .toList(),
+        children: flexChildWidgets,
       );
 
       return false && parentNode is FlexNode
-      ? Expanded(child: flex)
-      : LayoutBuilder(
-        builder: (context, constraints) {
-          bool rowConstraintError =
-              (this is RowNode && constraints.maxWidth == double.infinity);
-          bool columnConstraintError =
-              (this is ColumnNode && constraints.maxHeight == double.infinity);
-          return rowConstraintError || columnConstraintError
-              ? Error(
-                  key: createNodeWidgetGK(),
-                  "${toString()} $uid",
-                  color: Colors.red,
-                  size: 16,
-                  errorMsg:
-                      "${toString()} Parent has an infinite ${this is RowNode ? 'maxWidth' : 'maxHeight'} Constraints Error!",
-                )
-              : flex;
-        },
-      );
+          ? Expanded(child: flex)
+          : LayoutBuilder(
+              builder: (context, constraints) {
+                bool rowConstraintError =
+                    (this is RowNode &&
+                    constraints.maxWidth == double.infinity);
+                bool columnConstraintError =
+                    (this is ColumnNode &&
+                    constraints.maxHeight == double.infinity);
+                return rowConstraintError || columnConstraintError
+                    ? Error(
+                        key: createNodeWidgetGK(),
+                        "${toString()} $uid",
+                        color: Colors.red,
+                        size: 16,
+                        errorMsg:
+                            "${toString()} Parent has an infinite ${this is RowNode ? 'maxWidth' : 'maxHeight'} Constraints Error!",
+                      )
+                    : flex;
+              },
+            );
     } catch (e) {
       return Error(
         key: createNodeWidgetGK(),

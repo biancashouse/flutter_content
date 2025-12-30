@@ -1,137 +1,158 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_content/flutter_content.dart';
 import 'package:go_router/go_router.dart';
 import 'package:pointer_interceptor/pointer_interceptor.dart';
+import 'package:web/web.dart' as web;
 
 mixin NavMixin {
-  Widget NavigationDD({Color pencilIconColor = Colors.white}) =>
-      BlocBuilder<CAPIBloC, CAPIState>(
-        builder: (context, state) {
-          bool showPencil = !fco.canEditContent();
-          if (showPencil) {
-            final dropdownItems = <DropdownMenuItem<String>>[];
-            dropdownItems.add(
-              _dropdownItemWithPI(
-                value: 'sign-in-as-editor',
-                child: Text('sign in as a Content editor'),
-              ),
-            );
-            if (fco.router != null) {
-              dropdownItems.add(
-                _dropdownItemWithPI(
-                  value: 'create-editable-page',
-                  child: RichText(
-                    text: TextSpan(
-                      text: 'create your own ',
-                      style: TextStyle(color: Colors.grey),
-                      children: [
-                        TextSpan(
-                          text: 'editable',
-                          style: TextStyle(color: Colors.purpleAccent),
-                        ),
-                        TextSpan(text: ' page'),
-                      ],
-                    ),
-                  ),
-                ),
-              );
-            }
-            addBrightnessItem(dropdownItems);
-
-            return PointerInterceptor(
-              child: DropdownButton<String>(
-                // key: fco.authIconGK,
-                items: dropdownItems,
-                underline: Offstage(),
-                icon: PointerInterceptor(child: Icon(Icons.edit, color: pencilIconColor, size: 24)),
-                dropdownColor: Colors.white,
-                onChanged: (value) {
-                  switch (value) {
-                    case 'sign-in-as-editor':
-                      EditablePage.of(context)?.editorPasswordDialog();
-                      fco.capiBloc.add(CAPIEvent.forceRefresh());
-                      break;
-                    default:
-                      if (fco.router != null) {
-                        EditablePage.of(context)?.showPageNameDialog();
-                      }
-                      break;
-                  }
-                },
-              ),
-            );
-          } else {
-            final dropdownItems = <DropdownMenuItem<String>>[];
-            dropdownItems.add(
-              _dropdownItemWithPI(value: 'sign-out', child: _signOutBtn(context)),
-            );
-            if (fco.router != null) {
-              dropdownItems.add(
-                _dropdownItemWithPI(
-                  value: 'create-editable-page',
-                  child: RichText(
-                    text: TextSpan(
-                      text: 'create an ',
-                      style: TextStyle(color: Colors.grey),
-                      children: [
-                        TextSpan(
-                          text: 'editable',
-                          style: TextStyle(color: Colors.purpleAccent),
-                        ),
-                        TextSpan(text: ' page'),
-                      ],
-                    ),
-                  ),
-                ),
-              );
-            }
-            for (String pagePath in fco.pageList) {
-              // skip currentPath
-              try {
-                final String currentPath = GoRouterState.of(
-                                context,
-                              ).uri.toString();
-                if (pagePath != currentPath) {
-                                String sandboxIndicator =
-                                    (fco.appInfo.anonymousUserEditablePages.contains(pagePath))
-                                    ? ' *'
-                                    : "";
-                                dropdownItems.add(
-                                  _dropdownItemWithPI(
-                                    value: pagePath,
-                                    child: _pageNavBtn(context, pagePath, sandboxIndicator),
-                                  ),
-                                );
-                              }
-              } catch (e) {
-                print(e);
-              }
-            }
-            addBrightnessItem(dropdownItems);
-
-            // wrap dd and its menu items with pointer interceptor
-            return PointerInterceptor(
-              child: DropdownButton<String>(
-                items: dropdownItems,
-                underline: Offstage(),
-                icon: PointerInterceptor(child: Icon(Icons.more_vert, color: Colors.red, size: 24)),
-                onChanged: (value) {
-                  if (fco.router != null) {
-                    switch (value) {
-                      case 'create-editable-page':
-                        EditablePage.of(context)?.showPageNameDialog();
-                        break;
-                      default:
-                        break;
-                    }
-                  }
-                },
-              ),
-            );
-          }
-        },
+  /// Triggers a hard refresh of the current web page using the 'web' package.
+  ///
+  /// This is equivalent to the user pressing F5 or the browser's refresh button.
+  /// This will only work on Flutter web. It has no effect on mobile or desktop.
+  void refreshCurrentPage() {
+    // kIsWeb is a compile-time constant that ensures this code
+    // is only included in the web build.
+    if (kIsWeb) {
+      web.window.location.reload();
+    } else {
+      fco.logger.w(
+        'refreshCurrentPage() was called on a non-web platform and will have no effect.',
       );
+    }
+  }
+
+  Widget NavigationDD({
+    Color pencilIconColor = Colors.white,
+  }) => BlocBuilder<CAPIBloC, CAPIState>(
+    builder: (context, state) {
+      bool showPencil = !fco.canEditContent();
+      if (showPencil) {
+        final dropdownItems = <DropdownMenuItem<String>>[];
+        dropdownItems.add(
+          _dropdownItemWithPI(
+            value: 'sign-in-as-editor',
+            child: Text('sign in as a Content editor'),
+          ),
+        );
+        if (fco.router != null) {
+          dropdownItems.add(
+            _dropdownItemWithPI(
+              value: 'create-editable-page',
+              child: RichText(
+                text: TextSpan(
+                  text: 'create your own ',
+                  style: TextStyle(color: Colors.grey),
+                  children: [
+                    TextSpan(
+                      text: 'editable',
+                      style: TextStyle(color: Colors.purpleAccent),
+                    ),
+                    TextSpan(text: ' page'),
+                  ],
+                ),
+              ),
+            ),
+          );
+        }
+        addBrightnessItem(dropdownItems);
+
+        return PointerInterceptor(
+          child: DropdownButton<String>(
+            // key: fco.authIconGK,
+            items: dropdownItems,
+            underline: Offstage(),
+            icon: PointerInterceptor(
+              child: Icon(Icons.edit, color: pencilIconColor, size: 24),
+            ),
+            dropdownColor: Colors.white,
+            onChanged: (value) {
+              switch (value) {
+                case 'sign-in-as-editor':
+                  EditablePage.of(context)?.editorPasswordDialog();
+                  fco.capiBloc.add(CAPIEvent.forceRefresh());
+                  break;
+                default:
+                  if (fco.router != null) {
+                    EditablePage.of(context)?.showPageNameDialog();
+                  }
+                  break;
+              }
+            },
+          ),
+        );
+      } else {
+        final dropdownItems = <DropdownMenuItem<String>>[];
+        dropdownItems.add(
+          _dropdownItemWithPI(value: 'sign-out', child: _signOutBtn(context)),
+        );
+        if (fco.router != null) {
+          dropdownItems.add(
+            _dropdownItemWithPI(
+              value: 'create-editable-page',
+              child: RichText(
+                text: TextSpan(
+                  text: 'create an ',
+                  style: TextStyle(color: Colors.grey),
+                  children: [
+                    TextSpan(
+                      text: 'editable',
+                      style: TextStyle(color: Colors.purpleAccent),
+                    ),
+                    TextSpan(text: ' page'),
+                  ],
+                ),
+              ),
+            ),
+          );
+        }
+        for (String pagePath in fco.pageList) {
+          // skip currentPath
+          try {
+            final String currentPath = GoRouterState.of(context).uri.toString();
+            if (pagePath != currentPath) {
+              String sandboxIndicator =
+                  (fco.appInfo.anonymousUserEditablePages.contains(pagePath))
+                  ? ' *'
+                  : "";
+              dropdownItems.add(
+                _dropdownItemWithPI(
+                  value: pagePath,
+                  child: _pageNavBtn(context, pagePath, sandboxIndicator),
+                ),
+              );
+            }
+          } catch (e) {
+            print(e);
+          }
+        }
+        addBrightnessItem(dropdownItems);
+
+        // wrap dd and its menu items with pointer interceptor
+        return PointerInterceptor(
+          child: DropdownButton<String>(
+            items: dropdownItems,
+            underline: Offstage(),
+            icon: PointerInterceptor(
+              child: Icon(Icons.more_vert, color: Colors.red, size: 24),
+            ),
+            onChanged: (value) {
+              if (fco.router != null) {
+                switch (value) {
+                  case 'create-editable-page':
+                    EditablePage.of(context)?.showPageNameDialog();
+                    break;
+                  default:
+                    break;
+                }
+              }
+            },
+          ),
+        );
+      }
+    },
+  );
 
   void addBrightnessItem(dropdownItems) {
     dropdownItems.add(
@@ -192,6 +213,11 @@ mixin NavMixin {
   ) => GestureDetector(
     onTap: () {
       context.go(pagePath);
+      // something funny going on when not in prod mode
+      if (kDebugMode)
+        fco.afterMsDelayDo(1000, () {
+          fco.refreshCurrentPage();
+        });
     },
     child: SizedBox(
       width: 400,
@@ -245,11 +271,13 @@ mixin NavMixin {
     ),
   );
 
-  DropdownMenuItem<String> _dropdownItemWithPI({required String value, required Widget child}) =>
-      DropdownMenuItem<String>(
-        value: value,
-        child: PointerInterceptor(child: child),
-      );
+  DropdownMenuItem<String> _dropdownItemWithPI({
+    required String value,
+    required Widget child,
+  }) => DropdownMenuItem<String>(
+    value: value,
+    child: PointerInterceptor(child: child),
+  );
 
   // Widget _pageNavBtnOLD(context, String pagePath) => Row(
   //   mainAxisSize: MainAxisSize.max,

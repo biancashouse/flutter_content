@@ -36,6 +36,9 @@ class GridViewNode extends BoxScrollViewNode with GridViewNodeMappable {
         webLink: 'https://api.flutter.dev/flutter/widgets/GridView-class.html',
         snode: this,
         name: 'fyi'),
+
+    ...super.propertyNodes(context, parentSNode),
+
     IntPNode(
       snode: this,
       name: 'crossAxisCount',
@@ -60,19 +63,6 @@ class GridViewNode extends BoxScrollViewNode with GridViewNodeMappable {
           refreshWithUpdate(context, () => crossAxisSpacing = newValue),
       calloutButtonSize: const Size(130, 20),
     ),
-    PNode /*Group*/ (
-      snode: this,
-      name: 'padding',
-      children: [
-        EdgeInsetsPNode(
-            snode: this,
-            name: 'padding',
-            eiValue: padding,
-            onEIChangedF: (newValue) {
-              padding = newValue;
-            }),
-      ],
-    ),
   ];
 
   @override
@@ -94,7 +84,9 @@ class GridViewNode extends BoxScrollViewNode with GridViewNodeMappable {
           )
               : GridView.count(
             controller: sc,
-            scrollDirection: scrollDirection.flutterValue ?? Axis.vertical,
+            scrollDirection: scrollDirection.flutterValue,
+            shrinkWrap: shrinkWrap ?? false,
+            padding: padding?.toEdgeInsets(),
             crossAxisCount: crossAxisCount ?? 2,
             mainAxisSpacing: mainAxisSpacing??0.0,
             crossAxisSpacing: crossAxisSpacing??0.0,

@@ -426,6 +426,73 @@ abstract class SNode extends Node with SNodeMappable {
     return null;
   }
 
+  List<SNode>? maybeSiblings() {
+    if (getParent() is MC) {
+      return (getParent() as MC).children;
+    }
+    if (getParent() is CustomScrollViewNode) {
+      CustomScrollViewNode scv = getParent() as CustomScrollViewNode;
+      return scv.slivers;
+    }
+    if (getParent() is ListViewNode) {
+      ListViewNode lv = getParent() as ListViewNode;
+      return lv.children;
+    }
+    if (getParent() is GridViewNode) {
+      GridViewNode gv = getParent() as GridViewNode;
+      return gv.children;
+    }
+    if (getParent() is TextSpanNode) {
+      TextSpanNode ts = getParent() as TextSpanNode;
+      return ts.children;
+    }
+    return null;
+  }
+
+  bool parentCanHaveMultipleChildren() =>
+      getParent() is TextSpanNode ||
+      parentCanHaveMultipleHorizontalChildren() ||
+      parentCanHaveMultipleVerticalChildren();
+
+  bool parentCanHaveMultipleHorizontalChildren() {
+    if (getParent() is RowNode) {
+      return true;
+    }
+    if (getParent() is WrapNode &&
+        (getParent() as WrapNode).direction == AxisEnum.horizontal) {
+      return true;
+    }
+    // if (getParent() is SingleChildScrollViewNode) {
+    //   SingleChildScrollViewNode scsv = getParent() as SingleChildScrollViewNode;
+    //   return scsv.scrollDirection == AxisEnum.horizontal;
+    // }
+    if (getParent() is ScrollViewNode) {
+      ScrollViewNode scv = getParent() as ScrollViewNode;
+      return scv.scrollDirection == AxisEnum.horizontal;
+    }
+    return false;
+  }
+
+  bool parentCanHaveMultipleVerticalChildren() {
+    if (getParent() is ColumnNode) {
+      return true;
+    }
+    if (getParent() is WrapNode &&
+        (getParent() as WrapNode).direction == AxisEnum.vertical) {
+      return true;
+    }
+    // if (getParent() is SingleChildScrollViewNode) {
+    //   SingleChildScrollViewNode scsv = getParent() as SingleChildScrollViewNode;
+    //   return scsv.scrollDirection == AxisEnum.vertical;
+    // }
+    if (getParent() is ScrollViewNode) {
+      ScrollViewNode scv = getParent() as ScrollViewNode;
+      return scv.scrollDirection == AxisEnum.vertical;
+    }
+    return false;
+  }
+
+  //
   // CalloutConfig _cc({
   //   required String cId,
   //   required Rect borderRect,
@@ -1286,11 +1353,11 @@ abstract class SNode extends Node with SNodeMappable {
 
   bool canReplace() => getParent() != null;
 
-  bool canAddASibling() =>
-      getParent() is MC ||
-      getParent() is TextSpanNode ||
-      getParent() is WidgetSpanNode ||
-      getParent() is ScrollViewNode;
+  // bool canAddASibling() =>
+  //     getParent() is MC ||
+  //     getParent() is TextSpanNode ||
+  //     getParent() is WidgetSpanNode ||
+  //     getParent() is ScrollViewNode;
 
   Widget insertItemMenuAnchor(
     BuildContext context, {

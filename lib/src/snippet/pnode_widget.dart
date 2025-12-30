@@ -82,9 +82,9 @@ class _PNodeWidgetState extends State<PNodeWidget> {
             decoration: BoxDecoration(
               color: propertyNode.children != null /*Group*/
                   ? Colors.white
-                  : propertyNode is FYIPNode ? Colors.black : Colors.purpleAccent,
+                  : propertyNode is FYIPNode ? Colors.black : propertyNode is FlutterDocPNode ? Colors.transparent : Colors.purpleAccent,
               border: Border.all(
-                  color: Colors.purple, width: widget.entry.isExpanded ? 1 : 2),
+                  color: propertyNode is FlutterDocPNode ? Colors.transparent : Colors.purple, width: widget.entry.isExpanded ? 1 : 2),
               borderRadius: const BorderRadius.all(Radius.circular(4)),
             ),
             alignment: Alignment.centerLeft,
@@ -218,7 +218,7 @@ class _PNodeWidgetState extends State<PNodeWidget> {
   //   });
   // }
 
-  Widget _propertyButton(context) {
+  Widget _propertyButton(BuildContext context) {
     return GestureDetector(
       onTap: () {
         fco.logger.i('_propertyButton.tap');

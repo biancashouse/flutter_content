@@ -83,9 +83,7 @@ class FlutterDocPNode extends PNode {
 
   @override
   Widget toPropertyNodeContents(BuildContext context) {
-    return Container(
-      width: 290,
-      padding: const EdgeInsets.all(10.0),
+    return Tooltip(message: 'documentation for this widget',
       child: ElevatedButton.icon(
         icon: snode.widgetLogo(),
         iconAlignment: IconAlignment.start,

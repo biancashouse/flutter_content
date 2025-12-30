@@ -14,7 +14,6 @@ class SNodeWidget extends StatelessWidget {
   final bool onClipboard;
 
   // final bool allowButtonCallouts;
-  
 
   const SNodeWidget({
     super.key,
@@ -22,8 +21,8 @@ class SNodeWidget extends StatelessWidget {
     required this.treeController,
     required this.entry,
     this.onClipboard = false,
+
     // this.allowButtonCallouts = false,
-    
   });
 
   @override
@@ -97,7 +96,6 @@ class SNodeWidget extends StatelessWidget {
                                 quillTextNode.deltaJsonString = newValue ?? '',
                           );
                         },
-                        
                       );
                     });
                   },
@@ -242,11 +240,11 @@ class SNodeWidget extends StatelessWidget {
             );
           }
         },
-        onTapUp: (TapUpDetails details) {
-          if (entry.node is AppBarNode) {
-            _showNodeWidgetMenu(context, details.globalPosition, entry.node);
-          }
-        },
+        // onTapUp: (TapUpDetails details) {
+        //   if (entry.node is AppBarNode) {
+        //     _showNodeWidgetMenu(context, details.globalPosition, entry.node);
+        //   }
+        // },
         onTap: () {
           // ignore taps to named child property
           if (entry.node.isANamedPropertyNode()) return;
@@ -317,19 +315,15 @@ class SNodeWidget extends StatelessWidget {
       // EditablePageState? eps = EditablePage.of(context);
       // eps?.dismissAllNodeWidgetOverlays();
 
+      fco.dismissAll();
+
       fco.capiBloc.add(
         CAPIEvent.selectNode(
           node: entry.node,
-          // imageTC: tc,
-          // selectedWidgetGK: GlobalKey(debugLabel: 'selectedWidgetGK'),
-          // selectedTreeNodeGK: GlobalKey(debugLabel: 'selectedTreeNodeGK'),
-        ),
+         ),
       );
 
-      fco.dismissAll();
-
       fco.afterNextBuildDo(() {
-        // point out the selected node widget
         pointOutSelectedNode();
       });
 
@@ -354,48 +348,59 @@ class SNodeWidget extends StatelessWidget {
   static void pointOutSelectedNode() {
     var selectedNode = fco.capiBloc.state.snippetBeingEdited!.selectedNode;
     if (selectedNode == null) return;
-    fco.afterMsDelayDo(100, () {
-      print('pointOutSelectedNode');
-      var cc = selectedNode.nodeWidgetGK?.currentContext;
-      if (false && cc != null) {
-        Scrollable.ensureVisible(
-          cc,
-          duration: const Duration(milliseconds: 200),
-          curve: Curves.easeOut,
-          alignment: .5,
+
+    fco.afterMsDelayDo(1000, () {
+      Rect? borderRect = selectedNode.calcBorderRect();
+      if (borderRect != null) {
+        selectedNode.showSelectedNonTappableNodeWidgetOverlay(
+          borderRect: borderRect,
         );
       }
-      fco.afterMsDelayDo(210, () {
-        // fco.showOverlay(
-        //   calloutConfig: CalloutConfig(
-        //     cId: 'selected-node',
-        //     
-        //     initialCalloutW: 100,
-        //     initialCalloutH: 40,
-        //     initialTargetAlignment: Alignment.centerRight,
-        //     initialCalloutAlignment: Alignment.centerLeft,
-        //     finalSeparation: 50,
-        //     targetPointerType: TargetPointerType.thin_line(),
-        //     bubbleOrTargetPointerColor: Colors.black,
-        //     animatePointer: true,
-        //     decorationFillColors: ColorOrGradient.color(Colors.black),
-        //     followScroll: true,
-        //   ),
-        //   calloutContent: fco.coloredText(
-        //     'selected node',
-        //     color: Colors.white,
-        //     edgeInsetValue: 6,
-        //   ),
-        //   targetGkF: () => selectedNode.nodeWidgetGK,
-        // );
-        Rect? borderRect = selectedNode.calcBorderRect();
-        if (borderRect != null) {
-          selectedNode.showSelectedNonTappableNodeWidgetOverlay(
-            borderRect: borderRect,
-          );
-        }
-      });
     });
+
+    // fco.afterMsDelayDo(100, () {
+    //   print('pointOutSelectedNode');
+    //   var   cc = selectedNode.nodeWidgetGK?.currentContext;
+    //   if (cc == null || ! cc.mounted) return;
+    //
+    //   //   Scrollable.ensureVisible(
+    //   //     cc,
+    //   //     duration: const Duration(milliseconds: 200),
+    //   //     curve: Curves.easeOut,
+    //   //     alignment: .5,
+    //   //   );
+    //
+    //   fco.afterMsDelayDo(210, () {
+    //     // fco.showOverlay(
+    //     //   calloutConfig: CalloutConfig(
+    //     //     cId: 'selected-node',
+    //     //
+    //     //     initialCalloutW: 100,
+    //     //     initialCalloutH: 40,
+    //     //     initialTargetAlignment: Alignment.centerRight,
+    //     //     initialCalloutAlignment: Alignment.centerLeft,
+    //     //     finalSeparation: 50,
+    //     //     targetPointerType: TargetPointerType.thin_line(),
+    //     //     bubbleOrTargetPointerColor: Colors.black,
+    //     //     animatePointer: true,
+    //     //     decorationFillColors: ColorOrGradient.color(Colors.black),
+    //     //     followScroll: true,
+    //     //   ),
+    //     //   calloutContent: fco.coloredText(
+    //     //     'selected node',
+    //     //     color: Colors.white,
+    //     //     edgeInsetValue: 6,
+    //     //   ),
+    //     //   targetGkF: () => selectedNode.nodeWidgetGK,
+    //     // );
+    //     Rect? borderRect = selectedNode.calcBorderRect();
+    //     if (borderRect != null) {
+    //       selectedNode.showSelectedNonTappableNodeWidgetOverlay(
+    //         borderRect: borderRect,
+    //       );
+    //     }
+    //   });
+    // });
   }
 
   void _longPressedNode(BuildContext context, Offset tapPos, SNode node) {
@@ -419,12 +424,14 @@ class SNodeWidget extends StatelessWidget {
     fco.showOverlay(
       calloutConfig: CalloutConfig(
         cId: 'node-actions',
-        
-        initialCalloutW: 300,
+
+        initialCalloutW: 400,
         initialCalloutH:
             node is! NamedSC && node is! NamedMC && node is! NamedPS
-            ? 200
-            : 110,
+            ? node.parentCanHaveMultipleVerticalChildren()
+                  ? 310
+                  : 210
+            : 120,
         initialTargetAlignment: Alignment.centerRight,
         initialCalloutAlignment: Alignment.centerLeft,
         finalSeparation: 300,
@@ -614,6 +621,9 @@ class SNodeWidget extends StatelessWidget {
                     // some properties cannot be deleted!selectedNode.canBeDeleted()
                     // some properties cannot be deleted
                     if (!node.canRemove()) return;
+
+                    // node.parentCanHaveMultipleChildren() && node.maybeSiblings();
+
                     // bool wasShowingAsRoot = selectedNode == snippetBloc.treeC.roots.first;
                     // STreeNode? parentNode = selectedNode.getParent() as STreeNode?;
                     fco.capiBloc.add(const CAPIEvent.deleteNodeTapped());
@@ -664,7 +674,6 @@ class SNodeWidget extends StatelessWidget {
                             fco.dismiss('node-actions');
                           });
                         },
-                         
                       );
                     },
                     icon: const Icon(Icons.link, color: Colors.blue),
@@ -741,17 +750,20 @@ class SNodeWidget extends StatelessWidget {
     return Center(
       child: Stack(
         children: [
-          Align(
-            alignment: Alignment.center,
-            child: SizedBox.fromSize(
-              size: const Size(200, 100),
-              child: Stack(
-                children: [
-                  Align(
-                    alignment: Alignment.center,
-                    child: Container(
-                      width: 140,
-                      height: 40,
+          if (selectedNode.parentCanHaveMultipleHorizontalChildren())
+            Align(
+              alignment: Alignment.center,
+              child: Container(
+                width: 380,
+                height: 120,
+                padding: const EdgeInsets.all(16),
+                alignment: Alignment.center,
+                child: Row(
+                  mainAxisSize: MainAxisSize.min,
+                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                  children: [
+                    Container(
+                      padding: const EdgeInsets.symmetric(horizontal: 15),
                       decoration: BoxDecoration(
                         color: Colors.white,
                         border: Border.all(color: Colors.grey, width: 2),
@@ -759,122 +771,132 @@ class SNodeWidget extends StatelessWidget {
                           Radius.circular(30),
                         ),
                       ),
-                      alignment: Alignment.center,
-                      child: Text(selectedNode.toString()),
-                    ),
-                  ),
-                  if (selectedNode is! RowNode && selectedNode.canAddASibling())
-                    Center(
-                      child: Column(
-                        mainAxisSize: MainAxisSize.min,
-                        children: [
-                          selectedNode.insertItemMenuAnchor(
-                            context,
-                            action: NodeAction.addSiblingBefore,
-                            tooltip: 'Insert sibling before...',
-                            bgColor: Colors.blue,
-                          ),
-                          const Gap(12),
-                          // selectedNode is RowNode
-                          //     ? const VerticalDivider(thickness: 6, indent: 30, endIndent: 30)
-                          //     : const Divider(thickness: 6, indent: 30, endIndent: 30),
-                          selectedNode.insertItemMenuAnchor(
-                            context,
-                            action: NodeAction.addSiblingAfter,
-                            tooltip: 'Insert sibling after...',
-                            bgColor: Colors.blue,
-                          ),
-                        ],
-                      ),
-                    ),
-                  if (selectedNode.canWrap())
-                    Positioned(
-                      top: 10,
-                      left: 10,
                       child: selectedNode.insertItemMenuAnchor(
                         context,
-                        action: NodeAction.wrapWith,
-                        tooltip: 'Wrap with...',
+                        action: NodeAction.addSiblingBefore,
+                        tooltip: 'Insert sibling before...',
                         bgColor: Colors.blue,
                       ),
                     ),
-                  if (selectedNode.canAppendAChild())
-                    Positioned(
-                      bottom: 10,
-                      right: 10,
+                    _selectedNodeWidget(context, selectedNode),
+                    Container(
+                      padding: const EdgeInsets.symmetric(horizontal: 15),
+                      decoration: BoxDecoration(
+                        color: Colors.white,
+                        border: Border.all(color: Colors.grey, width: 2),
+                        borderRadius: const BorderRadius.all(
+                          Radius.circular(30),
+                        ),
+                      ),
                       child: selectedNode.insertItemMenuAnchor(
                         context,
-                        action: NodeAction.addChild,
-                        tooltip: 'Add child...',
+                        action: NodeAction.addSiblingAfter,
+                        tooltip: 'Insert sibling after...',
                         bgColor: Colors.blue,
                       ),
-                    ),
-                ],
-              ),
-            ),
-          ),
-          if (selectedNode is RowNode && selectedNode.canAddASibling())
-            Align(
-              alignment: Alignment.center,
-              child: Container(
-                height: 100,
-                padding: const EdgeInsets.all(16),
-                alignment: Alignment.center,
-                child: Row(
-                  mainAxisSize: MainAxisSize.max,
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    selectedNode.insertItemMenuAnchor(
-                      context,
-                      action: NodeAction.addSiblingBefore,
-                      tooltip: 'Insert sibling before...',
-                      bgColor: Colors.blue,
-                    ),
-                    selectedNode.insertItemMenuAnchor(
-                      context,
-                      action: NodeAction.addSiblingAfter,
-                      tooltip: 'Insert sibling after...',
-                      bgColor: Colors.blue,
                     ),
                   ],
                 ),
               ),
             ),
+          if (selectedNode.parentCanHaveMultipleVerticalChildren())
+            Align(
+              alignment: Alignment.center,
+              child: Container(
+                height: 220,
+                padding: const EdgeInsets.all(16),
+                alignment: Alignment.center,
+                child: Column(
+                  mainAxisSize: MainAxisSize.max,
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Container(
+                      padding: const EdgeInsets.symmetric(horizontal: 15),
+                      decoration: BoxDecoration(
+                        color: Colors.white,
+                        border: Border.all(color: Colors.grey, width: 2),
+                        borderRadius: const BorderRadius.all(
+                          Radius.circular(30),
+                        ),
+                      ),
+                      child: selectedNode.insertItemMenuAnchor(
+                        context,
+                        action: NodeAction.addSiblingBefore,
+                        tooltip: 'Insert sibling before...',
+                        bgColor: Colors.blue,
+                      ),
+                    ),
+                    _selectedNodeWidget(context, selectedNode),
+                    Container(
+                      padding: const EdgeInsets.symmetric(horizontal: 15),
+                      decoration: BoxDecoration(
+                        color: Colors.white,
+                        border: Border.all(color: Colors.grey, width: 2),
+                        borderRadius: const BorderRadius.all(
+                          Radius.circular(30),
+                        ),
+                      ),
+                      child: selectedNode.insertItemMenuAnchor(
+                        context,
+                        action: NodeAction.addSiblingAfter,
+                        tooltip: 'Insert sibling after...',
+                        bgColor: Colors.blue,
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            ),
+          if (!selectedNode.parentCanHaveMultipleHorizontalChildren() &&
+              !selectedNode.parentCanHaveMultipleVerticalChildren())
+            _selectedNodeWidget(context, selectedNode),
         ],
       ),
     );
   }
 
-  // _pushThenEditSnippet() {
-  // String refdNodeName = (entry.node as SnippetRefNode).snippetName;
-  // // push snippet editor
-  // FCO.capiBloc.add(CAPIEvent.pushSnippetBloc(snippetName: refdNodeName));
-  // fco.afterNextBuildDo(() {
-  //   SnippetBloC? snippetBeingEdited = CAPIBloC.snippetBeingEdited;
-  //   if (snippetBeingEdited != null) {
-  //     showSnippetTreeCallout(
-  //       snippetBloc: snippetBeingEdited,
-  //       targetGKF: () => CAPIState.snippetRootGkMap[refdNodeName],
-  //       onDismissedF: () {
-  //         // CAPIState.snippetStateMap[snippetBloc.snippetName] = snippetBloc.state;
-  //         STreeNode.unhighlightSelectedNode();
-  //         fco.dismiss('selected-panel-border-overlay');
-  //         FCO.capiBloc.add(const CAPIEvent.unhideAllTargetGroups());
-  //         FCO.capiBloc.add(const CAPIEvent.popSnippetBloc());
-  //         // removeNodePropertiesCallout();
-  //         fco.dismiss(TREENODE_MENU_CALLOUT);
-  //         MaterialAppWrapperState.exitEditMode();
-  //         if (snippetBeingEdited.state.canUndo()) {
-  //           FCO.capiBloc.add(const CAPIEvent.saveModel());
-  //         }
-  //       },
-  //       allowButtonCallouts: allowButtonCallouts,
-  //     );
-  //   }
-  // });
-  // }
+  Widget _selectedNodeWidget(BuildContext context, selectedNode) =>
+      SizedBox.fromSize(
+        size: const Size(200, 100),
+        child: Stack(
+          children: [
+            Align(
+              alignment: Alignment.center,
+              child: Container(
+                width: 140,
+                height: 40,
+                decoration: BoxDecoration(
+                  color: Colors.white,
+                  border: Border.all(color: Colors.grey, width: 2),
+                  borderRadius: const BorderRadius.all(Radius.circular(30)),
+                ),
+                alignment: Alignment.center,
+                child: Text(selectedNode.toString()),
+              ),
+            ),
+            if (selectedNode.canWrap())
+              Positioned(
+                top: 10,
+                left: 10,
+                child: selectedNode.insertItemMenuAnchor(
+                  context,
+                  action: NodeAction.wrapWith,
+                  tooltip: 'Wrap with...',
+                  bgColor: Colors.blue,
+                ),
+              ),
+            if (selectedNode.canAppendAChild())
+              Positioned(
+                bottom: 10,
+                right: 10,
+                child: selectedNode.insertItemMenuAnchor(
+                  context,
+                  action: NodeAction.addChild,
+                  tooltip: 'Add child...',
+                  bgColor: Colors.blue,
+                ),
+              ),
+          ],
+        ),
+      );
 }
-
-// class _MyKey extends GlobalObjectKey {
-//   const _MyKey(super.value);
-// }

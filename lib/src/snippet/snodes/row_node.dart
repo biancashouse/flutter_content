@@ -16,6 +16,7 @@ class RowNode extends FlexNode with RowNodeMappable {
     super.mainAxisAlignment,
     super.mainAxisSize,
     super.crossAxisAlignment,
+    super.direction = AxisEnum.horizontal,
     required super.children,
   });
 

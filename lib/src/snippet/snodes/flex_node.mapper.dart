@@ -17,6 +17,7 @@ class FlexNodeMapper extends SubClassMapperBase<FlexNode> {
       MCMapper.ensureInitialized().addSubMapper(_instance!);
       RowNodeMapper.ensureInitialized();
       ColumnNodeMapper.ensureInitialized();
+      AxisEnumMapper.ensureInitialized();
       MainAxisAlignmentEnumModelMapper.ensureInitialized();
       MainAxisSizeEnumMapper.ensureInitialized();
       CrossAxisAlignmentEnumModelMapper.ensureInitialized();
@@ -28,6 +29,11 @@ class FlexNodeMapper extends SubClassMapperBase<FlexNode> {
   @override
   final String id = 'FlexNode';
 
+  static AxisEnum _$direction(FlexNode v) => v.direction;
+  static const Field<FlexNode, AxisEnum> _f$direction = Field(
+    'direction',
+    _$direction,
+  );
   static MainAxisAlignmentEnumModel? _$mainAxisAlignment(FlexNode v) =>
       v.mainAxisAlignment;
   static const Field<FlexNode, MainAxisAlignmentEnumModel>
@@ -106,6 +112,7 @@ class FlexNodeMapper extends SubClassMapperBase<FlexNode> {
 
   @override
   final MappableFields<FlexNode> fields = const {
+    #direction: _f$direction,
     #mainAxisAlignment: _f$mainAxisAlignment,
     #mainAxisSize: _f$mainAxisSize,
     #crossAxisAlignment: _f$crossAxisAlignment,
@@ -137,6 +144,7 @@ class FlexNodeMapper extends SubClassMapperBase<FlexNode> {
 
   static FlexNode _instantiate(DecodingData data) {
     return FlexNode(
+      direction: data.dec(_f$direction),
       mainAxisAlignment: data.dec(_f$mainAxisAlignment),
       mainAxisSize: data.dec(_f$mainAxisSize),
       crossAxisAlignment: data.dec(_f$crossAxisAlignment),
@@ -205,6 +213,7 @@ abstract class FlexNodeCopyWith<$R, $In extends FlexNode, $Out>
   ListCopyWith<$R, SNode, SNodeCopyWith<$R, SNode, SNode>> get children;
   @override
   $R call({
+    AxisEnum? direction,
     MainAxisAlignmentEnumModel? mainAxisAlignment,
     MainAxisSizeEnum? mainAxisSize,
     CrossAxisAlignmentEnumModel? crossAxisAlignment,
@@ -230,12 +239,14 @@ class _FlexNodeCopyWithImpl<$R, $Out>
       );
   @override
   $R call({
+    AxisEnum? direction,
     Object? mainAxisAlignment = $none,
     Object? mainAxisSize = $none,
     Object? crossAxisAlignment = $none,
     List<SNode>? children,
   }) => $apply(
     FieldCopyWithData({
+      if (direction != null) #direction: direction,
       if (mainAxisAlignment != $none) #mainAxisAlignment: mainAxisAlignment,
       if (mainAxisSize != $none) #mainAxisSize: mainAxisSize,
       if (crossAxisAlignment != $none) #crossAxisAlignment: crossAxisAlignment,
@@ -244,6 +255,7 @@ class _FlexNodeCopyWithImpl<$R, $Out>
   );
   @override
   FlexNode $make(CopyWithData data) => FlexNode(
+    direction: data.get(#direction, or: $value.direction),
     mainAxisAlignment: data.get(
       #mainAxisAlignment,
       or: $value.mainAxisAlignment,

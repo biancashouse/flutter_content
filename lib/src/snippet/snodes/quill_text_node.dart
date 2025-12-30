@@ -57,9 +57,12 @@ class QuillTextNode extends CL with QuillTextNodeMappable {
   Widget buildFlutterWidget(BuildContext context, SNode? parentNode) {
     setParent(parentNode);
 
+    var gk = createNodeWidgetGK();
+
     Widget editor;
     if (fco.canEditContent() && fco.snippetBeingEdited == null) {
       editor = FocusAwareQuillEditor(
+        key: gk,
         initialDeltaJson: deltaJsonString,
         onChange: (String newValue) {
           // save
@@ -90,7 +93,7 @@ class QuillTextNode extends CL with QuillTextNodeMappable {
         },
       );
     } else {
-      editor = QuillViewer(deltaJsonString: deltaJsonString);
+      editor = QuillViewer(key: gk, deltaJsonString: deltaJsonString);
     }
 
     // for safety, if parent is a flex, wrap with an Expanded widget
