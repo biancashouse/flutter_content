@@ -90,13 +90,14 @@ class TextSpanNodeMapper extends SubClassMapperBase<TextSpanNode> {
     _$nodeWidgetGK,
     mode: FieldMode.member,
   );
-  static TargetModel? _$calloutTargetConfig(TextSpanNode v) =>
+  static HotspotTargetModel? _$calloutTargetConfig(TextSpanNode v) =>
       v.calloutTargetConfig;
-  static const Field<TextSpanNode, TargetModel> _f$calloutTargetConfig = Field(
-    'calloutTargetConfig',
-    _$calloutTargetConfig,
-    mode: FieldMode.member,
-  );
+  static const Field<TextSpanNode, HotspotTargetModel> _f$calloutTargetConfig =
+      Field(
+        'calloutTargetConfig',
+        _$calloutTargetConfig,
+        mode: FieldMode.member,
+      );
 
   @override
   final MappableFields<TextSpanNode> fields = const {

@@ -29,6 +29,7 @@ class QuillTextPNode extends PNode {
     
     // fco.logger.i('toPropertyNodeContents');
     return PropertyButtonQuillText(
+      parentNode: snode as QuillTextNode,
       originalDelta: deltaValue,
       label: super.name,
       // textInputType: const TextInputType.numberWithOptions(decimal: true),

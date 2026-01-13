@@ -7,7 +7,7 @@ import 'package:flutter_content/src/api/editable_page/snippet_tree_view.dart';
 import 'package:flutter_content/src/api/editable_page/versions_menu_anchor.dart';
 import 'package:flutter_content/src/api/editable_page/tappable_node_borders.dart';
 import 'package:flutter_content/src/snippet/snode_widget.dart';
-
+import 'package:flutter_content/src/snippet/snodes/hotspots/widgets/hotspot_target_config_toolbar/hotspot_target_config_toolbar.dart';
 import 'package:go_router/go_router.dart';
 import 'package:multi_split_view/multi_split_view.dart';
 
@@ -158,7 +158,8 @@ class EditablePageState extends State<EditablePage> {
           print('new node selection');
           return true;
         }
-        if ((previous.isSignedIn != current.isSignedIn) && !fco.canEditContent()) {
+        if ((previous.isSignedIn != current.isSignedIn) &&
+            !fco.canEditContent()) {
           return true;
         }
         if (current.onlyTargetsWrappers) return false;
@@ -274,7 +275,7 @@ class EditablePageState extends State<EditablePage> {
   void pushThenShowNamedSnippetWithNodeSelected(
     SnippetRootNode rootNode,
     SNode selectedNode, {
-    TargetModel? targetBeingConfigured,
+    HotspotTargetModel? targetBeingConfigured,
   }) {
     var snippetRootContext = rootNode.child?.nodeWidgetGK?.currentContext;
     if (snippetRootContext == null) {
@@ -298,7 +299,7 @@ class EditablePageState extends State<EditablePage> {
         if (!fco.appInfo.clipboardIsEmpty) {
           fco.appInfo.showFloatingClipboard();
         }
-        fco.hide(CalloutConfigToolbar.CID);
+        fco.hide(HotspotTargetConfigToolbar.CID);
       }
 
       // point out the selected node widget
@@ -424,21 +425,7 @@ class EditablePageState extends State<EditablePage> {
           },
         ),
       if (bloc.dontShowTappableBorderRects())
-        DevGrid(
-          showGuides: fco.canEditContent(),
-          horizontalSpacing: 100.0,
-          verticalSpacing: 100.0,
-          lineColor: Colors.white,
-          // lineColor: Colors.red.withAlpha(70),
-          // 0.15 * 255
-          lineThickness: 1.0,
-
-          // Show additional guides
-          // showSafeArea: true,
-          // showRuler: true,
-          marginWidth: 0.0,
-          child: Zoomer(key: zoomerGk, child: widget.child),
-        ),
+        Zoomer(key: zoomerGk, child: widget.child),
       if (bloc.showTappableBorderRects() && borderRects.isNotEmpty)
         TappableNodeBorders(
           renderData: borderRects,
@@ -597,97 +584,66 @@ class EditablePageState extends State<EditablePage> {
           },
           child: Material(
             child: Scaffold(
-              appBar: AppBar(
-                backgroundColor: Colors.purple,
-                title: fco.coloredText("Snippet", color: Colors.white),
-                centerTitle: true, // Add this line
-                actions: [
-                  IconButton(
-                    hoverColor: Colors.white30,
-                    onPressed: () async {
-                      CAPIState capiState = fco.capiBloc.state;
-                      if (!snippetInfo.isFirstVersion()) {
-                        VersionId? prevId = snippetInfo.previousVersionId();
-                        revertToVersion(prevId, snippetInfo, capiState);
-                      }
-                    },
-                    icon: Icon(
-                      Icons.undo,
-                      color:
-                          !snippetInfo
-                              .isFirstVersion() //|| fco.capiBloc.canUndo
-                          ? Colors.white
-                          : Colors.white54,
-                    ),
-                    tooltip: 'previous version',
-                  ),
-                  IconButton(
-                    hoverColor: Colors.white30,
-                    onPressed: () {
-                      CAPIState capiState = fco.capiBloc.state;
-                      if (!snippetInfo.isLatestVersion()) {
-                        VersionId? nextId = snippetInfo.nextVersionId();
-                        revertToVersion(nextId, snippetInfo, capiState);
-                      }
-                    },
-                    icon: Icon(
-                      Icons.redo,
-                      color:
-                          !snippetInfo
-                              .isLatestVersion() //|| fco.capiBloc.canRedo
-                          ? Colors.white
-                          : Colors.white54,
-                    ),
-                    tooltip: 'next version',
-                  ),
-                  IconButton(
-                    hoverColor: Colors.white30,
-                    onPressed: () async {},
-                    icon: VersionsMenuAnchor(snippetInfo: snippetInfo),
-                  ),
-                  IconButton(
-                    onPressed: () {
-                      // SNode.unhighlightSelectedNode();
-                      // if was editing a callout content snippet, dismiss all callouts
-                      if (SnippetRootNode.isHotspotCalloutContent(
-                        snippetName,
-                      )) {
-                        fco.dismissAll();
-                      } else {
-                        fco.dismiss('selected-node');
-                        // fco.dismissAll(exceptFeatures: [CalloutConfigToolbar.CID]);
-                        fco.unhide(CalloutConfigToolbar.CID);
-                        fco.appInfo.hideClipboard();
-                      }
-                      fco.dismissAll();
-                      fco.capiBloc.add(const CAPIEvent.popSnippetEditor());
-                    },
-                    icon: Icon(Icons.close),
-                  ),
-                ],
-              ),
               body: Material(
                 color: Colors.purple.shade200,
-                child: Padding(
-                  padding: const EdgeInsets.all(10),
-                  child: InteractiveViewer(
-                    transformationController: fco.snippetTreeTC,
-                    // trackpadScrollCausesScale: true,
-                    alignment: Alignment.topLeft,
-                    constrained: false,
-                    // onInteractionStart: (_) => snippetBloc.add(const CAPIEvent.clearNodeSelection()),
-                    // onInteractionEnd: (_) => snippetBloc.add(const CAPIEvent.clearNodeSelection()),
-                    child: Builder(
-                      builder: (context) {
-                        // fco.logger.i('SnippetTreeView...');
-                        return SizedBox(
-                          width: 700,
-                          height: 1200,
-                          child: SnippetTreeView(),
-                        );
-                      },
+                child: Stack(
+                  children: [
+                    Padding(
+                      padding: const EdgeInsets.all(10),
+                      child: InteractiveViewer(
+                        transformationController: fco.snippetTreeTC,
+                        // trackpadScrollCausesScale: true,
+                        alignment: Alignment.topLeft,
+                        constrained: false,
+                        // onInteractionStart: (_) => snippetBloc.add(const CAPIEvent.clearNodeSelection()),
+                        // onInteractionEnd: (_) => snippetBloc.add(const CAPIEvent.clearNodeSelection()),
+                        child: Builder(
+                          builder: (context) {
+                            // fco.logger.i('SnippetTreeView...');
+                            return SizedBox(
+                              width: 700,
+                              height: 1200,
+                              child: SnippetTreeView(),
+                            );
+                          },
+                        ),
+                      ),
                     ),
-                  ),
+                    Align(
+                      alignment: Alignment.topRight,
+                      child: Row(
+                        mainAxisSize: MainAxisSize.min,
+                        children: [
+                          IconButton(
+                            hoverColor: Colors.white30,
+                            onPressed: () async {},
+                            icon: VersionsMenuAnchor(snippetInfo: snippetInfo),
+                          ),
+                          IconButton(
+                            onPressed: () {
+                              // SNode.unhighlightSelectedNode();
+                              // if was editing a callout content snippet, dismiss all callouts
+                              if (SnippetRootNode.isHotspotCalloutContent(
+                                snippetName,
+                              )) {
+                                fco.dismissAll();
+                              } else {
+                                fco.dismiss('selected-node');
+                                // fco.dismissAll(exceptFeatures: [CalloutConfigToolbar.CID]);
+                                fco.unhide(HotspotTargetConfigToolbar.CID);
+                                fco.appInfo.hideClipboard();
+                              }
+                              fco.dismissAll();
+                              fco.capiBloc.add(
+                                const CAPIEvent.popSnippetEditor(),
+                              );
+                            },
+                            icon: Icon(Icons.close),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ],
                 ),
               ),
               // SnippetTreePane(snippetInfo, widget.routePath),
@@ -712,7 +668,7 @@ class EditablePageState extends State<EditablePage> {
           print('new node selection');
           return true;
         }
-        if (current.snippetBeingEdited?.updatesPending??false) {
+        if (current.snippetBeingEdited?.updatesPending ?? false) {
           return true;
         }
         return false;
@@ -1108,54 +1064,6 @@ class EditablePageState extends State<EditablePage> {
       // targetGkF: ()=> fco.authIconGK,
     );
   }
-
-  void revertToVersion(
-    VersionId? versionId,
-    SnippetInfoModel snippetInfo,
-    CAPIState state,
-  ) {
-    if (versionId == null) return;
-    fco.capiBloc.add(
-      CAPIEvent.revertSnippet(
-        snippetName: snippetInfo.name,
-        versionId: fco.removeNonNumeric(versionId),
-      ),
-    );
-    fco.afterNextBuildDo(() async {
-      // current snippet version will now be changed to prevId
-      fco.logger.i('reverted to previous version.');
-      // SNode.unhighlightSelectedNode();
-      // var currPageState = fco.currentPageState;
-      // currPageState?.unhideFAB();
-      fco.dismiss(CalloutConfigToolbar.CID);
-      fco.appInfo.hideClipboard();
-      // exitEditModeF();
-      // fco.capiBloc
-      //     .add(const CAPIEvent.popSnippetEditor());
-      // fco.dismiss(snippetName, skipOnDismiss: true);
-      final revertedVersion = snippetInfo.currentVersionFromCache();
-      if (revertedVersion != null) {
-        final newTreeC = SnippetTreeController(
-          roots: [revertedVersion],
-          childrenProvider: SNode.childrenProvider,
-          parentProvider: SNode.parentProvider,
-        );
-
-        newTreeC.roots.first.validateTree();
-        newTreeC.expand(revertedVersion);
-        newTreeC.rebuild();
-
-        fco.snippetBeingEdited!
-          ..setRootNode(revertedVersion)
-          ..selectedNode = revertedVersion.child
-          ..showProperties = false
-          ..treeC = newTreeC;
-
-        fco.refreshAll();
-      }
-      return;
-    });
-  }
 }
 
 class SelectionCutoutPainter extends CustomPainter {
@@ -1204,8 +1112,8 @@ class SelectionCutoutPainter extends CustomPainter {
 
 // First, define this helper class either in the same file or a utility file.
 // This class overrides the default scroll physics for all descendant scrollables.
-class _ForceNeverScrollableScrollBehavior extends ScrollBehavior {
-  @override
-  ScrollPhysics getScrollPhysics(BuildContext context) =>
-      const NeverScrollableScrollPhysics();
-}
+// class _ForceNeverScrollableScrollBehavior extends ScrollBehavior {
+//   @override
+//   ScrollPhysics getScrollPhysics(BuildContext context) =>
+//       const NeverScrollableScrollPhysics();
+// }

@@ -24,7 +24,7 @@ mixin _$CAPIState {
 // @Default(Offset.zero) Offset? directoryTreeCalloutInitialPos,
 // @Default(400) double? directoryTreeCalloutW,
 // @Default(600) double? directoryTreeCalloutH,
- TargetModel? get newestTarget; TargetModel? get selectedTarget;//
+ HotspotTargetModel? get newestTarget; HotspotTargetModel? get selectedTarget;//
 // String? selectedPanel,
  bool get isSignedIn; bool get signedInAsGuestEditor; bool get showClipboardContent; int get force;// hacky way to force a transition
  bool get onlyTargetsWrappers;// hacky way to force a transition
@@ -68,7 +68,7 @@ abstract mixin class $CAPIStateCopyWith<$Res>  {
   factory $CAPIStateCopyWith(CAPIState value, $Res Function(CAPIState) _then) = _$CAPIStateCopyWithImpl;
 @useResult
 $Res call({
- TargetModel? newestTarget, TargetModel? selectedTarget, bool isSignedIn, bool signedInAsGuestEditor, bool showClipboardContent, int force, bool onlyTargetsWrappers, String? routeName, SnippetName? activeSnippetName, SnippetBeingEdited? snippetBeingEdited, bool ONLY_TESTING
+ HotspotTargetModel? newestTarget, HotspotTargetModel? selectedTarget, bool isSignedIn, bool signedInAsGuestEditor, bool showClipboardContent, int force, bool onlyTargetsWrappers, String? routeName, SnippetName? activeSnippetName, SnippetBeingEdited? snippetBeingEdited, bool ONLY_TESTING
 });
 
 
@@ -88,8 +88,8 @@ class _$CAPIStateCopyWithImpl<$Res>
 @pragma('vm:prefer-inline') @override $Res call({Object? newestTarget = freezed,Object? selectedTarget = freezed,Object? isSignedIn = null,Object? signedInAsGuestEditor = null,Object? showClipboardContent = null,Object? force = null,Object? onlyTargetsWrappers = null,Object? routeName = freezed,Object? activeSnippetName = freezed,Object? snippetBeingEdited = freezed,Object? ONLY_TESTING = null,}) {
   return _then(_self.copyWith(
 newestTarget: freezed == newestTarget ? _self.newestTarget : newestTarget // ignore: cast_nullable_to_non_nullable
-as TargetModel?,selectedTarget: freezed == selectedTarget ? _self.selectedTarget : selectedTarget // ignore: cast_nullable_to_non_nullable
-as TargetModel?,isSignedIn: null == isSignedIn ? _self.isSignedIn : isSignedIn // ignore: cast_nullable_to_non_nullable
+as HotspotTargetModel?,selectedTarget: freezed == selectedTarget ? _self.selectedTarget : selectedTarget // ignore: cast_nullable_to_non_nullable
+as HotspotTargetModel?,isSignedIn: null == isSignedIn ? _self.isSignedIn : isSignedIn // ignore: cast_nullable_to_non_nullable
 as bool,signedInAsGuestEditor: null == signedInAsGuestEditor ? _self.signedInAsGuestEditor : signedInAsGuestEditor // ignore: cast_nullable_to_non_nullable
 as bool,showClipboardContent: null == showClipboardContent ? _self.showClipboardContent : showClipboardContent // ignore: cast_nullable_to_non_nullable
 as bool,force: null == force ? _self.force : force // ignore: cast_nullable_to_non_nullable
@@ -183,7 +183,7 @@ return $default(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( TargetModel? newestTarget,  TargetModel? selectedTarget,  bool isSignedIn,  bool signedInAsGuestEditor,  bool showClipboardContent,  int force,  bool onlyTargetsWrappers,  String? routeName,  SnippetName? activeSnippetName,  SnippetBeingEdited? snippetBeingEdited,  bool ONLY_TESTING)?  $default,{required TResult orElse(),}) {final _that = this;
+@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( HotspotTargetModel? newestTarget,  HotspotTargetModel? selectedTarget,  bool isSignedIn,  bool signedInAsGuestEditor,  bool showClipboardContent,  int force,  bool onlyTargetsWrappers,  String? routeName,  SnippetName? activeSnippetName,  SnippetBeingEdited? snippetBeingEdited,  bool ONLY_TESTING)?  $default,{required TResult orElse(),}) {final _that = this;
 switch (_that) {
 case _CAPIState() when $default != null:
 return $default(_that.newestTarget,_that.selectedTarget,_that.isSignedIn,_that.signedInAsGuestEditor,_that.showClipboardContent,_that.force,_that.onlyTargetsWrappers,_that.routeName,_that.activeSnippetName,_that.snippetBeingEdited,_that.ONLY_TESTING);case _:
@@ -204,7 +204,7 @@ return $default(_that.newestTarget,_that.selectedTarget,_that.isSignedIn,_that.s
 /// }
 /// ```
 
-@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( TargetModel? newestTarget,  TargetModel? selectedTarget,  bool isSignedIn,  bool signedInAsGuestEditor,  bool showClipboardContent,  int force,  bool onlyTargetsWrappers,  String? routeName,  SnippetName? activeSnippetName,  SnippetBeingEdited? snippetBeingEdited,  bool ONLY_TESTING)  $default,) {final _that = this;
+@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( HotspotTargetModel? newestTarget,  HotspotTargetModel? selectedTarget,  bool isSignedIn,  bool signedInAsGuestEditor,  bool showClipboardContent,  int force,  bool onlyTargetsWrappers,  String? routeName,  SnippetName? activeSnippetName,  SnippetBeingEdited? snippetBeingEdited,  bool ONLY_TESTING)  $default,) {final _that = this;
 switch (_that) {
 case _CAPIState():
 return $default(_that.newestTarget,_that.selectedTarget,_that.isSignedIn,_that.signedInAsGuestEditor,_that.showClipboardContent,_that.force,_that.onlyTargetsWrappers,_that.routeName,_that.activeSnippetName,_that.snippetBeingEdited,_that.ONLY_TESTING);case _:
@@ -224,7 +224,7 @@ return $default(_that.newestTarget,_that.selectedTarget,_that.isSignedIn,_that.s
 /// }
 /// ```
 
-@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( TargetModel? newestTarget,  TargetModel? selectedTarget,  bool isSignedIn,  bool signedInAsGuestEditor,  bool showClipboardContent,  int force,  bool onlyTargetsWrappers,  String? routeName,  SnippetName? activeSnippetName,  SnippetBeingEdited? snippetBeingEdited,  bool ONLY_TESTING)?  $default,) {final _that = this;
+@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( HotspotTargetModel? newestTarget,  HotspotTargetModel? selectedTarget,  bool isSignedIn,  bool signedInAsGuestEditor,  bool showClipboardContent,  int force,  bool onlyTargetsWrappers,  String? routeName,  SnippetName? activeSnippetName,  SnippetBeingEdited? snippetBeingEdited,  bool ONLY_TESTING)?  $default,) {final _that = this;
 switch (_that) {
 case _CAPIState() when $default != null:
 return $default(_that.newestTarget,_that.selectedTarget,_that.isSignedIn,_that.signedInAsGuestEditor,_that.showClipboardContent,_that.force,_that.onlyTargetsWrappers,_that.routeName,_that.activeSnippetName,_that.snippetBeingEdited,_that.ONLY_TESTING);case _:
@@ -252,8 +252,8 @@ class _CAPIState implements CAPIState {
 // @Default(Offset.zero) Offset? directoryTreeCalloutInitialPos,
 // @Default(400) double? directoryTreeCalloutW,
 // @Default(600) double? directoryTreeCalloutH,
-@override final  TargetModel? newestTarget;
-@override final  TargetModel? selectedTarget;
+@override final  HotspotTargetModel? newestTarget;
+@override final  HotspotTargetModel? selectedTarget;
 //
 // String? selectedPanel,
 @override@JsonKey() final  bool isSignedIn;
@@ -307,7 +307,7 @@ abstract mixin class _$CAPIStateCopyWith<$Res> implements $CAPIStateCopyWith<$Re
   factory _$CAPIStateCopyWith(_CAPIState value, $Res Function(_CAPIState) _then) = __$CAPIStateCopyWithImpl;
 @override @useResult
 $Res call({
- TargetModel? newestTarget, TargetModel? selectedTarget, bool isSignedIn, bool signedInAsGuestEditor, bool showClipboardContent, int force, bool onlyTargetsWrappers, String? routeName, SnippetName? activeSnippetName, SnippetBeingEdited? snippetBeingEdited, bool ONLY_TESTING
+ HotspotTargetModel? newestTarget, HotspotTargetModel? selectedTarget, bool isSignedIn, bool signedInAsGuestEditor, bool showClipboardContent, int force, bool onlyTargetsWrappers, String? routeName, SnippetName? activeSnippetName, SnippetBeingEdited? snippetBeingEdited, bool ONLY_TESTING
 });
 
 
@@ -327,8 +327,8 @@ class __$CAPIStateCopyWithImpl<$Res>
 @override @pragma('vm:prefer-inline') $Res call({Object? newestTarget = freezed,Object? selectedTarget = freezed,Object? isSignedIn = null,Object? signedInAsGuestEditor = null,Object? showClipboardContent = null,Object? force = null,Object? onlyTargetsWrappers = null,Object? routeName = freezed,Object? activeSnippetName = freezed,Object? snippetBeingEdited = freezed,Object? ONLY_TESTING = null,}) {
   return _then(_CAPIState(
 newestTarget: freezed == newestTarget ? _self.newestTarget : newestTarget // ignore: cast_nullable_to_non_nullable
-as TargetModel?,selectedTarget: freezed == selectedTarget ? _self.selectedTarget : selectedTarget // ignore: cast_nullable_to_non_nullable
-as TargetModel?,isSignedIn: null == isSignedIn ? _self.isSignedIn : isSignedIn // ignore: cast_nullable_to_non_nullable
+as HotspotTargetModel?,selectedTarget: freezed == selectedTarget ? _self.selectedTarget : selectedTarget // ignore: cast_nullable_to_non_nullable
+as HotspotTargetModel?,isSignedIn: null == isSignedIn ? _self.isSignedIn : isSignedIn // ignore: cast_nullable_to_non_nullable
 as bool,signedInAsGuestEditor: null == signedInAsGuestEditor ? _self.signedInAsGuestEditor : signedInAsGuestEditor // ignore: cast_nullable_to_non_nullable
 as bool,showClipboardContent: null == showClipboardContent ? _self.showClipboardContent : showClipboardContent // ignore: cast_nullable_to_non_nullable
 as bool,force: null == force ? _self.force : force // ignore: cast_nullable_to_non_nullable

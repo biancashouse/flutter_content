@@ -46,6 +46,8 @@ class TargetPointerTypeEnumMapper extends EnumMapper<TargetPointerTypeEnum> {
         return TargetPointerTypeEnum.LARGE;
       case r'LARGE_REVERSED':
         return TargetPointerTypeEnum.LARGE_REVERSED;
+      case r'WAVY':
+        return TargetPointerTypeEnum.WAVY;
       default:
         throw MapperException.unknownEnumValue(value);
     }
@@ -74,6 +76,8 @@ class TargetPointerTypeEnumMapper extends EnumMapper<TargetPointerTypeEnum> {
         return r'LARGE';
       case TargetPointerTypeEnum.LARGE_REVERSED:
         return r'LARGE_REVERSED';
+      case TargetPointerTypeEnum.WAVY:
+        return r'WAVY';
     }
   }
 }

@@ -64,7 +64,7 @@ import 'package:flutter_content/src/snippet/snodes/placeholder_node.dart';
 import 'package:flutter_content/src/snippet/snodes/poll_node.dart';
 import 'package:flutter_content/src/snippet/snodes/poll_option_node.dart';
 import 'package:flutter_content/src/snippet/snodes/positioned_node.dart';
-import 'package:flutter_content/src/snippet/snodes/quill_text_node.dart';
+import 'package:flutter_content/src/snippet/snodes/quill/quill_text_node.dart';
 import 'package:flutter_content/src/snippet/snodes/rich_text_node.dart';
 import 'package:flutter_content/src/snippet/snodes/row_node.dart';
 import 'package:flutter_content/src/snippet/snodes/scaffold_node.dart';
@@ -122,11 +122,15 @@ export 'package:firebase_core/firebase_core.dart';
 
 // re-export callout callout related s.t. apps using this package don't need to include the callouts pkg in pubspec
 export 'package:flutter_callouts/src/widget/double_tappable.dart';
+export 'package:flutter_callouts/src/api/callouts/scroll_config.dart';
 export 'src/api/mouse_info_viewer.dart';
 export 'package:flutter_callouts/src/api/callouts/callout_config.dart';
+export 'package:flutter_callouts/src/lines/line.dart';
+export 'package:flutter_callouts/src/api/callouts/coord.dart';
 export 'package:flutter_callouts/src/api/callouts/callout_using_overlayportal.dart';
 export 'package:flutter_callouts/src/api/callouts/dotted_decoration.dart';
 export 'package:flutter_callouts/src/api/callouts/globalkey_extn.dart';
+export 'package:flutter_callouts/src/api/callouts/rect_extn.dart';
 export 'package:flutter_callouts/src/canvas/canvas_mixin.dart';
 export 'package:flutter_callouts/src/debouncer/debouncer.dart';
 export 'package:flutter_callouts/src/feature_discovery/discovery_controller.dart';
@@ -188,7 +192,7 @@ export 'src/model/app_info_model.dart';
 // export 'src/model/branch_model.dart';
 export 'src/model/snippet_info_model.dart';
 export 'src/model/target_group_model.dart';
-export 'src/model/target_model.dart';
+export 'src/model/hotspot_target_model.dart';
 export 'src/nav/nav_mixin.dart';
 export 'src/passwordless/passwordless_mixin.dart';
 export 'src/snippet/node.dart';
@@ -248,8 +252,8 @@ export 'src/snippet/snodes/named_single_child_node.dart';
 export 'src/snippet/snodes/named_preferredsize_single_child_node.dart';
 export 'src/snippet/snodes/google_drive_iframe_node.dart';
 export 'src/snippet/snodes/hotspots/hotspots_node.dart';
-export 'src/snippet/snodes/hotspots/widgets/callout_snippet_content.dart';
-export 'src/snippet/snodes/hotspots/widgets/config_toolbar/callout_config_toolbar.dart';
+
+// export 'src/snippet/snodes/hotspots/widgets/config_toolbar/hotspot_callout_config_toolbar.dart';
 export 'src/snippet/snodes/hotspots/widgets/targets_wrapper.dart';
 export 'src/snippet/snodes/icon_button_node.dart';
 export 'src/snippet/snodes/iframe_node.dart';
@@ -258,7 +262,6 @@ export 'src/snippet/snodes/markdown_node.dart';
 export 'src/snippet/snodes/menu_bar_node.dart';
 export 'src/snippet/snodes/menu_item_button_node.dart';
 export 'src/snippet/snodes/abstract_mc_node.dart';
-export 'src/snippet/snodes/storage_image_node.dart';
 export 'src/snippet/snodes/widget/crop_or_resize/crop_image.dart';
 
 // content
@@ -288,10 +291,9 @@ export 'src/snippet/snodes/tabbar_node.dart';
 export 'src/snippet/snodes/tabbarview_node.dart';
 export 'src/snippet/snodes/text_button_node.dart';
 export 'src/snippet/snodes/text_node.dart';
-export 'src/snippet/snodes/quill_text_node.dart';
+export 'src/snippet/snodes/quill/quill_text_node.dart';
 export 'src/snippet/snodes/textspan_node.dart';
 export 'src/snippet/snodes/title_snippet_root_node.dart';
-export 'src/snippet/snodes/uml_image_node.dart';
 export 'src/snippet/snodes/widgetspan_node.dart';
 export 'src/snippet/snodes/wrap_node.dart';
 export 'src/snippet/snodes/yt_node.dart';
@@ -352,6 +354,7 @@ class FlutterContentMixins
     with
         MeasuringMixin,
         CalloutMixin,
+        LineMixin,
         RootContextMixin,
         SystemMixin,
         KeystrokesMixin,
@@ -878,7 +881,7 @@ class FlutterContentMixins
   /// Returns the [ScrollController] if found, otherwise returns `null`.
   /// NOTE - only need this if you don't already have the scrollcontroller or
   /// don't know it's scrollDirection
-  ScrollConfig? findAncestorScrollControllerAndDirection(BuildContext? ctx) {
+  ScrollConfig? findAncestorScrollConfig(BuildContext? ctx) {
     ScrollConfig? result;
 
     // try to find a SingleChildScrollView
@@ -915,6 +918,21 @@ class FlutterContentMixins
 
     return result;
   }
+
+  Offset translateOffsetForScroll(ScrollConfig? config, Offset pos) =>
+      pos.translate(
+        config?.scrollDirection == Axis.horizontal
+            ? config?.sc?.offset ?? 0.0
+            : 0.0,
+        config?.scrollDirection == Axis.vertical
+            ? config?.sc?.offset ?? 0.0
+            : 0.0,
+      );
+
+  Rect translateRectForScroll(ScrollConfig? config, Rect r) => Rect.fromPoints(
+    translateOffsetForScroll(config, r.topLeft),
+    translateOffsetForScroll(config, r.bottomRight),
+  );
 
   void initializeMappers() {
     // This function just needs to exist. Its primary purpose is to force the

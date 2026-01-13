@@ -15,7 +15,7 @@ class TargetsWrapperNodeMapper extends SubClassMapperBase<TargetsWrapperNode> {
     if (_instance == null) {
       MapperContainer.globals.use(_instance = TargetsWrapperNodeMapper._());
       SCMapper.ensureInitialized().addSubMapper(_instance!);
-      TargetModelMapper.ensureInitialized();
+      HotspotTargetModelMapper.ensureInitialized();
       SNodeMapper.ensureInitialized();
     }
     return _instance!;
@@ -37,20 +37,9 @@ class TargetsWrapperNodeMapper extends SubClassMapperBase<TargetsWrapperNode> {
     opt: true,
     def: 0,
   );
-  static List<TargetModel> _$targets(TargetsWrapperNode v) => v.targets;
-  static const Field<TargetsWrapperNode, List<TargetModel>> _f$targets = Field(
-    'targets',
-    _$targets,
-    opt: true,
-    def: const [],
-  );
-  static List<TargetModel> _$playList(TargetsWrapperNode v) => v.playList;
-  static const Field<TargetsWrapperNode, List<TargetModel>> _f$playList = Field(
-    'playList',
-    _$playList,
-    opt: true,
-    def: const [],
-  );
+  static List<HotspotTargetModel> _$targets(TargetsWrapperNode v) => v.targets;
+  static const Field<TargetsWrapperNode, List<HotspotTargetModel>> _f$targets =
+      Field('targets', _$targets, opt: true, def: const []);
   static SNode? _$child(TargetsWrapperNode v) => v.child;
   static const Field<TargetsWrapperNode, SNode> _f$child = Field(
     'child',
@@ -102,13 +91,16 @@ class TargetsWrapperNodeMapper extends SubClassMapperBase<TargetsWrapperNode> {
     _$nodeWidgetGK,
     mode: FieldMode.member,
   );
+  static List<HotspotTargetModel> _$playList(TargetsWrapperNode v) =>
+      v.playList;
+  static const Field<TargetsWrapperNode, List<HotspotTargetModel>> _f$playList =
+      Field('playList', _$playList, mode: FieldMode.member);
 
   @override
   final MappableFields<TargetsWrapperNode> fields = const {
     #aspectRatio: _f$aspectRatio,
     #borderRadius: _f$borderRadius,
     #targets: _f$targets,
-    #playList: _f$playList,
     #child: _f$child,
     #uid: _f$uid,
     #treeNodeGK: _f$treeNodeGK,
@@ -117,6 +109,7 @@ class TargetsWrapperNodeMapper extends SubClassMapperBase<TargetsWrapperNode> {
     #nodeGK: _f$nodeGK,
     #canShowTappableNodeWidgetOverlay: _f$canShowTappableNodeWidgetOverlay,
     #nodeWidgetGK: _f$nodeWidgetGK,
+    #playList: _f$playList,
   };
 
   @override
@@ -137,7 +130,6 @@ class TargetsWrapperNodeMapper extends SubClassMapperBase<TargetsWrapperNode> {
       aspectRatio: data.dec(_f$aspectRatio),
       borderRadius: data.dec(_f$borderRadius),
       targets: data.dec(_f$targets),
-      playList: data.dec(_f$playList),
       child: data.dec(_f$child),
     );
   }
@@ -215,24 +207,17 @@ abstract class TargetsWrapperNodeCopyWith<
     implements SCCopyWith<$R, $In, $Out> {
   ListCopyWith<
     $R,
-    TargetModel,
-    TargetModelCopyWith<$R, TargetModel, TargetModel>
+    HotspotTargetModel,
+    HotspotTargetModelCopyWith<$R, HotspotTargetModel, HotspotTargetModel>
   >
   get targets;
-  ListCopyWith<
-    $R,
-    TargetModel,
-    TargetModelCopyWith<$R, TargetModel, TargetModel>
-  >
-  get playList;
   @override
   SNodeCopyWith<$R, SNode, SNode>? get child;
   @override
   $R call({
     double? aspectRatio,
     double? borderRadius,
-    List<TargetModel>? targets,
-    List<TargetModel>? playList,
+    List<HotspotTargetModel>? targets,
     SNode? child,
   });
   TargetsWrapperNodeCopyWith<$R2, $In, $Out2> $chain<$R2, $Out2>(
@@ -251,24 +236,13 @@ class _TargetsWrapperNodeCopyWithImpl<$R, $Out>
   @override
   ListCopyWith<
     $R,
-    TargetModel,
-    TargetModelCopyWith<$R, TargetModel, TargetModel>
+    HotspotTargetModel,
+    HotspotTargetModelCopyWith<$R, HotspotTargetModel, HotspotTargetModel>
   >
   get targets => ListCopyWith(
     $value.targets,
     (v, t) => v.copyWith.$chain(t),
     (v) => call(targets: v),
-  );
-  @override
-  ListCopyWith<
-    $R,
-    TargetModel,
-    TargetModelCopyWith<$R, TargetModel, TargetModel>
-  >
-  get playList => ListCopyWith(
-    $value.playList,
-    (v, t) => v.copyWith.$chain(t),
-    (v) => call(playList: v),
   );
   @override
   SNodeCopyWith<$R, SNode, SNode>? get child =>
@@ -277,15 +251,13 @@ class _TargetsWrapperNodeCopyWithImpl<$R, $Out>
   $R call({
     Object? aspectRatio = $none,
     double? borderRadius,
-    List<TargetModel>? targets,
-    List<TargetModel>? playList,
+    List<HotspotTargetModel>? targets,
     Object? child = $none,
   }) => $apply(
     FieldCopyWithData({
       if (aspectRatio != $none) #aspectRatio: aspectRatio,
       if (borderRadius != null) #borderRadius: borderRadius,
       if (targets != null) #targets: targets,
-      if (playList != null) #playList: playList,
       if (child != $none) #child: child,
     }),
   );
@@ -294,7 +266,6 @@ class _TargetsWrapperNodeCopyWithImpl<$R, $Out>
     aspectRatio: data.get(#aspectRatio, or: $value.aspectRatio),
     borderRadius: data.get(#borderRadius, or: $value.borderRadius),
     targets: data.get(#targets, or: $value.targets),
-    playList: data.get(#playList, or: $value.playList),
     child: data.get(#child, or: $value.child),
   );
 

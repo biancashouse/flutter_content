@@ -142,7 +142,7 @@ class _Page_HomeState extends State<Page_Home> {
                   ],
                 ),
               ),
-              Flexible(flex: 4, child: sp),
+              Flexible(flex: 4, child: MouseInfoViewer(child: sp)),
             ],
           ),
         ),

@@ -3,7 +3,7 @@ import 'package:flutter_content/flutter_content.dart';
 import 'package:flutter_content/src/api/snippet_builder/replace_snippet_with_json_callout.dart';
 import 'package:flutter_content/src/snippet/pnodes/editors/property_callout_button_UML.dart';
 import 'package:flutter_content/src/snippet/pnodes/editors/property_callout_button_markdown.dart';
-import 'package:flutter_content/src/snippet/pnodes/editors/property_callout_button_quill_text.dart';
+import 'package:flutter_content/src/snippet/snodes/quill/widgets/quill_editor_with_toolbar_callout.dart';
 
 import 'fancy_tree/tree_controller.dart';
 
@@ -87,9 +87,9 @@ class SNodeWidget extends StatelessWidget {
                     _tappedNode(context);
                     fco.afterNextBuildDo(() {
                       var quillTextNode = entry.node as QuillTextNode;
-                      PropertyButtonQuillText.showQuillEditor(
-                        quillTextNode.deltaJsonString,
-                        (String? newValue) {
+                      showQuillEditorOverlay(
+                        quillTextNode: quillTextNode,
+                        onChangeF: (String? newValue) {
                           quillTextNode.refreshWithUpdate(
                             context,
                             () =>
@@ -317,11 +317,7 @@ class SNodeWidget extends StatelessWidget {
 
       fco.dismissAll();
 
-      fco.capiBloc.add(
-        CAPIEvent.selectNode(
-          node: entry.node,
-         ),
-      );
+      fco.capiBloc.add(CAPIEvent.selectNode(node: entry.node));
 
       fco.afterNextBuildDo(() {
         pointOutSelectedNode();
@@ -346,7 +342,7 @@ class SNodeWidget extends StatelessWidget {
   }
 
   static void pointOutSelectedNode() {
-    var selectedNode = fco.capiBloc.state.snippetBeingEdited!.selectedNode;
+    var selectedNode = fco.capiBloc.state.snippetBeingEdited?.selectedNode;
     if (selectedNode == null) return;
 
     fco.afterMsDelayDo(1000, () {
@@ -539,7 +535,7 @@ class SNodeWidget extends StatelessWidget {
 
     double trashButtonOpacity =
         !fco.aNodeIsSelected ||
-            !node.canRemove() ||
+            // !node.canRemove() ||
             (node is SnippetRootNode && node.getParent() == null) ||
             (gc is NamedSC? &&
                 gc?.getParent() is StepNode &&
@@ -620,9 +616,7 @@ class SNodeWidget extends StatelessWidget {
                   onPressed: () async {
                     // some properties cannot be deleted!selectedNode.canBeDeleted()
                     // some properties cannot be deleted
-                    if (!node.canRemove()) return;
-
-                    // node.parentCanHaveMultipleChildren() && node.maybeSiblings();
+                    // if (!node.canRemove()) return;
 
                     // bool wasShowingAsRoot = selectedNode == snippetBloc.treeC.roots.first;
                     // STreeNode? parentNode = selectedNode.getParent() as STreeNode?;
@@ -653,7 +647,11 @@ class SNodeWidget extends StatelessWidget {
                     Icons.delete,
                     color: Colors.red.withValues(alpha: trashButtonOpacity),
                   ),
-                  tooltip: 'Remove',
+                  tooltip: node.hasSingleChild()
+                      ? "Replace with its child"
+                      : node.hasMultipleChildren()
+                      ? 'Remove, including all children'
+                      : 'Remove',
                 ),
                 if (node is! SnippetRootNode)
                   IconButton(

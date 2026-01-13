@@ -1,10 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_content/flutter_content.dart';
-import 'package:flutter_content/src/snippet/snodes/hotspots/widgets/positioned_target_play_btn.dart';
+
+import 'hotspot_target_config_toolbar/hotspot_target_config_toolbar.dart';
 
 // Btn has 2 uses: Tap to play, and DoubleTap to configure, plus it is draggable
 class TargetCover extends StatelessWidget {
-  final TargetModel tc;
+  final HotspotTargetModel tc;
   final bool playing;
   final int index;
   final TargetsWrapperState wrapperState;
@@ -20,9 +21,9 @@ class TargetCover extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
 
-    bool toolbarPresent = fco.anyPresent([
-      CalloutConfigToolbar.CID,
-    ], includeHidden: true);
+    // bool toolbarPresent = fco.anyPresent([
+    //   HotspotCalloutConfigToolbar.CID,
+    // ], includeHidden: true);
 
     return fco.aSnippetIsBeingEdited || !fco.canEditContent()
         ? CircleAvatar(
@@ -47,7 +48,7 @@ class TargetCover extends StatelessWidget {
       return;
     }
 
-    if (tc.hasAHotspot() && !fco.anyPresent([CalloutConfigToolbar.CID])) {
+    if (tc.hasABtn() && !fco.anyPresent([HotspotTargetConfigToolbar.CID])) {
       fco.showToast(
         textColor: Colors.purple,
         bgColor: Colors.lightGreenAccent,
@@ -77,7 +78,7 @@ class TargetCover extends StatelessWidget {
     );
   }
 
-  Widget _targetCover(BuildContext context, TargetModel tc) {
+  Widget _targetCover(BuildContext context, HotspotTargetModel tc) {
     // fco.logger.i('_draggableTarget');
     double radius = tc.targetRadius(wrapperState);
     return MouseInfoViewer(
@@ -92,7 +93,7 @@ class TargetCover extends StatelessWidget {
                 width: 2 * radius,
                 height: 2 * radius,
                 decoration: BoxDecoration(
-                  color: tc.hasAHotspot()
+                  color: tc.hasABtn()
                       ? Colors.white.withValues(alpha: .25)
                       : Colors.red.withAlpha(50),
                   shape: BoxShape.circle,
@@ -123,7 +124,7 @@ class TargetCover extends StatelessWidget {
 
   static void playTarget(
     BuildContext context,
-    TargetModel tc,
+    HotspotTargetModel tc,
     TargetsWrapperState wrapperState,
   ) {
     // cover will now have been rendered with its gk
@@ -147,8 +148,7 @@ class TargetCover extends StatelessWidget {
     //     child: PlaceholderNode(),
     //   ),
     // );
-    showHotspotSnippetContentCallout(
-      tc: tc,
+    tc.showContentCallout(
       justPlaying: true,
       wrapperState: wrapperState,
     );

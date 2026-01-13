@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 
 import 'package:flutter_content/flutter_content.dart';
+import 'package:flutter_content/src/model/base_target_model.dart';
+import 'package:flutter_content/src/model/quill_target_model.dart';
 
-import 'numberic_keypad.dart';
+import 'numeric_keypad.dart';
 
 bool isShowingTargetDurationCallout() => fco.anyPresent(["duration"]);
 
@@ -13,9 +15,10 @@ void removeTargetDurationCallout() {
   }
 }
 
-Future<void> showTargetDurationCallout(final TargetModel tc, TargetsWrapperState wrapperState) async {
-  // GlobalKey? targetGK = tc.gk;
-
+Future<void> showTargetDurationCallout({
+  required TargetConfigModel tc,
+  void Function(QuillTargetModel)? onTargetConfigChange,
+}) async {
   fco.showOverlay(
     // targetGK: targetGK,
     calloutContent: NumericKeypad(
@@ -23,14 +26,8 @@ Future<void> showTargetDurationCallout(final TargetModel tc, TargetsWrapperState
       initialValue: tc.calloutDurationMs.toString(),
       onClosedF: (s) {
         tc.calloutDurationMs = int.tryParse(s) ?? 0;
-        SnippetRootNode? rootNode = wrapperState.widget.parentNode.rootNodeOfSnippet();
-        if (rootNode == null) return;
-        final newVersionId = SnippetInfoModel.createNewVersion(rootNode);
-        fco.modelRepo.saveSnippetVersion(
-          snippetName: rootNode.name,
-          newVersionId: newVersionId,
-          newVersion: rootNode,
-        );
+        // only used by quill embeds
+        onTargetConfigChange?.call(tc as QuillTargetModel);
         fco.dismiss("duration");
       },
     ),

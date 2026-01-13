@@ -209,7 +209,6 @@ class AppBarNode extends CL with AppBarNodeMappable {
   bool canRemove() =>
       (leading.child == null &&
       title.child == null &&
-      bottom.child == null &&
       actions.children.isEmpty &&
       bottom.child == null);
 

@@ -6,7 +6,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_content/flutter_content.dart';
 import 'package:flutter_content/src/measuring/size_aware_widget.dart';
 import 'package:flutter_content/src/snippet/snodes/hotspots/widgets/targets_wrapper_ontap_menu.dart';
-
+import 'hotspot_target_config_toolbar/hotspot_target_config_toolbar.dart';
 import 'positioned_target_cover.dart';
 import 'positioned_target_play_btn.dart';
 
@@ -30,7 +30,7 @@ class TargetsWrapper extends StatefulWidget {
 
   static void configureTarget(
     BuildContext context,
-    TargetModel tc,
+    HotspotTargetModel tc,
     TargetsWrapperState wrapperState, {
     bool quickly = false,
   }) {
@@ -51,14 +51,13 @@ class TargetsWrapper extends StatefulWidget {
       targetRect: targetRect,
     );
 
-    if (tc.hasAHotspot()) {
+    if (tc.hasABtn()) {
       wrapperState.zoomer?.applyTransform(
         tc.transformScale,
         tc.transformScale,
         ta,
         afterTransformF: () {
-          showHotspotSnippetContentCallout(
-            tc: tc,
+          tc.showContentCallout(
             justPlaying: false,
             wrapperState: wrapperState,
           );
@@ -67,8 +66,7 @@ class TargetsWrapper extends StatefulWidget {
         quickly: quickly,
       );
     } else {
-      showHotspotSnippetContentCallout(
-        tc: tc,
+      tc.showContentCallout(
         justPlaying: false,
         wrapperState: wrapperState,
       );
@@ -77,11 +75,11 @@ class TargetsWrapper extends StatefulWidget {
   }
 
   static void showConfigToolbar(
-    TargetModel tc,
+    HotspotTargetModel tc,
     TargetsWrapperState wrapperState,
   ) {
     final cc = CalloutConfig(
-      cId: CalloutConfigToolbar.CID,
+      cId: HotspotTargetConfigToolbar.CID,
 
       decorationFillColors: ColorOrGradient.color(Colors.purpleAccent),
       initialCalloutW: 920,
@@ -112,13 +110,13 @@ class TargetsWrapper extends StatefulWidget {
     fco.showOverlay(
       onReadyF: () {},
       calloutConfig: cc,
-      calloutContent: CalloutConfigToolbar(
+      calloutContent: HotspotTargetConfigToolbar(
         cc: cc,
         tc: tc,
         wrapperState: wrapperState,
         onCloseF: () {
           wrapperState.setPlayingOrEditingTc(null, () {
-            removeSnippetContentCallout(tc);
+            tc.removeContentCallout();
           });
           // fco.dismiss(CalloutConfigToolbar.CALLOUT_CONFIG_TOOLBAR);
         },
@@ -139,8 +137,10 @@ class TargetsWrapperState extends State<TargetsWrapper> {
   Offset? pulsingPointPos;
   GlobalKey? pulsingPointGK;
 
-  ScrollController? sc;
-  Axis? scrollDirection;
+  ScrollConfig? scrollConfig;
+
+  // Offset? _lineStartPos;
+  // Offset? _lineEndPos;
 
   bool canAutoPlay() => _canAutoPlay && !fco.canEditContent();
 
@@ -152,13 +152,14 @@ class TargetsWrapperState extends State<TargetsWrapper> {
   // Offset? savedChildLocalPosPc;
 
   // Timer? _sizeChangedTimer;
-  TargetModel? _playingOrEditingTc; // gets set / reset by btn widgets
+  HotspotTargetModel? _playingOrEditingTc; // gets set / reset by btn widgets
+
   void setPlayingOrEditingTc(newtC, VoidCallback f) => setState(() {
     _playingOrEditingTc = newtC;
     f.call();
   });
 
-  TargetModel? get playingTc => _playingOrEditingTc;
+  HotspotTargetModel? get playingTc => _playingOrEditingTc;
 
   // double? scrollOffset;
 
@@ -198,9 +199,7 @@ class TargetsWrapperState extends State<TargetsWrapper> {
 
     fco.afterNextBuildDo(() {
       if (!mounted) return;
-      var scrollConfig = fco.findAncestorScrollControllerAndDirection(context);
-      sc = scrollConfig?.controller;
-      scrollDirection = scrollConfig?.direction;
+      scrollConfig = fco.findAncestorScrollConfig(context);
 
       // fco.afterMsDelayDo(1000, (){
       // setState(() {
@@ -215,10 +214,9 @@ class TargetsWrapperState extends State<TargetsWrapper> {
 
   void autoPlayTargets() {
     if (fco.canEditContent()) return;
-    for (TargetModel tc in widget.parentNode.targets) {
-      if (!tc.hasAHotspot() && !fco.anyPresent([tc.contentCId])) {
-        showHotspotSnippetContentCallout(
-          tc: tc,
+    for (HotspotTargetModel tc in widget.parentNode.targets) {
+      if (!tc.hasABtn() && !fco.anyPresent([tc.contentCId])) {
+        tc.showContentCallout(
           justPlaying: true,
           wrapperState: this,
         );
@@ -277,17 +275,7 @@ class TargetsWrapperState extends State<TargetsWrapper> {
     }
   }
 
-  Offset translateOffsetForScroll(Offset pos) => pos.translate(
-    scrollDirection == Axis.horizontal ? sc?.offset ?? 0.0 : 0.0,
-    scrollDirection == Axis.vertical ? sc?.offset ?? 0.0 : 0.0,
-  );
-
-  Rect translateRectForScroll(Rect r) => Rect.fromPoints(
-    translateOffsetForScroll(r.topLeft),
-    translateOffsetForScroll(r.bottomRight),
-  );
-
-  @override
+   @override
   Widget build(BuildContext context) {
     // possibly autoplay callouts
     if (canAutoPlay()) {
@@ -298,7 +286,7 @@ class TargetsWrapperState extends State<TargetsWrapper> {
     // when dragging a btn or cover ends
     void droppedBtnOrCover(DragTargetDetails<(TargetId, bool)> details) {
       // ignore drags when toolbar showing
-      if (fco.anyPresent([CalloutConfigToolbar.CID])) {
+      if (fco.anyPresent([HotspotTargetConfigToolbar.CID])) {
         refresh(() {});
         return;
       }
@@ -307,7 +295,7 @@ class TargetsWrapperState extends State<TargetsWrapper> {
       refresh(() {
         var data = details.data;
         TargetId uid = data.$1;
-        TargetModel? foundTc = widget.parentNode.findTarget(uid);
+        HotspotTargetModel? foundTc = widget.parentNode.findTarget(uid);
         // $2 true means target btn rather than target cover
         // NamedScrollController? sc = scName(context) != null
         //     ? NamedScrollController.instance(scName(context)!)
@@ -317,11 +305,11 @@ class TargetsWrapperState extends State<TargetsWrapper> {
           foundTc.setBtnLocalPosPc(
             this,
             details.offset.translate(
-              TargetModel.DEFAULT_BTN_RADIUS,
-              TargetModel.DEFAULT_BTN_RADIUS,
+              HotspotTargetModel.DEFAULT_BTN_RADIUS,
+              HotspotTargetModel.DEFAULT_BTN_RADIUS,
             ),
           );
-          foundTc.changed_saveRootSnippet(
+          foundTc.saveParentSnippet(
             widget.parentNode.rootNodeOfSnippet(),
           );
         } else if (foundTc != null) {
@@ -332,18 +320,36 @@ class TargetsWrapperState extends State<TargetsWrapper> {
               foundTc.targetRadius(this),
             ),
           );
-          foundTc.changed_saveRootSnippet(
+          foundTc.saveParentSnippet(
             widget.parentNode.rootNodeOfSnippet(),
           );
         }
       });
     }
 
-    // prepare list of play btns and target covers
+    // prepare list of lines, play btns and target covers
+    // final lines = <Widget>[];
+    // if (!_needToMeasureChild) {
+    //   for (HotspotTargetModel tc in widget.parentNode.targets) {
+    //     if (tc.isALine()) {
+    //       lines.add(
+    //         IgnorePointer(
+    //           child: CustomPaint(
+    //             painter: LinePainter(
+    //               start: tc.lineStartLocalPc,
+    //               end: tc.lineEndLocalPc,
+    //             ),
+    //           ),
+    //         ),
+    //       );
+    //     }
+    //   }
+    // }
+
     final btns = <Widget>[];
     if (!_needToMeasureChild) {
-      for (TargetModel tc in widget.parentNode.targets) {
-        if (playingTc == null && tc.hasAHotspot()) {
+      for (HotspotTargetModel tc in widget.parentNode.targets) {
+        if (playingTc == null && tc.hasABtn()) {
           btns.add(
             Positioned(
               top: tc.btnLocalPos(this).dy - tc.btnRadius(this),
@@ -361,7 +367,7 @@ class TargetsWrapperState extends State<TargetsWrapper> {
 
     final covers = <Widget>[];
     if (!_needToMeasureChild) {
-      for (TargetModel tc in widget.parentNode.targets) {
+      for (HotspotTargetModel tc in widget.parentNode.targets) {
         if ((playingTc == null || playingTc == tc)) {
           covers.add(
             Positioned(
@@ -401,25 +407,67 @@ class TargetsWrapperState extends State<TargetsWrapper> {
             DragTarget<(TargetId, bool)>(
               builder: (_, __, ___) {
                 return GestureDetector(
-                  onTapDown: (TapDownDetails details) async {
+                  // onLongPressDown: (details) {
+                  //   print('*** long press down');
+                  //   setState(() {
+                  //     _lineStartPos = details.globalPosition;
+                  //     _lineEndPos = details.globalPosition;
+                  //     print('_lineStartPos is $_lineStartPos');
+                  //     print('_lineEndPos is $_lineEndPos');
+                  //   });
+                  // },
+                  // onLongPressMoveUpdate: (details) {
+                  //   print('*** long press move');
+                  //   if (_lineStartPos != null) {
+                  //     setState(() {
+                  //       _lineEndPos = details.globalPosition;
+                  //     });
+                  //   }
+                  // },
+                  // onLongPressEnd: (details) {
+                  //   print('*** long press end');
+                  //   print('_lineStartPos is $_lineStartPos');
+                  //   print('_lineEndPos is $_lineEndPos');
+                  //   if (_lineStartPos != null && _lineEndPos != null) {
+                  //     // line must not be too short
+                  //     Line line = Line(
+                  //       Coord.fromOffset(_lineStartPos!),
+                  //       Coord.fromOffset(_lineEndPos!),
+                  //     );
+                  //     double lineLen = line.length();
+                  //     print('lineLen is $lineLen');
+                  //     if (lineLen < 50) return;
+                  //     // A line has been drawn.
+                  //     // You can now create your line object.
+                  //     createLine(context, _lineStartPos!, _lineEndPos!);
+                  //     print('Line created from $_lineStartPos to $_lineEndPos');
+                  //   }
+                  //   // Reset for the next line drawing operation.
+                  //   setState(() {
+                  //     _lineStartPos = null;
+                  //     _lineEndPos = null;
+                  //   });
+                  // },
+                  onTapUp: (TapUpDetails details) async {
                     // ignore if not in editing mode or if currently showing config toolbar
                     if (!fco.canEditContent() ||
-                        fco.anyPresent([CalloutConfigToolbar.CID]) ||
+                        fco.anyPresent([HotspotTargetConfigToolbar.CID]) ||
                         fco.snippetBeingEdited != null) {
                       return;
                     }
                     // dismiss any auto-played target callouts
                     if (fco.canEditContent()) {
                       bool hidACallout = false;
-                      for (TargetModel tc in widget.parentNode.targets) {
-                        if (!tc.hasAHotspot() &&
+                      for (HotspotTargetModel tc in widget.parentNode.targets) {
+                        if (!tc.hasABtn() &&
                             fco.anyPresent([tc.contentCId])) {
-                          removeSnippetContentCallout(tc);
+                          tc.removeContentCallout();
                           hidACallout = true;
                         }
                       }
                       if (hidACallout) return;
                     }
+
                     // show create target dlg
                     pulsingPointPos = details.localPosition;
                     pulsingPointGK = GlobalKey();
@@ -430,15 +478,17 @@ class TargetsWrapperState extends State<TargetsWrapper> {
                     double alY = 0;
                     // pos on wrapperRect
                     var tapPosLocal = details.localPosition;
-                    var tapPosGlobal = translateOffsetForScroll(
+                    var tapPosGlobal = fco.translateOffsetForScroll(
+                      scrollConfig,
                       details.globalPosition,
                     );
                     var targetRect = Rect.fromCenter(
                       center: tapPosGlobal,
-                      width: TargetModel.DEFAULT_TARGET_RADIUS,
-                      height: TargetModel.DEFAULT_TARGET_RADIUS,
+                      width: HotspotTargetModel.DEFAULT_TARGET_RADIUS,
+                      height: HotspotTargetModel.DEFAULT_TARGET_RADIUS,
                     );
-                    var screenCenterPos = translateOffsetForScroll(
+                    var screenCenterPos = fco.translateOffsetForScroll(
+                      scrollConfig,
                       Offset(
                         MediaQuery.of(context).size.width / 2,
                         MediaQuery.of(context).size.height / 2,
@@ -511,7 +561,7 @@ class TargetsWrapperState extends State<TargetsWrapper> {
                   child: _childBuild(),
                 );
               },
-              onAcceptWithDetails: fco.anyPresent([CalloutConfigToolbar.CID])
+              onAcceptWithDetails: fco.anyPresent([HotspotTargetConfigToolbar.CID])
                   ? null
                   : droppedBtnOrCover,
             ),
@@ -530,18 +580,20 @@ class TargetsWrapperState extends State<TargetsWrapper> {
 
             ...btns,
 
+            // ...lines,
+
             // PULSING POINT animation
             if (!_needToMeasureChild &&
                 pulsingPointPos != null &&
                 pulsingPointGK != null)
               Positioned(
                     top:
-                        pulsingPointPos!.dy - TargetModel.DEFAULT_TARGET_RADIUS,
+                        pulsingPointPos!.dy - HotspotTargetModel.DEFAULT_TARGET_RADIUS,
                     left:
-                        pulsingPointPos!.dx - TargetModel.DEFAULT_TARGET_RADIUS,
+                        pulsingPointPos!.dx - HotspotTargetModel.DEFAULT_TARGET_RADIUS,
                     child: TargetCover(
                       // key: pulsingPointGK,
-                      TargetModel(uid: -1),
+                      HotspotTargetModel(uid: -1),
                       widget.parentNode.targets.length,
                       wrapperState: this,
                       playing: false,
@@ -558,11 +610,11 @@ class TargetsWrapperState extends State<TargetsWrapper> {
                 pulsingPointPos != null &&
                 pulsingPointGK != null)
               Positioned(
-                top: pulsingPointPos!.dy - TargetModel.DEFAULT_TARGET_RADIUS,
-                left: pulsingPointPos!.dx - TargetModel.DEFAULT_TARGET_RADIUS,
+                top: pulsingPointPos!.dy - HotspotTargetModel.DEFAULT_TARGET_RADIUS,
+                left: pulsingPointPos!.dx - HotspotTargetModel.DEFAULT_TARGET_RADIUS,
                 child: TargetCover(
                   key: pulsingPointGK,
-                  TargetModel(uid: -1),
+                  HotspotTargetModel(uid: -1),
                   widget.parentNode.targets.length,
                   wrapperState: this,
                   playing: false,
@@ -574,7 +626,30 @@ class TargetsWrapperState extends State<TargetsWrapper> {
     );
   }
 
-  int _targetIndex(TargetModel tc) => widget.parentNode.targets.indexOf(tc);
+  // void createLine(BuildContext context, Offset fromGlobalPos, Offset toGlobalPos) {
+  //   if (!fco.canEditContent()) return;
+  //
+  //   TargetId newLineId = DateTime.now().millisecondsSinceEpoch;
+  //   HotspotTargetModel newLine = HotspotTargetModel(uid: newLineId);
+  //
+  //   newLine.setLineStartLocalPosPc(this, fromGlobalPos);
+  //   newLine.setLineEndLocalPosPc(this, toGlobalPos);
+  //
+  //   widget.parentNode.targets = [...widget.parentNode.targets, newLine];
+  //
+  //   fco.capiBloc.add(const CAPIEvent.forceRefresh(onlyTargetsWrappers: true));
+  //
+  //   final newVersionId = SnippetInfoModel.createNewVersion(
+  //     widget.parentNode.rootNodeOfSnippet()!,
+  //   );
+  //   fco.modelRepo.saveSnippetVersion(
+  //     snippetName: widget.parentNode.rootNodeOfSnippet()!.name,
+  //     newVersionId: newVersionId,
+  //     newVersion: widget.parentNode.rootNodeOfSnippet()!,
+  //   );
+  // }
+
+  int _targetIndex(HotspotTargetModel tc) => widget.parentNode.targets.indexOf(tc);
 
   Widget _childBuild() {
     final childNode = widget.childNode;
@@ -683,4 +758,25 @@ class IntegerCircleAvatar extends StatelessWidget {
       ),
     );
   }
+}
+
+class LinePainter extends CustomPainter {
+  final Offset? start;
+  final Offset? end;
+
+  LinePainter({this.start, this.end});
+
+  @override
+  void paint(Canvas canvas, Size size) {
+    if (start != null && end != null) {
+      final paint = Paint()
+        ..color = Colors.purpleAccent
+        ..strokeWidth = 3
+        ..strokeCap = StrokeCap.round;
+      canvas.drawLine(start!, end!, paint);
+    }
+  }
+
+  @override
+  bool shouldRepaint(covariant CustomPainter oldDelegate) => true;
 }

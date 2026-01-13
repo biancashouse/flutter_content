@@ -12,37 +12,42 @@ class TargetsWrapperNode extends SC with TargetsWrapperNodeMappable {
 
   // every drag end of a cover or play btn updates the aspect ratio
   double borderRadius;
-  List<TargetModel> targets;
-  @JsonKey(includeFromJson: false, includeToJson: false)
-  List<TargetModel> playList;
+  List<HotspotTargetModel> targets;
 
   TargetsWrapperNode({
     this.aspectRatio,
     this.borderRadius = 0,
     this.targets = const [],
-    this.playList = const [],
     super.child,
   });
 
+  List<HotspotTargetModel> _playList = [];
+
+  List<HotspotTargetModel> get playList => _playList;
+
+  set playList(List<HotspotTargetModel> value) {
+    _playList = value;
+  }
+
   @override
   List<PNode> propertyNodes(BuildContext context, SNode? parentSNode) => [
-    DecimalPNode(
-      snode: this,
-      name: 'aspectRatio',
-      decimalValue: aspectRatio,
-      onDoubleChange: (newValue) =>
-          refreshWithUpdate(context, () => aspectRatio = newValue ?? 0.0),
-      calloutButtonSize: const Size(130, 20),
-    ),
-    DecimalPNode(
-      snode: this,
-      name: 'borderRadius',
-      decimalValue: borderRadius,
-      onDoubleChange: (newValue) =>
-          refreshWithUpdate(context, () => borderRadius = newValue ?? 0.0),
-      calloutButtonSize: const Size(130, 20),
-    ),
-   ];
+        DecimalPNode(
+          snode: this,
+          name: 'aspectRatio',
+          decimalValue: aspectRatio,
+          onDoubleChange: (newValue) =>
+              refreshWithUpdate(context, () => aspectRatio = newValue ?? 0.0),
+          calloutButtonSize: const Size(130, 20),
+        ),
+        DecimalPNode(
+          snode: this,
+          name: 'borderRadius',
+          decimalValue: borderRadius,
+          onDoubleChange: (newValue) =>
+              refreshWithUpdate(context, () => borderRadius = newValue ?? 0.0),
+          calloutButtonSize: const Size(130, 20),
+        ),
+      ];
 
   @override
   Widget buildFlutterWidget(BuildContext context, SNode? parentNode) {
@@ -52,9 +57,9 @@ class TargetsWrapperNode extends SC with TargetsWrapperNodeMappable {
         ? ClipRRect(
             borderRadius: BorderRadius.circular(borderRadius),
             child: TargetsWrapper(
-                parentNode: this,
-                key: createNodeWidgetGK(),
-                childNode: child,
+              parentNode: this,
+              key: createNodeWidgetGK(),
+              childNode: child,
             ),
           )
         : Error(
@@ -72,7 +77,7 @@ class TargetsWrapperNode extends SC with TargetsWrapperNodeMappable {
         'Icon(Icons.warning, color: Colors.red, size: 24,)';
   }
 
-  TargetModel? findTarget(TargetId uid) {
+  HotspotTargetModel? findTarget(TargetId uid) {
     return targets.where((tc) => tc.uid == uid).firstOrNull;
   }
 

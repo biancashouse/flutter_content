@@ -40,14 +40,17 @@ class PropertyButtonEnum extends StatelessWidget {
                   label.isNotEmpty ? '$label: ' : '',
                   color: Colors.white,
                 )),
-                originalEnumIndex == null
-                    ? fco.coloredText('...', color: Colors.white)
-                    : mi,
+                // originalEnumIndex == null
+                //     ? fco.coloredText('...', color: Colors.white)
+                //     :
+                mi,
               ],
             )
-          : originalEnumIndex == null
-          ? fco.coloredText('...', color: Colors.white)
-          : mi,
+          :
+      // originalEnumIndex == null
+      //     ? fco.coloredText('...', color: Colors.white)
+      //     :
+      mi,
       calloutButtonSize: calloutButtonSize,
       initialCalloutAlignment: Alignment.bottomCenter,
       initialTargetAlignment: Alignment.topCenter,

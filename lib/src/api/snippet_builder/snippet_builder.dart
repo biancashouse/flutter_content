@@ -26,7 +26,7 @@ class SnippetBuilder extends StatefulWidget {
 
   final bool justPlaying;
 
-  final TargetModel? tc; // for when called to create a hotspot callout
+  // final HotspotTargetModel? tc; // for when called to create a hotspot callout
 
   final void Function(ScrollNotification)? onScrollF;
 
@@ -38,7 +38,7 @@ class SnippetBuilder extends StatefulWidget {
     this.handlers,
     this.onScrollF,
     this.justPlaying = false,
-    this.tc,
+    // this.tc,
     this.onLayoutDone,
     super.key,
   });
@@ -260,12 +260,16 @@ class SnippetBuilderState extends State<SnippetBuilder>
                 print(
                   'SnippetBuilder() created a brand new snippet from a template (${widget.templateSnippet!.name}',
                 );
-                fco.modelRepo.saveSnippetVersion(
-                  snippetName: widget.templateSnippet!.name,
-                  newVersionId: newVersionId,
-                  newVersion: widget.templateSnippet!,
-                );
-                fco.modelRepo.saveAppInfo();
+                fco.modelRepo
+                    .saveBrandNewSnippet(
+                      snippetName: widget.templateSnippet!.name,
+                      versionId: newVersionId,
+                      initialVersion: widget.templateSnippet!,
+                    )
+                    .then((b) {
+                      fco.modelRepo.saveAppInfo();
+                    });
+
                 return _stackWidget(widget.templateSnippet!);
               }
 
@@ -301,7 +305,8 @@ class SnippetBuilderState extends State<SnippetBuilder>
                       "SnippetBuilder",
                       color: Colors.red,
                       size: 18,
-                      errorMsg: "${snippetName()}: ${snapshot.error.toString()}",
+                      errorMsg:
+                          "${snippetName()}: ${snapshot.error.toString()}",
                       key: GlobalKey(),
                     );
                   }
@@ -391,7 +396,9 @@ class SnippetBuilderState extends State<SnippetBuilder>
           alignment: Alignment.topRight,
           child: PointerInterceptor(
             child: Tooltip(
-              message: 'show Snippet menu\n${snippetInfo.name}',
+              message: isPublishedVersion
+                  ? 'show Snippet menu\n${snippetInfo.name}'
+                  : 'show Snippet menu\n${snippetInfo.name}\n*** NOT PUBLISHED ***',
               child: Container(
                 width: 20,
                 height: 20,

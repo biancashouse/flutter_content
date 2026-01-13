@@ -22,12 +22,14 @@ import 'enums/enum_wrap_alignment.dart';
 class EnumPNode<T> extends PNode {
   int? valueIndex;
   final ValueChanged<int?> onIndexChange;
+  final ColorOrGradient? fillColorOrGradient;
 
   EnumPNode({
     required this.valueIndex,
     required this.onIndexChange,
     required super.name,
     required super.snode,
+    this.fillColorOrGradient,
   });
 
   @override
@@ -81,7 +83,7 @@ class EnumPNode<T> extends PNode {
         enumValueIndex: valueIndex,
         onChangedF: (newValueIndex) =>
             onIndexChange(valueIndex = newValueIndex),
-         
+          fillColorOrGradient: fillColorOrGradient,
       );
     }
     // ArrowType -------------

@@ -2,6 +2,7 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_content/flutter_content.dart';
+import 'package:flutter_content/src/snippet/snodes/hotspots/widgets/hotspot_target_config_toolbar/hotspot_target_config_toolbar.dart';
 import 'package:go_router/go_router.dart';
 import 'package:pointer_interceptor/pointer_interceptor.dart';
 import 'package:web/web.dart' as web;
@@ -198,7 +199,7 @@ mixin NavMixin {
 
   Widget _signOutBtn(context) => TextButton(
     onPressed: () {
-      if (!fco.anyPresent([CalloutConfigToolbar.CID])) {
+      if (!fco.anyPresent([HotspotTargetConfigToolbar.CID])) {
         fco.capiBloc.add(CAPIEvent.signedOut());
         Navigator.pop(context);
       }
@@ -214,10 +215,11 @@ mixin NavMixin {
     onTap: () {
       context.go(pagePath);
       // something funny going on when not in prod mode
-      if (kDebugMode)
+      if (false && kDebugMode) {
         fco.afterMsDelayDo(1000, () {
           fco.refreshCurrentPage();
         });
+      }
     },
     child: SizedBox(
       width: 400,

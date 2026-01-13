@@ -47,10 +47,10 @@ enum DecorationShapeEnum {
     required SNode snode,
     required String label,
     ValueChanged<int?>? onChangedF,
-    required 
+    ColorOrGradient? fillColorOrGradient,
   }) => PropertyButtonEnum(
     label: label,
-    menuItems: values.map((e) => e.toMenuItem()).toList(),
+    menuItems: values.map((e) => e.toMenuItem(fillColors: fillColorOrGradient)).toList(),
     originalEnumIndex: enumValueIndex,
     onChangeF: (newIndex) {
       onChangedF?.call(newIndex);
@@ -60,11 +60,11 @@ enum DecorationShapeEnum {
     calloutSize: const Size(240, 220),
   );
 
-  Widget toMenuItem({bool skipLabel = true}) => SizedBox(
+  Widget toMenuItem({ColorOrGradient? fillColors, bool skipLabel = true}) => SizedBox(
     width: 50,
     height: 30,
     child: Container(decoration: toDecoration(
-      fillColorOrGradient: ColorOrGradient.color(Colors.white),
+      fillColorOrGradient: fillColors,
       borderColorOrGradient: ColorOrGradient.color(Colors.grey),
     )),
   );

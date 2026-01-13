@@ -6,8 +6,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_content/flutter_content.dart';
 import 'package:flutter_content/src/bloc/snippet_being_edited.dart';
 import 'package:flutter_content/src/snippet/pnodes/enums/enum_main_axis_size.dart';
-import 'package:flutter_content/src/snippet/pnodes/groups/button_style_properties.dart';
-import 'package:flutter_content/src/snippet/snodes/storage_image_node.dart';
+import 'package:flutter_content/src/snippet/snodes/hotspots/widgets/hotspot_target_config_toolbar/hotspot_target_config_toolbar.dart';
 
 class CAPIBloC extends Bloc<CAPIEvent, CAPIState> {
   // late SnippetUndoRedoStack _ur;
@@ -78,8 +77,12 @@ class CAPIBloC extends Bloc<CAPIEvent, CAPIState> {
     on<WrapSelectionWith>((event, emit) => _wrapWith(event, emit));
     on<ReplaceSelectionWith>((event, emit) => _replaceWith(event, emit));
     on<AppendChild>((event, emit) => _addChild(event, emit));
-    on<AddSiblingBefore>((event, emit) => _addSibling(event, emit, before:true));
-    on<AddSiblingAfter>((event, emit) => _addSibling(event, emit, before:false));
+    on<AddSiblingBefore>(
+      (event, emit) => _addSibling(event, emit, before: true),
+    );
+    on<AddSiblingAfter>(
+      (event, emit) => _addSibling(event, emit, before: false),
+    );
     on<PasteChild>((event, emit) => _pasteChild(event, emit));
     on<PasteReplacement>((event, emit) => _pasteReplacement(event, emit));
     on<PasteSiblingBefore>((event, emit) => _pasteSiblingBefore(event, emit));
@@ -123,7 +126,11 @@ class CAPIBloC extends Bloc<CAPIEvent, CAPIState> {
 
   Future<void> _revertSnippet(RevertSnippet event, emit) async {
     SnippetInfoModel? snippetInfo = SnippetInfoModel.cachedSnippetInfo(
-      state.snippetBeingEdited?.getRootNode().name ?? 'missing snippet name!',
+      event.snippetName
+          // ??
+          // state.snippetBeingEdited?.getRootNode().name ??
+          // 'missing snippet name!'
+      ,
     );
     if (snippetInfo == null) return;
 
@@ -328,12 +335,7 @@ class CAPIBloC extends Bloc<CAPIEvent, CAPIState> {
     }
     fco.logger.i('_replaceSnippetFromJson: snippet name is "${rootNode.name}"');
     // save the clipboard snippet
-    final newVersionId = SnippetInfoModel.createNewVersion(rootNode);
-    fco.modelRepo.saveSnippetVersion(
-      snippetName: rootNode.name,
-      newVersionId: newVersionId,
-      newVersion: rootNode,
-    );
+    fco.modelRepo.saveNewVersionOfSnippet(rootNode);
     emit(state.copyWith(force: state.force + 1));
   }
 
@@ -397,7 +399,7 @@ class CAPIBloC extends Bloc<CAPIEvent, CAPIState> {
 
     emit(
       state.copyWith(
-        snippetBeingEdited: state.snippetBeingEdited!..updatesPending = true,
+        snippetBeingEdited: state.snippetBeingEdited?..updatesPending = true,
         force: state.force + 1,
       ),
     );
@@ -406,17 +408,9 @@ class CAPIBloC extends Bloc<CAPIEvent, CAPIState> {
   Future<void> _popSnippetEditor(PopSnippetEditor event, emit) async {
     // if (state.snippetBeingEdited?.aNodeIsNotSelected??false) return;
     if (event.save || (state.snippetBeingEdited?.updatesPending ?? false)) {
-      // save) {
-      final rootNode = state.snippetBeingEdited!.getRootNode();
-      assert(rootNode.isValid());
-      final newVersionId = SnippetInfoModel.createNewVersion(rootNode);
-      fco.modelRepo.saveSnippetVersion(
-        snippetName: rootNode.name,
-        newVersionId: newVersionId,
-        newVersion: rootNode,
-      );
+      fco.modelRepo.saveNewVersionOfSnippetBeingEdited();
     }
-    fco.dismiss(CalloutConfigToolbar.CID);
+    fco.dismiss(HotspotTargetConfigToolbar.CID);
     // fco.dismissAll();
     emit(state.copyWith(snippetBeingEdited: null));
   }
@@ -527,7 +521,7 @@ class CAPIBloC extends Bloc<CAPIEvent, CAPIState> {
 
     // STreeNode? sel = state.selectedNode;
     // STreeNode? selParent = sel?.getParent() as STreeNode?;
-    SNode newSel = _possiblyRemoveFromParentButNotChildren();
+    SNode newSel = _possiblyRemoveFromParent();
     SnippetTreeController possiblyNewTreeC = state.snippetBeingEdited!.treeC;
     // if (newSel.getParent() is SnippetRootNode) {
     //   possiblyNewTreeC = SnippetTreeController(
@@ -544,12 +538,7 @@ class CAPIBloC extends Bloc<CAPIEvent, CAPIState> {
     state.snippetBeingEdited!.selectedNode = newSel;
 
     final newSnippet = state.snippetBeingEdited!.getRootNode();
-    final newVersionId = SnippetInfoModel.createNewVersion(newSnippet);
-    fco.modelRepo.saveSnippetVersion(
-      snippetName: newSnippet.name,
-      newVersionId: newVersionId,
-      newVersion: newSnippet,
-    );
+    fco.modelRepo.saveNewVersionOfSnippet(newSnippet);
 
     emit(
       state.copyWith(
@@ -574,7 +563,7 @@ class CAPIBloC extends Bloc<CAPIEvent, CAPIState> {
   //   }
   // }
 
-  SNode _possiblyRemoveFromParentButNotChildren() {
+  SNode _possiblyRemoveFromParent() {
     SNode sel = state.snippetBeingEdited!.selectedNode!;
 
     // node to be deleted must have a parent; i.e. not a snippetrootnode
@@ -585,8 +574,17 @@ class CAPIBloC extends Bloc<CAPIEvent, CAPIState> {
     }
 
     SNode selParent = sel.getParent() as SNode;
+
     late SNode newSel;
-    //tab-related
+
+    // only child of a snippet, remove but replace with a placeholder
+    if (selParent is SnippetRootNode && sel.hasNoChildren()) {
+      SNode ph = PlaceholderNode()..setParent(selParent);
+      newSel = selParent.child = ph;
+      return newSel;
+    }
+
+    // tab-related
     if (sel.isAScaffoldTabWidget() && !sel.hasChildren()) {
       int index = (selParent as TabBarNode).children.indexOf(sel);
       selParent.children.remove(sel);
@@ -596,8 +594,11 @@ class CAPIBloC extends Bloc<CAPIEvent, CAPIState> {
         (scaffold!.body.child as TabBarViewNode).children.removeAt(index);
       }
       newSel = selParent;
-      // tabView-related
-    } else if (sel.isAScaffoldTabViewWidget() && !sel.hasChildren()) {
+      return newSel;
+    }
+
+    // tabView-related
+    if (sel.isAScaffoldTabViewWidget() && !sel.hasChildren()) {
       int index = (selParent as TabBarViewNode).children.indexOf(sel);
       selParent.children.remove(sel);
       ScaffoldNode? scaffold =
@@ -610,138 +611,149 @@ class CAPIBloC extends Bloc<CAPIEvent, CAPIState> {
         }
       }
       newSel = selParent;
-    } else if (sel is SliverAppBarNode) {
-      (selParent as MC).children.remove(sel);
-      newSel = selParent;
-    } else if (sel is StepNode && selParent is StepperNode) {
-      selParent.children.remove(sel);
-      newSel = selParent;
-    } else if (sel is PollOptionNode && selParent is PollNode) {
-      selParent.children.remove(sel);
-      newSel = selParent;
-    } else if (selParent is SnippetRootNode && sel is CL) {
-      SNode ph = PlaceholderNode()..setParent(selParent);
-      newSel = selParent.child = ph;
-    } else if (selParent is SnippetRootNode && sel is SC && sel.child == null) {
-      SNode ph = PlaceholderNode()..setParent(selParent);
-      newSel = selParent.child = ph;
-    } else if (selParent is SnippetRootNode &&
-        sel is MC &&
-        sel.children.isEmpty) {
-      SNode ph = PlaceholderNode()..setParent(selParent);
-      newSel = selParent.child = ph;
-    } else if (selParent is SC && (sel is CL || sel is SnippetRootNode)) {
-      selParent.child = null;
-      newSel = selParent;
-    } else if (selParent is SC && sel is SC) {
-      selParent.child = sel.child?..setParent(selParent);
-      newSel = selParent;
-    } else if (selParent is SC && sel is MC && sel.children.isEmpty) {
-      selParent.child = null;
-      newSel = selParent;
-    } else if (selParent is SC && sel is MC && sel.children.length < 2) {
-      selParent.child = sel.children.first..setParent(selParent);
-      newSel = selParent;
-    } else if (selParent is MC && (sel is CL || sel is SnippetRootNode)) {
-      selParent.children.remove(sel);
-      newSel = selParent;
-    } else if (selParent is ListViewNode && (sel is CL || sel is SnippetRootNode)) {
-      selParent.children.remove(sel);
-      newSel = selParent;
-    } else if (selParent is GridViewNode && (sel is CL || sel is SnippetRootNode)) {
-      selParent.children.remove(sel);
-      newSel = selParent;
-    } else if (selParent is CustomScrollViewNode && (sel is CL || sel is SnippetRootNode)) {
-      selParent.slivers.remove(sel);
-      newSel = selParent;
-    } else if (selParent is MC && sel is SC && sel.child != null) {
-      int index = selParent.children.indexOf(sel);
-      selParent.children[index] = sel.child!..setParent(selParent);
-      newSel = selParent;
-    } else if (selParent is ListViewNode && sel is SC && sel.child != null) {
-      int index = selParent.children.indexOf(sel);
-      selParent.children[index] = sel.child!..setParent(selParent);
-      newSel = selParent;
-    } else if (selParent is GridViewNode && sel is SC && sel.child != null) {
-      int index = selParent.children.indexOf(sel);
-      selParent.children[index] = sel.child!..setParent(selParent);
-      newSel = selParent;
-    } else if (selParent is CustomScrollViewNode && sel is SC && sel.child != null) {
-      int index = selParent.slivers.indexOf(sel);
-      selParent.slivers[index] = sel.child!..setParent(selParent);
-      newSel = selParent;
-    } else if (selParent is MC && sel is MC && sel.children.length == 1) {
-      int index = selParent.children.indexOf(sel);
-      selParent.children[index] = sel.children.first..setParent(selParent);
-      newSel = selParent;
-    } else if (selParent is ListViewNode && sel is MC && sel.children.length == 1) {
-      int index = selParent.children.indexOf(sel);
-      selParent.children[index] = sel.children.first..setParent(selParent);
-      newSel = selParent;
-    } else if (selParent is GridViewNode && sel is MC && sel.children.length == 1) {
-      int index = selParent.children.indexOf(sel);
-      selParent.children[index] = sel.children.first..setParent(selParent);
-      newSel = selParent;
-    } else if (selParent is CustomScrollViewNode && sel is MC && sel.children.length == 1) {
-      int index = selParent.slivers.indexOf(sel);
-      selParent.slivers[index] = sel.children.first..setParent(selParent);
-      newSel = selParent;
-    } else if (selParent is MC &&
-        ((sel is SC && sel.child == null) ||
-            (sel is MC && sel.children.isEmpty))) {
-      selParent.children.remove(sel);
-      newSel = selParent;
-    } else if (selParent is ListViewNode &&
-        ((sel is SC && sel.child == null) ||
-            (sel is MC && sel.children.isEmpty))) {
-      selParent.children.remove(sel);
-      newSel = selParent;
-    } else if (selParent is GridViewNode &&
-        ((sel is SC && sel.child == null) ||
-            (sel is MC && sel.children.isEmpty))) {
-      selParent.children.remove(sel);
-      newSel = selParent;
-    } else if (selParent is CustomScrollViewNode &&
-        ((sel is SC && sel.child == null) ||
-            (sel is MC && sel.children.isEmpty))) {
-      selParent.slivers.remove(sel);
-      newSel = selParent;
-    } else if (selParent is RichTextNode &&
-        sel is TextSpanNode &&
-        sel.children?.length == 1) {
-      selParent.text = sel.children!.first..setParent(selParent);
-      newSel = selParent;
-    } else if (selParent is RichTextNode &&
-        (sel is WidgetSpanNode ||
-            sel is TextSpanNode && sel.children?.length != 1)) {
-      selParent.text = TextSpanNode(
-        text: 'xxx',
-        tsPropGroup: TextStyleProperties(),
-      )..setParent(selParent);
-      newSel = selParent;
-    } else if (selParent is TextSpanNode) {
-      selParent.children!.remove(sel);
-      newSel = selParent;
-    } else if (selParent is NamedSC && selParent.propertyName == 'title') {
-      selParent.child = TextNode(
-        text: 'must have a title widget!',
-        tsPropGroup: TextStyleProperties(),
-      )..setParent(selParent);
-      newSel = selParent;
-    } else if (selParent is NamedSC && selParent.propertyName == 'content') {
-      selParent.child = TextNode(
-        text: 'must have a content widget!',
-        tsPropGroup: TextStyleProperties(),
-      )..setParent(selParent);
-      newSel = selParent;
+      return newSel;
     }
 
-    if (newSel is SnippetRootNode &&
-        newSel.getParent() == null &&
-        newSel.child != null) {
-      newSel = newSel.child!;
-    }
-    return newSel;
+    //  // node has no children or node is a snippet itself, just remove
+    //  if (sel.hasNoChildren() || sel is SnippetRootNode) {
+    //    newSel = sel.removeFromParent();
+    //    return newSel;
+    //  }
+    //
+    // if (sel is SnippetRootNode) {
+    //    newSel = sel.removeFromParent();
+    //  } else if (selParent is SC && sel is SC) {
+    //    selParent.child = sel.child?..setParent(selParent);
+    //    newSel = selParent;
+    //  } else if (selParent is SC) {
+    //    if (sel.hasSingleChild()) {
+    //      selParent.child = sel.firstChild()
+    //        ..setParent(selParent);
+    //      newSel = selParent;
+    //    } else {
+    //      selParent.child = null;
+    //      newSel = selParent;
+    //    } else if (selParent is SC && sel.hasSingleChild()) {
+    //
+    //  } else if (selParent is SC && sel.hasMultipleChildren()) {
+    //    selParent.child = sel.firstChild()
+    //      ..setParent(selParent);
+    //    newSel = selParent;
+    //  } else if (selParent is MC && (sel is CL || sel is SnippetRootNode)) {
+    //    selParent.children.remove(sel);
+    //    newSel = selParent;
+    //  } else
+    //  if (selParent is ListViewNode && (sel is CL || sel is SnippetRootNode)) {
+    //    selParent.children.remove(sel);
+    //    newSel = selParent;
+    //  } else
+    //  if (selParent is GridViewNode && (sel is CL || sel is SnippetRootNode)) {
+    //    selParent.children.remove(sel);
+    //    newSel = selParent;
+    //  } else if (selParent is CustomScrollViewNode &&
+    //      (sel is CL || sel is SnippetRootNode)) {
+    //    selParent.slivers.remove(sel);
+    //    newSel = selParent;
+    //  } else if (selParent is MC && sel is SC && sel.child != null) {
+    //    int index = selParent.children.indexOf(sel);
+    //    selParent.children[index] = sel.child!
+    //      ..setParent(selParent);
+    //    newSel = selParent;
+    //  } else if (selParent is ListViewNode && sel is SC && sel.child != null) {
+    //    int index = selParent.children.indexOf(sel);
+    //    selParent.children[index] = sel.child!
+    //      ..setParent(selParent);
+    //    newSel = selParent;
+    //  } else if (selParent is GridViewNode && sel is SC && sel.child != null) {
+    //    int index = selParent.children.indexOf(sel);
+    //    selParent.children[index] = sel.child!
+    //      ..setParent(selParent);
+    //    newSel = selParent;
+    //  } else
+    //  if (selParent is CustomScrollViewNode && sel is SC && sel.child != null) {
+    //    int index = selParent.slivers.indexOf(sel);
+    //    selParent.slivers[index] = sel.child!
+    //      ..setParent(selParent);
+    //    newSel = selParent;
+    //  } else if (selParent is MC && sel is MC && sel.children.length == 1) {
+    //    int index = selParent.children.indexOf(sel);
+    //    selParent.children[index] = sel.children.first..setParent(selParent);
+    //    newSel = selParent;
+    //  } else
+    //  if (selParent is ListViewNode && sel is MC && sel.children.length == 1) {
+    //    int index = selParent.children.indexOf(sel);
+    //    selParent.children[index] = sel.children.first..setParent(selParent);
+    //    newSel = selParent;
+    //  } else
+    //  if (selParent is GridViewNode && sel is MC && sel.children.length == 1) {
+    //    int index = selParent.children.indexOf(sel);
+    //    selParent.children[index] = sel.children.first..setParent(selParent);
+    //    newSel = selParent;
+    //  } else if (selParent is CustomScrollViewNode && sel is MC &&
+    //      sel.children.length == 1) {
+    //    int index = selParent.slivers.indexOf(sel);
+    //    selParent.slivers[index] = sel.children.first..setParent(selParent);
+    //    newSel = selParent;
+    //  } else if (selParent is MC &&
+    //      ((sel is SC && sel.child == null) ||
+    //          (sel is MC && sel.children.isEmpty))) {
+    //    selParent.children.remove(sel);
+    //    newSel = selParent;
+    //  } else if (selParent is ListViewNode &&
+    //      ((sel is SC && sel.child == null) ||
+    //          (sel is MC && sel.children.isEmpty))) {
+    //    selParent.children.remove(sel);
+    //    newSel = selParent;
+    //  } else if (selParent is GridViewNode &&
+    //      ((sel is SC && sel.child == null) ||
+    //          (sel is MC && sel.children.isEmpty))) {
+    //    selParent.children.remove(sel);
+    //    newSel = selParent;
+    //  } else if (selParent is CustomScrollViewNode &&
+    //      ((sel is SC && sel.child == null) ||
+    //          (sel is MC && sel.children.isEmpty))) {
+    //    selParent.slivers.remove(sel);
+    //    newSel = selParent;
+    //  } else if (selParent is RichTextNode &&
+    //      sel is TextSpanNode &&
+    //      sel.children?.length == 1) {
+    //    selParent.text = sel.children!.first..setParent(selParent);
+    //    newSel = selParent;
+    //  } else if (selParent is RichTextNode &&
+    //      (sel is WidgetSpanNode ||
+    //          sel is TextSpanNode && sel.children?.length != 1)) {
+    //    selParent.text = TextSpanNode(
+    //      text: 'xxx',
+    //      tsPropGroup: TextStyleProperties(),
+    //    )
+    //      ..setParent(selParent);
+    //    newSel = selParent;
+    //  } else if (selParent is TextSpanNode) {
+    //    selParent.children!.remove(sel);
+    //    newSel = selParent;
+    //  } else if (selParent is NamedSC && selParent.propertyName == 'title') {
+    //    selParent.child = TextNode(
+    //      text: 'must have a title widget!',
+    //      tsPropGroup: TextStyleProperties(),
+    //    )
+    //      ..setParent(selParent);
+    //    newSel = selParent;
+    //  } else if (selParent is NamedSC && selParent.propertyName == 'content') {
+    //    selParent.child = TextNode(
+    //      text: 'must have a content widget!',
+    //      tsPropGroup: TextStyleProperties(),
+    //    )
+    //      ..setParent(selParent);
+    //    newSel = selParent;
+    //  }
+    //
+    //  if (newSel is SnippetRootNode &&
+    //      newSel.getParent() == null &&
+    //      newSel.child != null) {
+    //    newSel = newSel.child!;
+    //  }
+
+    return sel.removeFromParent();
   }
 
   Future<void> _cutNode(CutNode event, emit) async {
@@ -766,12 +778,7 @@ class CAPIBloC extends Bloc<CAPIEvent, CAPIState> {
     _updateClipboard(event.node);
     emit(state.copyWith(force: state.force + 1));
     final newSnippet = state.snippetBeingEdited!.getRootNode();
-    final newVersionId = SnippetInfoModel.createNewVersion(newSnippet);
-    fco.modelRepo.saveSnippetVersion(
-      snippetName: newSnippet.name,
-      newVersionId: newVersionId,
-      newVersion: newSnippet,
-    );
+    fco.modelRepo.saveNewVersionOfSnippet(newSnippet);
   }
 
   Future<void> _copyNode(CopyNode event, emit) async {
@@ -1266,12 +1273,8 @@ class CAPIBloC extends Bloc<CAPIEvent, CAPIState> {
       ..treeC = possiblyNewTreeC;
 
     final newSnippet = state.snippetBeingEdited!.getRootNode();
-    final newVersionId = SnippetInfoModel.createNewVersion(newSnippet);
-    fco.modelRepo.saveSnippetVersion(
-      snippetName: newSnippet.name,
-      newVersionId: newVersionId,
-      newVersion: newSnippet,
-    );
+    fco.modelRepo.saveNewVersionOfSnippet(newSnippet);
+
 
     emit(state.copyWith(force: state.force + 1));
   }
@@ -1381,12 +1384,7 @@ class CAPIBloC extends Bloc<CAPIEvent, CAPIState> {
       ..treeC = possiblyNewTreeC;
 
     final newSnippet = state.snippetBeingEdited!.getRootNode();
-    final newVersionId = SnippetInfoModel.createNewVersion(newSnippet);
-    fco.modelRepo.saveSnippetVersion(
-      snippetName: newSnippet.name,
-      newVersionId: newVersionId,
-      newVersion: newSnippet,
-    );
+    fco.modelRepo.saveNewVersionOfSnippet(newSnippet);
 
     emit(state.copyWith(force: state.force + 1));
   }
@@ -1478,12 +1476,7 @@ class CAPIBloC extends Bloc<CAPIEvent, CAPIState> {
       ..getRootNode().validateTree();
 
     final newSnippet = state.snippetBeingEdited!.getRootNode();
-    final newVersionId = SnippetInfoModel.createNewVersion(newSnippet);
-    fco.modelRepo.saveSnippetVersion(
-      snippetName: newSnippet.name,
-      newVersionId: newVersionId,
-      newVersion: newSnippet,
-    );
+    fco.modelRepo.saveNewVersionOfSnippet(newSnippet);
 
     emit(state.copyWith(force: state.force + 1));
   }
@@ -1498,7 +1491,6 @@ class CAPIBloC extends Bloc<CAPIEvent, CAPIState> {
         fco.appInfo.clipboard!.clone(),
       );
     }
-
   }
 
   void _pasteChild(PasteChild event, emit) {
@@ -1645,12 +1637,7 @@ class CAPIBloC extends Bloc<CAPIEvent, CAPIState> {
     state.snippetBeingEdited!.selectedNode = newNode;
 
     final newSnippet = state.snippetBeingEdited!.getRootNode();
-    final newVersionId = SnippetInfoModel.createNewVersion(newSnippet);
-    fco.modelRepo.saveSnippetVersion(
-      snippetName: newSnippet.name,
-      newVersionId: newVersionId,
-      newVersion: newSnippet,
-    );
+    fco.modelRepo.saveNewVersionOfSnippet(newSnippet);
 
     emit(state.copyWith(force: state.force + 1));
   }
@@ -1690,12 +1677,7 @@ class CAPIBloC extends Bloc<CAPIEvent, CAPIState> {
     state.snippetBeingEdited!.getRootNode().validateTree();
 
     final newSnippet = state.snippetBeingEdited!.getRootNode();
-    final newVersionId = SnippetInfoModel.createNewVersion(newSnippet);
-    fco.modelRepo.saveSnippetVersion(
-      snippetName: newSnippet.name,
-      newVersionId: newVersionId,
-      newVersion: newSnippet,
-    );
+    fco.modelRepo.saveNewVersionOfSnippet(newSnippet);
 
     if (newNode is RichTextNode) {
       state.snippetBeingEdited!.treeC.expand(newNode);
@@ -1723,13 +1705,8 @@ class CAPIBloC extends Bloc<CAPIEvent, CAPIState> {
       name: event.newSnippetName,
       child: event.node,
     );
-    // VersionId initialVersionId = DateTime.now().millisecondsSinceEpoch.toString();
-    final newVersionId = SnippetInfoModel.createNewVersion(newRootNode);
-    fco.modelRepo.saveSnippetVersion(
-      snippetName: newRootNode.name,
-      newVersionId: newVersionId,
-      newVersion: newRootNode,
-    );
+    fco.modelRepo.saveNewVersionOfSnippet(newRootNode);
+
     // await fco.cacheAndSaveANewSnippetVersion(
     //   snippetName: event.newSnippetName,
     //   rootNode: newRootNode,
@@ -1835,5 +1812,5 @@ class CAPIBloC extends Bloc<CAPIEvent, CAPIState> {
   bool aNodeIsNotSelected() =>
       state.snippetBeingEdited?.aNodeIsSelected ?? false;
 
-  TargetModel? getNewestTarget() => state.newestTarget;
+  HotspotTargetModel? getNewestTarget() => state.newestTarget;
 }

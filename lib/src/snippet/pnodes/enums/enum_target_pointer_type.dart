@@ -20,6 +20,7 @@ enum TargetPointerTypeEnum  {
   MEDIUM_REVERSED(TargetPointerType.medium_reversed_line()),
   LARGE(TargetPointerType.large_line()),
   LARGE_REVERSED(TargetPointerType.large_reversed_line()),
+  WAVY(TargetPointerType.wavy_line()),
   ;
 
   const TargetPointerTypeEnum(this.targetPointerType);

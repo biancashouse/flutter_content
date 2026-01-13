@@ -4,8 +4,8 @@ import 'package:dart_mappable/dart_mappable.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_content/flutter_content.dart';
 import 'package:flutter_content/src/snippet/snode_widget.dart';
+import 'package:flutter_content/src/snippet/snodes/hotspots/widgets/hotspot_target_config_toolbar/hotspot_target_config_toolbar.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
-
 part 'snode.mapper.dart';
 
 const List<Type> childlessSubClasses = [
@@ -426,6 +426,45 @@ abstract class SNode extends Node with SNodeMappable {
     return null;
   }
 
+  // useful in generic tree actions, such as node deletion
+  List<SNode>? maybeChildren() {
+    if (this is CL) {
+      return null;
+    }
+    if (this is SC && (this as SC).child != null) {
+      return [(this as SC).child!];
+    }
+    if (this is MC) {
+      return (this as MC).children;
+    }
+    if (this is CustomScrollViewNode) {
+      CustomScrollViewNode scv = this as CustomScrollViewNode;
+      return scv.slivers;
+    }
+    if (this is ListViewNode) {
+      ListViewNode lv = this as ListViewNode;
+      return lv.children;
+    }
+    if (this is GridViewNode) {
+      GridViewNode gv = this as GridViewNode;
+      return gv.children;
+    }
+    if (this is TextSpanNode) {
+      TextSpanNode ts = this as TextSpanNode;
+      return ts.children;
+    }
+    return null;
+  }
+
+  bool hasSingleChild() => maybeChildren()?.length == 1;
+
+  bool hasNoChildren() => maybeChildren() == null || maybeChildren()!.isEmpty;
+
+  bool hasMultipleChildren() =>
+      maybeChildren() != null && maybeChildren()!.length > 1;
+
+  bool hasChildren() => !hasNoChildren();
+
   List<SNode>? maybeSiblings() {
     if (getParent() is MC) {
       return (getParent() as MC).children;
@@ -454,43 +493,125 @@ abstract class SNode extends Node with SNodeMappable {
       parentCanHaveMultipleHorizontalChildren() ||
       parentCanHaveMultipleVerticalChildren();
 
-  bool parentCanHaveMultipleHorizontalChildren() {
-    if (getParent() is RowNode) {
-      return true;
+  bool parentCanHaveMultipleHorizontalChildren() =>
+      getParent() is RowNode ||
+      (getParent() is WrapNode &&
+          (getParent() as WrapNode).direction == AxisEnum.horizontal) ||
+      (getParent() is ScrollViewNode &&
+          (getParent() as ScrollViewNode).scrollDirection ==
+              AxisEnum.horizontal);
+
+  bool parentCanHaveMultipleVerticalChildren() =>
+      getParent() is ColumnNode ||
+      (getParent() is WrapNode &&
+          (getParent() as WrapNode).direction == AxisEnum.vertical) ||
+      (getParent() is ScrollViewNode &&
+          (getParent() as ScrollViewNode).scrollDirection == AxisEnum.vertical);
+
+  /// Removes this node from its parent.
+  ///
+  /// If this node has a single child, the child will be promoted to take its place.
+  /// Otherwise, the node is simply removed.
+  ///
+  /// Returns the node that takes its place (either the promoted child or the parent)
+  /// or `this` if it's a root node and cannot be removed.
+  SNode removeFromParent() {
+    final SNode? parent = getParent() as SNode?;
+
+    if (parent == null) {
+      return this; // This is a root node and has no parent.
     }
-    if (getParent() is WrapNode &&
-        (getParent() as WrapNode).direction == AxisEnum.horizontal) {
-      return true;
+
+    if (parent is NamedSC && parent.propertyName == 'title') {
+      parent.child = TextNode(
+        text: 'must have a ${parent.propertyName} widget!',
+        tsPropGroup: TextStyleProperties(),
+      )..setParent(parent);
+      return parent;
     }
-    // if (getParent() is SingleChildScrollViewNode) {
-    //   SingleChildScrollViewNode scsv = getParent() as SingleChildScrollViewNode;
-    //   return scsv.scrollDirection == AxisEnum.horizontal;
-    // }
-    if (getParent() is ScrollViewNode) {
-      ScrollViewNode scv = getParent() as ScrollViewNode;
-      return scv.scrollDirection == AxisEnum.horizontal;
+
+    if (parent is NamedSC && parent.propertyName == 'content') {
+      parent.child = TextNode(
+        text: 'must have a content widget!',
+        tsPropGroup: TextStyleProperties(),
+      )..setParent(parent);
+      return parent;
     }
-    return false;
+
+    // Determine if there's a single child to promote.
+    final SNode? childToPromote = hasSingleChild() ? firstChild() : null;
+
+    // Handle TextSpanNode parent specifically.
+    if (parent is TextSpanNode) {
+      if (parent.children != null) {
+        List<InlineSpanNode> textSpanChildren = parent.children!;
+        final int index = textSpanChildren.indexOf((this as InlineSpanNode));
+        if (index != -1) {
+          if (childToPromote != null && childToPromote is InlineSpanNode) {
+            // Promote child if it's a valid InlineSpanNode.
+            parent.children![index] = childToPromote;
+            return childToPromote;
+          } else {
+            // Otherwise, just remove the node.
+            parent.children!.removeAt(index);
+            return parent;
+          }
+        }
+      }
+    }
+
+    if (parent is RichTextNode) {
+      // removing single inlinespan, so replace with text
+      if (this is WidgetSpanNode ||
+          (this is TextSpanNode &&
+              (this as TextSpanNode).children?.length != 1)) {
+        parent.text = TextSpanNode(
+          text: 'xxx',
+          tsPropGroup: TextStyleProperties(),
+        )..setParent(parent);
+        return parent;
+      }
+      // remove from parent RichTextNode
+      if (this is TextSpanNode) {
+        final TextSpanNode sel = this as TextSpanNode;
+        if (sel.children?.length == 1) {
+          parent.text = sel.children!.first..setParent(parent);
+          return parent;
+        }
+      }
+    }
+
+    // Handle Single-Child (SC) parents.
+    if (parent is SC) {
+      if (parent.child == this) {
+        parent.child = childToPromote;
+        return childToPromote ?? parent;
+      }
+    }
+
+    // Handle various Multi-Child parents.
+    List<SNode>? parentChildrenList = maybeSiblings();
+
+    if (parentChildrenList != null) {
+      final int index = parentChildrenList.indexOf(this);
+      if (index != -1) {
+        if (childToPromote != null) {
+          // Replace this node with its child.
+          parentChildrenList[index] = childToPromote;
+        } else {
+          // Remove this node completely.
+          parentChildrenList.removeAt(index);
+        }
+        return childToPromote ?? parent;
+      }
+    }
+
+    // Fallback: if parent type is not a known container or node not found.
+    return this;
   }
 
-  bool parentCanHaveMultipleVerticalChildren() {
-    if (getParent() is ColumnNode) {
-      return true;
-    }
-    if (getParent() is WrapNode &&
-        (getParent() as WrapNode).direction == AxisEnum.vertical) {
-      return true;
-    }
-    // if (getParent() is SingleChildScrollViewNode) {
-    //   SingleChildScrollViewNode scsv = getParent() as SingleChildScrollViewNode;
-    //   return scsv.scrollDirection == AxisEnum.vertical;
-    // }
-    if (getParent() is ScrollViewNode) {
-      ScrollViewNode scv = getParent() as ScrollViewNode;
-      return scv.scrollDirection == AxisEnum.vertical;
-    }
-    return false;
-  }
+  /// assumes node has at least one child
+  SNode firstChild() => maybeChildren()!.first;
 
   //
   // CalloutConfig _cc({
@@ -541,7 +662,7 @@ abstract class SNode extends Node with SNodeMappable {
   static Future<void> pushThenShowNamedSnippetWithNodeSelected(
     SnippetName snippetName,
     SNode selectedNode, {
-    TargetModel? targetBeingConfigured,
+    HotspotTargetModel? targetBeingConfigured,
   }) async {
     SnippetInfoModel? snippetInfo = SnippetInfoModel.cachedSnippetInfo(
       snippetName,
@@ -589,7 +710,7 @@ abstract class SNode extends Node with SNodeMappable {
         if (!fco.appInfo.clipboardIsEmpty) {
           fco.appInfo.showFloatingClipboard();
         }
-        fco.hide(CalloutConfigToolbar.CID);
+        fco.hide(HotspotTargetConfigToolbar.CID);
         // fco.afterMsDelayDo(1000, () {
         //   var ctx = rootNode.child?.nodeWidgetGK?.currentContext;
         //   if (ctx != null) {
@@ -687,12 +808,6 @@ abstract class SNode extends Node with SNodeMappable {
   // }
 
   bool get canShowTappableNodeWidgetOverlay => getParent() is! CarouselNode;
-
-  bool hasChildren() =>
-      (this is SC && (this as SC).child != null) ||
-      (this is MC && (this as MC).children.isNotEmpty) ||
-      (this is TextSpanNode &&
-          ((this as TextSpanNode).children?.length ?? 0) > 0);
 
   // List<String> sensibleParents() => const [];
 
@@ -843,12 +958,6 @@ abstract class SNode extends Node with SNodeMappable {
   bool isANamedPropertyNode() =>
       this is NamedSC || this is NamedPS || this is NamedMC;
 
-  /// remove from parent and return new selection (parent)
-  SNode removeFromParent() {
-    // TODO: implement removeFromParent
-    throw UnimplementedError();
-  }
-
   SNode? findDescendant(/*Flutter*/ Type type) {
     //
     SNode? foundChild;
@@ -927,8 +1036,8 @@ abstract class SNode extends Node with SNodeMappable {
     return node as T?;
   }
 
-  static void hideAllTargetCovers({TargetModel? except}) {
-    for (TargetModel tc in allTargets()) {
+  static void hideAllTargetCovers({HotspotTargetModel? except}) {
+    for (HotspotTargetModel tc in allTargets()) {
       tc.showCover = false;
       if (tc == except) {
         tc.showCover = true;
@@ -936,8 +1045,8 @@ abstract class SNode extends Node with SNodeMappable {
     }
   }
 
-  static void hideAllTargetBtns({TargetModel? except}) {
-    for (TargetModel tc in allTargets()) {
+  static void hideAllTargetBtns({HotspotTargetModel? except}) {
+    for (HotspotTargetModel tc in allTargets()) {
       tc.showBtn = false;
       if (tc == except) {
         tc.showBtn = true;
@@ -946,21 +1055,21 @@ abstract class SNode extends Node with SNodeMappable {
   }
 
   static void showAllHotspotTargetCovers() {
-    for (TargetModel tc in allTargets()) {
+    for (HotspotTargetModel tc in allTargets()) {
       // if (tc.hasAHotspot())
       tc.showCover = true;
     }
   }
 
   static void showAllTargetBtns() {
-    for (TargetModel tc in allTargets()) {
+    for (HotspotTargetModel tc in allTargets()) {
       tc.showBtn = true;
     }
   }
 
-  static List<TargetModel> allTargets() {
+  static List<HotspotTargetModel> allTargets() {
     // var fc = FC();
-    List<TargetModel> foundTargets = [];
+    List<HotspotTargetModel> foundTargets = [];
     for (SnippetName snippetName in SnippetInfoModel.cachedSnippetNames()) {
       // get published or editing version
       SnippetInfoModel? snippetInfo = SnippetInfoModel.cachedSnippetInfo(

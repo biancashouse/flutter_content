@@ -52,7 +52,7 @@ class MouseInfoViewer extends HookWidget {
           final bool showOnLeft = cursorX > screenWidth / 2;
           final bool showAbove = cursorY > screenHeight / 2;
 
-          final scrollConfig = fco.findAncestorScrollControllerAndDirection(
+          final scrollConfig = fco.findAncestorScrollConfig(
             context,
           );
           final scrollOffset = scrollConfig?.controller?.offset ?? 0.0;

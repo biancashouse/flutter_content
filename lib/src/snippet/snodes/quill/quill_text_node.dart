@@ -1,18 +1,17 @@
 // ignore_for_file: constant_identifier_names
 
 import 'dart:convert';
-
 import 'package:dart_mappable/dart_mappable.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_content/flutter_content.dart';
-import 'package:flutter_content/src/snippet/pnodes/editors/property_callout_button_quill_text.dart';
+import 'package:flutter_content/src/model/quill_target_model.dart';
 import 'package:flutter_content/src/snippet/pnodes/fyi_pnodes.dart';
 import 'package:flutter_content/src/snippet/pnodes/quill_text_pnode.dart';
+import 'package:flutter_content/src/snippet/snodes/quill/widgets/quill_editor_with_toolbar_callout.dart';
+import 'package:flutter_content/src/snippet/snodes/quill/widgets/quill_viewer.dart';
 import 'package:flutter_quill/flutter_quill.dart';
-import 'package:freezed_annotation/freezed_annotation.dart';
-import 'package:go_router/go_router.dart';
 
-import 'focus_aware_quill_editor.dart';
+import 'widgets/focus_aware_quill_editor.dart';
 
 part 'quill_text_node.mapper.dart';
 
@@ -29,6 +28,10 @@ class QuillTextNode extends CL with QuillTextNodeMappable {
   String deltaJsonString;
 
   QuillTextNode({this.deltaJsonString = k_sampleDeltaJsonString});
+
+  // keep transient copy of each Embed's  gk
+  // @JsonKey(includeFromJson: false, includeToJson: false)
+  // Map<String,GlobalKey> targetGks = {};
 
   @override
   List<PNode> propertyNodes(BuildContext context, SNode? parentSNode) {
@@ -55,6 +58,8 @@ class QuillTextNode extends CL with QuillTextNodeMappable {
 
   @override
   Widget buildFlutterWidget(BuildContext context, SNode? parentNode) {
+    // targetGks = {};
+
     setParent(parentNode);
 
     var gk = createNodeWidgetGK();
@@ -63,41 +68,72 @@ class QuillTextNode extends CL with QuillTextNodeMappable {
     if (fco.canEditContent() && fco.snippetBeingEdited == null) {
       editor = FocusAwareQuillEditor(
         key: gk,
-        initialDeltaJson: deltaJsonString,
-        onChange: (String newValue) {
+        parentSNode: this,
+        onChange: (String newValue, {bool forceRefresh = false}) {
           // save
           final rootNode = rootNodeOfSnippet();
           if (rootNode != null) {
             deltaJsonString = newValue;
-            final newVersionId = SnippetInfoModel.createNewVersion(rootNode);
-            fco.modelRepo.saveSnippetVersion(
-              snippetName: rootNode.name,
-              newVersionId: newVersionId,
-              newVersion: rootNode,
-            );
+            fco.modelRepo.saveNewVersionOfSnippet(rootNode);
           }
+          // do when adding a new info embed
+          if (forceRefresh) fco.forceRefresh();
         },
         onEditWithToolbarBtnPressed: () {
           final rootNode = rootNodeOfSnippet();
           if (rootNode != null) {
-            PropertyButtonQuillText.showQuillEditor(deltaJsonString, (
-              String? newValue,
-            ) {
-              refreshWithUpdate(
-                context,
-                () => deltaJsonString = newValue ?? '',
-              );
-              fco.forceRefresh();
-            });
+            showQuillEditorOverlay(
+              quillTextNode: this,
+              onChangeF: (String? newValue) {
+                refreshWithUpdate(
+                  context,
+                  () => deltaJsonString = newValue ?? '',
+                );
+                fco.forceRefresh();
+              },
+            );
           }
         },
       );
     } else {
-      editor = QuillViewer(key: gk, deltaJsonString: deltaJsonString);
+      editor = QuillViewer(key: gk, parentSNode: this);
     }
 
     // for safety, if parent is a flex, wrap with an Expanded widget
     return parentNode is FlexNode ? Expanded(child: editor) : editor;
+  }
+
+  // Assume you have a QuillController instance
+  // final QuillController _controller = QuillController.basic();
+
+  static List<QuillTargetModel> getTargetList(String deltaJsonString) {
+    List<QuillTargetModel> targets = [];
+
+    final doc = Document.fromJson(jsonDecode(deltaJsonString));
+
+    // Convert the document to a list of JSON operations (Delta format)
+    List<Map<String, dynamic>> ops = doc.toDelta().toJson();
+
+    for (var op in ops) {
+      // Check if the operation is an insert operation and contains an embed type
+      if (op.containsKey('insert') && op['insert'] is Map) {
+        Map<String, dynamic> insertData = op['insert'];
+
+        // Look for known embed types like 'image', 'video', or custom types
+        insertData.forEach((type, value) {
+          if (type == 'custom') {
+            final customMap = jsonDecode(value);
+            if (customMap.containsKey('quill-help-icon-button')) {
+              final embed = jsonDecode(customMap['quill-help-icon-button']);
+              final qt = QuillTargetModelMapper.fromMap(embed);
+              targets.add(qt);
+            }
+          }
+        });
+      }
+    }
+
+    return targets;
   }
 
   @override

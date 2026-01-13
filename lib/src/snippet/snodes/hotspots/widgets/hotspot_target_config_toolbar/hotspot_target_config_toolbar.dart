@@ -2,28 +2,24 @@ import 'dart:math';
 
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_callouts/flutter_callouts.dart';
 
 import 'package:flutter_content/flutter_content.dart';
-import 'package:flutter_content/src/model/alignment_model.dart';
 import 'package:flutter_content/src/snippet/pnodes/editors/property_button_enum.dart';
-import 'package:flutter_content/src/snippet/pnodes/enums/enum_decoration_shape.dart';
 import 'package:flutter_content/src/snippet/pnodes/enums/enum_target_pointer_type.dart';
-import 'package:flutter_content/src/snippet/snodes/hotspots/widgets/config_toolbar/colour_picker_tool.dart';
-import 'package:flutter_quill/flutter_quill.dart';
+import 'package:flutter_content/src/snippet/snodes/hotspots/widgets/hotspot_target_config_toolbar/colour_picker_tool.dart';
 
 import 'duration_callout.dart';
 import 'more_callout_settings.dart';
 import 'pointy_callout.dart';
 import 'resize_slider.dart';
 
-class CalloutConfigToolbar extends StatefulWidget {
+class HotspotTargetConfigToolbar extends StatefulWidget {
   final CalloutConfig cc;
-  final TargetModel tc;
+  final HotspotTargetModel tc;
   final TargetsWrapperState wrapperState;
   final VoidCallback onCloseF;
 
-  const CalloutConfigToolbar({
+  const HotspotTargetConfigToolbar({
     required this.cc,
     required this.tc,
     required this.wrapperState,
@@ -32,44 +28,20 @@ class CalloutConfigToolbar extends StatefulWidget {
     super.key,
   });
 
-  static const CID = 'callout-config-toolbar';
+  static const CID = 'hotspot-callout-config-toolbar';
 
-  static double CALLOUT_CONFIG_TOOLBAR_W(TargetModel tc) =>
-      tc.hasAHotspot() ? 700 : 500;
+  static double CALLOUT_CONFIG_TOOLBAR_W(HotspotTargetModel tc) =>
+      tc.hasABtn() ? 700 : 500;
 
-  static double CALLOUT_CONFIG_TOOLBAR_H(TargetModel tc) => 60.0;
-
-  static void closeThenReopenContentCallout(
-    TargetModel tc,
-    TargetsWrapperState wrapperState,
-  ) async {
-    removeSnippetContentCallout(tc, skipOnDismiss: true);
-
-    // tc
-    //     .targetsWrapperState()
-    //     ?.zoomer
-    //     ?.zoomImmediately(widget.tc.transformScale, widget.tc.transformScale);
-
-    // Alignment? ta = fco.calcTargetAlignmentWithinWrapper(
-    //     wrapperRect: wrapperRect, targetRect: cc.tR());
-
-    wrapperState.zoomer?.zoomImmediately(tc.transformScale, tc.transformScale);
-
-    showHotspotSnippetContentCallout(
-      tc: tc,
-      justPlaying: false,
-      wrapperState: wrapperState,
-    );
-
-    fco.dismiss(CalloutConfigToolbar.CID, skipOnDismiss: true);
-    TargetsWrapper.showConfigToolbar(tc, wrapperState);
-  }
+  static double CALLOUT_CONFIG_TOOLBAR_H(HotspotTargetModel tc) => 60.0;
 
   @override
-  State<CalloutConfigToolbar> createState() => CalloutConfigToolbarState();
+  State<HotspotTargetConfigToolbar> createState() =>
+      HotspotTargetConfigToolbarState();
 }
 
-class CalloutConfigToolbarState extends State<CalloutConfigToolbar> {
+class HotspotTargetConfigToolbarState
+    extends State<HotspotTargetConfigToolbar> {
   // BuildContext? updatedContext;
   // final dbT = Debouncer(delayMs: 100);
 
@@ -77,15 +49,15 @@ class CalloutConfigToolbarState extends State<CalloutConfigToolbar> {
   @override
   Widget build(BuildContext context) {
     return SizedBox(
-      width: CalloutConfigToolbar.CALLOUT_CONFIG_TOOLBAR_W(widget.tc),
-      height: CalloutConfigToolbar.CALLOUT_CONFIG_TOOLBAR_H(widget.tc),
+      width: HotspotTargetConfigToolbar.CALLOUT_CONFIG_TOOLBAR_W(widget.tc),
+      height: HotspotTargetConfigToolbar.CALLOUT_CONFIG_TOOLBAR_H(widget.tc),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
           toolbarVFlipIcon(),
           const VerticalDivider(color: Colors.white, width: 2),
-          if (widget.tc.hasAHotspot())
+          if (widget.tc.hasABtn())
             Column(
               children: [
                 fco.coloredText('zoom', color: Colors.white70),
@@ -127,7 +99,7 @@ class CalloutConfigToolbarState extends State<CalloutConfigToolbar> {
                 ),
               ],
             ),
-          if (widget.tc.hasAHotspot())
+          if (widget.tc.hasABtn())
             const VerticalDivider(color: Colors.white, width: 2),
           Column(
             children: [
@@ -143,7 +115,7 @@ class CalloutConfigToolbarState extends State<CalloutConfigToolbar> {
                             widget.tc.targetRadiusPC! *
                                 widget.wrapperState.wrapperRect.width,
                           )
-                        : TargetModel.DEFAULT_TARGET_RADIUS,
+                        : HotspotTargetModel.DEFAULT_TARGET_RADIUS,
                     // icon: Icons.circle_rounded,
                     color: Colors.white70,
                     onDragStartF: () => _onDragStartF(widget.tc),
@@ -207,7 +179,7 @@ class CalloutConfigToolbarState extends State<CalloutConfigToolbar> {
             tooltip: 'edit the callout show duration in ms...',
             icon: const Icon(Icons.timer, color: Colors.white),
             onPressed: () {
-              showTargetDurationCallout(widget.tc, widget.wrapperState);
+              showTargetDurationCallout(tc: widget.tc);
             },
           ),
           const VerticalDivider(color: Colors.white, width: 2),
@@ -217,14 +189,16 @@ class CalloutConfigToolbarState extends State<CalloutConfigToolbar> {
             onPressed: () {
               showTargetColorTool(
                 onColorPickedF: (Color? pickedColor) {
-                  if (pickedColor == null) {
-                    widget.tc.setCalloutFillColor(null);
-                  } else {
+                  if (pickedColor != null) {
                     widget.tc.setCalloutFillColor(
                       ColorModel.fromColor(pickedColor),
                     );
+                    widget.tc.calloutConfig!.decorationFillColors =
+                        ColorOrGradient.color(pickedColor);
+                    widget.tc.calloutConfig!.bubbleOrTargetPointerColor =
+                        pickedColor;
                   }
-                  widget.tc.changed_saveRootSnippet(
+                  widget.tc.saveParentSnippet(
                     widget.wrapperState.widget.parentNode.rootNodeOfSnippet(),
                   );
                   // STreeNode.hideAllTargetCovers();
@@ -235,10 +209,8 @@ class CalloutConfigToolbarState extends State<CalloutConfigToolbar> {
                   //   widget.onParentBarrierTappedF.call();
                   //   fco.refreshOverlay(widget.tc.snippetName, f: () {});
                   fco.dismiss('color-picker');
-                  CalloutConfigToolbar.closeThenReopenContentCallout(
-                    widget.tc,
-                    widget.wrapperState,
-                  );
+                  // widget.tc.closeThenReopenContentCallout(widget.wrapperState);
+                  fco.refresh(widget.tc.contentCId);
                 },
               );
 
@@ -304,18 +276,8 @@ class CalloutConfigToolbarState extends State<CalloutConfigToolbar> {
                     .parentNode
                     .rootNodeOfSnippet();
                 if (rootNode == null) return;
-                final newVersionId = SnippetInfoModel.createNewVersion(
-                  rootNode,
-                );
-                fco.modelRepo.saveSnippetVersion(
-                  snippetName: rootNode.name,
-                  newVersionId: newVersionId,
-                  newVersion: rootNode,
-                );
-                CalloutConfigToolbar.closeThenReopenContentCallout(
-                  widget.tc,
-                  widget.wrapperState,
-                );
+                fco.modelRepo.saveNewVersionOfSnippet(rootNode);
+                widget.tc.closeThenReopenContentCallout(widget.wrapperState);
                 // fco.capiBloc.add(CAPIEvent.TargetModelChanged(newTC: tc));
                 // fco.afterNextBuildDo(() {
                 //   removeSnippetContentCallout(widget.tc.snippetName);
@@ -338,10 +300,8 @@ class CalloutConfigToolbarState extends State<CalloutConfigToolbar> {
             icon: const Icon(Icons.more_vert, color: Colors.white),
             onPressed: () {
               MoreCalloutConfigSettings.show(
-                widget.cc,
                 widget.tc,
                 widget.wrapperState,
-
                 justPlaying: false,
               );
             },
@@ -355,12 +315,7 @@ class CalloutConfigToolbarState extends State<CalloutConfigToolbar> {
                   .rootNodeOfSnippet();
               if (rootNode == null) return;
               widget.wrapperState.widget.parentNode.targets.remove(widget.tc);
-              final newVersionId = SnippetInfoModel.createNewVersion(rootNode);
-              fco.modelRepo.saveSnippetVersion(
-                snippetName: rootNode.name,
-                newVersionId: newVersionId,
-                newVersion: rootNode,
-              );
+              fco.modelRepo.saveNewVersionOfSnippet(rootNode);
               // fco.cacheAndSaveANewSnippetVersion(
               //   snippetName: rootNode.name, // widget.tc.snippetName,
               //   rootNode: rootNode,
@@ -386,10 +341,10 @@ class CalloutConfigToolbarState extends State<CalloutConfigToolbar> {
 
   Widget toolbarVFlipIcon() => IconButton(
     onPressed: () {
-      fco.dismiss(CalloutConfigToolbar.CID, skipOnDismiss: true);
+      fco.dismiss(HotspotTargetConfigToolbar.CID, skipOnDismiss: true);
       fco.calloutConfigToolbarAtTopOfScreen =
           !fco.calloutConfigToolbarAtTopOfScreen;
-      TargetsWrapper.showConfigToolbar(widget.tc, widget.wrapperState);
+      widget.tc.showConfigToolbar(widget.wrapperState);
     },
     icon: Icon(
       fco.calloutConfigToolbarAtTopOfScreen
@@ -400,8 +355,8 @@ class CalloutConfigToolbarState extends State<CalloutConfigToolbar> {
   );
 
   // used by both slider
-  void _onDragStartF(TargetModel tc) {
-    removeSnippetContentCallout(tc, skipOnDismiss: true);
+  void _onDragStartF(HotspotTargetModel tc) {
+    tc.removeContentCallout(skipOnDismiss: true);
     // tc
     //     .targetsWrapperState()
     //     ?.zoomer
@@ -409,14 +364,14 @@ class CalloutConfigToolbarState extends State<CalloutConfigToolbar> {
   }
 
   // used by both slider
-  void _onDragEndF(TargetModel tc) {
-    widget.tc.changed_saveRootSnippet(
+  void _onDragEndF(HotspotTargetModel tc) {
+    widget.tc.saveParentSnippet(
       widget.wrapperState.widget.parentNode.rootNodeOfSnippet(),
     );
-    CalloutConfigToolbar.closeThenReopenContentCallout(tc, widget.wrapperState);
+    tc.closeThenReopenContentCallout(widget.wrapperState);
   }
 
-  void _closeCalloutConfigToolbar(TargetModel tc) {
+  void _closeCalloutConfigToolbar(HotspotTargetModel tc) {
     // if (widget.tc.calloutLeftPc == null ||
     //     widget.tc.calloutTopPc == null ||
     //     widget.tc.targetLocalCentrePosPc == null ||
@@ -436,7 +391,7 @@ class CalloutConfigToolbarState extends State<CalloutConfigToolbar> {
     // close the callout
 
     // removing the content callout removes toolbar and resets
-    removeSnippetContentCallout(tc);
+    tc.removeContentCallout();
   }
 
   void showTargetColorTool({required ColorPickedCallback onColorPickedF}) {

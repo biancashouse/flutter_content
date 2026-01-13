@@ -136,6 +136,7 @@ class PlaceholderNode extends CL with PlaceholderNodeMappable {
       key: gk,
       fallbackWidth: width ?? 400,
       fallbackHeight: height ?? 400,
+      color: Colors.black12,
       // child: childWidget,
     );
     // }

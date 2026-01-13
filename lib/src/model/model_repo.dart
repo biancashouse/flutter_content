@@ -31,10 +31,13 @@ abstract class IModelRepository {
     List<VersionId>? newVersionIds,
   });
 
-  Future<bool> saveSnippetVersion({
+  Future<bool> saveNewVersionOfSnippetBeingEdited();
+  Future<bool> saveNewVersionOfSnippet(SnippetRootNode rootNode);
+
+  Future<bool> saveBrandNewSnippet({
     required SnippetName snippetName,
-    required VersionId newVersionId,
-    required SnippetRootNode newVersion,
+    required VersionId versionId,
+    required SnippetRootNode initialVersion,
   });
 
   Future<void> deleteSnippet(final String snippetName);

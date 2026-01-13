@@ -4,7 +4,7 @@ import 'package:flutter_content/src/model/alignment_model.dart';
 import 'package:flutter_content/src/snippet/pnodes/enums/enum_target_pointer_type.dart';
 
 class TargetsWrapperOnTapMenu extends StatelessWidget {
-  final TapDownDetails details;
+  final TapUpDetails details;
   final TargetsWrapperNode parentNode;
   final TargetsWrapperState wrapperState;
 
@@ -37,7 +37,7 @@ class TargetsWrapperOnTapMenu extends StatelessWidget {
               ),
               onPressed: () async {
                 fco.dismissAll();
-                createTarget(context, details, withHotspot);
+                _createHotspotTarget(context, details, withHotspot);
               },
               child: Text(
                 'create a Target here',
@@ -89,9 +89,9 @@ class TargetsWrapperOnTapMenu extends StatelessWidget {
 
   static double menuHeight() => 220.0;
 
-  void createTarget(
+  void _createHotspotTarget(
     BuildContext context,
-    TapDownDetails details,
+    TapUpDetails details,
     bool withHotspot,
   ) {
     if (!fco.canEditContent()) return;
@@ -99,7 +99,7 @@ class TargetsWrapperOnTapMenu extends StatelessWidget {
     if (snippetName == null) return;
 
     TargetId newTargetId = DateTime.now().millisecondsSinceEpoch;
-    TargetModel newTC = TargetModel(
+    HotspotTargetModel newTC = HotspotTargetModel(
       uid: newTargetId,
       //event.wName.hashCode,
       tcAlignment: AlignmentModel(2, 0),
@@ -122,14 +122,6 @@ class TargetsWrapperOnTapMenu extends StatelessWidget {
     parentNode.targets = [...parentNode.targets, newTC];
     // widget.parentNode.targets.add(newTC);
     fco.capiBloc.add(const CAPIEvent.forceRefresh(onlyTargetsWrappers: true));
-
-    final newVersionId = SnippetInfoModel.createNewVersion(
-      parentNode.rootNodeOfSnippet()!,
-    );
-    fco.modelRepo.saveSnippetVersion(
-      snippetName: parentNode.rootNodeOfSnippet()!.name,
-      newVersionId: newVersionId,
-      newVersion: parentNode.rootNodeOfSnippet()!,
-    );
+    fco.modelRepo.saveNewVersionOfSnippet(parentNode.rootNodeOfSnippet()!);
   }
 }

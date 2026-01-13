@@ -15,7 +15,7 @@ part 'textspan_node.mapper.dart';
 class TextSpanNode extends InlineSpanNode with TextSpanNodeMappable {
   String? text;
   String? webLink;
-  TargetModel? calloutTargetConfig;
+  HotspotTargetModel? calloutTargetConfig;
 
   // bool isRootTextSpan;
   @MappableField(hook: TextStyleHook1())

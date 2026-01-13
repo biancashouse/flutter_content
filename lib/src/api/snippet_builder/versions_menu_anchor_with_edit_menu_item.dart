@@ -2,11 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_content/flutter_content.dart';
-import 'package:flutter_content/src/api/editable_page/versions_menu_anchor.dart';
-
-// import 'package:flutter_content/src/api/snippet_builder/context_extension.dart';
+import 'package:flutter_content/src/snippet/snodes/hotspots/widgets/hotspot_target_config_toolbar/hotspot_target_config_toolbar.dart';
 import 'package:pointer_interceptor/pointer_interceptor.dart';
-
 import 'tr_triangle_painter.dart' show TRTriangle;
 
 enum AnchorWidgetEnum { Triangle, IconButton }
@@ -17,8 +14,7 @@ class SnippetMenuAnchor extends StatelessWidget {
   final AnchorWidgetEnum anchorWidget;
   final Color? triangleColor;
 
-  const SnippetMenuAnchor(
-    this.parentBuilderState, {
+  const SnippetMenuAnchor(this.parentBuilderState, {
     required this.anchorWidget,
     required this.snippetInfo,
     this.triangleColor,
@@ -27,47 +23,52 @@ class SnippetMenuAnchor extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    bool isPublishedVersion =
+        snippetInfo.publishedVersionId == snippetInfo.editingVersionId;
+
     return MenuAnchor(
       builder:
           (BuildContext context, MenuController controller, Widget? child) {
-            return anchorWidget == AnchorWidgetEnum.Triangle
-                ? Tooltip(
-                    message: 'show Snippet menu\n"${snippetInfo.name}"',
-                    child: InkWell(
-                      onDoubleTap: () {
-                        snippetInfo
-                            .currentVersionFromCache()
-                            ?.tappedToEditSnippetNode();
-                      },
-                      onTap: () {
-                        if (controller.isOpen) {
-                          controller.close();
-                        } else {
-                          controller.open();
-                        }
-                      },
-                      child: CustomPaint(
-                        size: const Size(40, 40),
-                        painter: TRTriangle(triangleColor!),
-                      ),
-                    ),
-                  )
-                : InkWell(
-                    onDoubleTap: () {
-                      snippetInfo
-                          .currentVersionFromCache()
-                          ?.tappedToEditSnippetNode();
-                    },
-                    onTap: () {
-                      if (controller.isOpen) {
-                        controller.close();
-                      } else {
-                        controller.open();
-                      }
-                    },
-                    child: Icon(Icons.edit, size: 16, color: Colors.white),
-                  );
-          },
+        return anchorWidget == AnchorWidgetEnum.Triangle
+            ? Tooltip(
+            message: isPublishedVersion
+                ? 'show Snippet menu\n"${snippetInfo.name}"'
+                : 'show Snippet menu\n"${snippetInfo.name}\n*** NOT PUBLISHED ***"',
+            child: InkWell(
+            onDoubleTap: () {
+          snippetInfo
+              .currentVersionFromCache()
+              ?.tappedToEditSnippetNode();
+      },
+        onTap: () {
+        if (controller.isOpen) {
+        controller.close();
+        } else {
+        controller.open();
+        }
+        },
+        child: CustomPaint(
+        size: const Size(40, 40),
+        painter: TRTriangle(triangleColor!),
+        ),
+        ),
+        )
+            : InkWell(
+        onDoubleTap: () {
+        snippetInfo
+            .currentVersionFromCache()
+            ?.tappedToEditSnippetNode();
+        },
+        onTap: () {
+        if (controller.isOpen) {
+        controller.close();
+        } else {
+        controller.open();
+        }
+        },
+        child: Icon(Icons.edit, size: 16, color: Colors.white),
+        );
+      },
       menuChildren: [
         // SubmenuButton(
         //     menuChildren: revertMIs, child: const Text('revert staging...')),
@@ -105,9 +106,7 @@ class SnippetMenuAnchor extends StatelessWidget {
               // enter select widget mode
               //
               bloc.add(
-                CAPIEvent.enterNodeSelectionMode(
-                  snippetName: snippetInfo.name,
-                ),
+                CAPIEvent.enterNodeSelectionMode(snippetName: snippetInfo.name),
               );
               // fco.afterNextBuildDo(() {
               // setup key handler to exit widget selection mode
@@ -150,10 +149,8 @@ class SnippetMenuAnchor extends StatelessWidget {
           ),
         if (SnippetRootNode.isHotspotCalloutContent(snippetInfo.name))
           _menuItemButtonWithPI(
-            onPressed: (){
-              snippetInfo
-                  .currentVersionFromCache()
-                  ?.tappedToEditSnippetNode();
+            onPressed: () {
+              snippetInfo.currentVersionFromCache()?.tappedToEditSnippetNode();
             },
             child: Row(
               children: [
@@ -188,13 +185,13 @@ class SnippetMenuAnchor extends StatelessWidget {
           },
           child: snippetInfo.autoPublish ?? fco.appInfo.autoPublishDefault
               ? const Tooltip(
-                  message: "don't auto-push changes.",
-                  child: Text('stop auto-publishing changes to this snippet'),
-                )
+            message: "don't auto-push changes.",
+            child: Text('stop auto-publishing changes to this snippet'),
+          )
               : const Tooltip(
-                  message: 'auto push changes as they occur',
-                  child: Text('auto-publish future changes to this snippet'),
-                ),
+            message: 'auto push changes as they occur',
+            child: Text('auto-publish future changes to this snippet'),
+          ),
         ),
         _menuItemButtonWithPI(
           onPressed: () async {
@@ -208,20 +205,45 @@ class SnippetMenuAnchor extends StatelessWidget {
         ),
         _menuItemButtonWithPI(
           onPressed: () async {
-            fco.capiBloc.add(CAPIEvent.replaceSnippetFromJson(snippetBeingReplaced: snippetInfo.name, snippetJson: null));
+            fco.capiBloc.add(
+              CAPIEvent.replaceSnippetFromJson(
+                snippetBeingReplaced: snippetInfo.name,
+                snippetJson: null,
+              ),
+            );
             // VersionsMenuAnchor.rawSnippetJsonDialog(snippetBeingReplaced: snippetInfo.name);
           },
           child: const Text('rebuild snippet from JSON...'),
         ),
         if (!SnippetRootNode.isHotspotCalloutContent(snippetInfo.name))
-        _menuItemButtonWithPI(
-          onPressed: () async {
-            fco.capiBloc.add(
-              CAPIEvent.toggleSnippetVisibility(snippetName: snippetInfo.name),
-            );
-          },
-          child: Text('${snippetInfo.hide ?? false ? 'show' : 'hide'} snippet'),
-        ),
+          _menuItemButtonWithPI(
+            onPressed: () async {
+              fco.capiBloc.add(
+                CAPIEvent.toggleSnippetVisibility(
+                  snippetName: snippetInfo.name,
+                ),
+              );
+            },
+            child: Text(
+              '${snippetInfo.hide ?? false ? 'show' : 'hide'} snippet',
+            ),
+          ),
+        if (!snippetInfo.isFirstVersion())
+          _menuItemButtonWithPI(
+            onPressed: () async {
+              VersionId? prevId = snippetInfo.previousVersionId();
+              revertToVersion(prevId, snippetInfo, fco.capiBloc.state);
+            },
+            child: Text('revert to previous version'),
+          ),
+        if (!snippetInfo.isLatestVersion())
+          _menuItemButtonWithPI(
+            onPressed: () async {
+              VersionId? nextId = snippetInfo.nextVersionId();
+              revertToVersion(nextId, snippetInfo, fco.capiBloc.state);
+            },
+            child: Text('revert to next version'),
+          ),
       ],
     );
   }
@@ -229,13 +251,14 @@ class SnippetMenuAnchor extends StatelessWidget {
   MenuItemButton _menuItemButtonWithPI({
     required Widget child,
     required VoidCallback onPressed,
-  }) => MenuItemButton(
-    onPressed: onPressed,
-    child: Align(
-      alignment: Alignment.centerLeft,
-      child: PointerInterceptor(child: child),
-    ),
-  );
+  }) =>
+      MenuItemButton(
+        onPressed: onPressed,
+        child: Align(
+          alignment: Alignment.centerLeft,
+          child: PointerInterceptor(child: child),
+        ),
+      );
 
   // Widget _buildStackOfNodeRects(SnippetRootNode rootNode) {
   //   BuildContext? ctx = rootNode?.child?.nodeWidgetGK?.currentContext;
@@ -243,4 +266,50 @@ class SnippetMenuAnchor extends StatelessWidget {
   //   ctx?.traverseSnippetNodes(nodeBorderRects);
   //   return Stack(children: nodeBorderRects);
   // }
+
+  void revertToVersion(VersionId? versionId,
+      SnippetInfoModel snippetInfo,
+      CAPIState state,) {
+    if (versionId == null) return;
+    fco.capiBloc.add(
+      CAPIEvent.revertSnippet(
+        snippetName: snippetInfo.name,
+        versionId: fco.removeNonNumeric(versionId),
+      ),
+    );
+    fco.afterNextBuildDo(() async {
+      // current snippet version will now be changed to prevId
+      fco.logger.i('reverted to previous version.');
+      // SNode.unhighlightSelectedNode();
+      // var currPageState = fco.currentPageState;
+      // currPageState?.unhideFAB();
+      fco.dismiss(HotspotTargetConfigToolbar.CID);
+      fco.appInfo.hideClipboard();
+      // exitEditModeF();
+      // fco.capiBloc
+      //     .add(const CAPIEvent.popSnippetEditor());
+      // fco.dismiss(snippetName, skipOnDismiss: true);
+      final revertedVersion = snippetInfo.currentVersionFromCache();
+      if (revertedVersion != null) {
+        final newTreeC = SnippetTreeController(
+          roots: [revertedVersion],
+          childrenProvider: SNode.childrenProvider,
+          parentProvider: SNode.parentProvider,
+        );
+
+        newTreeC.roots.first.validateTree();
+        newTreeC.expand(revertedVersion);
+        newTreeC.rebuild();
+
+        fco.snippetBeingEdited!
+          ..setRootNode(revertedVersion)
+          ..selectedNode = revertedVersion.child
+          ..showProperties = false
+          ..treeC = newTreeC;
+
+        fco.refreshAll();
+      }
+      return;
+    });
+  }
 }

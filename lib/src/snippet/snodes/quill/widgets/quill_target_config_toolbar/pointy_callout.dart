@@ -1,21 +1,24 @@
 import 'package:flutter/material.dart';
 
 import 'package:flutter_content/flutter_content.dart';
+import 'package:flutter_content/src/model/quill_target_model.dart';
 import 'package:flutter_content/src/snippet/pnodes/enums/enum_target_pointer_type.dart';
 
 class PointyTool extends StatefulWidget {
   final CalloutConfig cc;
-  final TargetModel tc;
-  final TargetsWrapperState wrapperState;
-
+  final QuillTargetModel tc;
+  final QuillTextNode parentQuillTextNode;
+  final void Function(QuillTargetModel)? onTargetConfigChange;
+  final ScrollConfig? sc;
   final bool justPlaying;
 
   const PointyTool(
     this.cc,
     this.tc, {
-    required this.wrapperState,
-
     required this.justPlaying,
+    required this.parentQuillTextNode,
+    this.onTargetConfigChange,
+    this.sc,
     super.key,
   });
 
@@ -24,10 +27,11 @@ class PointyTool extends StatefulWidget {
 
   static void show(
     CalloutConfig cc,
-    TargetModel tc,
-    TargetsWrapperState wrapperState, {
-
+    QuillTargetModel tc, {
+    ScrollConfig? sc,
     required bool justPlaying,
+    required QuillTextNode parentNode,
+    void Function(QuillTargetModel)? onTargetConfigChange,
   }) {
     // GlobalKey? targetGK = tc.gk;
 
@@ -36,8 +40,10 @@ class PointyTool extends StatefulWidget {
       calloutContent: PointyTool(
         cc,
         tc,
-        wrapperState: wrapperState,
         justPlaying: justPlaying,
+        parentQuillTextNode: parentNode,
+        sc: sc,
+        onTargetConfigChange: onTargetConfigChange,
       ),
       calloutConfig: CalloutConfig(
         cId: "arrow-type",
@@ -63,7 +69,7 @@ class _PointyToolState extends State<PointyTool> {
   late TargetPointerTypeEnum _arrowType;
   late bool _animate;
 
-  TargetModel get tc => widget.tc;
+  QuillTargetModel get tc => widget.tc;
 
   CAPIBloC get bloc => fco.capiBloc;
 
@@ -74,33 +80,17 @@ class _PointyToolState extends State<PointyTool> {
     _animate = tc.animatePointer ?? false;
   }
 
-  void _onPressed(TargetPointerTypeEnum t, TargetModel tc, bool animate) {
+  void _onPressed(TargetPointerTypeEnum t, QuillTargetModel tc, bool animate) {
     setState(() => _arrowType = t);
     tc.targetPointerTypeEnum = t;
-    // bloc.add(CAPIEvent.TargetModelChanged(newTC: tc));
+    widget.onTargetConfigChange?.call(tc);
     fco.dismiss("arrow-type");
-    // fco.afterNextBuildDo(() {
-    //   widget.onParentBarrierTappedF.call();
-    //   fco.refreshOverlay(tc.snippetName, f: () {});
-    SnippetRootNode? rootNode = widget.wrapperState.widget.parentNode
-        .rootNodeOfSnippet();
-    if (rootNode == null) return;
-    final newVersionId = SnippetInfoModel.createNewVersion(rootNode);
-    fco.modelRepo.saveSnippetVersion(
-      snippetName: rootNode.name,
-      newVersionId: newVersionId,
-      newVersion: rootNode,
-    );
-    CalloutConfigToolbar.closeThenReopenContentCallout(
-      tc,
-      widget.wrapperState,
-    );
   }
 
   @override
   Widget build(BuildContext context) {
     List<Widget> widgets = [
-      ...[TargetPointerTypeEnum.NONE, TargetPointerTypeEnum.POINTY].map(
+      ...[TargetPointerTypeEnum.NONE, TargetPointerTypeEnum.POINTY, TargetPointerTypeEnum.WAVY].map(
         (t) => Padding(
           padding: const EdgeInsets.all(3.0),
           child: _ArrowTypeOption(
@@ -111,6 +101,7 @@ class _PointyToolState extends State<PointyTool> {
           ),
         ),
       ),
+      const SizedBox(width: 50,),
       ...[
         TargetPointerTypeEnum.VERY_THIN,
         TargetPointerTypeEnum.THIN,
@@ -156,7 +147,7 @@ class _PointyToolState extends State<PointyTool> {
                 : Colors.white60,
           ),
           child: const SizedBox(
-            width: 75,
+            width: 66,
             child: Text('animate', textAlign: TextAlign.center),
           ),
           onPressed: () {
@@ -227,8 +218,8 @@ class _ArrowTypeOption extends StatelessWidget {
             ? Icon(Icons.south_west, color: arrowColor, size: 35)
             : arrowType == TargetPointerTypeEnum.LARGE_REVERSED
             ? Icon(Icons.north_east, color: arrowColor, size: 35)
-            // : arrowType == TargetPointerTypeEnum.HUGE
-            //     ? Icon(Icons.south_west, color: arrowColor, size: 40)
+            : arrowType == TargetPointerTypeEnum.WAVY
+            ? Icon(Icons.waves, color: arrowColor, size: 15)
             : Icon(Icons.north_east, color: arrowColor, size: 40),
       ),
     );

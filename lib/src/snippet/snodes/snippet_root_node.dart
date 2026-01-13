@@ -219,7 +219,7 @@ class SnippetRootNode extends SC with SnippetRootNodeMappable {
     //TODO warn user if in debug mode and snippet version does not match editing version
     if (!isPublishedVersion && kDebugMode) {
       return Container(
-        color: Colors.red,
+        color: Colors.red.shade50,
         padding: EdgeInsets.all(50),
         child: snippetWidget,
       );

@@ -26,8 +26,8 @@ abstract class CAPIState with _$CAPIState {
     // @Default(Offset.zero) Offset? directoryTreeCalloutInitialPos,
     // @Default(400) double? directoryTreeCalloutW,
     // @Default(600) double? directoryTreeCalloutH,
-    TargetModel? newestTarget,
-    TargetModel? selectedTarget,
+    HotspotTargetModel? newestTarget,
+    HotspotTargetModel? selectedTarget,
     //
     // String? selectedPanel,
     @Default(false) bool isSignedIn,

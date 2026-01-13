@@ -2,65 +2,19 @@ import 'dart:math';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_callouts/flutter_callouts.dart';
 import 'package:flutter_content/flutter_content.dart';
 import 'package:flutter_content/src/model/alignment_model.dart';
 import 'package:flutter_content/src/model/size_model.dart';
-import 'package:flutter_content/src/snippet/pnodes/enums/enum_decoration_shape.dart';
 
-/// Calculates the alignment of the center of [other] relative to [target].
-Alignment _getAlignmentBetweenRects(Rect target, Rect other) {
-  // The point for pointToAlignment needs to be relative to the target's top-left corner.
-  final Offset relativeCenter = other.center - target.topLeft;
-  return target.pointToAlignment(relativeCenter);
-}
-
-bool isShowingSnippetCallout(TargetModel tc) => fco.anyPresent([tc.contentCId]);
-
-void hideSnippetContentCallout(TargetModel tc) => fco.hide(tc.contentCId);
-
-void unhideSnippetCallout(TargetModel tc) => fco.unhide(tc.contentCId);
-
-void removeSnippetContentCallout(TargetModel tc, {bool skipOnDismiss = false}) {
-  // if (fco.anyPresent([tc.contentCId])) {
-  fco.dismiss(tc.contentCId, skipOnDismiss: skipOnDismiss);
-  // }
-}
-
-void refreshSnippetContentCallout(TargetModel tc) {
-  fco.rebuild(tc.contentCId);
-}
+import 'hotspot_target_config_toolbar/hotspot_target_config_toolbar.dart';
 
 /// returning false means user tapped the x
 void showHotspotSnippetContentCallout({
-  required TargetModel tc,
+  required HotspotTargetModel tc,
   required bool justPlaying,
   required TargetsWrapperState wrapperState,
 }) {
-  // possibly transform before showing callout
-
-  // CAPIBloc bloc = FCO.capiBloc;
-  // GlobalKey<TextEditorState> calloutChildGK = GlobalKey<TextEditorState>();
-  // bool ignoreBarrierTaps = false;
   double minHeight = 0;
-  // int maxLines = 5;
-  // TargetModel? tc; // = tc; //FCO.capiBloc.state.tcByNameOrUid(tc);
-  // GlobalKey? targetGK() => fco.getTargetGk(tc.uid)!;
-  // GlobalKey? gk = CAPIState.gk(tc!.uid);
-  // GlobalKey? gk = tc.single ? CAPIState.gk(tc.wName.hashCode) : CAPIState.gk(tc.uid);
-
-  // fco.targetSnippetBeingConfigured = fco.currentSnippet(tc.snippetName);
-  // if (fco.targetSnippetBeingConfigured == null) {
-  // var rootNode = SnippetTemplateEnum.callout_content.clone();
-  // SnippetRootNode newSnippet =
-  //     SnippetPanel.createSnippetFromTemplateNodes(rootNode, tc.contentCId);
-  // fco.possiblyCacheAndSaveANewSnippetVersion(
-  //     snippetName: tc.contentCId, rootNode: newSnippet);
-  // fco.targetSnippetBeingConfigured = newSnippet;
-  // }
-  // snippet may not exist yet
-  //  by now should definitely have created the target's snippet
-  // if (fco.targetSnippetBeingConfigured != null) {
 
   Widget content() => SnippetBuilder(
     snippetName: tc.contentCId,
@@ -69,7 +23,6 @@ void showHotspotSnippetContentCallout({
       child: PlaceholderNode(),
     ),
     justPlaying: justPlaying,
-    tc: tc,
   );
 
   Widget editableContent() => Container(
@@ -93,8 +46,6 @@ void showHotspotSnippetContentCallout({
   Rect? targetRect = tc.gk?.globalPaintBounds();
   if (targetRect == null) return;
 
-  Rect targetRectGlobal = wrapperState.translateRectForScroll(targetRect);
-
   Offset initialCalloutPos = calculateCalloutTopLeft(
     // targetRect: inflateRectByFactor_fromCenter(tc.gk!.globalPaintBounds()!, tc.getScale(wrapperState)),
     targetRect: targetRect,
@@ -107,7 +58,8 @@ void showHotspotSnippetContentCallout({
     alignment: tc.tcAlignment!,
   );
 
-  Offset initialCalloutPosSA = wrapperState.translateOffsetForScroll(
+  Offset initialCalloutPosSA = fco.translateOffsetForScroll(
+    wrapperState.scrollConfig,
     initialCalloutPos,
   );
 
@@ -126,7 +78,7 @@ void showHotspotSnippetContentCallout({
     targetPointerType: tc.targetPointerTypeEnum?.targetPointerType,
     fromDelta:
         tc.calloutDecorationShapeEnum == DecorationShapeEnum.star &&
-            tc.hasAHotspot()
+            tc.hasABtn()
         ? 60
         : null,
     animatePointer: tc.animatePointer,
@@ -158,7 +110,7 @@ void showHotspotSnippetContentCallout({
       // tc.tcAlignment = AlignmentModel(cc.targetAlignment!.x, cc.targetAlignment!.y);
     },
     onDragEndedF: (Offset newPos) {
-      if ((justPlaying && tc.hasAHotspot()) || !fco.canEditContent()) return;
+      if ((justPlaying && tc.hasABtn()) || !fco.canEditContent()) return;
 
       // update the targetAlignment
       final Rect calloutRect = Rect.fromLTWH(
@@ -168,22 +120,20 @@ void showHotspotSnippetContentCallout({
         tc.calloutSize!.height,
       );
 
-      // calc alignment that positions the callout at its final separation
-
-      var scrollDirection = wrapperState.scrollDirection;
-      double scrollOffset = wrapperState.sc?.offset ?? 0.0;
-
-      var targetRectSA = wrapperState.translateRectForScroll(targetRect);
+      var targetRectSA = fco.translateRectForScroll(
+        wrapperState.scrollConfig,
+        targetRect,
+      );
 
       // var calloutRectSA = wrapperState.translateRectForScroll(calloutRect);
 
-      Alignment newAlignment = _getAlignmentBetweenRects(
+      Alignment newAlignment = fco.getAlignmentBetweenRects(
         targetRectSA,
         calloutRect,
       );
 
       tc.setAlignment(AlignmentModel(newAlignment.x, newAlignment.y));
-      CalloutConfigToolbar.closeThenReopenContentCallout(tc, wrapperState);
+      tc.closeThenReopenContentCallout(wrapperState);
     },
     draggable: true || !justPlaying,
     scaleTarget: tc.transformScale,
@@ -201,9 +151,9 @@ void showHotspotSnippetContentCallout({
     onDismissedF: () {
       // FCO.parentTW(twName)?.zoomer?.resetTransform();
       // fco.capiBloc.add(const CAPIEvent.unhideAllTargetGroups());
-      fco.dismiss(CalloutConfigToolbar.CID);
+      fco.dismiss(HotspotTargetConfigToolbar.CID);
     },
-    barrier: tc.hasAHotspot() && !snippetBeingEdited
+    barrier: tc.hasABtn() && !snippetBeingEdited
         ? CalloutBarrierConfig(
             color: Colors.black,
             opacity: .8,
@@ -267,7 +217,7 @@ void showHotspotSnippetContentCallout({
   // show callout for configured duration, unless:
   // no hotspot: show forever (until a signed-in editor taps)
   int? durationMs;
-  if (tc.hasAHotspot() && justPlaying) {
+  if (tc.hasABtn() && justPlaying) {
     durationMs = tc.calloutDurationMs;
   }
 

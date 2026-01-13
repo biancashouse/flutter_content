@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_content/flutter_content.dart';
 import 'package:flutter_content/src/snippet/snodes/hotspots/widgets/target_btn_icon_picker.dart';
-
 import 'enum_target_btn_icon.dart';
+import 'hotspot_target_config_toolbar/hotspot_target_config_toolbar.dart';
 
 // Btn has 2 uses: Tap to play, and DoubleTap to configure, plus it is draggable
 class TargetPlayBtn extends StatelessWidget {
-  final TargetModel tc;
+  final HotspotTargetModel tc;
   final int index;
   final TargetsWrapperState wrapperState;
 
@@ -23,7 +23,7 @@ class TargetPlayBtn extends StatelessWidget {
     var snippetBeingEdited = fco.snippetBeingEdited;
 
     bool toolbarPresent = fco.anyPresent([
-      CalloutConfigToolbar.CID,
+      HotspotTargetConfigToolbar.CID,
     ], includeHidden: true);
 
     bool isVisible = snippetBeingEdited == null && !toolbarPresent;
@@ -36,7 +36,7 @@ class TargetPlayBtn extends StatelessWidget {
 
   Widget _draggableTargetBtn(
     BuildContext context,
-    TargetModel tc,
+    HotspotTargetModel tc,
     bool toolbarPresent,
   ) {
     return !fco.canEditContent()
@@ -50,7 +50,7 @@ class TargetPlayBtn extends StatelessWidget {
             child: Icon(
               tc.btnIcon?.flutterValue ??
                   TargetButtonIconEnum.question.flutterValue,
-              size: TargetModel.DEFAULT_BTN_RADIUS * 2,
+              size: HotspotTargetModel.DEFAULT_BTN_RADIUS * 2,
               color: tc.calloutFillColors?.color1?.flutterValue ?? Colors.black,
             ),
             // child: IntegerCircleAvatar(
@@ -70,7 +70,7 @@ class TargetPlayBtn extends StatelessWidget {
                 : IntegerCircleAvatar(
                     num: index + 1,
                     bgColor: tc.bgColor(),
-                    radius: TargetModel.DEFAULT_BTN_RADIUS,
+                    radius: HotspotTargetModel.DEFAULT_BTN_RADIUS,
                     fontSize: 14,
                   ),
             child: DoubleTappable(
@@ -99,7 +99,7 @@ class TargetPlayBtn extends StatelessWidget {
               child: IntegerCircleAvatar(
                 num: index + 1,
                 bgColor: tc.bgColor(),
-                radius: TargetModel.DEFAULT_BTN_RADIUS,
+                radius: HotspotTargetModel.DEFAULT_BTN_RADIUS,
                 fontSize: 14,
               ),
             ),
@@ -143,7 +143,7 @@ class TargetPlayBtn extends StatelessWidget {
 
   static void playTarget(
     BuildContext context,
-    TargetModel tc,
+    HotspotTargetModel tc,
     TargetsWrapperState wrapperState,
   ) {
     // cover will now have been rendered with its gk
@@ -182,8 +182,7 @@ class TargetPlayBtn extends StatelessWidget {
           //     child: PlaceholderNode(),
           //   ),
           // );
-          showHotspotSnippetContentCallout(
-            tc: tc,
+          tc.showContentCallout(
             justPlaying: true,
             wrapperState: wrapperState,
           );
@@ -202,7 +201,7 @@ class TargetPlayBtn extends StatelessWidget {
 
   static void playIconPicker(
     BuildContext context,
-    TargetModel tc,
+    HotspotTargetModel tc,
     TargetsWrapperState wrapperState,
   ) {
     // cover will now have been rendered with its gk
@@ -223,7 +222,7 @@ class TargetPlayBtn extends StatelessWidget {
         originalValue: tc.btnIcon ?? TargetButtonIconEnum.question,
         onChangedF: (TargetButtonIconEnum? newBtnIcon) {
           tc.btnIcon = newBtnIcon;
-          tc.changed_saveRootSnippet(
+          tc.saveParentSnippet(
             wrapperState.widget.parentNode.rootNodeOfSnippet(),
           );
         },
@@ -233,16 +232,16 @@ class TargetPlayBtn extends StatelessWidget {
   }
 
   static void hideNonHotspotsCallouts(TargetsWrapperState wrapperState) {
-    for (TargetModel tc in wrapperState.widget.parentNode.targets) {
-      if (!tc.hasAHotspot()) {
+    for (HotspotTargetModel tc in wrapperState.widget.parentNode.targets) {
+      if (!tc.hasABtn()) {
         fco.hide(tc.contentCId);
       }
     }
   }
 
   static void unhideNonHotspotsCallouts(TargetsWrapperState wrapperState) {
-    for (TargetModel tc in wrapperState.widget.parentNode.targets) {
-      if (!tc.hasAHotspot()) {
+    for (HotspotTargetModel tc in wrapperState.widget.parentNode.targets) {
+      if (!tc.hasABtn()) {
         fco.unhide(tc.contentCId);
       }
     }
