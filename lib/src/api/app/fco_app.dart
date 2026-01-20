@@ -204,6 +204,9 @@ class FlutterContentAppState extends State<FlutterContentApp>
                   GlobalWidgetsLocalizations.delegate,
                   FlutterQuillLocalizations.delegate,
                 ],
+                // theme: ThemeData.light(useMaterial3: true),
+                // darkTheme: ThemeData.dark(useMaterial3: true),
+                // themeMode: ThemeMode.system,
                 themeMode: currentMode,
                 theme: widget.materialAppThemeF(),
                 darkTheme: ThemeData(

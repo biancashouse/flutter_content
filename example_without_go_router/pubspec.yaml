@@ -14,7 +14,7 @@ dependencies:
   flutter_content:  #any
     path: ../../flutter_content
 
-  flutter_quill: ^11.4.2
+  flutter_quill: ^11.5.0
   window_manager: ^0.5.1
   firebase_core: any
   multi_split_view: ^3.5.0

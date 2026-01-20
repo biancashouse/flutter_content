@@ -407,9 +407,9 @@ class CAPIBloC extends Bloc<CAPIEvent, CAPIState> {
 
   Future<void> _popSnippetEditor(PopSnippetEditor event, emit) async {
     // if (state.snippetBeingEdited?.aNodeIsNotSelected??false) return;
-    if (event.save || (state.snippetBeingEdited?.updatesPending ?? false)) {
-      fco.modelRepo.saveNewVersionOfSnippetBeingEdited();
-    }
+    // if (event.save || (state.snippetBeingEdited?.updatesPending ?? false)) {
+    //   fco.modelRepo.saveNewVersionOfSnippetBeingEdited();
+    // }
     fco.dismiss(HotspotTargetConfigToolbar.CID);
     // fco.dismissAll();
     emit(state.copyWith(snippetBeingEdited: null));

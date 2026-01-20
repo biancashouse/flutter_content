@@ -43,7 +43,7 @@ dependencies:
   flutter_bloc: ^9.1.1
   hydrated_bloc: ^10.0.0
   path_provider: ^2.1.5
-  google_fonts: ^6.3.2
+  google_fonts: ^7.0.2
   watcher: ^1.1.0
   multi_split_view: ^3.5.0
   # compals

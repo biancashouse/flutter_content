@@ -20,7 +20,7 @@ class HelpIconEmbedBuilder implements EmbedBuilder {
     BuildContext context,
     EmbedContext embedContext, // All properties are now inside here
   ) {
-    print('HelpIconEmbedBuilder');
+    // print('HelpIconEmbedBuilder');
 
     // Access data through the embedContext
     final node = embedContext.node;
