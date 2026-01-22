@@ -115,70 +115,20 @@ class SnippetBuilderState extends State<SnippetBuilder>
 
   @override
   Widget build(BuildContext context) {
-    // bool nodeTreeSupplied = widget.rootNode != null;
-    // if (nodeTreeSupplied) {
-    //   SnippetRootNode newSnippet = SnippetPanel.createSnippetFromTemplateNodes(
-    //     widget.rootNode!,
-    //     widget.rootNode!.name,
-    //   );
-    // }
+    final name = snippetName();
+    final notifier = fco.appInfo.cachedSnippetInfo(name)?.getChangeNotifier();
 
-    // panel name is always supplied, but snippet name can be omitted,
-    // in which case a default snippet name is used: Snippet[pName].
-    // But first, see if there's an entry in the placement map, in which case we use that snippet name.
-    // if (FCO.snippetPlacementMap.containsKey(widget.panelName)) {
-    //   snippetNameToUse = FCO.snippetPlacementMap[widget.panelName]!;
-    // }
+    return fco.canEditContent() && notifier != null
+        ? ValueListenableBuilder<String>(
+            // must assume snippetInfo will be in cache
+            valueListenable: notifier,
+            builder: (context, value, child) =>
+                buildWithBloc(updatedSnippetJson: value),
+          )
+        : buildWithBloc();
+  }
 
-    // SnippetInfoModel.debug();
-
-    // if a snippet passed in, don't need a futurebuilder
-    // return BlocConsumer<CAPIBloC, CAPIState>(
-    //   // key: widget.panelName != null
-    //   //     ? fco.panelGkMap[widget.panelName!] = GlobalKey(
-    //   //         debugLabel: 'Panel[${widget.panelName}]',
-    //   //       )
-    //   //     : null,
-    //   //
-    //   // show tappable overlays if state variable set with this snippet's name
-    //   listenWhen: (context, state) {
-    //     if (!fco.inSelectWidgetMode) return false;
-    //     var name = snippetName();
-    //     bool thisSnippetIsInWidgetSelectionMode =
-    //         state.snippetNameShowingTappableOverlaysFor == name;
-    //     print(
-    //       'listening for thisSnippetIsInWidgetSelectionMode on $name - returning $thisSnippetIsInWidgetSelectionMode',
-    //     );
-    //     return thisSnippetIsInWidgetSelectionMode;
-    //   },
-    //   listener: (realContext, state) {
-    //     // allow some time for rendering - seems too hacky, but works!
-    //     // fco.afterMsDelayDo(1500, (){
-    //     //   var snippetInfo = SnippetInfoModel.cachedSnippetInfo(snippetName());
-    //     //   var snippetChild = snippetInfo?.currentVersionFromCache()?.child;
-    //     //   // print('root node for tappable overlays is a ${snippetChild.toString()}');
-    //     //   if (fco.anyPresent(['quill-te', 'uml-te', 'markdown-te'])) return;
-    //     //   var ctx = snippetChild?.nodeWidgetGK?.currentContext;
-    //     //   // print('currentContext is $ctx');
-    //     //   ctx?.showSnippetNodeWidgetTappableOverlays(widget.scName);
-    //     // });
-    //     // showSnippetNodeWidgetTappableOverlays(context, widget.scName);
-    //     // if (state.snippetBeingEdited?.aNodeIsSelected ?? false) {
-    //     //   final selectedNode = state.snippetBeingEdited!.selectedNode;
-    //     //     Rect? borderRect = selectedNode!.calcBborderRect();
-    //     //     if (borderRect != null) {
-    //     //       selectedNode.showNodeWidgetOverlay(borderRect: widget. followScroll: false);
-    //     //     }
-    //     // }
-    //   },
-    //   buildWhen: (previous, current) {
-    //     // fco.logger.i(
-    //     //     'BlocBuilder - current.onlyTargetsWrappers: ${current.onlyTargetsWrappers}');
-    //     return !current.onlyTargetsWrappers && fco.notInSelectWidgetMode;
-    //   },
-    //   builder: (blocContext, state) {
-    //     fco.logger.d('\nSnippetPanel builder:\n');
-    //
+  Widget buildWithBloc({String updatedSnippetJson = ''}) {
     return BlocBuilder<CAPIBloC, CAPIState>(
       buildWhen: (previous, current) {
         bool result =
@@ -248,6 +198,7 @@ class SnippetBuilderState extends State<SnippetBuilder>
                       tsPropGroup: TextStyleProperties(),
                     ),
                   ),
+                  updatedSnippetJson,
                 );
               }
               if (!snippetExists) {
@@ -270,19 +221,22 @@ class SnippetBuilderState extends State<SnippetBuilder>
                       fco.modelRepo.saveAppInfo();
                     });
 
-                return _stackWidget(widget.templateSnippet!);
+                return _stackWidget(
+                  widget.templateSnippet!,
+                  updatedSnippetJson,
+                );
               }
 
               // ALREADY EXIST - SNIPPET MAY BE IN CACHE (avoid Future)
-              SnippetInfoModel? snippetInfo =
-                  SnippetInfoModel.cachedSnippetInfo(snippetName());
+              SnippetInfoModel? snippetInfo = fco.appInfo.cachedSnippetInfo(
+                snippetName(),
+              );
               if (snippetInfo != null) {
                 // SNIPPET EXISTS, TRY TO GET FROM SNIPPET CACHE
                 // A SNIPPET INFO ALWAYS HAS AT LEAST 1 VERSION
-                SnippetRootNode? snippet = snippetInfo
-                    .currentVersionFromCache();
+                SnippetRootNode? snippet = snippetInfo.currentVersionInCache();
                 if (snippet != null) {
-                  return _stackWidget(snippet);
+                  return _stackWidget(snippet, updatedSnippetJson);
                 }
               }
 
@@ -313,7 +267,7 @@ class SnippetBuilderState extends State<SnippetBuilder>
 
                   SnippetRootNode snippet = snapshot.data!;
 
-                  return _stackWidget(snippet);
+                  return _stackWidget(snippet, updatedSnippetJson);
                 },
               );
             },
@@ -325,7 +279,7 @@ class SnippetBuilderState extends State<SnippetBuilder>
     // );
   }
 
-  Widget _stackWidget(SnippetRootNode snippet) {
+  Widget _stackWidget(SnippetRootNode snippet, String updatedSnippetJson) {
     // triggers AFTER layout of this widget
     WidgetsBinding.instance.addPostFrameCallback((_) {
       widget.onLayoutDone?.call();
@@ -339,7 +293,7 @@ class SnippetBuilderState extends State<SnippetBuilder>
       stackChildren = [Icon(Icons.error, size: 40, color: Colors.purpleAccent)];
     }
 
-    SnippetInfoModel snippetInfo = SnippetInfoModel.cachedSnippetInfo(
+    SnippetInfoModel snippetInfo = fco.appInfo.cachedSnippetInfo(
       snippetName(),
     )!;
 
@@ -347,6 +301,8 @@ class SnippetBuilderState extends State<SnippetBuilder>
 
     Color triangleColor = Colors.purpleAccent; // in edit mode
     if (!isPublishedVersion) triangleColor = Colors.deepOrange;
+    if (snippetInfo.changesPending( updatedSnippetJson))
+      triangleColor = Colors.yellowAccent;
 
     // orange indicator when not signed in and
     // showing an unpublished snippet
@@ -416,49 +372,49 @@ class SnippetBuilderState extends State<SnippetBuilder>
     }
     return Stack(children: stackChildren);
   }
-
-  // void _tappedTriangle(bool isCID) {
-  //   if ((!pageIsEditable && !isCID) || fco.snippetBeingEdited != null) {
-  //     return;
-  //   }
-  //
-  //   fco.capiBloc.add(CAPIEvent.enterSelectWidgetMode(snippetName: widget.snippetName ?? widget.snippetRootNode!.name));
-  // }
-
-  // _renderSnippet(context) {
-  //   return FutureBuilder<void>(
-  //
-  //     future: SnippetRootNode.loadSnippetFromCacheOrFromFBOrCreateFromTemplate(snippetName: snippetName()),
-  //     builder: (futureContext, snapshot) {
-  //       if (snapshot.connectionState == ConnectionState.done) {
-  //         Widget snippetWidget;
-  //         try {
-  //           // in case did a revert, ignore snapshot data and use the AppInfo instead
-  //           SnippetRootNode? snippet = FCO.currentSnippet(snippetName());
-  //           snippet?.validateTree();
-  //           // SnippetRootNode? snippetRoot = cache?[editingVersionId];
-  //           snippetWidget =
-  //               snippet == null ? const Icon(Icons.error, color: Colors.redAccent) : snippet.child?.toWidget(futureContext, snippet) ?? const Placeholder();
-  //         } catch (e) {
-  //           fco.logger.i('snippetRootNode.toWidget() failed!');
-  //           snippetWidget = Material(
-  //             textStyle: const TextStyle(fontFamily: 'monospace', fontSize: 12),
-  //             child: SingleChildScrollView(
-  //               scrollDirection: Axis.horizontal,
-  //               child: Row(
-  //                 children: [
-  //                   const Icon(Icons.error, color: Colors.redAccent),
-  //                   Gap(10),
-  //                   FCO.coloredText(e.toString()),
-  //                 ],
-  //               ),
-  //             ),
-  //           );
-  //         }
-  //         return snippetWidget;
-  //       } else {
-  //         return const Center(child: CircularProgressIndicator());
-  //       }
-  //     });
-  // }
 }
+
+// void _tappedTriangle(bool isCID) {
+//   if ((!pageIsEditable && !isCID) || fco.snippetBeingEdited != null) {
+//     return;
+//   }
+//
+//   fco.capiBloc.add(CAPIEvent.enterSelectWidgetMode(snippetName: widget.snippetName ?? widget.snippetRootNode!.name));
+// }
+
+// _renderSnippet(context) {
+//   return FutureBuilder<void>(
+//
+//     future: SnippetRootNode.loadSnippetFromCacheOrFromFBOrCreateFromTemplate(snippetName: snippetName()),
+//     builder: (futureContext, snapshot) {
+//       if (snapshot.connectionState == ConnectionState.done) {
+//         Widget snippetWidget;
+//         try {
+//           // in case did a revert, ignore snapshot data and use the AppInfo instead
+//           SnippetRootNode? snippet = FCO.currentSnippet(snippetName());
+//           snippet?.validateTree();
+//           // SnippetRootNode? snippetRoot = cache?[editingVersionId];
+//           snippetWidget =
+//               snippet == null ? const Icon(Icons.error, color: Colors.redAccent) : snippet.child?.toWidget(futureContext, snippet) ?? const Placeholder();
+//         } catch (e) {
+//           fco.logger.i('snippetRootNode.toWidget() failed!');
+//           snippetWidget = Material(
+//             textStyle: const TextStyle(fontFamily: 'monospace', fontSize: 12),
+//             child: SingleChildScrollView(
+//               scrollDirection: Axis.horizontal,
+//               child: Row(
+//                 children: [
+//                   const Icon(Icons.error, color: Colors.redAccent),
+//                   Gap(10),
+//                   FCO.coloredText(e.toString()),
+//                 ],
+//               ),
+//             ),
+//           );
+//         }
+//         return snippetWidget;
+//       } else {
+//         return const Center(child: CircularProgressIndicator());
+//       }
+//     });
+// }

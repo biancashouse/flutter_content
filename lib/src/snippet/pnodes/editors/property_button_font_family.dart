@@ -8,7 +8,6 @@ class PropertyButtonFontFamily extends StatefulWidget {
   final String? originalFontFamily;
   final Color menuBgColor;
   final Function(String?) onChangeF;
-  
 
   const PropertyButtonFontFamily({
     required this.label,
@@ -34,11 +33,60 @@ class _PropertyButtonFontFamilyState extends State<PropertyButtonFontFamily> {
 
   @override
   Widget build(BuildContext context) {
+    late Widget fontFamilyLabel;
+    if (widget.originalFontFamily == null) {
+      fontFamilyLabel = Text(
+        'fontFamily...',
+        style: const TextStyle(color: Colors.white),
+      );
+    } else {
+      fontFamilyLabel = Text.rich(
+        TextSpan(
+          text: 'fontFamily:',
+          children: [
+            TextSpan(
+              text: widget.originalFontFamily,
+              style: googleFontTextStyle(
+                context,
+                fontFamily: widget.originalFontFamily!,
+                color: Colors.white,
+              ),
+            ),
+          ],
+        ),
+      );
+    }
 
-      Widget fontFamilyLabel = widget.originalFontFamily != null
-        ? Text('fontFamily: ${widget.originalFontFamily}',
-            style: const TextStyle(color: Colors.white))
-        : const Text('fontFamily...', style: TextStyle(color: Colors.white));
+    // get list of font families
+    final fontFamilyLabels = fco.googleFontNames..sort;
+    final fontFamilyTiles = fontFamilyLabels.map((family) {
+      try {
+        final listTile = ListTile(
+          // fillColor:
+          //     const WidgetStatePropertyAll<Color?>(Colors.purpleAccent),
+          dense: true,
+          title: Text(family),
+          titleTextStyle: googleFontTextStyle(context, fontFamily: family),
+          tileColor: Colors.purpleAccent,
+          // title: Text(
+          //   label,
+          //   softWrap: false,
+          //   style: googleFontTextStyle(context,
+          //       fontFamily: family, color: Colors.white),
+          //   overflow: TextOverflow.clip,
+          // ),
+          // toggleable: true,
+          onTap: () {
+            widget.onChangeF.call(family);
+            fco.dismiss('font-family');
+          },
+        );
+        return listTile;
+      } catch (e) {
+        return ListTile(title: Text('$family: missing Google Font!'));
+      }
+    });
+
     return PropertyCalloutButton(
       cId: 'font-family',
       // notifier: ValueNotifier<int>(0),
@@ -48,33 +96,10 @@ class _PropertyButtonFontFamilyState extends State<PropertyButtonFontFamily> {
       calloutContents: (ctx) {
         return IntrinsicWidth(
           child: Column(
-              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-              mainAxisSize: MainAxisSize.max,
-              children: fco.googleFontNames.map((family) {
-                return RadioListTile<String>(
-                  fillColor:
-                      const WidgetStatePropertyAll<Color?>(Colors.purpleAccent),
-                  dense: true,
-                  value: family,
-                  groupValue: widget.originalFontFamily,
-                  tileColor: Colors.purpleAccent,
-                  title: Text(
-                    family,
-                    softWrap: false,
-                    style: googleFontTextStyle(context,
-                        fontFamily: family, color: Colors.white),
-                    overflow: TextOverflow.clip,
-                  ),
-                  toggleable: true,
-                  onChanged: (newFamily) {
-                    widget.onChangeF.call(newFamily);
-                    fco.dismiss('font-family');
-                    // fco.afterMsDelayDo(500, () {
-                    //   fco.dismiss(NODE_PROPERTY_CALLOUT_BUTTON);
-                    // });
-                  },
-                );
-              }).toList()),
+            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+            mainAxisSize: MainAxisSize.max,
+            children: fontFamilyTiles.toList(),
+          ),
         );
       },
       calloutSize: Size(240, 50.0 * fco.googleFontNames.length),
@@ -82,7 +107,7 @@ class _PropertyButtonFontFamilyState extends State<PropertyButtonFontFamily> {
   }
 
   TextStyle googleFontTextStyle(
-    context, {
+    BuildContext context, {
     required String fontFamily,
     Color? color,
     double? fontSize,
@@ -91,16 +116,14 @@ class _PropertyButtonFontFamilyState extends State<PropertyButtonFontFamily> {
     FontWeight? fontWeight,
     double? lineHeight,
     double? letterSpacing,
-  }) =>
-      GoogleFonts.getFont(
-        fontFamily,
-        color: color,
-        textStyle:
-            fontSizeName?.materialTextStyle(themeData: Theme.of(context)),
-        fontSize: fontSize,
-        fontStyle: fontStyle,
-        fontWeight: fontWeight,
-        height: lineHeight,
-        letterSpacing: letterSpacing,
-      );
+  }) => GoogleFonts.getFont(
+    fontFamily,
+    color: color,
+    textStyle: fontSizeName?.materialTextStyle(themeData: Theme.of(context)),
+    fontSize: fontSize,
+    fontStyle: fontStyle,
+    fontWeight: fontWeight,
+    height: lineHeight,
+    letterSpacing: letterSpacing,
+  );
 }

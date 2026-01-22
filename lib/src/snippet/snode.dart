@@ -664,7 +664,7 @@ abstract class SNode extends Node with SNodeMappable {
     SNode selectedNode, {
     HotspotTargetModel? targetBeingConfigured,
   }) async {
-    SnippetInfoModel? snippetInfo = SnippetInfoModel.cachedSnippetInfo(
+    SnippetInfoModel? snippetInfo = fco.appInfo.cachedSnippetInfo(
       snippetName,
     );
     if (snippetInfo == null) return;
@@ -1070,16 +1070,16 @@ abstract class SNode extends Node with SNodeMappable {
   static List<HotspotTargetModel> allTargets() {
     // var fc = FC();
     List<HotspotTargetModel> foundTargets = [];
-    for (SnippetName snippetName in SnippetInfoModel.cachedSnippetNames()) {
+    for (SnippetName snippetName in fco.appInfo.cachedSnippetNames()) {
       // get published or editing version
-      SnippetInfoModel? snippetInfo = SnippetInfoModel.cachedSnippetInfo(
+      SnippetInfoModel? snippetInfo = fco.appInfo.cachedSnippetInfo(
         snippetName,
       );
       if (snippetInfo == null) return foundTargets;
       VersionId? versionId = snippetInfo.currentVersionId();
       if (versionId == null) return foundTargets;
       List<SNode> tws =
-          snippetInfo.currentVersionFromCache()?.findDescendantsOfType(
+          snippetInfo.currentVersionInCache()?.findDescendantsOfType(
             TargetsWrapperNode,
           ) ??
           [];

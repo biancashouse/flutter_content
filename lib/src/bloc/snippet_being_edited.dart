@@ -3,7 +3,6 @@ import 'package:flutter_content/flutter_content.dart';
 class SnippetBeingEdited {
   // RouteName pageName;
   // SnippetRootNode rootNode;
-  bool updatesPending = false;
 
   SnippetTreeController treeC;
   SNode? selectedNode;

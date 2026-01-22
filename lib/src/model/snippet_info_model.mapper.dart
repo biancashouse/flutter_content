@@ -47,20 +47,12 @@ class SnippetInfoModelMapper extends ClassMapperBase<SnippetInfoModel> {
     opt: true,
     def: false,
   );
-  static List<String>? _$versionIds(SnippetInfoModel v) => v.versionIds;
+  static List<String> _$versionIds(SnippetInfoModel v) => v.versionIds;
   static const Field<SnippetInfoModel, List<String>> _f$versionIds = Field(
     'versionIds',
     _$versionIds,
     opt: true,
     def: const [],
-  );
-  static Map<String, SnippetRootNode?> _$cachedVersions(SnippetInfoModel v) =>
-      v.cachedVersions;
-  static const Field<SnippetInfoModel, Map<String, SnippetRootNode?>>
-  _f$cachedVersions = Field(
-    'cachedVersions',
-    _$cachedVersions,
-    mode: FieldMode.member,
   );
 
   @override
@@ -71,7 +63,6 @@ class SnippetInfoModelMapper extends ClassMapperBase<SnippetInfoModel> {
     #autoPublish: _f$autoPublish,
     #hide: _f$hide,
     #versionIds: _f$versionIds,
-    #cachedVersions: _f$cachedVersions,
   };
 
   static SnippetInfoModel _instantiate(DecodingData data) {
@@ -147,7 +138,7 @@ extension SnippetInfoModelValueCopy<$R, $Out>
 
 abstract class SnippetInfoModelCopyWith<$R, $In extends SnippetInfoModel, $Out>
     implements ClassCopyWith<$R, $In, $Out> {
-  ListCopyWith<$R, String, ObjectCopyWith<$R, String, String>>? get versionIds;
+  ListCopyWith<$R, String, ObjectCopyWith<$R, String, String>> get versionIds;
   $R call({
     String? name,
     String? editingVersionId,
@@ -170,14 +161,12 @@ class _SnippetInfoModelCopyWithImpl<$R, $Out>
   late final ClassMapperBase<SnippetInfoModel> $mapper =
       SnippetInfoModelMapper.ensureInitialized();
   @override
-  ListCopyWith<$R, String, ObjectCopyWith<$R, String, String>>?
-  get versionIds => $value.versionIds != null
-      ? ListCopyWith(
-          $value.versionIds!,
-          (v, t) => ObjectCopyWith(v, $identity, t),
-          (v) => call(versionIds: v),
-        )
-      : null;
+  ListCopyWith<$R, String, ObjectCopyWith<$R, String, String>> get versionIds =>
+      ListCopyWith(
+        $value.versionIds,
+        (v, t) => ObjectCopyWith(v, $identity, t),
+        (v) => call(versionIds: v),
+      );
   @override
   $R call({
     String? name,
@@ -185,7 +174,7 @@ class _SnippetInfoModelCopyWithImpl<$R, $Out>
     String? publishedVersionId,
     Object? autoPublish = $none,
     Object? hide = $none,
-    Object? versionIds = $none,
+    List<String>? versionIds,
   }) => $apply(
     FieldCopyWithData({
       if (name != null) #name: name,
@@ -193,7 +182,7 @@ class _SnippetInfoModelCopyWithImpl<$R, $Out>
       if (publishedVersionId != null) #publishedVersionId: publishedVersionId,
       if (autoPublish != $none) #autoPublish: autoPublish,
       if (hide != $none) #hide: hide,
-      if (versionIds != $none) #versionIds: versionIds,
+      if (versionIds != null) #versionIds: versionIds,
     }),
   );
   @override

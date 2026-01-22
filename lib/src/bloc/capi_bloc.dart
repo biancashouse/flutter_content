@@ -125,7 +125,7 @@ class CAPIBloC extends Bloc<CAPIEvent, CAPIState> {
   }
 
   Future<void> _revertSnippet(RevertSnippet event, emit) async {
-    SnippetInfoModel? snippetInfo = SnippetInfoModel.cachedSnippetInfo(
+    SnippetInfoModel? snippetInfo = fco.appInfo.cachedSnippetInfo(
       event.snippetName
           // ??
           // state.snippetBeingEdited?.getRootNode().name ??
@@ -223,7 +223,7 @@ class CAPIBloC extends Bloc<CAPIEvent, CAPIState> {
     ToggleAutoPublishingOfSnippet event,
     emit,
   ) async {
-    SnippetInfoModel? snippetInfo = SnippetInfoModel.cachedSnippetInfo(
+    SnippetInfoModel? snippetInfo = fco.appInfo.cachedSnippetInfo(
       event.snippetName,
     );
     if (snippetInfo == null) return;
@@ -282,7 +282,7 @@ class CAPIBloC extends Bloc<CAPIEvent, CAPIState> {
     ToggleSnippetVisibility event,
     emit,
   ) async {
-    SnippetInfoModel? snippetInfo = SnippetInfoModel.cachedSnippetInfo(
+    SnippetInfoModel? snippetInfo = fco.appInfo.cachedSnippetInfo(
       event.snippetName!,
     );
     if (snippetInfo == null) {
@@ -399,7 +399,7 @@ class CAPIBloC extends Bloc<CAPIEvent, CAPIState> {
 
     emit(
       state.copyWith(
-        snippetBeingEdited: state.snippetBeingEdited?..updatesPending = true,
+        // snippetBeingEdited: state.snippetBeingEdited?..updatesPending = true,
         force: state.force + 1,
       ),
     );
@@ -1361,14 +1361,14 @@ class CAPIBloC extends Bloc<CAPIEvent, CAPIState> {
         SnippetRootNode? parentSnippetRootNode = (parent.getParent() as SNode)
             .rootNodeOfSnippet();
         if (parentSnippetRootNode != null) {
-          SnippetInfoModel? snippetInfo = SnippetInfoModel.cachedSnippetInfo(
+          SnippetInfoModel? snippetInfo = fco.appInfo.cachedSnippetInfo(
             parentSnippetRootNode.name,
           );
           if (snippetInfo != null) {
             VersionId? currVersionId = snippetInfo.currentVersionId();
             // SnippetRootNode? currVer = snippetInfo.cachedVersions[currVersionId];
             if (currVersionId != null) {
-              snippetInfo.cachedVersions.remove(currVersionId);
+              snippetInfo.removeVersionFromCache(currVersionId);
             }
           }
         }

@@ -7,7 +7,6 @@ import 'package:flutter_content/flutter_content.dart';
 import 'package:flutter_content/src/model/quill_target_model.dart';
 import 'package:flutter_content/src/snippet/pnodes/fyi_pnodes.dart';
 import 'package:flutter_content/src/snippet/pnodes/quill_text_pnode.dart';
-// import 'package:flutter_content/src/snippet/snodes/quill/widgets/quill_editor_with_toolbar_callout.dart';
 import 'package:flutter_content/src/snippet/snodes/quill/widgets/quill_viewer.dart';
 import 'package:flutter_quill/flutter_quill.dart';
 
@@ -66,34 +65,41 @@ class QuillTextNode extends CL with QuillTextNodeMappable {
 
     Widget editor;
     if (fco.canEditContent() && fco.snippetBeingEdited == null) {
-      editor = FocusAwareQuillEditor(
-        key: gk,
-        parentSNode: this,
-        onChange: (String newValue, {bool forceRefresh = false}) {
-          // save
-          final rootNode = rootNodeOfSnippet();
-          if (rootNode != null) {
-            deltaJsonString = newValue;
-            fco.modelRepo.saveNewVersionOfSnippet(rootNode);
-          }
-          // do when adding a new info embed
-          // if (forceRefresh) fco.forceRefresh();
-        },
-        // onEditWithToolbarBtnPressed: () {
-        //   final rootNode = rootNodeOfSnippet();
-        //   if (rootNode != null) {
-        //     showQuillEditorOverlay(
-        //       quillTextNode: this,
-        //       onChangeF: (String? newValue) {
-        //         refreshWithUpdate(
-        //           context,
-        //           () => deltaJsonString = newValue ?? '',
-        //         );
-        //         fco.forceRefresh();
-        //       },
-        //     );
-        //   }
-        // },
+      editor = Material(
+        child: FocusAwareQuillEditor(
+          key: gk,
+          parentSNode: this,
+          uid: uid,
+          originalDeltaJsonString: deltaJsonString,
+          onChange: (String newValue, {bool forceRefresh = false}) {
+            // save
+            final rootNode = rootNodeOfSnippet();
+            if (rootNode != null) {
+              deltaJsonString = newValue;
+              //fco.modelRepo.saveNewVersionOfSnippet(rootNode);
+              // also broadcast change
+              SnippetInfoModel? snippetInfo = fco.appInfo.cachedSnippetInfo(rootNode.name);
+              snippetInfo?.getChangeNotifier().value = rootNode.toJson();
+            }
+            // do when adding a new info embed
+            // if (forceRefresh) fco.forceRefresh();
+          },
+          // onEditWithToolbarBtnPressed: () {
+          //   final rootNode = rootNodeOfSnippet();
+          //   if (rootNode != null) {
+          //     showQuillEditorOverlay(
+          //       quillTextNode: this,
+          //       onChangeF: (String? newValue) {
+          //         refreshWithUpdate(
+          //           context,
+          //           () => deltaJsonString = newValue ?? '',
+          //         );
+          //         fco.forceRefresh();
+          //       },
+          //     );
+          //   }
+          // },
+        ),
       );
     } else {
       editor = QuillViewer(key: gk, parentSNode: this);

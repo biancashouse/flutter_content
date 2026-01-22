@@ -263,7 +263,7 @@ mixin NavMixin {
                 context.pop();
                 await fco.modelRepo.saveAppInfo();
                 await fco.modelRepo.deleteSnippet(pagePath);
-                SnippetInfoModel.removeFromCache(pagePath);
+                fco.appInfo.removeFromCache(pagePath);
                 fco.capiBloc.add(CAPIEvent.forceRefresh());
               },
               icon: Icon(Icons.delete, color: Colors.red),

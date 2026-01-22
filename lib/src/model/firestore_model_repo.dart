@@ -120,7 +120,7 @@ class FireStoreModelRepository implements IModelRepository {
     required SnippetName snippetName,
   }) async {
     // return if already in cache
-    if (SnippetInfoModel.cachedSnippetInfo(snippetName) != null) {
+    if (fco.appInfo.cachedSnippetInfo(snippetName) != null) {
       return;
     }
 
@@ -134,7 +134,7 @@ class FireStoreModelRepository implements IModelRepository {
     try {
       snippetInfoData = snippetInfoDoc.data() as Map<String, dynamic>;
       snippetInfo = SnippetInfoModelMapper.fromMap(snippetInfoData);
-      SnippetInfoModel.cacheSnippetInfo(snippetName, snippetInfo);
+      fco.appInfo.cacheSnippetInfo(snippetName, snippetInfo);
     } catch (e) {
       fco.logger.e(
         'snippetInfo for $snippetName not cached! (MISSING?)',
@@ -175,7 +175,7 @@ class FireStoreModelRepository implements IModelRepository {
     required VersionId versionId,
   }) async {
     // try to fetch the specified version from cache, otherwise try to fetch from FB
-    SnippetRootNode? version = snippetInfo.cachedVersions[versionId];
+    SnippetRootNode? version = snippetInfo.cachedVersion(versionId);
 
     if (version != null) {
       // ALREADY IN CACHE
@@ -209,7 +209,7 @@ class FireStoreModelRepository implements IModelRepository {
           // var childMap = data['child'];
           version = SnippetRootNodeMapper.fromMap(data);
           // cache it
-          snippetInfo.cachedVersions[versionId] = version;
+          snippetInfo.cacheVersion(versionId, version);
           // fco.logger.i(
           //     '--- ${snippetInfo.name} LOADED---');
         } catch (e) {
@@ -288,7 +288,7 @@ class FireStoreModelRepository implements IModelRepository {
       }
     }
     // admin
-    var map = fco.appInfoAsMap;
+    var map = fco.appInfo.toMap();
     await appDocRef.set(map);
   }
 
@@ -332,9 +332,7 @@ class FireStoreModelRepository implements IModelRepository {
     // guest editor, so pretend saved !
     if (fco.isGuestEditor()) return true;
 
-    SnippetInfoModel? snippetInfo = SnippetInfoModel.cachedSnippetInfo(
-      snippetName,
-    );
+    SnippetInfoModel? snippetInfo = fco.appInfo.cachedSnippetInfo(snippetName);
     if (snippetInfo == null) return false;
 
     // create the actual version doc
@@ -462,9 +460,7 @@ class FireStoreModelRepository implements IModelRepository {
     );
     var snapshots = await versions.get();
     final WriteBatch batch = FirebaseFirestore.instance.batch();
-    SnippetInfoModel? snippetInfo = SnippetInfoModel.cachedSnippetInfo(
-      snippetName,
-    );
+    SnippetInfoModel? snippetInfo = fco.appInfo.cachedSnippetInfo(snippetName);
     if (snippetInfo == null) return;
     for (var doc in snapshots.docs) {
       var id = doc.id;
@@ -486,9 +482,7 @@ class FireStoreModelRepository implements IModelRepository {
   }) async {
     if (fco.isGuestEditor()) return;
 
-    SnippetInfoModel? snippetInfo = SnippetInfoModel.cachedSnippetInfo(
-      snippetName,
-    );
+    SnippetInfoModel? snippetInfo = fco.appInfo.cachedSnippetInfo(snippetName);
     if (snippetInfo == null) return;
 
     // set the snippet properties

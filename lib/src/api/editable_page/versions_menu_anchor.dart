@@ -107,6 +107,14 @@ class VersionsMenuAnchor extends StatelessWidget {
             ],
           ),
         ),
+        // if (snippetInfo.changesPending())
+          MenuItemButton(
+            onPressed: () {
+              fco.modelRepo.saveNewVersionOfSnippetBeingEdited();
+              fco.forceRefresh();
+            },
+            child: const Text('save new version to firestore'),
+          ),
         if (snippetInfo.editingVersionId != snippetInfo.publishedVersionId)
           MenuItemButton(
             onPressed: () {
@@ -141,7 +149,7 @@ class VersionsMenuAnchor extends StatelessWidget {
           onPressed: () async {
             fco.capiBloc.add(
               CAPIEvent.copySnippetJsonToClipboard(
-                rootNode: snippetInfo.currentVersionFromCache()!,
+                rootNode: snippetInfo.currentVersionInCache()!,
               ),
             );
           },

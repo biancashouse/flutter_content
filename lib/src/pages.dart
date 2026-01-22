@@ -34,7 +34,7 @@ class Pages extends StatelessWidget {
                     fco.deleteSubRoute(path: label);
                     await fco.modelRepo.saveAppInfo();
                     await fco.modelRepo.deleteSnippet(label);
-                    SnippetInfoModel.removeFromCache(label);
+                    fco.appInfo.removeFromCache(label);
                     fco.capiBloc.add(CAPIEvent.forceRefresh());
                   },
                   icon: Icon(Icons.delete, color: Colors.red),

@@ -73,12 +73,12 @@ class EditablePageState extends State<EditablePage> {
     List<SNode> nodes = [];
     SnippetRootNode? rootNode;
     // not yet editing, show all widget borderRects
-    SnippetInfoModel? snippetInfo = SnippetInfoModel.cachedSnippetInfo(
+    SnippetInfoModel? snippetInfo = fco.appInfo.cachedSnippetInfo(
       fco.capiBloc.state.activeSnippetName != null
           ? fco.capiBloc.state.activeSnippetName!
           : fco.capiBloc.state.snippetBeingEdited?.getRootNode().name ?? '???',
     );
-    rootNode = snippetInfo?.currentVersionFromCache();
+    rootNode = snippetInfo?.currentVersionInCache();
     // traverse node
     borderRects.clear();
     if (rootNode != null) {
@@ -559,7 +559,7 @@ class EditablePageState extends State<EditablePage> {
         .rootNodeOfSnippet();
     if (rootNode is SnippetRootNode) {
       SnippetName snippetName = rootNode.name;
-      SnippetInfoModel? snippetInfo = SnippetInfoModel.cachedSnippetInfo(
+      SnippetInfoModel? snippetInfo = fco.appInfo.cachedSnippetInfo(
         snippetName,
       );
       if (snippetInfo != null) {
@@ -668,9 +668,9 @@ class EditablePageState extends State<EditablePage> {
           print('new node selection');
           return true;
         }
-        if (current.snippetBeingEdited?.updatesPending ?? false) {
-          return true;
-        }
+        // if (current.snippetBeingEdited?.updatesPending ?? false) {
+        //   return true;
+        // }
         return false;
       },
       builder: (BuildContext context, CAPIState state) {

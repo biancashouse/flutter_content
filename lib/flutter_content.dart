@@ -502,7 +502,7 @@ class FlutterContentMixins
 
   String? get gcrServerUrl => _gcrServerUrl;
 
-  JsonMap get appInfoAsMap => appInfo.toMap();
+  // JsonMap get appInfoAsMap => appInfo.toMap();
 
   late ValueNotifier<RoutingConfig> routingConfigVN;
   var themeModeNotifier = ValueNotifier<ThemeMode>(ThemeMode.light);
@@ -699,7 +699,7 @@ class FlutterContentMixins
   // }
 
   bool isEditingVersionPublished(SnippetName name) {
-    var snippetInfo = SnippetInfoModel.cachedSnippetInfo(name);
+    var snippetInfo = fco.appInfo.cachedSnippetInfo(name);
     return snippetInfo?.publishedVersionId == snippetInfo?.editingVersionId;
   }
 
@@ -714,6 +714,7 @@ class FlutterContentMixins
   /// Docs about CFBundleVersion: https://developer.apple.com/documentation/bundleresources/information_property_list/cfbundleversion
 
   final List<String> googleFontNames = [];
+
   final Map<String, void Function(BuildContext, GlobalKey?)> namedCallbacks =
       {};
 

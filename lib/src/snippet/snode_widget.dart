@@ -226,7 +226,7 @@ class SNodeWidget extends StatelessWidget {
           // instead of using the embedded snippet node, which has no child,
           // use the actual (STANDALONE) snippet itself
           // Assumption: actual snippet will be in versionCache
-          SnippetInfoModel? snippetInfo = SnippetInfoModel.cachedSnippetInfo(
+          SnippetInfoModel? snippetInfo = fco.appInfo.cachedSnippetInfo(
             (entry.node as SnippetRootNode).name,
           );
           SnippetRootNode? snippet = await snippetInfo

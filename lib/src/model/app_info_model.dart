@@ -54,5 +54,24 @@ class AppInfoModel with AppInfoModelMappable {
     );
   }
 
+  final Map<SnippetName, SnippetInfoModel> _snippetInfoCache = {};
+
+
+   SnippetInfoModel? cachedSnippetInfo(String snippetName) {
+    return _snippetInfoCache[snippetName];
+  }
+
+  /// a snippet gets cached when first read from FB or a new version created
+   void cacheSnippetInfo(String snippetName, SnippetInfoModel sni) {
+    // _snippetInfoCache[snippetName.startsWith('/') ? snippetName.substring(1) : snippetName] = sni;
+    _snippetInfoCache[snippetName] = sni;
+  }
+
+   List<String> cachedSnippetNames() => _snippetInfoCache.keys.toList();
+
+   void removeFromCache(String snippetName) =>
+      _snippetInfoCache.remove(snippetName);
+
+
 }
 

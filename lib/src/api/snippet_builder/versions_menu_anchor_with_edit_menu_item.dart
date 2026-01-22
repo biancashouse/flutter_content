@@ -14,7 +14,8 @@ class SnippetMenuAnchor extends StatelessWidget {
   final AnchorWidgetEnum anchorWidget;
   final Color? triangleColor;
 
-  const SnippetMenuAnchor(this.parentBuilderState, {
+  const SnippetMenuAnchor(
+    this.parentBuilderState, {
     required this.anchorWidget,
     required this.snippetInfo,
     this.triangleColor,
@@ -27,47 +28,46 @@ class SnippetMenuAnchor extends StatelessWidget {
         snippetInfo.publishedVersionId == snippetInfo.editingVersionId;
 
     return MenuAnchor(
-      builder:
-          (BuildContext context, MenuController controller, Widget? child) {
+      builder: (BuildContext context, MenuController controller, Widget? child) {
         return anchorWidget == AnchorWidgetEnum.Triangle
             ? Tooltip(
-            message: isPublishedVersion
-                ? 'show Snippet menu\n"${snippetInfo.name}"'
-                : 'show Snippet menu\n"${snippetInfo.name}\n*** NOT PUBLISHED ***"',
-            child: InkWell(
-            onDoubleTap: () {
-          snippetInfo
-              .currentVersionFromCache()
-              ?.tappedToEditSnippetNode();
-      },
-        onTap: () {
-        if (controller.isOpen) {
-        controller.close();
-        } else {
-        controller.open();
-        }
-        },
-        child: CustomPaint(
-        size: const Size(40, 40),
-        painter: TRTriangle(triangleColor!),
-        ),
-        ),
-        )
+                message: isPublishedVersion
+                    ? 'show Snippet menu\n"${snippetInfo.name}"'
+                    : 'show Snippet menu\n"${snippetInfo.name}\n*** NOT PUBLISHED ***"',
+                child: InkWell(
+                  onDoubleTap: () {
+                    snippetInfo
+                        .currentVersionInCache()
+                        ?.tappedToEditSnippetNode();
+                  },
+                  onTap: () {
+                    if (controller.isOpen) {
+                      controller.close();
+                    } else {
+                      controller.open();
+                    }
+                  },
+                  child: CustomPaint(
+                    size: const Size(40, 40),
+                    painter: TRTriangle(triangleColor!),
+                  ),
+                ),
+              )
             : InkWell(
-        onDoubleTap: () {
-        snippetInfo
-            .currentVersionFromCache()
-            ?.tappedToEditSnippetNode();
-        },
-        onTap: () {
-        if (controller.isOpen) {
-        controller.close();
-        } else {
-        controller.open();
-        }
-        },
-        child: Icon(Icons.edit, size: 16, color: Colors.white),
-        );
+                onDoubleTap: () {
+                  snippetInfo
+                      .currentVersionInCache()
+                      ?.tappedToEditSnippetNode();
+                },
+                onTap: () {
+                  if (controller.isOpen) {
+                    controller.close();
+                  } else {
+                    controller.open();
+                  }
+                },
+                child: Icon(Icons.edit, size: 16, color: Colors.white),
+              );
       },
       menuChildren: [
         // SubmenuButton(
@@ -113,7 +113,7 @@ class SnippetMenuAnchor extends StatelessWidget {
               fco.removeKeystrokeHandler('key-handler-exit-Select-Widget-Mode');
               fco.registerKeystrokeHandler(
                 'key-handler-exit-Select-Widget-Mode',
-                    (KeyEvent event) {
+                (KeyEvent event) {
                   if (event.logicalKey == LogicalKeyboardKey.escape) {
                     // if (bloc.showTappableBorderRects()) {
                     bloc.add(CAPIEvent.exitNodeSelectionMode());
@@ -150,7 +150,7 @@ class SnippetMenuAnchor extends StatelessWidget {
         if (SnippetRootNode.isHotspotCalloutContent(snippetInfo.name))
           _menuItemButtonWithPI(
             onPressed: () {
-              snippetInfo.currentVersionFromCache()?.tappedToEditSnippetNode();
+              snippetInfo.currentVersionInCache()?.tappedToEditSnippetNode();
             },
             child: Row(
               children: [
@@ -162,6 +162,14 @@ class SnippetMenuAnchor extends StatelessWidget {
                 Icon(Icons.edit, color: Colors.purple),
               ],
             ),
+          ),
+        // if (snippetInfo.changesPending())
+          MenuItemButton(
+            onPressed: () {
+              fco.modelRepo.saveNewVersionOfSnippetBeingEdited();
+              fco.forceRefresh();
+            },
+            child: const Text('save new version to firestore'),
           ),
         if (snippetInfo.editingVersionId != snippetInfo.publishedVersionId)
           _menuItemButtonWithPI(
@@ -185,19 +193,19 @@ class SnippetMenuAnchor extends StatelessWidget {
           },
           child: snippetInfo.autoPublish ?? fco.appInfo.autoPublishDefault
               ? const Tooltip(
-            message: "don't auto-push changes.",
-            child: Text('stop auto-publishing changes to this snippet'),
-          )
+                  message: "don't auto-push changes.",
+                  child: Text('stop auto-publishing changes to this snippet'),
+                )
               : const Tooltip(
-            message: 'auto push changes as they occur',
-            child: Text('auto-publish future changes to this snippet'),
-          ),
+                  message: 'auto push changes as they occur',
+                  child: Text('auto-publish future changes to this snippet'),
+                ),
         ),
         _menuItemButtonWithPI(
           onPressed: () async {
             fco.capiBloc.add(
               CAPIEvent.copySnippetJsonToClipboard(
-                rootNode: snippetInfo.currentVersionFromCache()!,
+                rootNode: snippetInfo.currentVersionInCache()!,
               ),
             );
           },
@@ -251,14 +259,13 @@ class SnippetMenuAnchor extends StatelessWidget {
   MenuItemButton _menuItemButtonWithPI({
     required Widget child,
     required VoidCallback onPressed,
-  }) =>
-      MenuItemButton(
-        onPressed: onPressed,
-        child: Align(
-          alignment: Alignment.centerLeft,
-          child: PointerInterceptor(child: child),
-        ),
-      );
+  }) => MenuItemButton(
+    onPressed: onPressed,
+    child: Align(
+      alignment: Alignment.centerLeft,
+      child: PointerInterceptor(child: child),
+    ),
+  );
 
   // Widget _buildStackOfNodeRects(SnippetRootNode rootNode) {
   //   BuildContext? ctx = rootNode?.child?.nodeWidgetGK?.currentContext;
@@ -267,9 +274,11 @@ class SnippetMenuAnchor extends StatelessWidget {
   //   return Stack(children: nodeBorderRects);
   // }
 
-  void revertToVersion(VersionId? versionId,
-      SnippetInfoModel snippetInfo,
-      CAPIState state,) {
+  void revertToVersion(
+    VersionId? versionId,
+    SnippetInfoModel snippetInfo,
+    CAPIState state,
+  ) {
     if (versionId == null) return;
     fco.capiBloc.add(
       CAPIEvent.revertSnippet(
@@ -289,7 +298,7 @@ class SnippetMenuAnchor extends StatelessWidget {
       // fco.capiBloc
       //     .add(const CAPIEvent.popSnippetEditor());
       // fco.dismiss(snippetName, skipOnDismiss: true);
-      final revertedVersion = snippetInfo.currentVersionFromCache();
+      final revertedVersion = snippetInfo.currentVersionInCache();
       if (revertedVersion != null) {
         final newTreeC = SnippetTreeController(
           roots: [revertedVersion],
