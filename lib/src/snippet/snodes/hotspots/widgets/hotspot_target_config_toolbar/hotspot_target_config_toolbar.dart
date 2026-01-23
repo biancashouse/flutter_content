@@ -276,7 +276,8 @@ class HotspotTargetConfigToolbarState
                     .parentNode
                     .rootNodeOfSnippet();
                 if (rootNode == null) return;
-                fco.modelRepo.saveNewVersionOfSnippet(rootNode);
+                // fco.modelRepo.saveNewVersionOfSnippet(rootNode);
+                fco.appInfo.cachedSnippetInfo(rootNode.name)?.notifyChange(rootNode);
                 widget.tc.closeThenReopenContentCallout(widget.wrapperState);
                 // fco.capiBloc.add(CAPIEvent.TargetModelChanged(newTC: tc));
                 // fco.afterNextBuildDo(() {
@@ -315,7 +316,9 @@ class HotspotTargetConfigToolbarState
                   .rootNodeOfSnippet();
               if (rootNode == null) return;
               widget.wrapperState.widget.parentNode.targets.remove(widget.tc);
-              fco.modelRepo.saveNewVersionOfSnippet(rootNode);
+              // fco.modelRepo.saveNewVersionOfSnippet(rootNode);
+              fco.appInfo.cachedSnippetInfo(rootNode.name)?.notifyChange(rootNode);
+
               // fco.cacheAndSaveANewSnippetVersion(
               //   snippetName: rootNode.name, // widget.tc.snippetName,
               //   rootNode: rootNode,

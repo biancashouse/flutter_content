@@ -80,27 +80,27 @@ class SNodeWidget extends StatelessWidget {
               Gap(8),
               // if (entry.node.logoSrc() != null) SizedBox(width: entry.node.logoSrc()!.contains('pub.dev') ? 6 : 0),
               _name(context),
-              Gap(8),
-              if (entry.node is QuillTextNode)
-                InkWell(
-                  onTap: () {
-                    _tappedNode(context);
-                    fco.afterNextBuildDo(() {
-                      var quillTextNode = entry.node as QuillTextNode;
-                      showQuillEditorOverlay(
-                        quillTextNode: quillTextNode,
-                        onChangeF: (String? newValue) {
-                          quillTextNode.refreshWithUpdate(
-                            context,
-                            () =>
-                                quillTextNode.deltaJsonString = newValue ?? '',
-                          );
-                        },
-                      );
-                    });
-                  },
-                  child: Icon(Icons.edit, size: 20),
-                ),
+              // Gap(8),
+              // if (entry.node is QuillTextNode)
+              //   InkWell(
+              //     onTap: () {
+              //       _tappedNode(context);
+              //       fco.afterNextBuildDo(() {
+              //         var quillTextNode = entry.node as QuillTextNode;
+              //         showQuillEditorOverlay(
+              //           quillTextNode: quillTextNode,
+              //           onChangeF: (String? newValue) {
+              //             quillTextNode.refreshWithUpdate(
+              //               context,
+              //               () =>
+              //                   quillTextNode.deltaJsonString = newValue ?? '',
+              //             );
+              //           },
+              //         );
+              //       });
+              //     },
+              //     child: Icon(Icons.edit, size: 20),
+              //   ),
               if (entry.node is UMLImageNode)
                 InkWell(
                   onTap: () {

@@ -147,9 +147,7 @@ class QuillTextToolbarState extends State<QuillTextToolbar> {
             final rootNode = widget.parentSNode.rootNodeOfSnippet();
             if (rootNode != null) {
               // notify possible changes to the quill text (controller)
-              final snippetInfo = fco.appInfo.cachedSnippetInfo(rootNode.name);
-              ValueNotifier<String>? notifier = snippetInfo?.getChangeNotifier();
-              notifier?.value = rootNode.toJson();
+              fco.appInfo.cachedSnippetInfo(rootNode.name)?.notifyChange(rootNode);
             }
             fco.dismiss(widget.cid, skipOnDismiss: true);
             fco.focussedCId.value = null;
@@ -220,7 +218,8 @@ class QuillTextToolbarState extends State<QuillTextToolbar> {
 
           var snippet = widget.parentSNode.rootNodeOfSnippet();
           if (snippet != null) {
-            fco.modelRepo.saveNewVersionOfSnippet(snippet);
+            // fco.modelRepo.saveNewVersionOfSnippet(snippet);
+            fco.appInfo.cachedSnippetInfo(snippet.name)?.notifyChange(snippet);
           }
         },
       );

@@ -30,20 +30,22 @@ class SnippetInfoModel with SnippetInfoModelMappable {
 
   bool changesPending(String? latestJson) {
     if (latestJson == null || latestJson.isEmpty) return false;
-    if (_originalEditingJson == null) return false;
     return latestJson != _originalEditingJson;
   }
 
   // original editing version used to detect changes
-  @JsonKey(includeFromJson: false, includeToJson: false)
   String? _originalEditingJson;
 
   // whenever snippet gets updated, the new json copied here
   // used by changesPending
-  @JsonKey(includeFromJson: false, includeToJson: false)
   final _jsonValueNotifier = ValueNotifier<String>('');
 
   ValueNotifier<String> getChangeNotifier() => _jsonValueNotifier;
+
+  void notifyChange(SnippetRootNode changedSnippet) {
+    getChangeNotifier().value = changedSnippet.toJson();
+    print('notifyChange() - changes pending is ${changesPending(changedSnippet.toJson())}');
+  }
 
   // static void debug() {
   //   var snippetInfoCache = SnippetInfoModel._snippetInfoCache;

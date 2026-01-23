@@ -170,6 +170,8 @@ class SnippetMenuAnchor extends StatelessWidget {
             onPressed: () {
               final rootNode = snippetInfo.currentVersionInCache();
               if (rootNode != null) {
+                // notify possible changes to the quill text (controller)
+                snippetInfo.notifyChange(rootNode);
                 fco.modelRepo.saveNewVersionOfSnippet(rootNode);
                 fco.forceRefresh();
               }

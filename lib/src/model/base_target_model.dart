@@ -123,7 +123,8 @@ abstract class TargetConfigModel {
         bgColor: Colors.yellow,
         textColor: Colors.black,
       );
-      fco.modelRepo.saveNewVersionOfSnippet(rootNode);
+      // fco.modelRepo.saveNewVersionOfSnippet(rootNode);
+      fco.appInfo.cachedSnippetInfo(rootNode.name)?.notifyChange(rootNode);
       fco.dismissToast(Alignment.topCenter);
     }
   }

@@ -312,13 +312,10 @@ class FireStoreModelRepository implements IModelRepository {
   // }
 
   @override
-  Future<bool> saveNewVersionOfSnippet(SnippetRootNode rootNode) async {
+  Future<void> saveNewVersionOfSnippet(SnippetRootNode rootNode) async {
     final newVersionId = SnippetInfoModel.createNewVersion(rootNode);
-    // notify possible changes to the quill text (controller)
-    final snippetInfo = fco.appInfo.cachedSnippetInfo(rootNode.name);
-    ValueNotifier<String>? notifier = snippetInfo?.getChangeNotifier();
-    notifier?.value = rootNode.toJson();
-    return _saveSnippetVersion(
+
+    _saveSnippetVersion(
       snippetName: rootNode.name,
       newVersionId: newVersionId,
       newVersion: rootNode,

@@ -125,10 +125,10 @@ class SnippetBuilderState extends State<SnippetBuilder>
             builder: (context, value, child) =>
                 buildWithBloc(updatedSnippetJson: value),
           )
-        : buildWithBloc();
+        : buildWithBloc(updatedSnippetJson: '');
   }
 
-  Widget buildWithBloc({String updatedSnippetJson = ''}) {
+  Widget buildWithBloc({required String updatedSnippetJson}) {
     return BlocBuilder<CAPIBloC, CAPIState>(
       buildWhen: (previous, current) {
         bool result =

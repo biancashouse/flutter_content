@@ -5,7 +5,8 @@ import 'package:flutter_content/src/model/quill_target_model.dart';
 import 'package:flutter_quill/flutter_quill.dart';
 import 'package:flutter_content/flutter_content.dart' hide Line;
 
-import 'quill_target_config_toolbar/quill_target_config_toolbar.dart' show QuillTargetConfigToolbar;
+import 'quill_target_config_toolbar/quill_target_config_toolbar.dart'
+    show QuillTargetConfigToolbar;
 
 class HelpIconEmbedBuilder implements EmbedBuilder {
   final QuillTextNode parentSNode;
@@ -47,38 +48,19 @@ class HelpIconEmbedBuilder implements EmbedBuilder {
       targetBuilderF: (targetCtx) => Tooltip(
         message: 'tap to learn more',
         child: InkWell(
-          onTap: () {
+          onTap: () async {
             // prevent configuring targets when overlay is open
-            if (fco.anyPresent(['quill-te', QuillTargetConfigToolbar.CID])) return;
-            // play target
-            // qt.showContentCallout(
-            //   parentQuillTextNode: parentSNode,
-            //   justPlaying: true,
-            //   onTargetConfigChange: (_) {},
-            // );
-            CalloutConfig? contentCC = fco.findCalloutConfig(qt.contentCId);
-            Alignment optimalAl = _getOptimalAlignment(targetCtx, sc);
-            contentCC?.targetAlignment = optimalAl;
-            contentCC?.calloutAlignment = -optimalAl;
-            contentCC?.barrier = CalloutBarrierConfig(
-              color: Colors.black,
-              opacity: .8,
-              excludeTargetFromBarrier: true,
-              roundExclusion: true,
-              dismissible: false,
-            );
-            WrappedCallout.unhideParentCallout(
-              targetCtx,
-              hideAfterMs: qt.calloutDurationMs,
-            );
-            // fco.unhide(qt.contentCId);
-            // fco.afterMsDelayDo(qt.calloutDurationMs, () {
-            //   fco.hide(qt.contentCId);
-            // });
+            if (fco.anyPresent([], startsWith: 'quill-toolbar-')) {
+              fco.showToastColor1OnColor2(msg: 'close text toolbat first', textColor: Colors.yellow, bgColor: Colors.blue[700]!, removeAfterMs: 3000);
+             return;
+            } else {
+              _tappedInfoIcon(targetCtx, qt, sc);
+            }
           },
           onDoubleTap: () {
             // prevent configuring targets when overlay is open
-            if (fco.anyPresent(['quill-te', QuillTargetConfigToolbar.CID])) return;
+            if (fco.anyPresent(['quill-te', QuillTargetConfigToolbar.CID]))
+              return;
             if (readOnly) return; // Don't allow updates in read-only mode.
             if (!fco.canEditContent()) return;
             // configure target
@@ -108,6 +90,28 @@ class HelpIconEmbedBuilder implements EmbedBuilder {
           child: Icon(Icons.info_outline_rounded, size: 18),
         ),
       ),
+    );
+  }
+
+  void _tappedInfoIcon(
+    BuildContext targetCtx,
+    QuillTargetModel qt,
+    ScrollConfig? sc,
+  ) {
+    CalloutConfig? contentCC = fco.findCalloutConfig(qt.contentCId);
+    Alignment optimalAl = _getOptimalAlignment(targetCtx, sc);
+    contentCC?.targetAlignment = optimalAl;
+    contentCC?.calloutAlignment = -optimalAl;
+    contentCC?.barrier = CalloutBarrierConfig(
+      color: Colors.black,
+      opacity: .8,
+      excludeTargetFromBarrier: true,
+      roundExclusion: true,
+      dismissible: false,
+    );
+    WrappedCallout.unhideParentCallout(
+      targetCtx,
+      hideAfterMs: qt.calloutDurationMs,
     );
   }
 
@@ -145,7 +149,7 @@ class HelpIconEmbedBuilder implements EmbedBuilder {
     if (targetRect == null) return Alignment.center;
     double alX = (targetRect.left < screenCenterPos.dx) ? 1 : -1;
     double alY = (targetRect.top < screenCenterPos.dy) ? 1 : -1;
-    return Alignment(alX,alY);
+    return Alignment(alX, alY);
   }
 
   void _updateParentQuillTextNode({
@@ -213,16 +217,15 @@ class HelpIconEmbedBuilder implements EmbedBuilder {
     }
 
     // c. Save the entire updated document back to the parent node.
-    parentSNode.deltaJsonString = jsonEncode(
-      qC.document.toDelta().toJson(),
-    );
+    parentSNode.deltaJsonString = jsonEncode(qC.document.toDelta().toJson());
 
     qC.dispose();
 
     // d. Trigger a save to your backend/database.
     var snippet = parentSNode.rootNodeOfSnippet();
     if (snippet != null) {
-      fco.modelRepo.saveNewVersionOfSnippet(snippet);
+      // fco.modelRepo.saveNewVersionOfSnippet(snippet);
+      fco.appInfo.cachedSnippetInfo(snippet.name)?.notifyChange(snippet);
     }
 
     if (!deleteTarget) {

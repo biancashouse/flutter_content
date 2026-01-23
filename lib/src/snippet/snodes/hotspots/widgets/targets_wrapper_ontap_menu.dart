@@ -122,6 +122,7 @@ class TargetsWrapperOnTapMenu extends StatelessWidget {
     parentNode.targets = [...parentNode.targets, newTC];
     // widget.parentNode.targets.add(newTC);
     fco.capiBloc.add(const CAPIEvent.forceRefresh(onlyTargetsWrappers: true));
-    fco.modelRepo.saveNewVersionOfSnippet(parentNode.rootNodeOfSnippet()!);
+    // fco.modelRepo.saveNewVersionOfSnippet(parentNode.rootNodeOfSnippet()!);
+    fco.appInfo.cachedSnippetInfo(parentNode.rootNodeOfSnippet()!.name)?.notifyChange(parentNode.rootNodeOfSnippet()!);
   }
 }

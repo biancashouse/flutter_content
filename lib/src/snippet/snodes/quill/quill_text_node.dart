@@ -6,7 +6,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_content/flutter_content.dart';
 import 'package:flutter_content/src/model/quill_target_model.dart';
 import 'package:flutter_content/src/snippet/pnodes/fyi_pnodes.dart';
-import 'package:flutter_content/src/snippet/pnodes/quill_text_pnode.dart';
+// import 'package:flutter_content/src/snippet/pnodes/quill_text_pnode.dart';
 import 'package:flutter_content/src/snippet/snodes/quill/widgets/quill_viewer.dart';
 import 'package:flutter_quill/flutter_quill.dart';
 
@@ -41,17 +41,17 @@ class QuillTextNode extends CL with QuillTextNodeMappable {
         snode: this,
         name: 'fyi',
       ),
-      QuillTextPNode(
-        snode: this,
-        name: 'data',
-        deltaValue: deltaJsonString,
-        onDeltaChange: (String? newValue) {
-          refreshWithUpdate(context, () => deltaJsonString = newValue ?? '');
-        },
-        calloutButtonSize: const Size(280, 3000),
-        calloutWidth: fco.scrW * .8,
-        calloutHeight: fco.scrH * .8,
-      ),
+      // QuillTextPNode(
+      //   snode: this,
+      //   name: 'data',
+      //   deltaValue: deltaJsonString,
+      //   onDeltaChange: (String? newValue) {
+      //     refreshWithUpdate(context, () => deltaJsonString = newValue ?? '');
+      //   },
+      //   calloutButtonSize: const Size(280, 3000),
+      //   calloutWidth: fco.scrW * .8,
+      //   calloutHeight: fco.scrH * .8,
+      // ),
     ];
   }
 
