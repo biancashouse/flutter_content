@@ -9,7 +9,7 @@ class GoRouterObserver extends NavigatorObserver {
 
   @override
   void didPop(Route<dynamic> route, Route<dynamic>? previousRoute) {
-    fco.dismissAll();
+    // fco.dismissAll();
     if (fco.snippetBeingEdited != null) {
       fco.capiBloc.add(PopSnippetEditor());
     }
@@ -18,7 +18,7 @@ class GoRouterObserver extends NavigatorObserver {
   @override
   void didRemove(Route<dynamic> route, Route<dynamic>? previousRoute) {
     // fco.logger.d('MyTest didRemove: $route');
-    fco.dismissAll();
+    // fco.dismissAll();
     if (fco.snippetBeingEdited != null) {
       fco.capiBloc.add(PopSnippetEditor());
     }

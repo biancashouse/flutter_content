@@ -72,15 +72,15 @@ class QuillTextNode extends CL with QuillTextNodeMappable {
           uid: uid,
           originalDeltaJsonString: deltaJsonString,
           onChange: (String newValue, {bool forceRefresh = false}) {
-            // save
-            final rootNode = rootNodeOfSnippet();
-            if (rootNode != null) {
-              deltaJsonString = newValue;
+            deltaJsonString = newValue;
+            // no need to save - user must explicitly tap the triangle | save pending changes menu
+            // final rootNode = rootNodeOfSnippet();
+            // if (rootNode != null) {
               //fco.modelRepo.saveNewVersionOfSnippet(rootNode);
               // also broadcast change
-              SnippetInfoModel? snippetInfo = fco.appInfo.cachedSnippetInfo(rootNode.name);
-              snippetInfo?.getChangeNotifier().value = rootNode.toJson();
-            }
+              // SnippetInfoModel? snippetInfo = fco.appInfo.cachedSnippetInfo(rootNode.name);
+              // snippetInfo?.getChangeNotifier().value = rootNode.toJson();
+// ?            }
             // do when adding a new info embed
             // if (forceRefresh) fco.forceRefresh();
           },

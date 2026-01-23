@@ -31,8 +31,8 @@ abstract class IModelRepository {
     List<VersionId>? newVersionIds,
   });
 
-  Future<bool> saveNewVersionOfSnippetBeingEdited();
-  Future<bool> saveNewVersionOfSnippet(SnippetRootNode rootNode);
+  // Future<bool> saveNewVersionOfSnippetBeingEdited();
+  Future<void> saveNewVersionOfSnippet(SnippetRootNode rootNode);
 
   Future<bool> saveBrandNewSnippet({
     required SnippetName snippetName,

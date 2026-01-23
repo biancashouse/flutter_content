@@ -301,7 +301,7 @@ class SnippetBuilderState extends State<SnippetBuilder>
 
     Color triangleColor = Colors.purpleAccent; // in edit mode
     if (!isPublishedVersion) triangleColor = Colors.deepOrange;
-    if (snippetInfo.changesPending( updatedSnippetJson))
+    if (snippetInfo.changesPending(updatedSnippetJson))
       triangleColor = Colors.yellowAccent;
 
     // orange indicator when not signed in and
@@ -323,7 +323,8 @@ class SnippetBuilderState extends State<SnippetBuilder>
     // widget not editing a snippety
     if (fco.canEditContent() &&
         bloc.dontShowTappableBorderRects() &&
-        bloc.aSnippetIsNotBeingEdited()) {
+        bloc.aSnippetIsNotBeingEdited() &&
+        !fco.anyPresent([], startsWith: 'quill-toolbar-')) {
       stackChildren.add(
         Align(
           alignment: Alignment.topRight,

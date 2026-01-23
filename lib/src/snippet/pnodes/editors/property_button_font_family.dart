@@ -116,7 +116,12 @@ class _PropertyButtonFontFamilyState extends State<PropertyButtonFontFamily> {
     FontWeight? fontWeight,
     double? lineHeight,
     double? letterSpacing,
-  }) => GoogleFonts.getFont(
+  }) {
+    final fonts = GoogleFonts.asMap();
+    if (!fonts.containsKey(fontFamily)) {
+      return TextStyle(color: color,);
+    }
+    return GoogleFonts.getFont(
     fontFamily,
     color: color,
     textStyle: fontSizeName?.materialTextStyle(themeData: Theme.of(context)),
@@ -126,4 +131,5 @@ class _PropertyButtonFontFamilyState extends State<PropertyButtonFontFamily> {
     height: lineHeight,
     letterSpacing: letterSpacing,
   );
+  }
 }

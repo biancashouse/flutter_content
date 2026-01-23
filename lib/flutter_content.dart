@@ -40,6 +40,7 @@ import 'package:flutter_content/src/snippet/snodes/filled_button_node.dart';
 import 'package:flutter_content/src/snippet/snodes/flex_node.dart';
 import 'package:flutter_content/src/snippet/snodes/flexible_node.dart';
 import 'package:flutter_content/src/snippet/snodes/flexible_space_bar_node.dart';
+import 'package:flutter_content/src/snippet/snodes/quill/widgets/focus_notifier.dart';
 import 'package:flutter_content/src/snippet/snodes/storage_image_node.dart';
 import 'package:flutter_content/src/snippet/snodes/gap_node.dart';
 import 'package:flutter_content/src/snippet/snodes/named_multi_child_node.dart';
@@ -528,9 +529,16 @@ class FlutterContentMixins
 
   late TapGestureRecognizer webLinkF;
 
-  // TODO replace with context.read<CAPIBloC>()
+  // TODO perhaps replace with context.read<CAPIBloC>()
   late CAPIBloC capiBloc;
 
+  // FocusChangeNotifier focusNodeCN = FocusChangeNotifier();
+  FocusNode? focussedFN;
+  final focussedCId = ValueNotifier<CalloutId?>(null);
+
+
+
+  //
   SnippetBeingEdited? get snippetBeingEdited =>
       capiBloc.state.snippetBeingEdited;
 
@@ -732,6 +740,10 @@ class FlutterContentMixins
   bool calloutConfigToolbarAtTopOfScreen = false;
 
   // ---- callout config tool pos -------------------------
+  Offset? _quillTextToolbarPos;
+  bool quillTextToolbarAtTopOfScreen = true;
+
+  // ---- callout config tool pos -------------------------
   // bool skipEditModeEscape =
   //     false; // property editors can set this to prevent exit from EditMode
 
@@ -744,13 +756,23 @@ class FlutterContentMixins
 
   Offset calloutConfigToolbarPos() =>
       _calloutConfigToolbarPos ??
-      Offset(
-        scrW / 2 - 350,
-        calloutConfigToolbarAtTopOfScreen ? 10 : scrH - 90,
-      );
+          Offset(
+            scrW / 2 - 600,
+            calloutConfigToolbarAtTopOfScreen ? 10 : scrH - 90,
+          );
+
+  Offset quillTextToolbarPos() =>
+      _quillTextToolbarPos ??
+          Offset(
+            scrW / 2 - 600,
+            quillTextToolbarAtTopOfScreen ? 10 : scrH - 90,
+          );
 
   void setCalloutConfigToolbarPos(Offset newPos) =>
       _calloutConfigToolbarPos = newPos;
+
+  void setQuillTextToolbarPos(Offset newPos) =>
+      _quillTextToolbarPos = newPos;
 
   Offset devToolsFABPos(context) =>
       _devToolsFABPos ?? Offset(40, MediaQuery.sizeOf(context).height - 100);

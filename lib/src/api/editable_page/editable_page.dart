@@ -4,7 +4,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_content/flutter_content.dart';
 import 'package:flutter_content/src/api/editable_page/snippet_properties_tree_view.dart';
 import 'package:flutter_content/src/api/editable_page/snippet_tree_view.dart';
-import 'package:flutter_content/src/api/editable_page/versions_menu_anchor.dart';
+// import 'package:flutter_content/src/api/editable_page/versions_menu_anchor.dart';
 import 'package:flutter_content/src/api/editable_page/tappable_node_borders.dart';
 import 'package:flutter_content/src/snippet/snode_widget.dart';
 import 'package:flutter_content/src/snippet/snodes/hotspots/widgets/hotspot_target_config_toolbar/hotspot_target_config_toolbar.dart';
@@ -611,14 +611,15 @@ class EditablePageState extends State<EditablePage> {
                     ),
                     Align(
                       alignment: Alignment.topRight,
-                      child: Row(
-                        mainAxisSize: MainAxisSize.min,
-                        children: [
-                          IconButton(
-                            hoverColor: Colors.white30,
-                            onPressed: () async {},
-                            icon: VersionsMenuAnchor(snippetInfo: snippetInfo),
-                          ),
+                      child:
+                          // Row(
+                          //   mainAxisSize: MainAxisSize.min,
+                          //   children: [
+                          //     // IconButton(
+                          //     //   hoverColor: Colors.white30,
+                          //     //   onPressed: () async {},
+                          //     //   icon: VersionsMenuAnchor(snippetInfo: snippetInfo),
+                          //     // ),
                           IconButton(
                             onPressed: () {
                               // SNode.unhighlightSelectedNode();
@@ -637,11 +638,21 @@ class EditablePageState extends State<EditablePage> {
                               fco.capiBloc.add(
                                 const CAPIEvent.popSnippetEditor(),
                               );
+                              final rootNode = snippetInfo
+                                  .currentVersionInCache();
+                              if (rootNode != null) {
+                                // notify possible changes to the quill text (controller)
+                                final snippetInfo = fco.appInfo
+                                    .cachedSnippetInfo(rootNode.name);
+                                ValueNotifier<String>? notifier = snippetInfo
+                                    ?.getChangeNotifier();
+                                notifier?.value = rootNode.toJson();
+                              }
                             },
                             icon: Icon(Icons.close),
                           ),
-                        ],
-                      ),
+                      // ],
+                      // ),
                     ),
                   ],
                 ),

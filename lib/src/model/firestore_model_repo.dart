@@ -1,6 +1,7 @@
 import 'dart:convert';
 
 import 'package:firebase_storage/firebase_storage.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter_content/flutter_content.dart';
 import 'package:flutter_content/src/snippet/snodes/widget/fs_folder_node.dart';
 
@@ -303,16 +304,20 @@ class FireStoreModelRepository implements IModelRepository {
     newVersion: initialVersion,
   );
 
-  @override
-  Future<bool> saveNewVersionOfSnippetBeingEdited() async {
-    SnippetRootNode? rootNode = fco.snippetBeingEdited?.getRootNode();
-    if (rootNode == null) return false;
-    return saveNewVersionOfSnippet(rootNode);
-  }
+  // @override
+  // Future<bool> saveNewVersionOfSnippetBeingEdited() async {
+  //   SnippetRootNode? rootNode = fco.snippetBeingEdited?.getRootNode();
+  //   if (rootNode == null) return false;
+  //   return saveNewVersionOfSnippet(rootNode);
+  // }
 
   @override
   Future<bool> saveNewVersionOfSnippet(SnippetRootNode rootNode) async {
     final newVersionId = SnippetInfoModel.createNewVersion(rootNode);
+    // notify possible changes to the quill text (controller)
+    final snippetInfo = fco.appInfo.cachedSnippetInfo(rootNode.name);
+    ValueNotifier<String>? notifier = snippetInfo?.getChangeNotifier();
+    notifier?.value = rootNode.toJson();
     return _saveSnippetVersion(
       snippetName: rootNode.name,
       newVersionId: newVersionId,

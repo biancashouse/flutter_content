@@ -28,8 +28,8 @@ class SnippetInfoModel with SnippetInfoModelMappable {
   // whenever a version is read from Firestore, we cache it
   final Map<VersionId, SnippetRootNode?> _cachedVersions = {};
 
-  bool changesPending(String latestJson) {
-    if (latestJson.isEmpty) return false;
+  bool changesPending(String? latestJson) {
+    if (latestJson == null || latestJson.isEmpty) return false;
     if (_originalEditingJson == null) return false;
     return latestJson != _originalEditingJson;
   }

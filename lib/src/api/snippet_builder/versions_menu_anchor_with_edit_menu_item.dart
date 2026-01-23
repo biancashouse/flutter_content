@@ -36,11 +36,13 @@ class SnippetMenuAnchor extends StatelessWidget {
                     : 'show Snippet menu\n"${snippetInfo.name}\n*** NOT PUBLISHED ***"',
                 child: InkWell(
                   onDoubleTap: () {
+                    if ( fco.anyPresent([], startsWith: 'quill-toolbar-')) return;
                     snippetInfo
                         .currentVersionInCache()
                         ?.tappedToEditSnippetNode();
                   },
                   onTap: () {
+                    if ( fco.anyPresent([], startsWith: 'quill-toolbar-')) return;
                     if (controller.isOpen) {
                       controller.close();
                     } else {
@@ -163,13 +165,23 @@ class SnippetMenuAnchor extends StatelessWidget {
               ],
             ),
           ),
-        // if (snippetInfo.changesPending())
+        if (snippetInfo.changesPending(snippetInfo.currentVersionInCache()?.toJson()))
           MenuItemButton(
             onPressed: () {
-              fco.modelRepo.saveNewVersionOfSnippetBeingEdited();
-              fco.forceRefresh();
+              final rootNode = snippetInfo.currentVersionInCache();
+              if (rootNode != null) {
+                fco.modelRepo.saveNewVersionOfSnippet(rootNode);
+                fco.forceRefresh();
+              }
             },
-            child: const Text('save new version to firestore'),
+            child: const Text('save pending change(s) to firestore'),
+          ),
+        if (snippetInfo.changesPending(snippetInfo.currentVersionInCache()?.toJson()))
+          MenuItemButton(
+            onPressed: () {
+              // TODO
+            },
+            child:  fco.coloredText('discard pending change(s)', color: Colors.red),
           ),
         if (snippetInfo.editingVersionId != snippetInfo.publishedVersionId)
           _menuItemButtonWithPI(
