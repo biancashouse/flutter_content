@@ -67,76 +67,76 @@ class MoreCalloutConfigSettings extends StatelessWidget {
         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
-          if (tc.calloutDecorationShapeEnum != DecorationShapeEnum.circle &&
-              tc.calloutDecorationShapeEnum !=
-                  DecorationShapeEnum.rectangle_dotted &&
-              tc.calloutDecorationShapeEnum !=
-                  DecorationShapeEnum.rounded_rectangle_dotted &&
-              tc.calloutDecorationShapeEnum != DecorationShapeEnum.stadium &&
-              tc.calloutDecorationShapeEnum != DecorationShapeEnum.star)
-            Row(
-              mainAxisSize: MainAxisSize.max,
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                const Text('borderRadius: '),
-                Align(
-                  alignment: Alignment.center,
-                  child: PropertyButtonNumber<double>(
-                    originalValue: tc.calloutBorderRadius??0.0,
-                    onChangedF: (newValue) {
-                      tc.calloutBorderRadius = double.tryParse(newValue) ?? 30;
-                      tc.calloutConfig!.decorationBorderRadius = tc.calloutBorderRadius;
-                      print('save...');
-                      onTargetConfigChange?.call(tc);
-                      fco.dismiss("more-cc-settings");
-                      tc.closeThenReopenConfigToolbar(
-                        parentNode: parentNode,
-                        sc: sc,
-                        onTargetConfigChange: onTargetConfigChange,
-                      );
-                    },
-                    alignment: Alignment.center,
-                    label: '${tc.calloutBorderRadius}',
-                    buttonSize: const Size(40, 30),
-                    editorSize: const Size(60, 60),
-                  ),
-                ),
-              ],
-            ),
-          if (tc.calloutDecorationShapeEnum !=
-              DecorationShapeEnum.rectangle_dotted &&
-              tc.calloutDecorationShapeEnum !=
-                  DecorationShapeEnum.rounded_rectangle_dotted)
-            Row(
-              mainAxisSize: MainAxisSize.max,
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                const Text('borderWidth: '),
-                Align(
-                  alignment: Alignment.center,
-                  child: PropertyButtonNumber<double>(
-                    originalValue: tc.calloutBorderThickness??2.0,
-                    onChangedF: (newValue) {
-                      tc.calloutBorderThickness =
-                          double.tryParse(newValue) ?? 0;
-                      tc.calloutConfig!.decorationBorderThickness = tc.calloutBorderThickness;
-                      onTargetConfigChange?.call(tc);
-                      fco.dismiss("more-cc-settings");
-                      tc.closeThenReopenConfigToolbar(
-                        parentNode: parentNode,
-                        sc: sc,
-                        onTargetConfigChange: onTargetConfigChange,
-
-                      );
-                    },
-                    alignment: Alignment.center,
-                    label: '${tc.calloutBorderThickness}',
-                    buttonSize: const Size(40, 30),
-                    editorSize: const Size(60, 60),
-                  ),
-                ),
-              ],
-            ),
+          // if (tc.calloutDecorationShapeEnum != DecorationShapeEnum.circle &&
+          //     tc.calloutDecorationShapeEnum !=
+          //         DecorationShapeEnum.rectangle_dotted &&
+          //     tc.calloutDecorationShapeEnum !=
+          //         DecorationShapeEnum.rounded_rectangle_dotted &&
+          //     tc.calloutDecorationShapeEnum != DecorationShapeEnum.stadium &&
+          //     tc.calloutDecorationShapeEnum != DecorationShapeEnum.star)
+          //   Row(
+          //     mainAxisSize: MainAxisSize.max,
+          //     mainAxisAlignment: MainAxisAlignment.center,
+          //     children: [
+          //       const Text('borderRadius: '),
+          //       Align(
+          //         alignment: Alignment.center,
+          //         child: PropertyButtonNumber<double>(
+          //           originalValue: tc.calloutBorderRadius??0.0,
+          //           onChangedF: (newValue) {
+          //             tc.calloutBorderRadius = double.tryParse(newValue) ?? 30;
+          //             tc.calloutConfig!.decorationBorderRadius = tc.calloutBorderRadius;
+          //             print('save...');
+          //             onTargetConfigChange?.call(tc);
+          //             fco.dismiss("more-cc-settings");
+          //             tc.closeThenReopenConfigToolbar(
+          //               parentNode: parentNode,
+          //               sc: sc,
+          //               onTargetConfigChange: onTargetConfigChange,
+          //             );
+          //           },
+          //           alignment: Alignment.center,
+          //           label: '${tc.calloutBorderRadius}',
+          //           buttonSize: const Size(40, 30),
+          //           editorSize: const Size(60, 60),
+          //         ),
+          //       ),
+          //     ],
+          //   ),
+          // if (tc.calloutDecorationShapeEnum !=
+          //     DecorationShapeEnum.rectangle_dotted &&
+          //     tc.calloutDecorationShapeEnum !=
+          //         DecorationShapeEnum.rounded_rectangle_dotted)
+          //   Row(
+          //     mainAxisSize: MainAxisSize.max,
+          //     mainAxisAlignment: MainAxisAlignment.center,
+          //     children: [
+          //       const Text('borderWidth: '),
+          //       Align(
+          //         alignment: Alignment.center,
+          //         child: PropertyButtonNumber<double>(
+          //           originalValue: tc.calloutBorderThickness??2.0,
+          //           onChangedF: (newValue) {
+          //             tc.calloutBorderThickness =
+          //                 double.tryParse(newValue) ?? 0;
+          //             tc.calloutConfig!.decorationBorderThickness = tc.calloutBorderThickness;
+          //             onTargetConfigChange?.call(tc);
+          //             fco.dismiss("more-cc-settings");
+          //             tc.closeThenReopenConfigToolbar(
+          //               parentNode: parentNode,
+          //               sc: sc,
+          //               onTargetConfigChange: onTargetConfigChange,
+          //
+          //             );
+          //           },
+          //           alignment: Alignment.center,
+          //           label: '${tc.calloutBorderThickness}',
+          //           buttonSize: const Size(40, 30),
+          //           editorSize: const Size(60, 60),
+          //         ),
+          //       ),
+          //     ],
+          //   ),
           if (tc.calloutDecorationShapeEnum == DecorationShapeEnum.star)
             Row(
               mainAxisSize: MainAxisSize.max,
@@ -166,72 +166,28 @@ class MoreCalloutConfigSettings extends StatelessWidget {
                 ),
               ],
             ),
-          Row(
-            mainAxisSize: MainAxisSize.max,
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              const Text('resizeableH: '),
-              PropertyEditorBool(
-                name: '',
-                boolValue: tc.canResizeH,
-                onChanged: (newValue) {
-                  tc.canResizeH = newValue;
-                  onTargetConfigChange?.call(tc);
-                  fco.dismiss("more-cc-settings");
-                  tc.closeThenReopenConfigToolbar(
-                    parentNode: parentNode,
-                    sc: sc,
-                    onTargetConfigChange: onTargetConfigChange,
-
-                  );
-                },
-              ),
-            ],
-          ),
-          Row(
-            mainAxisSize: MainAxisSize.max,
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              const Text('resizeable V: '),
-              PropertyEditorBool(
-                name: '',
-                boolValue: tc.canResizeV,
-                onChanged: (newValue) {
-                  tc.canResizeV = newValue;
-                  onTargetConfigChange?.call(tc);
-                  fco.dismiss("more-cc-settings");
-                  tc.closeThenReopenConfigToolbar(
-                    parentNode: parentNode,
-                    sc: sc,
-                    onTargetConfigChange: onTargetConfigChange,
-
-                  );
-                },
-              ),
-            ],
-          ),
-          Row(
-            mainAxisSize: MainAxisSize.max,
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              const Text('follow scroll?'),
-              PropertyEditorBool(
-                name: '',
-                boolValue: tc.followScroll,
-                onChanged: (newValue) {
-                  tc.followScroll = newValue;
-                  onTargetConfigChange?.call(tc);
-                  fco.dismiss("more-cc-settings");
-                  tc.closeThenReopenConfigToolbar(
-                    parentNode: parentNode,
-                    sc: sc,
-                    onTargetConfigChange: onTargetConfigChange,
-
-                  );
-                },
-              ),
-            ],
-          ),
+          // Row(
+          //   mainAxisSize: MainAxisSize.max,
+          //   mainAxisAlignment: MainAxisAlignment.center,
+          //   children: [
+          //     const Text('follow scroll?'),
+          //     PropertyEditorBool(
+          //       name: '',
+          //       boolValue: tc.followScroll,
+          //       onChanged: (newValue) {
+          //         tc.followScroll = newValue;
+          //         onTargetConfigChange?.call(tc);
+          //         fco.dismiss("more-cc-settings");
+          //         tc.closeThenReopenConfigToolbar(
+          //           parentNode: parentNode,
+          //           sc: sc,
+          //           onTargetConfigChange: onTargetConfigChange,
+          //
+          //         );
+          //       },
+          //     ),
+          //   ],
+          // ),
         ],
       ),
     );

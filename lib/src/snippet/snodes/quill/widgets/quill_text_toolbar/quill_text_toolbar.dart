@@ -10,13 +10,11 @@ import 'package:flutter_quill/flutter_quill.dart';
 import 'package:google_fonts/google_fonts.dart' show GoogleFonts;
 
 class QuillTextToolbar extends StatefulWidget {
-  final CalloutId cid;
   final QuillTextNode parentSNode;
   final FocusNode focusNode;
   final QuillController controller;
 
   const QuillTextToolbar({
-    required this.cid,
     required this.parentSNode,
     required this.focusNode,
     required this.controller,
@@ -25,7 +23,6 @@ class QuillTextToolbar extends StatefulWidget {
   });
 
   static show({
-    required CalloutId cid,
     required QuillTextNode parentSNode,
     required FocusNode focusNode,
     required QuillController controller,
@@ -33,7 +30,7 @@ class QuillTextToolbar extends StatefulWidget {
     fco.showOverlay(
       onReadyF: () {},
       calloutConfig: CalloutConfig(
-        cId: cid,
+        cId: parentSNode.quillTextToolbarCID,
 
         decorationFillColors: ColorOrGradient.color(Colors.purpleAccent),
         initialCalloutW: 1200,
@@ -51,7 +48,6 @@ class QuillTextToolbar extends StatefulWidget {
         onDismissedF: () {},
       ),
       calloutContent: QuillTextToolbar(
-        cid: cid,
         parentSNode: parentSNode,
         focusNode: focusNode,
         controller: controller,
@@ -149,8 +145,8 @@ class QuillTextToolbarState extends State<QuillTextToolbar> {
               // notify possible changes to the quill text (controller)
               fco.appInfo.cachedSnippetInfo(rootNode.name)?.notifyChange(rootNode);
             }
-            fco.dismiss(widget.cid, skipOnDismiss: true);
-            fco.focussedCId.value = null;
+            fco.dismiss(widget.parentSNode.quillTextToolbarCID, skipOnDismiss: true);
+            fco.quillTextToolbarCIDVN.value = null;
           },
         ),
         const VerticalDivider(color: Colors.white, width: 2),
@@ -161,10 +157,9 @@ class QuillTextToolbarState extends State<QuillTextToolbar> {
 
   Widget toolbarVFlipIcon() => IconButton(
     onPressed: () {
-      fco.dismiss(widget.cid, skipOnDismiss: true);
+      fco.dismiss(widget.parentSNode.quillTextToolbarCID, skipOnDismiss: true);
       fco.quillTextToolbarAtTopOfScreen = !fco.quillTextToolbarAtTopOfScreen;
       QuillTextToolbar.show(
-        cid: widget.cid,
         parentSNode: widget.parentSNode,
         focusNode: widget.focusNode,
         controller: widget.controller,

@@ -7,6 +7,9 @@ import 'package:flutter_content/src/snippet/pnodes/editors/property_button_numbe
 import 'package:flutter_content/src/snippet/pnodes/enums/enum_target_pointer_type.dart';
 import 'package:flutter_content/src/snippet/snodes/hotspots/widgets/hotspot_target_config_toolbar/colour_picker_tool.dart';
 import 'package:flutter_content/src/snippet/snodes/hotspots/widgets/hotspot_target_config_toolbar/duration_callout.dart';
+import 'package:flutter_content/src/snippet/snodes/quill/widgets/help_icon_embed.dart';
+
+import 'more_callout_settings.dart';
 
 // import 'more_callout_settings.dart';
 
@@ -35,9 +38,10 @@ class QuillTargetConfigToolbar extends StatelessWidget {
 
   static double CALLOUT_CONFIG_TOOLBAR_H = 60.0;
 
-   // @override
+  // @override
   @override
   Widget build(BuildContext context) {
+    final color = qtF().bgColor();
     return SizedBox(
       width: QuillTargetConfigToolbar.CALLOUT_CONFIG_TOOLBAR_W,
       height: QuillTargetConfigToolbar.CALLOUT_CONFIG_TOOLBAR_H,
@@ -60,7 +64,7 @@ class QuillTargetConfigToolbar extends StatelessWidget {
           const VerticalDivider(color: Colors.white, width: 2),
           IconButton(
             tooltip: 'change the callout fill colour...',
-            icon: const Icon(Icons.palette_outlined, color: Colors.white),
+            icon: Icon(Icons.palette_outlined, color: color),
             onPressed: () {
               showTargetColorTool(
                 onColorPickedF: (Color? pickedColor) {
@@ -69,23 +73,26 @@ class QuillTargetConfigToolbar extends StatelessWidget {
                       ColorModel.fromColor(pickedColor),
                     );
                     CalloutConfig? contentCC = fco.findCalloutConfig(
-                      qtF().contentCId,
+                      'quill-target-${qtF().contentCId}',
                     );
                     contentCC?.decorationFillColors = ColorOrGradient.color(
                       pickedColor,
                     );
                     contentCC?.bubbleOrTargetPointerColor = pickedColor;
-                    contentCC!.rebuild((){});
+                    contentCC!.rebuild(() {});
+                    onTargetConfigChange?.call(qtF());
+                    fco.dismiss(QuillTargetConfigToolbar.CID);
+                    qtF().showConfigToolbar(
+                      parentNode: parentNode,
+                      scrollConfig: sc,
+                      onTargetConfigChange: (updatedTargetConfig) {
+                        HelpIconEmbedBuilder.updateParentQuillTextNode(
+                          updatedTargetConfig: updatedTargetConfig,
+                          parentSNode: parentNode,
+                        );
+                      },
+                    );
                   }
-                  onTargetConfigChange?.call(qtF());
-                  fco.refresh(QuillTargetConfigToolbar.CID);
-                  // fco.dismiss(QuillTargetConfigToolbar.CID, skipOnDismiss: true);
-                  // qtF().showConfigToolbar(
-                  //   parentNode: parentNode,
-                  //   scrollConfig: sc,
-                  //   onTargetConfigChange: onTargetConfigChange,
-                  //   onTargetConfigRemove: onTargetConfigRemove,
-                  // );
                   fco.dismiss('color-picker');
                 },
               );
@@ -101,9 +108,7 @@ class QuillTargetConfigToolbar extends StatelessWidget {
               menuItems: DecorationShapeEnum.values
                   .map(
                     (e) => e.toMenuItem(
-                      fillColors: qtF()
-                          .calloutConfig
-                          ?.decorationFillColors,
+                      fillColors: qtF().calloutConfig?.decorationFillColors,
                     ),
                   )
                   .toList(),
@@ -119,29 +124,26 @@ class QuillTargetConfigToolbar extends StatelessWidget {
                 }
                 if (qtF().calloutDecorationShapeEnum ==
                     DecorationShapeEnum.star) {
-                  qtF().targetPointerTypeEnum =
-                      TargetPointerTypeEnum.NONE;
+                  qtF().targetPointerTypeEnum = TargetPointerTypeEnum.NONE;
                 } else {
-                  qtF().targetPointerTypeEnum =
-                      TargetPointerTypeEnum.WAVY;
+                  qtF().targetPointerTypeEnum = TargetPointerTypeEnum.WAVY;
                 }
                 qtF().calloutBorderColors = UpTo6Colors(
                   color1: ColorModel.grey(),
                 );
                 CalloutConfig? contentCC = fco.findCalloutConfig(
-                  qtF().contentCId,
+                  'quill-target-${qtF().contentCId}',
                 );
-                contentCC?.decorationShape = qtF()
-                    .calloutDecorationShapeEnum
-                    ?.decorationShape;
-                contentCC?.decorationBorderColors = qtF()
-                    .calloutBorderColors
+                contentCC?.decorationShape =
+                    qtF().calloutDecorationShapeEnum?.decorationShape;
+                contentCC?.decorationBorderColors = qtF().calloutBorderColors
                     ?.getColorOrGradient();
-                contentCC?.decorationBorderThickness = qtF()
-                    .calloutBorderThickness;
-                contentCC?.decorationBorderRadius = qtF()
-                    .calloutBorderThickness;
+                contentCC?.decorationBorderThickness =
+                    qtF().calloutBorderThickness;
+                contentCC?.decorationBorderRadius =
+                    qtF().calloutBorderThickness;
                 onTargetConfigChange?.call(qtF());
+                contentCC!.rebuild(() {});
                 fco.dismiss(QuillTargetConfigToolbar.CID, skipOnDismiss: true);
                 qtF().showConfigToolbar(
                   parentNode: parentNode,
@@ -179,8 +181,7 @@ class QuillTargetConfigToolbar extends StatelessWidget {
                       DecorationShapeEnum.rounded_rectangle_dotted &&
                   qtF().calloutDecorationShapeEnum !=
                       DecorationShapeEnum.stadium &&
-                  qtF().calloutDecorationShapeEnum !=
-                      DecorationShapeEnum.star)
+                  qtF().calloutDecorationShapeEnum != DecorationShapeEnum.star)
                 Row(
                   mainAxisSize: MainAxisSize.max,
                   mainAxisAlignment: MainAxisAlignment.center,
@@ -224,15 +225,12 @@ class QuillTargetConfigToolbar extends StatelessWidget {
                     Align(
                       alignment: Alignment.center,
                       child: PropertyButtonNumber<double>(
-                        originalValue:
-                            qtF().calloutBorderThickness ?? 2.0,
+                        originalValue: qtF().calloutBorderThickness ?? 2.0,
                         onChangedF: (newValue) {
                           qtF().calloutBorderThickness =
                               double.tryParse(newValue) ?? 0;
-                          qtF()
-                              .calloutConfig!
-                              .decorationBorderThickness = qtF()
-                              .calloutBorderThickness;
+                          qtF().calloutConfig!.decorationBorderThickness =
+                              qtF().calloutBorderThickness;
                           onTargetConfigChange?.call(qtF());
                           fco.dismiss("more-cc-settings");
                           qtF().closeThenReopenConfigToolbar(
@@ -249,8 +247,7 @@ class QuillTargetConfigToolbar extends StatelessWidget {
                     ),
                   ],
                 ),
-              if (qtF().calloutDecorationShapeEnum ==
-                  DecorationShapeEnum.star)
+              if (qtF().calloutDecorationShapeEnum == DecorationShapeEnum.star)
                 Row(
                   mainAxisSize: MainAxisSize.max,
                   mainAxisAlignment: MainAxisAlignment.center,
@@ -261,9 +258,7 @@ class QuillTargetConfigToolbar extends StatelessWidget {
                       child: PropertyButtonNumber<int>(
                         originalValue: qtF().starPoints ?? 7,
                         onChangedF: (String newValue) {
-                          qtF().setCalloutStarPoints(
-                            int.tryParse(newValue),
-                          );
+                          qtF().setCalloutStarPoints(int.tryParse(newValue));
                           onTargetConfigChange?.call(qtF());
                           fco.dismiss("more-cc-settings");
                           qtF().closeThenReopenConfigToolbar(
@@ -301,6 +296,7 @@ class QuillTargetConfigToolbar extends StatelessWidget {
             onPressed: () {
               qtF().removeContentCallout();
               fco.dismiss(QuillTargetConfigToolbar.CID);
+              fco.dismiss('quill-target-${qtF().contentCId}');
             },
           ),
           const VerticalDivider(color: Colors.white, width: 2),
@@ -315,9 +311,7 @@ class QuillTargetConfigToolbar extends StatelessWidget {
       final toolbarCC = fco.findCalloutConfig(QuillTargetConfigToolbar.CID);
       if (toolbarCC == null) return;
       // toggle top
-        toolbarCC.top = (toolbarCC.top ?? 0.0) > 10
-            ? 10
-            : fco.scrH - 90;
+      toolbarCC.top = (toolbarCC.top ?? 0.0) > 10 ? 10 : fco.scrH - 90;
       fco.refresh(QuillTargetConfigToolbar.CID);
     },
     icon: Icon(
@@ -344,8 +338,7 @@ class QuillTargetConfigToolbar extends StatelessWidget {
       ),
       calloutContent: ColourPickerTool(
         originalColor:
-            qtF().calloutFillColors?.color1?.flutterValue ??
-            Colors.white,
+            qtF().calloutFillColors?.color1?.flutterValue ?? Colors.white,
         onColorPickedF: onColorPickedF,
       ),
     );

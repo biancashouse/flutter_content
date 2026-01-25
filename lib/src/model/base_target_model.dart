@@ -16,7 +16,7 @@ abstract class TargetConfigModel {
   @JsonKey(includeFromJson: false, includeToJson: false)
   CalloutConfig? calloutConfig;
 
-   SizeModel? calloutSize;
+   SizeModel calloutSize;
 
   int calloutDurationMs;
 
@@ -43,7 +43,7 @@ abstract class TargetConfigModel {
 
   TargetConfigModel({
     required this.uid,
-    this.calloutSize,
+    this.calloutSize = const SizeModel(200, 80),
     this.calloutDurationMs = 1500,
     this.calloutFillColors,
     this.calloutBorderColors,

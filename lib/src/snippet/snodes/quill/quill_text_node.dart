@@ -28,6 +28,8 @@ class QuillTextNode extends CL with QuillTextNodeMappable {
 
   QuillTextNode({this.deltaJsonString = k_sampleDeltaJsonString});
 
+  CalloutId get quillTextToolbarCID => 'quill-toolbar-$uid';
+
   // keep transient copy of each Embed's  gk
   // @JsonKey(includeFromJson: false, includeToJson: false)
   // Map<String,GlobalKey> targetGks = {};

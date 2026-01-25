@@ -70,14 +70,16 @@ class QuillTargetModel extends TargetConfigModel with QuillTargetModelMappable {
       },
       dragHandleHeight: 30,
       followScroll: false,
-      onDismissedF: () {},
+      onDismissedF: () {
+        fco.unhide(parentNode.quillTextToolbarCID);
+      },
     );
 
     fco.showOverlay(
       onReadyF: () {},
       calloutConfig: toolbarCC,
       calloutContent: QuillTargetConfigToolbar(
-        qtF: ()=>this,
+        qtF: () => this,
         parentNode: parentNode,
         sc: scrollConfig,
         onCloseF: () {
@@ -90,12 +92,13 @@ class QuillTargetModel extends TargetConfigModel with QuillTargetModelMappable {
     );
   }
 
-  CalloutConfig createCalloutConfig(//{
+  CalloutConfig createCalloutConfig(
+    {
     // required QuillTextNode parentQuillTextNode,
     // ScrollConfig? scrollConfig,
-    // required bool justPlaying,
-    // void Function(QuillTargetModel)? onTargetConfigChange,
-  // }
+    required bool justPlaying,
+    void Function(QuillTargetModel)? onTargetConfigChange,
+    }
   ) {
     double minHeight = 0;
 
@@ -112,7 +115,7 @@ class QuillTargetModel extends TargetConfigModel with QuillTargetModelMappable {
     // alY = (tapPosGlobal.dy < screenCenterPos.dy) ? 1 : -1;
 
     return calloutConfig = CalloutConfig(
-      cId: contentCId,
+      cId: 'quill-target-$contentCId',
 
       decorationFillColors: calloutFillColors?.getColorOrGradient(),
       decorationShape: calloutDecorationShapeEnum?.decorationShape,
@@ -126,15 +129,17 @@ class QuillTargetModel extends TargetConfigModel with QuillTargetModelMappable {
       initialTargetAlignment: Alignment.topRight,
       initialCalloutAlignment: Alignment.centerLeft,
       finalSeparation: 150,
-      initialCalloutW: calloutSize?.width,
-      initialCalloutH: calloutSize?.height,
+      initialCalloutW: calloutSize.width,
+      initialCalloutH: calloutSize.height,
       minHeight: minHeight + 4,
-      // resizeableH: !justPlaying && canResizeH,
-      // resizeableV: !justPlaying && canResizeV,
+      resizeableH: !justPlaying && canResizeH,
+      resizeableV: !justPlaying && canResizeV,
       followScroll: false,
       onResizeF: (Size newSize) {
         calloutSize = SizeModel(newSize.width, newSize.height);
+        onTargetConfigChange?.call(this);
       },
+      bubbleBorderRadius: calloutBorderRadius,
       // onDragF: (Offset newPos) {
       //   // tcAlignment = AlignmentModel(cc.targetAlignment!.x, cc.targetAlignment!.y);
       // },
@@ -167,6 +172,13 @@ class QuillTargetModel extends TargetConfigModel with QuillTargetModelMappable {
       //   );
       // },
       frameTarget: false,
+      barrier: justPlaying ? CalloutBarrierConfig(
+        color: Colors.black,
+        opacity: .8,
+        excludeTargetFromBarrier: true,
+        roundExclusion: true,
+        dismissible: true,
+      ) : null,
     );
   }
 
@@ -179,20 +191,20 @@ class QuillTargetModel extends TargetConfigModel with QuillTargetModelMappable {
     justPlaying: justPlaying,
   );
 
-  Widget editableContent({required bool justPlaying}) => Container(
-    decoration: BoxDecoration(
-      border: Border.all(
-        width: 2,
-        color: Colors.purpleAccent,
-        style: BorderStyle.solid,
-      ),
-    ),
-    child: content(justPlaying: justPlaying),
-  );
+  // Widget editableContent({required bool justPlaying}) => Container(
+  //   decoration: BoxDecoration(
+  //     border: Border.all(
+  //       width: 2,
+  //       color: Colors.purpleAccent,
+  //       style: BorderStyle.solid,
+  //     ),
+  //   ),
+  //   child: content(justPlaying: justPlaying),
+  // );
 
   Widget possiblyEditableContent({required bool justPlaying}) =>
       fco.canEditContent() && !justPlaying
-      ? editableContent(justPlaying: justPlaying)
+      ? content(justPlaying: justPlaying)
       : content(justPlaying: justPlaying);
 
   // create the callout config for the content callout

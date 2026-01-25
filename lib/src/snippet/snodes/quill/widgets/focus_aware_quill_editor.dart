@@ -35,7 +35,6 @@ class FocusAwareQuillEditor extends StatefulWidget {
 }
 
 class _FocusAwareQuillEditorState extends State<FocusAwareQuillEditor> {
-  CalloutId get toolbarCID => 'quill-toolbar-${widget.uid}';
 
   // bool _hasFocus = false;
   bool _isDirty = false;
@@ -138,13 +137,12 @@ class _FocusAwareQuillEditorState extends State<FocusAwareQuillEditor> {
       // }
     } else {
       // GAINED FOCUS
-      if (fco.focussedCId.value != toolbarCID) {
-        if (fco.focussedCId.value != null) {
-          fco.dismiss(fco.focussedCId.value!);
+      if (fco.quillTextToolbarCIDVN.value != widget.parentSNode.quillTextToolbarCID) {
+        if (fco.quillTextToolbarCIDVN.value != null) {
+          fco.dismiss(fco.quillTextToolbarCIDVN.value!);
         }
-        fco.focussedCId.value = toolbarCID;
+        fco.quillTextToolbarCIDVN.value = widget.parentSNode.quillTextToolbarCID;
         QuillTextToolbar.show(
-          cid: toolbarCID,
           parentSNode: widget.parentSNode,
           focusNode: _focusNode,
           controller: _controller,
@@ -174,7 +172,7 @@ class _FocusAwareQuillEditorState extends State<FocusAwareQuillEditor> {
   @override
   Widget build(BuildContext context) {
     return ValueListenableBuilder<CalloutId?>(
-      valueListenable: fco.focussedCId,
+      valueListenable: fco.quillTextToolbarCIDVN,
       builder: (context, value, child) {
         return Column(
           crossAxisAlignment: CrossAxisAlignment.start,

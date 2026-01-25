@@ -27,6 +27,7 @@ class HelpIconEmbedBuilder implements EmbedBuilder {
     final node = embedContext.node;
     final controller = embedContext.controller;
     final readOnly = embedContext.readOnly;
+    final gk = GlobalKey();
 
     // data is the QuillTargetModel
     late QuillTargetModel qt;
@@ -41,59 +42,164 @@ class HelpIconEmbedBuilder implements EmbedBuilder {
 
     // var targets = parentSNode.getTargetList();
 
-    return WrappedCallout(
-      calloutConfig: qt.createCalloutConfig(),
-      calloutBoxContentBuilderF: (context) =>
-          qt.possiblyEditableContent(justPlaying: true),
-      targetBuilderF: (targetCtx) => Tooltip(
-        message: 'tap to learn more',
-        child: InkWell(
-          onTap: () async {
-            // prevent configuring targets when overlay is open
-            if (fco.anyPresent([], startsWith: 'quill-toolbar-')) {
-              fco.showToastColor1OnColor2(msg: 'close text toolbat first', textColor: Colors.yellow, bgColor: Colors.blue[700]!, removeAfterMs: 3000);
-             return;
-            } else {
-              _tappedInfoIcon(targetCtx, qt, sc);
-            }
-          },
-          onDoubleTap: () {
-            // prevent configuring targets when overlay is open
-            if (fco.anyPresent(['quill-te', QuillTargetConfigToolbar.CID]))
-              return;
-            if (readOnly) return; // Don't allow updates in read-only mode.
-            if (!fco.canEditContent()) return;
-            // configure target
-            CalloutConfig? contentCC = fco.findCalloutConfig(qt.contentCId);
-            Alignment optimalAl = _getOptimalAlignment(targetCtx, sc);
-            contentCC?.targetAlignment = optimalAl;
-            contentCC?.calloutAlignment = -optimalAl;
-            contentCC?.barrier = null;
-            WrappedCallout.unhideParentCallout(targetCtx);
-            qt.showConfigToolbar(
-              parentNode: parentSNode,
-              scrollConfig: sc,
-              onTargetConfigChange: (updatedTargetConfig) {
-                _updateParentQuillTextNode(
-                  updatedTargetConfig: updatedTargetConfig,
-                  parentSNode: parentSNode,
-                  targetCtx: targetCtx,
-                );
-              },
-              onTargetConfigRemove: (qt) => _updateParentQuillTextNode(
-                updatedTargetConfig: qt,
-                parentSNode: parentSNode,
-                deleteTarget: true,
-              ),
+    return Tooltip(
+      key: gk,
+      message: 'tap to learn more',
+      child: InkWell(
+        onTap: () {
+          _tappedInfoIcon(context, gk, qt, sc, true, null);
+        },
+        onDoubleTap: () {
+          _tappedInfoIcon(context, gk, qt, sc, false, (updatedTargetConfig) {
+            updateParentQuillTextNode(
+              updatedTargetConfig: updatedTargetConfig,
+              parentSNode: parentSNode,
             );
-          },
-          child: Icon(Icons.info_outline_rounded, size: 18),
-        ),
+          });
+          _doubleTappedInfoIcon(context, gk, qt, sc);
+
+          //   // prevent configuring targets when overlay is open
+          //   if (fco.anyPresent(['quill-te', QuillTargetConfigToolbar.CID]))
+          //     return;
+          //   if (readOnly) return; // Don't allow updates in read-only mode.
+          //   if (!fco.canEditContent()) return;
+          //   // configure target
+          //   CalloutConfig? contentCC = fco.findCalloutConfig(qt.contentCId);
+          //   Alignment optimalAl = _getOptimalAlignment(targetCtx, sc);
+          //   contentCC?.targetAlignment = optimalAl;
+          //   contentCC?.calloutAlignment = -optimalAl;
+          //   contentCC?.barrier = null;
+          //   WrappedCallout.unhideParentCallout(targetCtx);
+          //   qt.showConfigToolbar(
+          //     parentNode: parentSNode,
+          //     scrollConfig: sc,
+          //     onTargetConfigChange: (updatedTargetConfig) {
+          //       _updateParentQuillTextNode(
+          //         updatedTargetConfig: updatedTargetConfig,
+          //         parentSNode: parentSNode,
+          //         targetCtx: targetCtx,
+          //       );
+          //     },
+          //     onTargetConfigRemove: (qt) => _updateParentQuillTextNode(
+          //       updatedTargetConfig: qt,
+          //       parentSNode: parentSNode,
+          //       deleteTarget: true,
+          //     ),
+          //   );
+        },
+        child: Icon(Icons.info_outline_rounded, size: 18),
+      ),
+    );
+
+    // return WrappedCallout(
+    //   calloutConfig: qt.createCalloutConfig(),
+    //   calloutBoxContentBuilderF: (context) =>
+    //       qt.possiblyEditableContent(justPlaying: true),
+    //   targetBuilderF: (targetCtx) => Tooltip(
+    //     message: 'tap to learn more',
+    //     child: InkWell(
+    //       onTap: () async {
+    //         // prevent configuring targets when overlay is open
+    //         if (fco.anyPresent([], startsWith: 'quill-toolbar-')) {
+    //           fco.showToastColor1OnColor2(msg: 'close text toolbat first', textColor: Colors.yellow, bgColor: Colors.blue[700]!, removeAfterMs: 3000);
+    //           // idea is to reset the help icon positions in case moved
+    //           // final sel = controller.selection;
+    //           // controller.document = controller.document;
+    //           // controller.updateSelection(sel, ChangeSource.local);
+    //           // _tappedInfoIcon(targetCtx, qt, sc);
+    //          return;
+    //         } else {
+    //           _tappedInfoIcon(targetCtx, qt, sc);
+    //         }
+    //       },
+    //       onDoubleTap: () {
+    //         // prevent configuring targets when overlay is open
+    //         if (fco.anyPresent(['quill-te', QuillTargetConfigToolbar.CID]))
+    //           return;
+    //         if (readOnly) return; // Don't allow updates in read-only mode.
+    //         if (!fco.canEditContent()) return;
+    //         // configure target
+    //         CalloutConfig? contentCC = fco.findCalloutConfig(qt.contentCId);
+    //         Alignment optimalAl = _getOptimalAlignment(targetCtx, sc);
+    //         contentCC?.targetAlignment = optimalAl;
+    //         contentCC?.calloutAlignment = -optimalAl;
+    //         contentCC?.barrier = null;
+    //         WrappedCallout.unhideParentCallout(targetCtx);
+    //         qt.showConfigToolbar(
+    //           parentNode: parentSNode,
+    //           scrollConfig: sc,
+    //           onTargetConfigChange: (updatedTargetConfig) {
+    //             _updateParentQuillTextNode(
+    //               updatedTargetConfig: updatedTargetConfig,
+    //               parentSNode: parentSNode,
+    //               targetCtx: targetCtx,
+    //             );
+    //           },
+    //           onTargetConfigRemove: (qt) => _updateParentQuillTextNode(
+    //             updatedTargetConfig: qt,
+    //             parentSNode: parentSNode,
+    //             deleteTarget: true,
+    //           ),
+    //         );
+    //       },
+    //       child: Icon(Icons.info_outline_rounded, size: 18),
+    //     ),
+    //   ),
+    // );
+  }
+
+  void _tappedInfoIcon(
+    BuildContext context,
+    GlobalKey gk,
+    QuillTargetModel qt,
+    ScrollConfig? sc,
+    bool justPlaying,
+    void Function(QuillTargetModel)? onTargetConfigChange,
+  ) {
+    CalloutConfig cc = qt.createCalloutConfig(
+      justPlaying: justPlaying,
+      onTargetConfigChange: onTargetConfigChange,
+    );
+    Alignment optimalAl = _getOptimalAlignment(context, sc);
+    cc.targetAlignment = optimalAl;
+    cc.calloutAlignment = -optimalAl;
+    fco.showOverlay(
+      calloutConfig: cc,
+      calloutContent: qt.possiblyEditableContent(justPlaying: justPlaying),
+      targetGK: gk,
+      removeAfterMs: justPlaying ? qt.calloutDurationMs : 0,
+    );
+  }
+
+  void _doubleTappedInfoIcon(
+    BuildContext context,
+    GlobalKey gk,
+    QuillTargetModel qt,
+    ScrollConfig? sc,
+  ) {
+    // prevent configuring targets when overlay is open
+    if (fco.anyPresent(['quill-te', QuillTargetConfigToolbar.CID])) return;
+    if (!fco.canEditContent()) return;
+    fco.hide(parentSNode.quillTextToolbarCID);
+    // configure target
+    qt.showConfigToolbar(
+      parentNode: parentSNode,
+      scrollConfig: sc,
+      onTargetConfigChange: (updatedTargetConfig) {
+        updateParentQuillTextNode(
+          updatedTargetConfig: updatedTargetConfig,
+          parentSNode: parentSNode,
+        );
+      },
+      onTargetConfigRemove: (qt) => updateParentQuillTextNode(
+        updatedTargetConfig: qt,
+        parentSNode: parentSNode,
+        deleteTarget: true,
       ),
     );
   }
 
-  void _tappedInfoIcon(
+  void _tappedInfoIconWrapped(
     BuildContext targetCtx,
     QuillTargetModel qt,
     ScrollConfig? sc,
@@ -152,10 +258,9 @@ class HelpIconEmbedBuilder implements EmbedBuilder {
     return Alignment(alX, alY);
   }
 
-  void _updateParentQuillTextNode({
+  static void updateParentQuillTextNode({
     required QuillTargetModel updatedTargetConfig,
     required QuillTextNode parentSNode,
-    BuildContext? targetCtx, // only set when not deleting
     bool deleteTarget = false,
   }) {
     //create a temparary controller to parse the text field
@@ -226,10 +331,6 @@ class HelpIconEmbedBuilder implements EmbedBuilder {
     if (snippet != null) {
       // fco.modelRepo.saveNewVersionOfSnippet(snippet);
       fco.appInfo.cachedSnippetInfo(snippet.name)?.notifyChange(snippet);
-    }
-
-    if (!deleteTarget) {
-      WrappedCallout.unhideParentCallout(targetCtx!);
     }
   }
 
