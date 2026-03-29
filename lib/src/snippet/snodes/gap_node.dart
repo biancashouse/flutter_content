@@ -65,9 +65,10 @@ class GapNode extends CL with GapNodeMappable {
   String toString() => 'gap';
 
   @override
-  Widget? widgetLogo() => const Row(children: [
-        Icon(Icons.square_outlined),
-        Gap(6),
+  Widget? widgetLogo() => Row(children: [
+        Icon(Icons.square_outlined,
+            color: fco.selectedNode == this ? Colors.black : Colors.grey),
+        const Gap(6),
       ]);
 
   static const String FLUTTER_TYPE = "Gap";

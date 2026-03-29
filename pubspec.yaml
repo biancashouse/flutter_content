@@ -1,6 +1,6 @@
 name: flutter_content
 description: Point stuff out for your users => Target, Transform, Configure Callouts, Record to JSON in Dev, and Play in Producton
-version: 5.0.0
+version: 6.0.0
 maintainer: Ian White
 homepage: https://github.com/biancashouse/flutter_content
 issue_tracker: https://github.com/flutter/flutter/issues?q=is%3Aissue+is%3Aopen+label%3A%22p%3A+flutter_adaptive_scaffold%22
@@ -137,13 +137,12 @@ dependencies:
   pointer_interceptor: ^0.10.1+2
   file_picker: ^10.2.0
 
-  flutter_callouts: # Your package name
-    path: ../flutter_callouts
+#    path: ../flutter_callouts
 
   flutter_quill: ^11.5.0
   dev_grid: ^0.0.3
-#  flutter_localization: ^0.3.3
-#    path: ../flutter_quill
+  flutter_callouts:
+    path: ../flutter_callouts
 
 #dependency_overrides:
 #  web: ^0.5.0 # latest version as of now

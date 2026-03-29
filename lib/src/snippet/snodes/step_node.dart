@@ -60,7 +60,7 @@ class StepNode extends CL with StepNodeMappable {
   List<Type> wrapCandidates() => [StepperNode];
 
   @override
-  List<Type> wrapWithOnly() => [StepperNode];
+  // List<Type> wrapWithOnly() => [StepperNode];
 
   @override
   Widget? widgetLogo() => Image.asset(

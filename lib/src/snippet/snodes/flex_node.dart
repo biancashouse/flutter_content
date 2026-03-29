@@ -126,12 +126,12 @@ class FlexNode extends MC with FlexNodeMappable {
       // });
 
       // first get flex children widgets
-      print('getting flex child widgets...');
+      // print('getting flex child widgets...');
       List<Widget> flexChildWidgets = children
           .map((childNode) => childNode.buildFlutterWidget(context, this))
           .toList();
 
-      print('getting flex widget...');
+      // print('getting flex widget...');
       var flex = Flex(
         direction: this is RowNode ? Axis.horizontal : Axis.vertical,
         key: createNodeWidgetGK(),

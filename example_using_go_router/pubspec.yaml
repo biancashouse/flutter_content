@@ -14,8 +14,7 @@ dependencies:
   flutter_content:  #any
     path: ../../flutter_content
 
-  google_fonts: ^6.3.2
-  window_manager: ^0.5.1
+#  window_manager: ^0.5.1
   firebase_core: any
   go_router: any
 

@@ -4,6 +4,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_content/flutter_content.dart';
 import 'package:flutter_content/src/api/editable_page/snippet_properties_tree_view.dart';
 import 'package:flutter_content/src/api/editable_page/snippet_tree_view.dart';
+
 // import 'package:flutter_content/src/api/editable_page/versions_menu_anchor.dart';
 import 'package:flutter_content/src/api/editable_page/tappable_node_borders.dart';
 import 'package:flutter_content/src/snippet/snode_widget.dart';
@@ -68,8 +69,9 @@ class EditablePageState extends State<EditablePage> {
   // also allow for a selected node
   void _populateNodeBorderRects() {
     if (fco.capiBloc.state.activeSnippetName == null &&
-        fco.capiBloc.aSnippetIsNotBeingEdited())
+        fco.capiBloc.aSnippetIsNotBeingEdited()) {
       return;
+    }
     List<SNode> nodes = [];
     SnippetRootNode? rootNode;
     // not yet editing, show all widget borderRects
@@ -85,22 +87,24 @@ class EditablePageState extends State<EditablePage> {
       nodes = rootNode.findDescendantNodes();
       // print('found ${nodes.length} nodes in snippet $snippetName');
       for (SNode node in nodes) {
-        Rect? borderRect = node.calcBorderRect();
-        if (borderRect != null) {
-          // adjust rect if inside a MSV area
-          fco.aSnippetIsBeingEdited
-              ? borderRects.add(
-                  NodeRenderData(
-                    node: node,
-                    rect: borderRect.translate(
-                      -sNodeTreeAreaMaxWidth -
-                          pNodeTreeAreaMaxWidth -
-                          kDividerThickness * 2,
-                      0,
+        if (node is! QuillTextNode || node is! MarkdownNode) {
+          Rect? borderRect = node.calcBorderRect();
+          if (borderRect != null) {
+            // adjust rect if inside a MSV area
+            fco.aSnippetIsBeingEdited
+                ? borderRects.add(
+                    NodeRenderData(
+                      node: node,
+                      rect: borderRect.translate(
+                        -sNodeTreeAreaMaxWidth -
+                            pNodeTreeAreaMaxWidth -
+                            kDividerThickness * 2,
+                        0,
+                      ),
                     ),
-                  ),
-                )
-              : borderRects.add(NodeRenderData(node: node, rect: borderRect));
+                  )
+                : borderRects.add(NodeRenderData(node: node, rect: borderRect));
+          }
         }
       }
     }
@@ -406,6 +410,13 @@ class EditablePageState extends State<EditablePage> {
           onLayoutDone: () {
             // when SnippetBuilder's FutureBuilder finishes.
             if (_needsToPopulateRects) {
+              fco.showToast(
+                msg: 'tap a node to start editing,\n<Esc> to cancel',
+                removeAfterMs: 5000,
+                bgColor: Colors.purpleAccent.withValues(alpha: .8),
+                textColor: Colors.yellow,
+                width: 240, height: 120
+              );
               print('SnippetBuilder.onLayoutDone: Populating rects now.');
               // We are already in a post-frame callback, so it's safe to measure.
               if (mounted) {
@@ -434,6 +445,7 @@ class EditablePageState extends State<EditablePage> {
               // When a node is tapped, fire the existing SelectNode event
               bloc.add(CAPIEvent.selectNode(node: node));
             } else {
+              if (node is QuillTextNode || node is MarkdownNode) return;
               _tappedToEditSnippetAndSelectNode(node);
             }
           },

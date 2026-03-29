@@ -41,7 +41,7 @@ class SNodeWidget extends StatelessWidget {
         ? Colors.transparent
         : entry.node is SnippetRootNode
         ? Colors.black
-        : Colors.white;
+        : fco.selectedNode == entry.node ? Colors.yellowAccent : Colors.white;
 
     // fco.logger.d('SNodeWidget build (${entry.node.toString()}, ${entry.node.uid}, ${entry.node.nodeWidgetGK.toString()})');
     return Row(
@@ -139,7 +139,7 @@ class SNodeWidget extends StatelessWidget {
                       );
                     });
                   },
-                  child: Icon(Icons.edit, size: 20),
+                  child: Icon(Icons.edit, size: 20, color: Colors.purpleAccent),
                 ),
               if (entry.node is MarkdownNode)
                 InkWell(
@@ -158,7 +158,7 @@ class SNodeWidget extends StatelessWidget {
                       );
                     });
                   },
-                  child: Icon(Icons.edit, size: 20),
+                  child: Icon(Icons.edit, size: 20, color: Colors.purpleAccent),
                 ),
               if (entry.node.isANamedPropertyNode() &&
                   ((entry.node is NamedSC &&

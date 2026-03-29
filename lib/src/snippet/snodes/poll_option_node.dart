@@ -106,13 +106,13 @@ class PollOptionNode extends CL with PollOptionNodeMappable {
     ];
   }
 
-  @override
+  // @override
   List<Type> replaceWithOnly() => [PollOptionNode];
 
   @override
   List<Type> wrapCandidates() => [PollNode];
 
-  @override
+  // @override
   List<Type> wrapWithOnly() => [PollNode];
 
   @override

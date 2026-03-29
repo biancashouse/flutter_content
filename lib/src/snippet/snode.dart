@@ -6,6 +6,7 @@ import 'package:flutter_content/flutter_content.dart';
 import 'package:flutter_content/src/snippet/snode_widget.dart';
 import 'package:flutter_content/src/snippet/snodes/hotspots/widgets/hotspot_target_config_toolbar/hotspot_target_config_toolbar.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
+
 part 'snode.mapper.dart';
 
 const List<Type> childlessSubClasses = [
@@ -283,34 +284,34 @@ abstract class SNode extends Node with SNodeMappable {
   //   }
   // }
 
-  Widget? buildTappableNodeWidgetRect() {
-    Rect? borderRect = calcBorderRect();
-
-    return (borderRect != null)
-        ? Positioned(
-            left: borderRect.left,
-            top: borderRect.top,
-            child: Tooltip(
-              message: 'tap to edit this ${toString()} node',
-              child: GestureDetector(
-                onTap: () => tappedToEditSnippetNode(),
-                child: Container(
-                  width: borderRect.width.abs(),
-                  height: borderRect.height.abs(),
-                  decoration: DottedDecoration(
-                    shape: Shape.box,
-                    dash: const <int>[6, 6],
-                    borderColor: Colors.black,
-                    strokeWidth: 3,
-                    fillColor: Colors.transparent,
-                    // fillGradient: fillGradient,
-                  ),
-                ),
-              ),
-            ),
-          )
-        : null;
-  }
+  // Widget? buildTappableNodeWidgetRect() {
+  //   Rect? borderRect = calcBorderRect();
+  //
+  //   return (borderRect != null)
+  //       ? Positioned(
+  //           left: borderRect.left,
+  //           top: borderRect.top,
+  //           child: Tooltip(
+  //             message: 'tap to edit this ${toString()} node',
+  //             child: GestureDetector(
+  //               onTap: () => tappedToEditSnippetNode(),
+  //               child: Container(
+  //                 width: borderRect.width.abs(),
+  //                 height: borderRect.height.abs(),
+  //                 decoration: DottedDecoration(
+  //                   shape: Shape.box,
+  //                   dash: const <int>[6, 6],
+  //                   borderColor: Colors.black,
+  //                   strokeWidth: 3,
+  //                   fillColor: Colors.transparent,
+  //                   // fillGradient: fillGradient,
+  //                 ),
+  //               ),
+  //             ),
+  //           ),
+  //         )
+  //       : null;
+  // }
 
   void tappedToEditSnippetNode() {
     // fco.logger.i("${toString()} tapped");
@@ -366,7 +367,9 @@ abstract class SNode extends Node with SNodeMappable {
       // + BORDER,
       initialCalloutPos: OffsetModel.fromOffset(borderRect.topLeft),
       //.translate(-BORDER, -BORDER),
-      decorationFillColors: ColorOrGradient.color(Colors.transparent),
+      decorationFillColors: ColorOrGradient.color(
+        Colors.yellow.withValues(alpha: .2),
+      ),
       targetPointerType: TargetPointerType.none(),
       draggable: false,
       followScroll: true,
@@ -664,9 +667,7 @@ abstract class SNode extends Node with SNodeMappable {
     SNode selectedNode, {
     HotspotTargetModel? targetBeingConfigured,
   }) async {
-    SnippetInfoModel? snippetInfo = fco.appInfo.cachedSnippetInfo(
-      snippetName,
-    );
+    SnippetInfoModel? snippetInfo = fco.appInfo.cachedSnippetInfo(snippetName);
     if (snippetInfo == null) return;
 
     SnippetRootNode? rootNode = await snippetInfo.currentVersionFromCacheOrFB();
@@ -807,7 +808,10 @@ abstract class SNode extends Node with SNodeMappable {
   //   return mis;
   // }
 
-  bool get canShowTappableNodeWidgetOverlay => getParent() is! CarouselNode;
+  bool get canShowTappableNodeWidgetOverlay =>
+      getParent() is! CarouselNode &&
+      getParent() is! MarkdownNode &&
+      getParent() is! QuillTextNode;
 
   // List<String> sensibleParents() => const [];
 

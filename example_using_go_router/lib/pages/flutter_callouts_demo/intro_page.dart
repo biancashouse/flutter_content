@@ -1,9 +1,9 @@
-import 'package:example_using_go_router/pages/flutter_callouts_demo/toast_demo.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_content/flutter_content.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 import 'callout_following_scroll_demo.dart';
+import 'toast_demo.dart';
 import 'callout_with_barrier_demo.dart';
 import 'callout_with_pointer_demo.dart';
 import 'decoration_demo.dart';
