@@ -6,6 +6,10 @@ import 'package:flutter_content/flutter_content.dart';
 import 'package:flutter_content/src/snippet/snode_widget.dart';
 import 'package:flutter_content/src/snippet/snodes/hotspots/widgets/hotspot_target_config_toolbar/hotspot_target_config_toolbar.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
+import 'widget_picker/quick_pick_panel.dart';
+import 'widget_picker/widget_entry.dart';
+import 'widget_picker/widget_picker_dialog.dart';
+import 'widget_picker/widget_registry.dart';
 
 part 'snode.mapper.dart';
 
@@ -1478,10 +1482,9 @@ abstract class SNode extends Node with SNodeMappable {
     String? label,
     Color? bgColor,
     String? tooltip,
-
     key,
   }) {
-    var title = action == NodeAction.replaceWith
+    final title = action == NodeAction.replaceWith
         ? 'replace with...'
         : action == NodeAction.wrapWith
         ? 'wrap with...'
@@ -1491,53 +1494,31 @@ abstract class SNode extends Node with SNodeMappable {
         ? 'insert after...'
         : 'append child...';
 
-    List<Widget> menuChildren = menuAnchorWidgets(context, action);
-    return MenuAnchor(
-      menuChildren: menuChildren,
-      builder:
-          (BuildContext context, MenuController controller, Widget? child) {
-            return label != null
-                ? TextButton.icon(
-                    key: key,
-                    onPressed: () {
-                      if (controller.isOpen) {
-                        controller.close();
-                      } else {
-                        controller.open();
-                      }
-                    },
-                    icon: action == NodeAction.replaceWith
-                        ? const Icon(Icons.refresh)
-                        : const Icon(Icons.add),
-                    label: Text(title),
-                    style: ButtonStyle(
-                      backgroundColor: WidgetStatePropertyAll(
-                        bgColor ?? Colors.white.withValues(alpha: .9),
-                      ),
-                      foregroundColor: WidgetStatePropertyAll(Colors.white),
-                      //padding: WidgetStatePropertyAll(EdgeInsets.zero),
-                    ),
-                  )
-                : IconButton(
-                    key: key,
-                    // hoverColor: bgColor?.withValues(alpha:.5),
-                    padding: EdgeInsets.zero,
-                    onPressed: () {
-                      if (controller.isOpen) {
-                        controller.close();
-                      } else {
-                        controller.open();
-                      }
-                    },
-                    icon: Icon(Icons.add_box, color: bgColor),
-                    tooltip: title,
-                    iconSize: this.isANamedPropertyNode() ? 20 : 40,
-                  );
-          },
-      onOpen: () async {
-        await Future.delayed(const Duration(milliseconds: 300));
-      },
-    );
+    void onTap() => _openQuickPick(action);
+
+    return label != null
+        ? TextButton.icon(
+            key: key,
+            onPressed: onTap,
+            icon: action == NodeAction.replaceWith
+                ? const Icon(Icons.refresh)
+                : const Icon(Icons.add),
+            label: Text(title),
+            style: ButtonStyle(
+              backgroundColor: WidgetStatePropertyAll(
+                bgColor ?? Colors.white.withValues(alpha: .9),
+              ),
+              foregroundColor: const WidgetStatePropertyAll(Colors.white),
+            ),
+          )
+        : IconButton(
+            key: key,
+            padding: EdgeInsets.zero,
+            onPressed: onTap,
+            icon: Icon(Icons.add_box, color: bgColor),
+            tooltip: title,
+            iconSize: isANamedPropertyNode() ? 20 : 40,
+          );
   }
 
   List<Widget> menuAnchorWidgets(BuildContext context, NodeAction action) {
@@ -1558,9 +1539,11 @@ abstract class SNode extends Node with SNodeMappable {
     return mis;
   }
 
-  // List<Type> replaceWithOnly() => [];
+  List<Type> replaceWithOnly() => [];
 
-  // List<Type> addChildRecommendations() => [];
+  List<Type> wrapWithOnly() => [];
+
+  List<Type> replaceWithRecommendations() => [];
 
   List<Type> replaceWithCandidates() => [
     // ...childlessSubClasses,
@@ -1584,6 +1567,195 @@ abstract class SNode extends Node with SNodeMappable {
     ...singleChildSubClasses,
     ...multiChildSubClasses,
   ];
+
+  // ---------------------------------------------------------------------------
+  // Widget picker helpers
+  // ---------------------------------------------------------------------------
+
+  /// Context-aware recommendations for the quick-pick chips (up to 5 shown).
+  List<Type> recommendations(NodeAction action) {
+    switch (action) {
+      case NodeAction.wrapWith:
+        final only = wrapWithOnly();
+        if (only.isNotEmpty) return only;
+        return [ContainerNode, PaddingNode, CenterNode, ColumnNode, RowNode];
+      case NodeAction.replaceWith:
+        final only = replaceWithOnly();
+        if (only.isNotEmpty) return only;
+        final recs = replaceWithRecommendations();
+        if (recs.isNotEmpty) return recs;
+        return [];
+      case NodeAction.addChild:
+        return [ContainerNode, TextNode, ColumnNode, RowNode, PaddingNode];
+      case NodeAction.addSiblingBefore:
+      case NodeAction.addSiblingAfter:
+        return [ContainerNode, TextNode, ColumnNode, RowNode, GapNode];
+    }
+  }
+
+  List<WidgetEntry> recommendedEntries(NodeAction action) => recommendations(action)
+      .map((t) => widgetRegistry.where((e) => e.type == t).firstOrNull)
+      .whereType<WidgetEntry>()
+      .toList();
+
+  List<WidgetEntry> _allCandidatesForAction(NodeAction action) {
+    List<Type> types;
+    switch (action) {
+      case NodeAction.wrapWith:
+        final only = wrapWithOnly();
+        types = only.isNotEmpty ? only : wrapCandidates();
+      case NodeAction.replaceWith:
+        final only = replaceWithOnly();
+        if (only.isNotEmpty) {
+          types = only;
+        } else {
+          final candidates = replaceWithCandidates();
+          types = candidates.isNotEmpty
+              ? candidates
+              : [...singleChildSubClasses, ...multiChildSubClasses, ...childlessSubClasses];
+        }
+      case NodeAction.addChild:
+        types = appendCandidates();
+      case NodeAction.addSiblingBefore:
+      case NodeAction.addSiblingAfter:
+        types = siblingCandidates();
+    }
+    return widgetRegistry.where((e) => types.contains(e.type)).toList();
+  }
+
+  void _performTypeAction(Type childType, NodeAction action) {
+    switch (action) {
+      case NodeAction.wrapWith:
+        fco.capiBloc.add(CAPIEvent.wrapSelectionWith(type: childType));
+      case NodeAction.replaceWith:
+        fco.capiBloc.add(CAPIEvent.replaceSelectionWith(type: childType));
+        fco.afterNextBuildDo(() => fco.dismiss('node-actions'));
+      case NodeAction.addChild:
+        if (isANamedPropertyNode() && fco.selectedNode != this) {
+          fco.capiBloc.add(CAPIEvent.selectNode(node: this));
+          fco.afterNextBuildDo(() {
+            fco.capiBloc.add(CAPIEvent.appendChild(type: childType));
+            fco.afterNextBuildDo(() => fco.dismiss('node-actions'));
+          });
+        } else {
+          fco.capiBloc.add(CAPIEvent.appendChild(type: childType));
+          fco.afterNextBuildDo(() => fco.dismiss('node-actions'));
+        }
+      case NodeAction.addSiblingBefore:
+        fco.capiBloc.add(CAPIEvent.addSiblingBefore(type: childType));
+        fco.afterNextBuildDo(() => fco.dismiss('node-actions'));
+      case NodeAction.addSiblingAfter:
+        fco.capiBloc.add(CAPIEvent.addSiblingAfter(type: childType));
+        fco.afterNextBuildDo(() => fco.dismiss('node-actions'));
+    }
+  }
+
+  void _performSnippetAction(String snippetName, NodeAction action) async {
+    await SnippetRootNode.loadSnippetFromCacheOrFromFB(snippetName: snippetName);
+    switch (action) {
+      case NodeAction.replaceWith:
+        fco.capiBloc.add(CAPIEvent.replaceSelectionWith(type: SnippetRootNode, snippetName: snippetName));
+        fco.afterNextBuildDo(() => fco.dismiss('node-actions'));
+      case NodeAction.addSiblingBefore:
+        fco.capiBloc.add(CAPIEvent.addSiblingBefore(type: SnippetRootNode, snippetName: snippetName));
+        fco.afterNextBuildDo(() => fco.dismiss('node-actions'));
+      case NodeAction.addSiblingAfter:
+        fco.capiBloc.add(CAPIEvent.addSiblingAfter(type: SnippetRootNode, snippetName: snippetName));
+        fco.afterNextBuildDo(() => fco.dismiss('node-actions'));
+      case NodeAction.addChild:
+        fco.capiBloc.add(CAPIEvent.appendChild(type: SnippetRootNode, snippetName: snippetName));
+        fco.afterNextBuildDo(() => fco.dismiss('node-actions'));
+      case NodeAction.wrapWith:
+        break;
+    }
+  }
+
+  void _performPasteAction(NodeAction action) {
+    switch (action) {
+      case NodeAction.replaceWith:
+        fco.capiBloc.add(const CAPIEvent.pasteReplacement());
+      case NodeAction.addSiblingBefore:
+        fco.capiBloc.add(const CAPIEvent.pasteSiblingBefore());
+      case NodeAction.addSiblingAfter:
+        fco.capiBloc.add(const CAPIEvent.pasteSiblingAfter());
+      case NodeAction.addChild:
+        fco.capiBloc.add(const CAPIEvent.pasteChild());
+      case NodeAction.wrapWith:
+        break;
+    }
+    fco.afterNextBuildDo(() => fco.dismiss('node-actions'));
+  }
+
+  void _openQuickPick(NodeAction action) {
+    final recommended = recommendedEntries(action);
+    if (recommended.isEmpty) {
+      _openFullPicker(action);
+      return;
+    }
+    final hasPaste =
+        fco.appInfo.clipboard != null && action != NodeAction.wrapWith;
+
+    fco.showOverlay(
+      calloutConfig: CalloutConfig(
+        cId: kWidgetPickerCId,
+        initialCalloutW: 320,
+        initialCalloutH: 600,
+        decorationFillColors: ColorOrGradient.color(Colors.white),
+        initialTargetAlignment: Alignment.bottomLeft,
+        initialCalloutAlignment: Alignment.topLeft,
+        finalSeparation: 4,
+        decorationBorderRadius: 12,
+        elevation: 8,
+        barrier: CalloutBarrierConfig(
+          closeOnTapped: true,
+        ),
+      ),
+      calloutContent: QuickPickPanel(
+        action: action,
+        recommended: recommended,
+        hasPaste: hasPaste,
+        onPaste: hasPaste ? () => _performPasteAction(action) : null,
+        onTypeSelected: (type) => _performTypeAction(type, action),
+        onSnippetSelected: (name) => _performSnippetAction(name, action),
+        onMorePressed: () => _openFullPicker(action),
+      ),
+      targetGK: treeNodeGK,
+    );
+  }
+
+  void _openFullPicker(NodeAction action) {
+    final allCandidates = _allCandidatesForAction(action);
+    final snippetNames = List<String>.from(fco.appInfo.snippetNames)..sort();
+    final hasPaste =
+        fco.appInfo.clipboard != null && action != NodeAction.wrapWith;
+
+    fco.showOverlay(
+      calloutConfig: CalloutConfig(
+        cId: kWidgetPickerCId,
+        initialCalloutW: 420,
+        initialCalloutH: 560,
+        decorationFillColors: ColorOrGradient.color(Colors.white),
+        initialTargetAlignment: Alignment.bottomLeft,
+        initialCalloutAlignment: Alignment.topLeft,
+        finalSeparation: 4,
+        decorationBorderRadius: 12,
+        elevation: 8,
+        barrier: CalloutBarrierConfig(
+          closeOnTapped: true,
+        ),
+      ),
+      calloutContent: WidgetPickerDialog(
+        action: action,
+        candidates: allCandidates,
+        hasPaste: hasPaste,
+        onPaste: hasPaste ? () => _performPasteAction(action) : null,
+        onTypeSelected: (type) => _performTypeAction(type, action),
+        snippetNames: snippetNames,
+        onSnippetSelected: (name) => _performSnippetAction(name, action),
+      ),
+      targetGK: treeNodeGK,
+    );
+  }
 
   List<Widget> menuAnchorWidgets_WrapWith(
     BuildContext context,

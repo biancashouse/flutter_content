@@ -30,7 +30,7 @@ class AppInfoModel with AppInfoModelMappable {
     this.userContainerStyles = const {},
     this.anonymousUserEditablePages = const [],
     // managed manually in firestore console
-    this.editorPasswords = const ['password123'],
+    this.editorPasswords = const [],
   });
 
   bool get clipboardIsEmpty => clipboard == null;

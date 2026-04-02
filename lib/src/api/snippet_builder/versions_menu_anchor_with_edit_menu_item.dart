@@ -8,7 +8,7 @@ import 'tr_triangle_painter.dart' show TRTriangle;
 
 enum AnchorWidgetEnum { Triangle, IconButton }
 
-class SnippetMenuAnchor extends StatelessWidget {
+class SnippetMenuAnchor extends StatefulWidget {
   final SnippetBuilderState parentBuilderState;
   final SnippetInfoModel snippetInfo;
   final AnchorWidgetEnum anchorWidget;
@@ -21,6 +21,32 @@ class SnippetMenuAnchor extends StatelessWidget {
     this.triangleColor,
     super.key,
   });
+
+  @override
+  State<SnippetMenuAnchor> createState() => _SnippetMenuAnchorState();
+}
+
+class _SnippetMenuAnchorState extends State<SnippetMenuAnchor> {
+  SnippetBuilderState get parentBuilderState => widget.parentBuilderState;
+
+  SnippetInfoModel get snippetInfo => widget.snippetInfo;
+
+  AnchorWidgetEnum get anchorWidget => widget.anchorWidget;
+  Color? triangleColor;
+
+  @override
+  void initState() {
+    triangleColor = widget.triangleColor;
+    super.initState();
+  }
+
+  @override
+  void didUpdateWidget(SnippetMenuAnchor oldWidget) {
+    super.didUpdateWidget(oldWidget);
+    if (widget.triangleColor != oldWidget.triangleColor) {
+      triangleColor = widget.triangleColor;
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -36,13 +62,15 @@ class SnippetMenuAnchor extends StatelessWidget {
                     : 'show Snippet menu\n"${snippetInfo.name}\n*** NOT PUBLISHED ***"',
                 child: InkWell(
                   onDoubleTap: () {
-                    if ( fco.anyPresent([], startsWith: 'quill-toolbar-')) return;
+                    if (fco.anyPresent([], startsWith: 'quill-toolbar-'))
+                      return;
                     snippetInfo
                         .currentVersionInCache()
                         ?.tappedToEditSnippetNode();
                   },
                   onTap: () {
-                    if ( fco.anyPresent([], startsWith: 'quill-toolbar-')) return;
+                    if (fco.anyPresent([], startsWith: 'quill-toolbar-'))
+                      return;
                     if (controller.isOpen) {
                       controller.close();
                     } else {
@@ -165,7 +193,9 @@ class SnippetMenuAnchor extends StatelessWidget {
               ],
             ),
           ),
-        if (snippetInfo.changesPending(snippetInfo.currentVersionInCache()?.toJson()))
+        if (snippetInfo.changesPending(
+          snippetInfo.currentVersionInCache()?.toJson(),
+        ))
           MenuItemButton(
             onPressed: () {
               final rootNode = snippetInfo.currentVersionInCache();
@@ -178,12 +208,18 @@ class SnippetMenuAnchor extends StatelessWidget {
             },
             child: const Text('save pending change(s) to firestore'),
           ),
-        if (snippetInfo.changesPending(snippetInfo.currentVersionInCache()?.toJson()))
+        if (snippetInfo.changesPending(
+          snippetInfo.currentVersionInCache()?.toJson(),
+        ))
           MenuItemButton(
             onPressed: () {
-              // TODO
+              _discardPendingChanges(snippetInfo);
+              fco.capiBloc.add(CAPIEvent.forceSnippetRefresh());
             },
-            child:  fco.coloredText('discard pending change(s)', color: Colors.red),
+            child: fco.coloredText(
+              'discard pending change(s)',
+              color: Colors.red,
+            ),
           ),
         if (snippetInfo.editingVersionId != snippetInfo.publishedVersionId)
           _menuItemButtonWithPI(
@@ -194,6 +230,11 @@ class SnippetMenuAnchor extends StatelessWidget {
                   versionId: snippetInfo.editingVersionId,
                 ),
               );
+              fco.afterNextBuildDo(() {
+                setState(() {
+                  triangleColor = Colors.purpleAccent;
+                });
+              });
             },
             child: const Text('publish this version'),
           ),
@@ -268,6 +309,37 @@ class SnippetMenuAnchor extends StatelessWidget {
           ),
       ],
     );
+  }
+
+  void _discardPendingChanges(SnippetInfoModel snippetInfo) {
+    final originalJson = snippetInfo.originalEditingJson;
+    if (originalJson == null || originalJson.isEmpty) return;
+    final originalNode = SnippetRootNodeMapper.fromJson(originalJson);
+    snippetInfo.cacheVersion(snippetInfo.editingVersionId, originalNode);
+    snippetInfo.notifyChange(originalNode);
+    _rebuildTree(snippetInfo, originalNode);
+    setState(() {
+      triangleColor = Colors.purpleAccent;
+    });
+  }
+
+  void _rebuildTree(SnippetInfoModel snippetInfo, SnippetRootNode rootNode) {
+    final newTreeC = SnippetTreeController(
+      roots: [rootNode],
+      childrenProvider: SNode.childrenProvider,
+      parentProvider: SNode.parentProvider,
+    );
+    newTreeC.roots.first.validateTree();
+    newTreeC.expand(rootNode);
+    newTreeC.rebuild();
+    if (fco.snippetBeingEdited != null) {
+      fco.snippetBeingEdited!
+        ..setRootNode(rootNode)
+        ..selectedNode = rootNode.child
+        ..showProperties = false
+        ..treeC = newTreeC;
+    }
+    fco.refreshAll();
   }
 
   MenuItemButton _menuItemButtonWithPI({

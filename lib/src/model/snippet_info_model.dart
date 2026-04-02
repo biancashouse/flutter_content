@@ -90,6 +90,8 @@ class SnippetInfoModel with SnippetInfoModelMappable {
   SnippetRootNode? currentVersionInCache() =>
       _cachedVersions[currentVersionId()];
 
+  String? get originalEditingJson => _originalEditingJson;
+
   // called whenever a version is read from Firestore
   // or is created
   void cacheVersion(VersionId versionId, SnippetRootNode rootNode) {

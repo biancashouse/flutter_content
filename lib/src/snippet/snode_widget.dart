@@ -77,7 +77,7 @@ class SNodeWidget extends StatelessWidget {
                   entry.node is! NamedMC &&
                   entry.node is! SnippetRootNode)
                 entry.node.widgetLogo() ?? Icon(Icons.error, color: Colors.red),
-              Gap(8),
+              Gap(4),
               // if (entry.node.logoSrc() != null) SizedBox(width: entry.node.logoSrc()!.contains('pub.dev') ? 6 : 0),
               _name(context),
               // Gap(8),
