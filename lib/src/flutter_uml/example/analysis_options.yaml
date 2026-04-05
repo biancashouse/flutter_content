@@ -1,0 +1,5 @@
+include: package:flutter_lints/flutter.yaml
+# The example app does not need API documentation.
+linter:
+  rules:
+    public_member_api_docs: false

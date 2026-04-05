@@ -365,15 +365,9 @@ class CAPIEvent with _$CAPIEvent {
   // const factory CAPIEvent.clearUR() = ClearUR;
   //
 
-  // const factory CAPIEvent.createUndo({
-  //   required SnippetRootNode? snippet,
-  // }) = CreateUndo;
+  const factory CAPIEvent.undo() = Undo;
 
-  // const factory CAPIEvent.undo({
-  //   @Default(false) bool skipRedo,
-  // }) = Undo;
-  //
-  // const factory CAPIEvent.redo() = Redo;
+  const factory CAPIEvent.redo() = Redo;
 
   const factory CAPIEvent.forceSnippetRefresh() = ForceSnippetRefresh;
 

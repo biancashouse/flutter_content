@@ -1,94 +1,39 @@
-// import 'dart:collection';
-//
-// import 'package:flutter_content/flutter_content.dart';
-//
-// class SnippetUndoRedoStack {
-//   final CAPIBloC capiBloc;
-//
-//   Queue<EncodedSnippetJson> undoQ = Queue<EncodedSnippetJson>();
-//   Queue<EncodedSnippetJson> redoQ = Queue<EncodedSnippetJson>();
-//
-//   SnippetUndoRedoStack(this.capiBloc);
-//
-//   void clear() {
-//     undoQ.clear();
-//     redoQ.clear();
-//   }
-//
-//   void _pushUndo(EncodedSnippetJson theESJ) {
-//     // fco.logger.i('num steps: ${theF.steps.length}');
-//     undoQ.addFirst(theESJ);
-//   }
-//
-//   void _pushRedo(EncodedSnippetJson theESJ) {
-//     redoQ.addFirst(theESJ);
-//   }
-//
-//   EncodedSnippetJson? _popUndo() {
-//     if (undoQ.isNotEmpty) {
-//       EncodedSnippetJson poppedF = undoQ.removeFirst();
-//       // fco.logger.i('num steps: ${poppedF.steps.length}');
-//       return poppedF;
-//     } else {
-//       return null;
-//     }
-//   }
-//
-//   EncodedSnippetJson? _popRedo() {
-//     if (redoQ.isNotEmpty) {
-//       return redoQ.removeFirst();
-//     } else {
-//       return null;
-//     }
-//   }
-//
-//   void createUndo({required SnippetRootNode? snippet}) {
-//     if (snippet == null) return;
-//     // _pushUndo(pushClone ? snippet.cleanClone() : snippet);
-//     // _pushUndo(snippet.toJson());
-//     // redoQ.clear();
-//     // fco.logger.i('undoQ: ${undoQs.length}');
-//     // fco.logger.i('redoQ: ${redoQs.length}');
-//     fco.cacheAndSaveANewSnippetVersion(
-//       snippetName: snippet.name,
-//       rootNode: snippet,
-//     );
-//   }
-//
-//   // // for the case where created an undo, but user clicked cancel x
-//   // void removeLastUndo() {
-//   //   _popUndo();
-//   // }
-//
-//   SnippetRootNode? undo({bool skipRedo = false}) {
-//     EncodedSnippetJson? restored;
-//     if (undoQ.isNotEmpty) {
-//       EncodedSnippetJson? esj = capiBloc.state.snippetBeingEdited?.rootNode.toJson();
-//       if (esj != null && !skipRedo) _pushRedo(esj);
-//       restored = _popUndo();
-//       // fco.logger.i('num steps after undo: ${App.userBloc.state.clipboard(id).steps.length}');
-//       // fco.logger.i('undoQ: ${undoQs.length}');
-//       // fco.logger.i('redoQ: ${redoQs.length}');
-//       return restored != null ? SnippetRootNodeMapper.fromJson(restored) : null;
-//     }
-//     return null;
-//   }
-//
-//   // void removeLastUndoQuietly() async {
-//   //   if (undoQs.isNotEmpty)
-//   //     _popUndo();
-//   // }
-//
-//   SnippetRootNode? redo() {
-//     EncodedSnippetJson? redid;
-//     if (redoQ.isNotEmpty) {
-//       EncodedSnippetJson? esj = capiBloc.state.snippetBeingEdited?.rootNode.toJson();
-//       if (esj != null) _pushUndo(esj);
-//       redid = _popRedo();
-//       // fco.logger.i('undoQ: ${undoQs.length}');
-//       // fco.logger.i('redoQ: ${redoQs.length}');
-//       return redid != null ? SnippetRootNodeMapper.fromJson(redid) : null;
-//     }
-//     return null;
-//   }
-// }
+import 'dart:collection';
+
+class SnippetUndoRedoStack {
+  final Queue<String> _undoQ = Queue<String>();
+  final Queue<String> _redoQ = Queue<String>();
+
+  bool get canUndo => _undoQ.isNotEmpty;
+  bool get canRedo => _redoQ.isNotEmpty;
+  int get undoCount => _undoQ.length;
+  int get redoCount => _redoQ.length;
+
+  void clear() {
+    _undoQ.clear();
+    _redoQ.clear();
+  }
+
+  /// Call before every mutating tree operation.
+  /// Pushes [json] onto the undo stack and clears the redo stack.
+  void pushForUndo(String json) {
+    _undoQ.addFirst(json);
+    _redoQ.clear();
+  }
+
+  /// Returns the JSON to restore, or null if nothing to undo.
+  /// [currentJson] is pushed onto the redo stack so it can be re-applied.
+  String? undo(String currentJson) {
+    if (_undoQ.isEmpty) return null;
+    _redoQ.addFirst(currentJson);
+    return _undoQ.removeFirst();
+  }
+
+  /// Returns the JSON to restore, or null if nothing to redo.
+  /// [currentJson] is pushed back onto the undo stack.
+  String? redo(String currentJson) {
+    if (_redoQ.isEmpty) return null;
+    _undoQ.addFirst(currentJson);
+    return _redoQ.removeFirst();
+  }
+}

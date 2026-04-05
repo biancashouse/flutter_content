@@ -632,36 +632,42 @@ class EditablePageState extends State<EditablePage> {
                           //     //   onPressed: () async {},
                           //     //   icon: VersionsMenuAnchor(snippetInfo: snippetInfo),
                           //     // ),
-                          IconButton(
-                            onPressed: () {
-                              // SNode.unhighlightSelectedNode();
-                              // if was editing a callout content snippet, dismiss all callouts
-                              if (SnippetRootNode.isHotspotCalloutContent(
-                                snippetName,
-                              )) {
-                                fco.dismissAll();
-                              } else {
-                                fco.dismiss('selected-node');
-                                // fco.dismissAll(exceptFeatures: [CalloutConfigToolbar.CID]);
-                                fco.unhide(HotspotTargetConfigToolbar.CID);
-                                fco.appInfo.hideClipboard();
-                              }
-                              fco.dismissAll();
-                              fco.capiBloc.add(
-                                const CAPIEvent.popSnippetEditor(),
-                              );
-                              final rootNode = snippetInfo
-                                  .currentVersionInCache();
-                              if (rootNode != null) {
-                                // notify possible changes to the quill text (controller)
-                                final snippetInfo = fco.appInfo
-                                    .cachedSnippetInfo(rootNode.name);
-                                ValueNotifier<String>? notifier = snippetInfo
-                                    ?.getChangeNotifier();
-                                notifier?.value = rootNode.toJson();
-                              }
-                            },
-                            icon: Icon(Icons.close),
+                          Row(
+                            mainAxisSize: MainAxisSize.min,
+                            children: [
+                              _UndoRedoToolbar(),
+                              IconButton(
+                                onPressed: () {
+                                  // SNode.unhighlightSelectedNode();
+                                  // if was editing a callout content snippet, dismiss all callouts
+                                  if (SnippetRootNode.isHotspotCalloutContent(
+                                    snippetName,
+                                  )) {
+                                    fco.dismissAll();
+                                  } else {
+                                    fco.dismiss('selected-node');
+                                    // fco.dismissAll(exceptFeatures: [CalloutConfigToolbar.CID]);
+                                    fco.unhide(HotspotTargetConfigToolbar.CID);
+                                    fco.appInfo.hideClipboard();
+                                  }
+                                  fco.dismissAll();
+                                  fco.capiBloc.add(
+                                    const CAPIEvent.popSnippetEditor(),
+                                  );
+                                  final rootNode = snippetInfo
+                                      .currentVersionInCache();
+                                  if (rootNode != null) {
+                                    // notify possible changes to the quill text (controller)
+                                    final snippetInfo = fco.appInfo
+                                        .cachedSnippetInfo(rootNode.name);
+                                    ValueNotifier<String>? notifier = snippetInfo
+                                        ?.getChangeNotifier();
+                                    notifier?.value = rootNode.toJson();
+                                  }
+                                },
+                                icon: Icon(Icons.close),
+                              ),
+                            ],
                           ),
                       // ],
                       // ),
@@ -1140,3 +1146,40 @@ class SelectionCutoutPainter extends CustomPainter {
 //   ScrollPhysics getScrollPhysics(BuildContext context) =>
 //       const NeverScrollableScrollPhysics();
 // }
+
+class _UndoRedoToolbar extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return BlocBuilder<CAPIBloC, CAPIState>(
+      buildWhen: (prev, curr) => prev.force != curr.force,
+      builder: (context, state) {
+        final undoRedo = state.snippetBeingEdited?.undoRedo;
+        final canUndo = undoRedo?.canUndo ?? false;
+        final canRedo = undoRedo?.canRedo ?? false;
+        return Row(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            IconButton(
+              tooltip: 'Undo (${undoRedo?.undoCount ?? 0})',
+              icon: const Icon(Icons.undo, size: 24),
+              color: Colors.white,
+              disabledColor: Colors.white24,
+              onPressed: canUndo
+                  ? () => fco.capiBloc.add(const CAPIEvent.undo())
+                  : null,
+            ),
+            IconButton(
+              tooltip: 'Redo (${undoRedo?.redoCount ?? 0})',
+              icon: const Icon(Icons.redo, size: 24),
+              color: Colors.white,
+              disabledColor: Colors.white24,
+              onPressed: canRedo
+                  ? () => fco.capiBloc.add(const CAPIEvent.redo())
+                  : null,
+            ),
+          ],
+        );
+      },
+    );
+  }
+}

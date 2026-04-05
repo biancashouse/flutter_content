@@ -2,6 +2,7 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 // dart format off
 // ignore_for_file: type=lint
+// ignore_for_file: invalid_use_of_protected_member
 // ignore_for_file: unused_element, unnecessary_cast, override_on_non_overriding_member
 // ignore_for_file: strict_raw_type, inference_failure_on_untyped_parameter
 
@@ -16,6 +17,7 @@ class UMLImageNodeMapper extends SubClassMapperBase<UMLImageNode> {
       MapperContainer.globals.use(_instance = UMLImageNodeMapper._());
       CLMapper.ensureInitialized().addSubMapper(_instance!);
       BoxFitEnumMapper.ensureInitialized();
+      AlignmentEnumMapper.ensureInitialized();
     }
     return _instance!;
   }
@@ -29,10 +31,10 @@ class UMLImageNodeMapper extends SubClassMapperBase<UMLImageNode> {
     _$name,
     opt: true,
   );
-  static String? _$umlText(UMLImageNode v) => v.umlText;
-  static const Field<UMLImageNode, String> _f$umlText = Field(
-    'umlText',
-    _$umlText,
+  static String? _$diagramText(UMLImageNode v) => v.diagramText;
+  static const Field<UMLImageNode, String> _f$diagramText = Field(
+    'diagramText',
+    _$diagramText,
     opt: true,
   );
   static double? _$width(UMLImageNode v) => v.width;
@@ -47,10 +49,23 @@ class UMLImageNodeMapper extends SubClassMapperBase<UMLImageNode> {
     _$height,
     opt: true,
   );
+  static double _$scale(UMLImageNode v) => v.scale;
+  static const Field<UMLImageNode, double> _f$scale = Field(
+    'scale',
+    _$scale,
+    opt: true,
+    def: 1.0,
+  );
   static BoxFitEnum? _$fit(UMLImageNode v) => v.fit;
   static const Field<UMLImageNode, BoxFitEnum> _f$fit = Field(
     'fit',
     _$fit,
+    opt: true,
+  );
+  static AlignmentEnum? _$alignment(UMLImageNode v) => v.alignment;
+  static const Field<UMLImageNode, AlignmentEnum> _f$alignment = Field(
+    'alignment',
+    _$alignment,
     opt: true,
   );
   static String _$uid(UMLImageNode v) => v.uid;
@@ -79,44 +94,21 @@ class UMLImageNodeMapper extends SubClassMapperBase<UMLImageNode> {
   static GlobalKey<State<StatefulWidget>>? _$nodeGK(UMLImageNode v) => v.nodeGK;
   static const Field<UMLImageNode, GlobalKey<State<StatefulWidget>>> _f$nodeGK =
       Field('nodeGK', _$nodeGK, mode: FieldMode.member);
-  static bool _$canShowTappableNodeWidgetOverlay(UMLImageNode v) =>
-      v.canShowTappableNodeWidgetOverlay;
-  static const Field<UMLImageNode, bool> _f$canShowTappableNodeWidgetOverlay =
-      Field(
-        'canShowTappableNodeWidgetOverlay',
-        _$canShowTappableNodeWidgetOverlay,
-        mode: FieldMode.member,
-      );
-  static GlobalKey<State<StatefulWidget>>? _$nodeWidgetGK(UMLImageNode v) =>
-      v.nodeWidgetGK;
-  static const Field<UMLImageNode, GlobalKey<State<StatefulWidget>>>
-  _f$nodeWidgetGK = Field(
-    'nodeWidgetGK',
-    _$nodeWidgetGK,
-    mode: FieldMode.member,
-  );
-  static Uint8List? _$cachedPngBytes(UMLImageNode v) => v.cachedPngBytes;
-  static const Field<UMLImageNode, Uint8List> _f$cachedPngBytes = Field(
-    'cachedPngBytes',
-    _$cachedPngBytes,
-    mode: FieldMode.member,
-  );
 
   @override
   final MappableFields<UMLImageNode> fields = const {
     #name: _f$name,
-    #umlText: _f$umlText,
+    #diagramText: _f$diagramText,
     #width: _f$width,
     #height: _f$height,
+    #scale: _f$scale,
     #fit: _f$fit,
+    #alignment: _f$alignment,
     #uid: _f$uid,
     #treeNodeGK: _f$treeNodeGK,
     #isExpanded: _f$isExpanded,
     #hidePropertiesWhileDragging: _f$hidePropertiesWhileDragging,
     #nodeGK: _f$nodeGK,
-    #canShowTappableNodeWidgetOverlay: _f$canShowTappableNodeWidgetOverlay,
-    #nodeWidgetGK: _f$nodeWidgetGK,
-    #cachedPngBytes: _f$cachedPngBytes,
   };
 
   @override
@@ -135,10 +127,12 @@ class UMLImageNodeMapper extends SubClassMapperBase<UMLImageNode> {
   static UMLImageNode _instantiate(DecodingData data) {
     return UMLImageNode(
       name: data.dec(_f$name),
-      umlText: data.dec(_f$umlText),
+      diagramText: data.dec(_f$diagramText),
       width: data.dec(_f$width),
       height: data.dec(_f$height),
+      scale: data.dec(_f$scale),
       fit: data.dec(_f$fit),
+      alignment: data.dec(_f$alignment),
     );
   }
 
@@ -207,10 +201,12 @@ abstract class UMLImageNodeCopyWith<$R, $In extends UMLImageNode, $Out>
   @override
   $R call({
     String? name,
-    String? umlText,
+    String? diagramText,
     double? width,
     double? height,
+    double? scale,
     BoxFitEnum? fit,
+    AlignmentEnum? alignment,
   });
   UMLImageNodeCopyWith<$R2, $In, $Out2> $chain<$R2, $Out2>(Then<$Out2, $R2> t);
 }
@@ -226,26 +222,32 @@ class _UMLImageNodeCopyWithImpl<$R, $Out>
   @override
   $R call({
     Object? name = $none,
-    Object? umlText = $none,
+    Object? diagramText = $none,
     Object? width = $none,
     Object? height = $none,
+    double? scale,
     Object? fit = $none,
+    Object? alignment = $none,
   }) => $apply(
     FieldCopyWithData({
       if (name != $none) #name: name,
-      if (umlText != $none) #umlText: umlText,
+      if (diagramText != $none) #diagramText: diagramText,
       if (width != $none) #width: width,
       if (height != $none) #height: height,
+      if (scale != null) #scale: scale,
       if (fit != $none) #fit: fit,
+      if (alignment != $none) #alignment: alignment,
     }),
   );
   @override
   UMLImageNode $make(CopyWithData data) => UMLImageNode(
     name: data.get(#name, or: $value.name),
-    umlText: data.get(#umlText, or: $value.umlText),
+    diagramText: data.get(#diagramText, or: $value.diagramText),
     width: data.get(#width, or: $value.width),
     height: data.get(#height, or: $value.height),
+    scale: data.get(#scale, or: $value.scale),
     fit: data.get(#fit, or: $value.fit),
+    alignment: data.get(#alignment, or: $value.alignment),
   );
 
   @override

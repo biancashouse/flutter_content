@@ -2,16 +2,12 @@ import 'package:flutter/material.dart';
 import 'package:flutter_content/flutter_content.dart';
 import 'package:flutter_content/src/snippet/pnodes/editors/property_callout_button_UML.dart';
 
-class UMLStringPNode extends PNode {
-  UMLRecord umlRecord;
-  final ValueChanged<UMLRecord> onUmlChange;
-  final ValueChanged<Size> onSized;
+class DiagramStringPNode extends PNode {
+  final ValueChanged<String?> onUmlChange;
   final Size calloutButtonSize;
 
-  UMLStringPNode({
-    required this.umlRecord,
+  DiagramStringPNode({
     required this.onUmlChange,
-    required this.onSized,
     required this.calloutButtonSize,
     required super.snode,
     required super.name,
@@ -19,28 +15,19 @@ class UMLStringPNode extends PNode {
 
   @override
   void revertToOriginalValue() {
-    onUmlChange((
-    text: null,
-    bytes: null,
-    width: null,
-    height: null
-    ));
+    onUmlChange(null);
   }
 
   @override
   Widget toPropertyNodeContents(BuildContext context) {
-    
     return PropertyButtonUML(
-      snode,
-      originalUMLRecord: umlRecord,
+      diagramText: (super.snode as UMLImageNode).diagramText,
       label: super.name,
       calloutButtonSize: calloutButtonSize,
       propertyBtnGK: GlobalKey(debugLabel: ''),
-      onChangeF: (newRecord) {
-        onUmlChange(umlRecord = newRecord);
+      onChangeF: (newText) {
+        onUmlChange(newText);
       },
-      onSizedF: (newSize) => onSized(newSize),
-       
     );
   }
 }

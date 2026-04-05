@@ -104,9 +104,8 @@ class CAPIBloC extends Bloc<CAPIEvent, CAPIState> {
       (event, emit) => _toggleSnippetVisibility(event, emit),
     );
     // on<PageAdded>((event, emit) => _pageAdded(event, emit));
-    // on<CreateUndo>((event, emit) => _createUndo(event, emit));
-    // on<Undo>((event, emit) => _undo(event, emit));
-    // on<Redo>((event, emit) => _redo(event, emit));
+    on<Undo>((event, emit) => _undo(event, emit));
+    on<Redo>((event, emit) => _redo(event, emit));
   }
 
   void _signedIn(SignedIn event, emit) async {
@@ -516,9 +515,8 @@ class CAPIBloC extends Bloc<CAPIEvent, CAPIState> {
   }
 
   Future<void> _completeDeletion(CompleteDeletion event, emit) async {
-    // state.snippetBeingEdited?.newVersion();
-
     if (state.snippetBeingEdited?.aNodeIsNotSelected ?? false) return;
+    _pushUndo();
 
     // STreeNode? sel = state.selectedNode;
     // STreeNode? selParent = sel?.getParent() as STreeNode?;
@@ -759,6 +757,7 @@ class CAPIBloC extends Bloc<CAPIEvent, CAPIState> {
   }
 
   Future<void> _cutNode(CutNode event, emit) async {
+    _pushUndo();
     void cutIncludingAnyChildren(SNode node) {
       if (state.snippetBeingEdited?.aNodeIsNotSelected ?? false) return;
       if (node != state.snippetBeingEdited!.getRootNode()) {
@@ -1157,11 +1156,8 @@ class CAPIBloC extends Bloc<CAPIEvent, CAPIState> {
   }
 
   void _wrapWith(WrapSelectionWith event, emit) {
-    // state.snippetBeingEdited?.newVersion();
-
-    if (state.snippetBeingEdited?.aNodeIsNotSelected ?? false) {
-      return;
-    }
+    if (state.snippetBeingEdited?.aNodeIsNotSelected ?? false) return;
+    _pushUndo();
 
     SNode selectedNode = state.snippetBeingEdited!.selectedNode!;
     SNode? selectedNodeParent = selectedNode.getParent() as SNode?;
@@ -1285,6 +1281,7 @@ class CAPIBloC extends Bloc<CAPIEvent, CAPIState> {
 
   void _replaceWith(ReplaceSelectionWith event, emit) {
     if (state.snippetBeingEdited?.aNodeIsNotSelected ?? false) return;
+    _pushUndo();
 
     SNode selectedNode = state.snippetBeingEdited!.selectedNode!;
     if (event.type == selectedNode.runtimeType) return;
@@ -1396,6 +1393,7 @@ class CAPIBloC extends Bloc<CAPIEvent, CAPIState> {
 
   void _addChild(AppendChild event, emit) {
     if (state.snippetBeingEdited?.aNodeIsNotSelected ?? false) return;
+    _pushUndo();
 
     SNode selectedNode = state.snippetBeingEdited!.selectedNode!;
     SNode newNode = event.type != null
@@ -1489,6 +1487,7 @@ class CAPIBloC extends Bloc<CAPIEvent, CAPIState> {
 
   void _pasteReplacement(PasteReplacement event, emit) {
     if (state.snippetBeingEdited?.aNodeIsNotSelected ?? false) return;
+    _pushUndo();
     if (fco.appInfo.clipboard != null) {
       SNode selectedNode = state.snippetBeingEdited!.selectedNode!;
       _replaceWithNewNodeOrClipboard(
@@ -1501,6 +1500,7 @@ class CAPIBloC extends Bloc<CAPIEvent, CAPIState> {
 
   void _pasteChild(PasteChild event, emit) {
     if (state.snippetBeingEdited?.aNodeIsNotSelected ?? false) return;
+    _pushUndo();
     if (fco.appInfo.clipboard != null) {
       SNode selectedNode = state.snippetBeingEdited!.selectedNode!;
       _addOrPasteChild(selectedNode, emit, fco.appInfo.clipboard!.clone());
@@ -1509,6 +1509,7 @@ class CAPIBloC extends Bloc<CAPIEvent, CAPIState> {
 
   void _addSibling(event, emit, {required bool before}) {
     if (state.snippetBeingEdited?.aNodeIsNotSelected ?? false) return;
+    _pushUndo();
     SNode selectedNode = state.snippetBeingEdited!.selectedNode!;
     List<SNode>? siblings = selectedNode.maybeSiblings();
     if (siblings == null) return;
@@ -1526,9 +1527,9 @@ class CAPIBloC extends Bloc<CAPIEvent, CAPIState> {
 
   void _pasteSiblingBefore(PasteSiblingBefore event, emit) {
     if (state.snippetBeingEdited?.aNodeIsNotSelected ?? false) return;
+    _pushUndo();
     if (fco.appInfo.clipboard != null) {
       SNode selectedNode = state.snippetBeingEdited!.selectedNode!;
-      //_createSnippetUndo();
       if (state.snippetBeingEdited?.selectedNode?.getParent() is MC) {
         int i = (state.snippetBeingEdited?.selectedNode?.getParent() as MC)
             .children
@@ -1565,9 +1566,9 @@ class CAPIBloC extends Bloc<CAPIEvent, CAPIState> {
 
   void _pasteSiblingAfter(PasteSiblingAfter event, emit) {
     if (state.snippetBeingEdited?.aNodeIsNotSelected ?? false) return;
+    _pushUndo();
     SNode selectedNode = state.snippetBeingEdited!.selectedNode!;
     SNode clipboardNode = fco.appInfo.clipboard!;
-    //_createSnippetUndo();
     if (state.snippetBeingEdited!.selectedNode?.getParent() is MC) {
       int i = (state.snippetBeingEdited!.selectedNode?.getParent() as MC)
           .children
@@ -1764,45 +1765,51 @@ class CAPIBloC extends Bloc<CAPIEvent, CAPIState> {
     // }
   }
 
-  // FutureOr<void> _undo(Undo event, emit) async {
-  //   if (canUndo) {
-  //     SnippetRootNode? result = _ur.undo();
-  //     if (result != null) {
-  //       state.snippetBeingEdited?.rootNode = result;
-  //       // update cached version
-  //       SnippetInfoModel? snippetInfo = SnippetInfoModel.snippetInfoCache[result.name];
-  //       if (snippetInfo != null) {
-  //         VersionId? currentVersionid = await snippetInfo.currentVersionId();
-  //         if (currentVersionid != null) {
-  //           snippetInfo.cachedVersions[currentVersionid] = result;
-  //         }
-  //       }
-  //       emit(state.copyWith(
-  //         force: state.force + 1,
-  //       ));
-  //     }
-  //   }
-  // }
-  //
-  // FutureOr<void> _redo(Redo event, emit) async {
-  //   if (canRedo) {
-  //     SnippetRootNode? result = _ur.redo();
-  //     if (result != null) {
-  //       state.snippetBeingEdited?.rootNode = result;
-  //       // update cached version
-  //       SnippetInfoModel? snippetInfo = SnippetInfoModel.snippetInfoCache[result.name];
-  //       if (snippetInfo != null) {
-  //         VersionId? currentVersionid = await snippetInfo.currentVersionId();
-  //         if (currentVersionid != null) {
-  //           snippetInfo.cachedVersions[currentVersionid] = result;
-  //         }
-  //       }
-  //       emit(state.copyWith(
-  //         force: state.force + 1,
-  //       ));
-  //     }
-  //   }
-  // }
+  void _pushUndo() {
+    final sbe = state.snippetBeingEdited;
+    if (sbe == null) return;
+    try {
+      sbe.undoRedo.pushForUndo(sbe.getRootNode().toJson());
+    } catch (_) {}
+  }
+
+  void _applyUndoRedoJson(String json, emit) {
+    final restored = SnippetRootNodeMapper.fromJson(json);
+    restored.validateTree(); // re-establishes parent references lost during JSON serialization
+    final snippetInfo = fco.appInfo.cachedSnippetInfo(restored.name);
+    snippetInfo?.cacheVersion(snippetInfo.editingVersionId, restored);
+    snippetInfo?.notifyChange(restored);
+    final newTreeC = SnippetTreeController(
+      roots: [restored],
+      childrenProvider: SNode.childrenProvider,
+      parentProvider: SNode.parentProvider,
+    );
+    newTreeC.expand(restored);
+    newTreeC.expandAll();
+    newTreeC.rebuild();
+    state.snippetBeingEdited!
+      ..setRootNode(restored)
+      ..selectedNode = null
+      ..showProperties = false
+      ..treeC = newTreeC;
+    emit(state.copyWith(force: state.force + 1));
+  }
+
+  void _undo(Undo event, emit) {
+    final sbe = state.snippetBeingEdited;
+    if (sbe == null || !sbe.undoRedo.canUndo) return;
+    final currentJson = sbe.getRootNode().toJson();
+    final json = sbe.undoRedo.undo(currentJson);
+    if (json != null) _applyUndoRedoJson(json, emit);
+  }
+
+  void _redo(Redo event, emit) {
+    final sbe = state.snippetBeingEdited;
+    if (sbe == null || !sbe.undoRedo.canRedo) return;
+    final currentJson = sbe.getRootNode().toJson();
+    final json = sbe.undoRedo.redo(currentJson);
+    if (json != null) _applyUndoRedoJson(json, emit);
+  }
 
   bool get deleteInProgress =>
       state.snippetBeingEdited?.nodeBeingDeleted != null;

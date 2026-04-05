@@ -2,6 +2,7 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 // dart format off
 // ignore_for_file: type=lint
+// ignore_for_file: invalid_use_of_protected_member
 // ignore_for_file: unused_element, unnecessary_cast, override_on_non_overriding_member
 // ignore_for_file: strict_raw_type, inference_failure_on_untyped_parameter
 
@@ -60,21 +61,6 @@ class NamedPSMapper extends SubClassMapperBase<NamedPS> {
   static GlobalKey<State<StatefulWidget>>? _$nodeGK(NamedPS v) => v.nodeGK;
   static const Field<NamedPS, GlobalKey<State<StatefulWidget>>> _f$nodeGK =
       Field('nodeGK', _$nodeGK, mode: FieldMode.member);
-  static bool _$canShowTappableNodeWidgetOverlay(NamedPS v) =>
-      v.canShowTappableNodeWidgetOverlay;
-  static const Field<NamedPS, bool> _f$canShowTappableNodeWidgetOverlay = Field(
-    'canShowTappableNodeWidgetOverlay',
-    _$canShowTappableNodeWidgetOverlay,
-    mode: FieldMode.member,
-  );
-  static GlobalKey<State<StatefulWidget>>? _$nodeWidgetGK(NamedPS v) =>
-      v.nodeWidgetGK;
-  static const Field<NamedPS, GlobalKey<State<StatefulWidget>>>
-  _f$nodeWidgetGK = Field(
-    'nodeWidgetGK',
-    _$nodeWidgetGK,
-    mode: FieldMode.member,
-  );
 
   @override
   final MappableFields<NamedPS> fields = const {
@@ -85,8 +71,6 @@ class NamedPSMapper extends SubClassMapperBase<NamedPS> {
     #isExpanded: _f$isExpanded,
     #hidePropertiesWhileDragging: _f$hidePropertiesWhileDragging,
     #nodeGK: _f$nodeGK,
-    #canShowTappableNodeWidgetOverlay: _f$canShowTappableNodeWidgetOverlay,
-    #nodeWidgetGK: _f$nodeWidgetGK,
   };
 
   @override

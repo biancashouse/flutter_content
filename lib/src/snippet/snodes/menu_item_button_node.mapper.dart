@@ -2,6 +2,7 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 // dart format off
 // ignore_for_file: type=lint
+// ignore_for_file: invalid_use_of_protected_member
 // ignore_for_file: unused_element, unnecessary_cast, override_on_non_overriding_member
 // ignore_for_file: strict_raw_type, inference_failure_on_untyped_parameter
 
@@ -76,31 +77,6 @@ class MenuItemButtonNodeMapper extends SubClassMapperBase<MenuItemButtonNode> {
       v.nodeGK;
   static const Field<MenuItemButtonNode, GlobalKey<State<StatefulWidget>>>
   _f$nodeGK = Field('nodeGK', _$nodeGK, mode: FieldMode.member);
-  static bool _$canShowTappableNodeWidgetOverlay(MenuItemButtonNode v) =>
-      v.canShowTappableNodeWidgetOverlay;
-  static const Field<MenuItemButtonNode, bool>
-  _f$canShowTappableNodeWidgetOverlay = Field(
-    'canShowTappableNodeWidgetOverlay',
-    _$canShowTappableNodeWidgetOverlay,
-    mode: FieldMode.member,
-  );
-  static GlobalKey<State<StatefulWidget>>? _$nodeWidgetGK(
-    MenuItemButtonNode v,
-  ) => v.nodeWidgetGK;
-  static const Field<MenuItemButtonNode, GlobalKey<State<StatefulWidget>>>
-  _f$nodeWidgetGK = Field(
-    'nodeWidgetGK',
-    _$nodeWidgetGK,
-    mode: FieldMode.member,
-  );
-  static Size _$nodeAddersAndPropertiesCalloutSize(MenuItemButtonNode v) =>
-      v.nodeAddersAndPropertiesCalloutSize;
-  static const Field<MenuItemButtonNode, Size>
-  _f$nodeAddersAndPropertiesCalloutSize = Field(
-    'nodeAddersAndPropertiesCalloutSize',
-    _$nodeAddersAndPropertiesCalloutSize,
-    mode: FieldMode.member,
-  );
 
   @override
   final MappableFields<MenuItemButtonNode> fields = const {
@@ -113,9 +89,6 @@ class MenuItemButtonNodeMapper extends SubClassMapperBase<MenuItemButtonNode> {
     #isExpanded: _f$isExpanded,
     #hidePropertiesWhileDragging: _f$hidePropertiesWhileDragging,
     #nodeGK: _f$nodeGK,
-    #canShowTappableNodeWidgetOverlay: _f$canShowTappableNodeWidgetOverlay,
-    #nodeWidgetGK: _f$nodeWidgetGK,
-    #nodeAddersAndPropertiesCalloutSize: _f$nodeAddersAndPropertiesCalloutSize,
   };
 
   @override

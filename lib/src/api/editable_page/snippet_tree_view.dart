@@ -6,24 +6,12 @@ import 'package:flutter_content/src/snippet/fancy_tree/tree_view.dart';
 import 'package:flutter_content/src/snippet/snode_widget.dart';
 
 class SnippetTreeView extends StatelessWidget {
-
-  // final VoidCallback onChangedF;
-  // final VoidCallback onExpiredF;
-  // final bool allowButtonCallouts;
-
-  const SnippetTreeView({
-    // required this.onChangedF,
-    // required this.onExpiredF,
-    // this.allowButtonCallouts = false,
-    super.key,
-  });
+  const SnippetTreeView({super.key});
 
   @override
   Widget build(BuildContext context) {
-    var snippetBeingEdited = fco.snippetBeingEdited;
-    // fco.logger.i(
-    //     "snippetBeingEdited is ${snippetBeingEdited != null ? 'not null' : 'null'}");
-    SnippetTreeController? treeC = snippetBeingEdited?.treeC;
+    final snippetBeingEdited = fco.snippetBeingEdited;
+    final SnippetTreeController? treeC = snippetBeingEdited?.treeC;
     if (treeC == null) {
       return Error(
         "FlowchartWidget",
@@ -34,40 +22,28 @@ class SnippetTreeView extends StatelessWidget {
       );
     }
     return TreeView<SNode>(
-      //physics: const NeverScrollableScrollPhysics(),
       treeController: treeC,
-      // filter or all
-      nodeBuilder: (BuildContext context, TreeEntry<SNode> entry) {
-        // if (fco.aNodeIsSelected && treeC!.hasAncestor(entry, bloc.state.selectedNode) && bloc.state.showProperties) return const Offstage();
-        // fco.logger.i("rebuilding entry: ${entry.node.runtimeType.toString()} expanded: ${entry.isExpanded}");
-        // never show the tree root node
-        // if (fco.snippetBeingEdited?.getRootNode() == entry.node) {
-        //   return const Offstage();
-        // }
-        // if (entry.node == fco.selectedNode) {
-        //   fco.logger.i(
-        //       'SnippetTreeView - selected node: ${fco.selectedNode.toString()}');
-        // }
-        return _treeIndentation(entry, treeC);
-      },
+      nodeBuilder: (BuildContext context, TreeEntry<SNode> entry) =>
+          _treeIndentation(entry, treeC),
     );
   }
 
-  TreeIndentation _treeIndentation(TreeEntry<SNode> entry, SnippetTreeController treeC) => TreeIndentation(
+  TreeIndentation _treeIndentation(
+    TreeEntry<SNode> entry,
+    SnippetTreeController treeC,
+  ) => TreeIndentation(
     guide: IndentGuide.connectingLines(
-      color: fco.aNodeIsSelected &&
-          entry.node == fco.selectedNode
+      color: fco.aNodeIsSelected && entry.node == fco.selectedNode
           ? Colors.purpleAccent
           : Colors.white,
       indent: 40.0,
     ),
     entry: entry,
     child: SNodeWidget(
-      snippetName: fco.snippetBeingEdited?.getRootNode().name ?? 'snippet name ?',
+      snippetName:
+          fco.snippetBeingEdited?.getRootNode().name ?? 'snippet name ?',
       treeController: treeC,
       entry: entry,
-      // allowButtonCallouts: allowButtonCallouts,
-      
     ),
   );
 }

@@ -2,6 +2,7 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 // dart format off
 // ignore_for_file: type=lint
+// ignore_for_file: invalid_use_of_protected_member
 // ignore_for_file: unused_element, unnecessary_cast, override_on_non_overriding_member
 // ignore_for_file: strict_raw_type, inference_failure_on_untyped_parameter
 
@@ -29,12 +30,6 @@ class ColorModelMapper extends ClassMapperBase<ColorModel> {
   static const Field<ColorModel, double> _f$g = Field('g', _$g);
   static double _$b(ColorModel v) => v.b;
   static const Field<ColorModel, double> _f$b = Field('b', _$b);
-  static Color _$flutterValue(ColorModel v) => v.flutterValue;
-  static const Field<ColorModel, Color> _f$flutterValue = Field(
-    'flutterValue',
-    _$flutterValue,
-    mode: FieldMode.member,
-  );
 
   @override
   final MappableFields<ColorModel> fields = const {
@@ -42,7 +37,6 @@ class ColorModelMapper extends ClassMapperBase<ColorModel> {
     #r: _f$r,
     #g: _f$g,
     #b: _f$b,
-    #flutterValue: _f$flutterValue,
   };
 
   static ColorModel _instantiate(DecodingData data) {

@@ -3,7 +3,6 @@ import 'package:flutter_content/flutter_content.dart';
 import 'package:flutter_content/src/api/snippet_builder/replace_snippet_with_json_callout.dart';
 import 'package:flutter_content/src/snippet/pnodes/editors/property_callout_button_UML.dart';
 import 'package:flutter_content/src/snippet/pnodes/editors/property_callout_button_markdown.dart';
-import 'package:flutter_content/src/snippet/snodes/quill/widgets/quill_editor_with_toolbar_callout.dart';
 
 import 'fancy_tree/tree_controller.dart';
 
@@ -101,46 +100,29 @@ class SNodeWidget extends StatelessWidget {
               //     },
               //     child: Icon(Icons.edit, size: 20),
               //   ),
+
+              // UML
               if (entry.node is UMLImageNode)
                 InkWell(
                   onTap: () {
                     _tappedNode(context);
                     fco.afterNextBuildDo(() {
                       var umlImageNode = entry.node as UMLImageNode;
-                      final teC = TextEditingController();
-                      final originalUMLRecord = (
-                        text: umlImageNode.umlText,
-                        bytes: umlImageNode.cachedPngBytes,
-                        width: umlImageNode.width,
-                        height: umlImageNode.height,
-                      );
-                      // make sure start and end are present for viewing, but they don't get sent to the encoder
-                      teC.text =
-                          !(originalUMLRecord.text ?? '').contains('@startuml')
-                          ? "@startuml\n${originalUMLRecord.text ?? ''}\n@enduml"
-                          : originalUMLRecord.text ?? '';
+                      final teC = TextEditingController(text: umlImageNode.diagramText);
                       PropertyButtonUML.showUMLEditor(
-                        entry.node,
-                        context,
-                        originalUMLRecord,
-                        teC,
-                        (UMLRecord newValue) {
+                        context:context,
+                        teC:teC,
+                        onChangeF: (String newText) {
                           umlImageNode.refreshWithUpdate(context, () {
-                            umlImageNode.umlText = newValue.text;
-                            umlImageNode.cachedPngBytes = newValue.bytes;
-                            umlImageNode.width = newValue.width;
-                            umlImageNode.height = newValue.height;
+                            umlImageNode.diagramText = newText;
                           });
-                        },
-                        (newSize) {
-                          umlImageNode.width = newSize.width;
-                          umlImageNode.height = newSize.height;
                         },
                       );
                     });
                   },
                   child: Icon(Icons.edit, size: 20, color: Colors.purpleAccent),
                 ),
+              // MD
               if (entry.node is MarkdownNode)
                 InkWell(
                   onTap: () {
@@ -160,6 +142,7 @@ class SNodeWidget extends StatelessWidget {
                   },
                   child: Icon(Icons.edit, size: 20, color: Colors.purpleAccent),
                 ),
+              // NAMED PROPERTY
               if (entry.node.isANamedPropertyNode() &&
                   ((entry.node is NamedSC &&
                           (entry.node as NamedSC).child == null) ||

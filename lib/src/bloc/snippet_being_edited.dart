@@ -1,4 +1,5 @@
 import 'package:flutter_content/flutter_content.dart';
+import 'snippet_undo_redo.dart';
 
 class SnippetBeingEdited {
   // RouteName pageName;
@@ -12,6 +13,7 @@ class SnippetBeingEdited {
   bool showProperties;
   SNode? nodeBeingDeleted;
   String jsonBeforeAnyChange;
+  final undoRedo = SnippetUndoRedoStack();
 
   SnippetBeingEdited({
     // required this.rootNode,

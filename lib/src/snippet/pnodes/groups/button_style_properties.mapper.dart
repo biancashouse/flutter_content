@@ -2,6 +2,7 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 // dart format off
 // ignore_for_file: type=lint
+// ignore_for_file: invalid_use_of_protected_member
 // ignore_for_file: unused_element, unnecessary_cast, override_on_non_overriding_member
 // ignore_for_file: strict_raw_type, inference_failure_on_untyped_parameter
 
@@ -117,12 +118,6 @@ class ButtonStylePropertiesMapper
     _$lastSearchString,
     mode: FieldMode.member,
   );
-  static int _$hashCode(ButtonStyleProperties v) => v.hashCode;
-  static const Field<ButtonStyleProperties, int> _f$hashCode = Field(
-    'hashCode',
-    _$hashCode,
-    mode: FieldMode.member,
-  );
 
   @override
   final MappableFields<ButtonStyleProperties> fields = const {
@@ -142,7 +137,6 @@ class ButtonStylePropertiesMapper
     #fixedH: _f$fixedH,
     #lastHoveredSuggestion: _f$lastHoveredSuggestion,
     #lastSearchString: _f$lastSearchString,
-    #hashCode: _f$hashCode,
   };
 
   static ButtonStyleProperties _instantiate(DecodingData data) {

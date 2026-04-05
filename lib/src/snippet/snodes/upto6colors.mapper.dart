@@ -2,6 +2,7 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 // dart format off
 // ignore_for_file: type=lint
+// ignore_for_file: invalid_use_of_protected_member
 // ignore_for_file: unused_element, unnecessary_cast, override_on_non_overriding_member
 // ignore_for_file: strict_raw_type, inference_failure_on_untyped_parameter
 
@@ -100,12 +101,6 @@ class UpTo6ColorsMapper extends ClassMapperBase<UpTo6Colors> {
     _$isLinear,
     mode: FieldMode.member,
   );
-  static int _$hashCode(UpTo6Colors v) => v.hashCode;
-  static const Field<UpTo6Colors, int> _f$hashCode = Field(
-    'hashCode',
-    _$hashCode,
-    mode: FieldMode.member,
-  );
 
   @override
   final MappableFields<UpTo6Colors> fields = const {
@@ -122,7 +117,6 @@ class UpTo6ColorsMapper extends ClassMapperBase<UpTo6Colors> {
     #color5Value: _f$color5Value,
     #color6Value: _f$color6Value,
     #isLinear: _f$isLinear,
-    #hashCode: _f$hashCode,
   };
 
   static UpTo6Colors _instantiate(DecodingData data) {

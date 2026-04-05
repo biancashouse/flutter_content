@@ -1,71 +1,117 @@
+// import 'dart:convert';
+// import 'package:archive/archive.dart';
 import 'package:dart_mappable/dart_mappable.dart';
 
 // import 'package:firebase_storage/firebase_storage.dart' show FirebaseStorage;
-import 'package:firebase_ui_storage/firebase_ui_storage.dart' show StorageImage;
+// import 'package:firebase_ui_storage/firebase_ui_storage.dart' show StorageImage;
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:flutter_content/flutter_content.dart';
-import 'package:flutter_content/src/snippet/pnodes/editors/plantuml_msv.dart';
+
+// import 'package:flutter_content/src/snippet/pnodes/editors/plantuml_msv.dart';
 import 'package:flutter_content/src/snippet/pnodes/enum_pnode.dart';
 import 'package:flutter_content/src/snippet/pnodes/enums/enum_boxfit.dart';
 import 'package:flutter_content/src/snippet/pnodes/fyi_pnodes.dart'
-    show FlutterDocPNode, FYIPNode;
-import 'package:flutter_content/src/snippet/pnodes/string_pnode.dart';
-import 'package:flutter_content/src/snippet/pnodes/uml_string_pnode.dart';
+    show FlutterDocPNode;
+
+// import 'package:flutter_content/src/snippet/pnodes/string_pnode.dart';
+// import 'package:flutter_content/src/snippet/pnodes/uml_string_pnode.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 
+// import '../../svg/web_svg_view.dart' show WebSvgView;
+import '../../flutter_uml/lib/flutter_uml.dart';
+import '../pnodes/decimal_pnode.dart' show DecimalPNode;
+import '../pnodes/uml_string_pnode.dart' show DiagramStringPNode;
+
 part 'uml_image_node.mapper.dart';
+
+/// kroki
+// const String _krokiBaseUrl = 'https://kroki-188627927914.us-central1.run.app';
 
 const missingPng =
     'RSqn3i8m343HFQSmKoS6a3W0pGqG8ujfh10biQaT3zmU0IET_vE-rS9FLEmmocWqYoRIYpYdACgaS3W5spBNHraganaSjq6K9WfAwI_ZKhF-5XzoNXtt4HEDkJc5y4MWj3hPW5xC2kSRJzxR17T9Bq3Di0jl';
 
-const plantUMLRef =
+const plantumlRef =
     'https://pdf.plantuml.net/PlantUML_Language_Reference_Guide_en.pdf';
+
+const mermaidRef = 'https://mermaid.ai/open-source/intro';
+
+const samplePlantUml = '''@startuml
+class User {
+  -String id
+  -String name
+  +String name()
+}
+User <|-- SpecificUser
+@enduml
+''';
+
+const sampleMermaid = '''pie title What Voldemort doesn't have?
+         "FRIENDS" : 2
+         "FAMILY" : 3
+         "NOSE" : 45
+''';
 
 @MappableClass()
 class UMLImageNode extends CL with UMLImageNodeMappable {
   String? name;
-  String? umlText;
+  String? diagramText;
   double? width;
   double? height;
+  double scale;
   BoxFitEnum? fit;
+  AlignmentEnum? alignment;
 
-  UMLImageNode({this.name, this.umlText, this.width, this.height, this.fit});
+  UMLImageNode({
+    this.name,
+    this.diagramText,
+    this.width,
+    this.height,
+    this.scale = 1.0,
+    this.fit = BoxFitEnum.none,
+    this.alignment = AlignmentEnum.center,
+  });
 
   @JsonKey(includeFromJson: false, includeToJson: false)
   GlobalKey? _gk;
 
-  @JsonKey(includeFromJson: false, includeToJson: false)
-  Uint8List? cachedPngBytes;
+  // /// Returns the Kroki SVG URL for the given [diagram].
+  // static String buildDiagramUrl(String diagram) {
+  //   if (diagram.isEmpty) return '';
+  //
+  //   // Encode the diagram text using zlib deflate and base64url encoding
+  //   final bytes = utf8.encode(diagram);
+  //   final encoder = ZLibEncoder();
+  //   final deflated = encoder.encode(bytes);
+  //   final encoded = base64UrlEncode(deflated);
+  //
+  //   final diagramType = diagram.startsWith('@startuml')
+  //       ? 'plantuml'
+  //       : 'mermaid';
+  //
+  //   return '$_krokiBaseUrl/$diagramType/svg/$encoded';
+  // }
 
   @override
   List<PNode> propertyNodes(BuildContext context, SNode? parentSNode) => [
     FlutterDocPNode(
       buttonLabel: 'PlantUML Reference',
-      webLink: plantUMLRef,
+      webLink: plantumlRef,
       snode: this,
       name: 'fyi',
     ),
-    FYIPNode(
-      label:
-          "Generated UML image name",
-      msg:
-          "Specify a file name for the\n"
-              "generated UML image file (png)\n"
-              "in Firebase Storage",
+    FlutterDocPNode(
+      buttonLabel: 'Mermaid Reference',
+      webLink: mermaidRef,
       snode: this,
-      name: 'file-name',
+      name: 'fyi',
     ),
-    StringPNode(
+    DecimalPNode(
       snode: this,
-      name: 'name (in firebase storage)',
-      stringValue: name,
-      skipHelperText: true,
-      onStringChange: (newValue) =>
-          refreshWithUpdate(context, () => name = newValue),
-      calloutButtonSize: const Size(280, 70),
-      calloutWidth: 400,
-      numLines: 1,
+      name: 'scale',
+      decimalValue: scale,
+      onDoubleChange: (newValue) =>
+          refreshWithUpdate(context, () => scale = newValue ?? 1.0),
+      calloutButtonSize: const Size(80, 20),
     ),
     EnumPNode<BoxFitEnum?>(
       snode: this,
@@ -74,101 +120,135 @@ class UMLImageNode extends CL with UMLImageNodeMappable {
       onIndexChange: (newValue) =>
           refreshWithUpdate(context, () => fit = BoxFitEnum.of(newValue)),
     ),
-    UMLStringPNode(
+    EnumPNode<AlignmentEnum?>(
       snode: this,
-      name: 'uml',
-      umlRecord: (
-        text: umlText,
-        bytes: cachedPngBytes,
-        width: width,
-        height: height,
+      name: 'alignment',
+      valueIndex: alignment?.index,
+      onIndexChange: (newValue) => refreshWithUpdate(
+        context,
+        () => alignment = AlignmentEnum.of(newValue),
       ),
-      onUmlChange: (newValue) {
+    ),
+    DiagramStringPNode(
+      snode: this,
+      name: 'diagramText',
+      onUmlChange: (String? newText) {
         refreshWithUpdate(context, () {
-          umlText = newValue.text;
-          cachedPngBytes = newValue.bytes;
-          width = newValue.width;
-          height = newValue.height;
+          diagramText = newText;
         });
-      },
-      onSized: (newSize) {
-        width = newSize.width;
-        height = newSize.height;
       },
       calloutButtonSize: const Size(280, 2000),
     ),
   ];
 
   @override
-  /// use version in fs storage for non-editors
   Widget buildFlutterWidget(BuildContext context, SNode? parentNode) {
-    setParent(parentNode);
+    try {
+      setParent(parentNode); // propagating parents down from root
+      // ScrollControllerName? scName = EditablePage.name(context);
+      // possiblyHighlightSelectedNode(scName);
 
-    if (!fco.canEditContent() && name != null) {
-      // can't edit, so just retrieve from firebase storage
-      final ref = fco.folderPathRef("/plantuml-images").child("$name");
-      try {
-        return Center(child: _storageImage(ref));
-      } catch (e) {
-        return Error(
-          key: _gk,
-          FLUTTER_TYPE,
-          color: Colors.red,
-          size: 16,
-          errorMsg: e.toString(),
-        );
+      _gk ??= createNodeWidgetGK();
+
+      // if (diagramText?.isNotEmpty ?? false) {
+      //   String diagramUrl = UMLImageNode.buildDiagramUrl(diagramText!);
+      //   return WebSvgView(key: _gk, url: diagramUrl);
+      // } else {
+      //   return Placeholder(
+      //     key: _gk,
+      //     color: Colors.purpleAccent,
+      //     strokeWidth: 2.0,
+      //   );
+      // }
+
+      if (diagramText == null) {
+        return Text('enter plantuml or mermaid text...');
+      } else {
+        return diagramText!.startsWith('@startuml')
+            ? UmlDiagram.plantuml(source: diagramText!)
+            : UmlDiagram.mermaid(source: diagramText!);
       }
-    } else {
-      return cachedPngBytes != null && cachedPngBytes!.isNotEmpty
-          ? _memoryImage()
-          : FutureBuilder<UMLRecord>(
-              future: PlantUMLMSVState.encodeThenFetchPng(umlText ?? '', (
-                UMLRecord newValue,
-              ) {
-                umlText = newValue.text;
-                cachedPngBytes = newValue.bytes;
-                width = newValue.width;
-                height = newValue.height;
-              }),
-              builder: (futureContext, snapshot) {
-                if (snapshot.connectionState != ConnectionState.done) {
-                  return const Center(child: CircularProgressIndicator());
-                }
-
-                if (_gk == null) {
-                  _gk = createNodeWidgetGK();
-                  fco.afterMsDelayDo(100, () => fco.forceRefresh());
-                }
-
-                return _memoryImage();
-              },
-            );
+    } catch (e) {
+      return Error(
+        key: _gk,
+        toString(),
+        color: Colors.red,
+        size: 18,
+        errorMsg: e.toString(),
+      );
     }
   }
 
-  Widget _storageImage(ref) => StorageImage(
-    key: createNodeWidgetGK(),
-    fit: fit?.flutterValue,
-    width: width,
-    height: height,
-    ref: ref,
-  );
+  // @override
+  // /// use version in fs storage for non-editors
+  // Widget buildFlutterWidget(BuildContext context, SNode? parentNode) {
+  //   setParent(parentNode);
+  //
+  //   if (!fco.canEditContent() && name != null) {
+  //     // can't edit, so just retrieve from firebase storage
+  //     final ref = fco.folderPathRef("/plantuml-images").child("$name");
+  //     try {
+  //       return Center(child: _storageImage(ref));
+  //     } catch (e) {
+  //       return Error(
+  //         key: _gk,
+  //         FLUTTER_TYPE,
+  //         color: Colors.red,
+  //         size: 16,
+  //         errorMsg: e.toString(),
+  //       );
+  //     }
+  //   } else {
+  //     return cachedPngBytes != null && cachedPngBytes!.isNotEmpty
+  //         ? _memoryImage()
+  //         : FutureBuilder<UMLRecord>(
+  //             future: PlantUMLMSVState.encodeThenFetchPng(umlText ?? '', (
+  //               UMLRecord newValue,
+  //             ) {
+  //               umlText = newValue.text;
+  //               cachedPngBytes = newValue.bytes;
+  //               width = newValue.width;
+  //               height = newValue.height;
+  //             }),
+  //             builder: (futureContext, snapshot) {
+  //               if (snapshot.connectionState != ConnectionState.done) {
+  //                 return const Center(child: CircularProgressIndicator());
+  //               }
+  //
+  //               if (_gk == null) {
+  //                 _gk = createNodeWidgetGK();
+  //                 fco.afterMsDelayDo(100, () => fco.forceRefresh());
+  //               }
+  //
+  //               return _memoryImage();
+  //             },
+  //           );
+  //   }
+  // }
 
-  Widget _memoryImage() => Image.memory(
-    key: _gk,
-    // scale: 3.0,
-    cachedPngBytes ?? Uint8List.fromList(missingPng.codeUnits),
-    fit: fit?.flutterValue,
-    errorBuilder: (context, o, stackTrace) {
-      return Error(
-        key: GlobalKey(),
-        "PlantUMLTextEditor Image.memory",
-        color: Colors.red,
-        size: 18,
-        errorMsg: 'Bad pngBytes',
-      );
-    },
-  );
+  // Widget _storageImage(ref) => StorageImage(
+  //   key: createNodeWidgetGK(),
+  //   fit: fit?.flutterValue,
+  //   width: width,
+  //   height: height,
+  //   ref: ref,
+  // );
+
+  // Widget _memoryImage() => Image.memory(
+  //   key: _gk,
+  //   // scale: 3.0,
+  //   cachedPngBytes ?? Uint8List.fromList(missingPng.codeUnits),
+  //   fit: fit?.flutterValue,
+  //   errorBuilder: (context, o, stackTrace) {
+  //     return Error(
+  //       key: GlobalKey(),
+  //       "PlantUMLTextEditor Image.memory",
+  //       color: Colors.red,
+  //       size: 18,
+  //       errorMsg: 'Bad pngBytes',
+  //     );
+  //   },
+  // );
 
   // Future<Uint8List?> _fetchPng() async {
   //   encodedText ??= await _cloudRunEncodeTextForPlantUML();
@@ -218,7 +298,9 @@ class UMLImageNode extends CL with UMLImageNodeMappable {
       Image.asset(fco.asset('lib/assets/images/pub.dev.png'), width: 16);
 
   @override
-  String toString() => FLUTTER_TYPE;
-
-  static const String FLUTTER_TYPE = "UML";
+  String toString() => diagramText == null
+      ? 'UML (plantuml or mermaid)'
+      : diagramText!.startsWith('@startuml')
+      ? 'plantuml'
+      : 'mermaid';
 }

@@ -1,61 +1,47 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_content/src/snippet/pnodes/editors/uml_msv.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 
 import 'package:flutter_content/flutter_content.dart';
-import 'package:flutter_content/src/snippet/pnodes/editors/plantuml_msv.dart';
 
 class PropertyButtonUML extends HookWidget {
-  final SNode snode;
-  final UMLRecord originalUMLRecord;
+  final String? diagramText;
   final String label;
   final Size calloutButtonSize;
   final GlobalKey propertyBtnGK;
-  final ValueChanged<UMLRecord> onChangeF;
-  final ValueChanged<Size> onSizedF;
+  final ValueChanged<String> onChangeF;
 
-  const PropertyButtonUML(
-    this.snode, {
-    required this.originalUMLRecord,
+  const PropertyButtonUML({
+    this.diagramText,
     required this.label,
     required this.calloutButtonSize,
     required this.onChangeF,
-    required this.onSizedF,
     required this.propertyBtnGK,
     super.key,
   });
 
   @override
   Widget build(BuildContext context) {
-    final teC = useTextEditingController(
-      text: !(originalUMLRecord.text ?? '').contains('@startuml')
-          ? "@startuml\n${originalUMLRecord.text ?? ''}\n@enduml"
-          : originalUMLRecord.text ?? '',
-    );
+    final teC = useTextEditingController(text: diagramText);
 
     return TextButton.icon(
       label: Text(label),
       onPressed: () {
         showUMLEditor(
-          snode,
-          context,
-          originalUMLRecord,
-          teC,
-          onChangeF,
-          onSizedF,
+          context: context,
+          teC: teC,
+          onChangeF: onChangeF,
         );
       },
       icon: const Icon(Icons.edit),
     );
   }
 
-  static void showUMLEditor(
-    SNode snode,
-    BuildContext context,
-    UMLRecord originalUMLRecord,
-    teC,
-    onChangeF,
-    onSizedF,
-  ) {
+  static void showUMLEditor({
+    required BuildContext context,
+    required TextEditingController teC,
+    required ValueChanged<String> onChangeF,
+  }) {
     CalloutConfig teCC = CalloutConfig(
       cId: 'uml-te',
 
@@ -76,14 +62,11 @@ class PropertyButtonUML extends HookWidget {
       draggable: false,
     );
 
-    Widget calloutContent = PlantUMLMSV(
-      snode: snode,
-      originalUMLRecord: originalUMLRecord,
+    Widget calloutContent = UmlMSV(
       teC: teC,
-      onChangeF: (UMLRecord newUmlRecord) {
-        onChangeF.call(newUmlRecord);
+      onChangeF: (String newDiagramText) {
+        onChangeF.call(newDiagramText);
       },
-      onSizedF: onSizedF,
     );
 
     fco.showOverlay(calloutConfig: teCC, calloutContent: calloutContent);

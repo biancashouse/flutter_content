@@ -1,9 +1,11 @@
 // ignore_for_file: constant_identifier_names
 
-import 'dart:typed_data';
+// import 'dart:typed_data';
+
+import 'dart:typed_data' show Uint8List;
 
 import 'package:flutter/material.dart';
-import 'package:flutter_content/src/snippet/pnodes/groups/button_style_properties.dart';
+// import 'package:flutter_content/src/snippet/pnodes/groups/button_style_properties.dart';
 
 import '../flutter_content.dart';
 
@@ -15,13 +17,6 @@ typedef UserVoterRecord = ({PollOptionId? optionId, int? when});
 typedef UnconfirmedEaRecord = ({
   String ea,
   String token,
-});
-
-typedef UMLRecord = ({
-  String? text,
-  Uint8List? bytes,
-  double? width,
-  double? height
 });
 
 typedef TextStyleName = String;

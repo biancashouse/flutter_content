@@ -1,0 +1,17 @@
+name: flutter_uml_example
+description: Example app demonstrating the flutter_uml package.
+publish_to: none
+version: 1.0.0+1
+
+environment:
+  sdk: ">=3.0.0 <4.0.0"
+  flutter: ">=3.10.0"
+
+dependencies:
+  flutter:
+    sdk: flutter
+  flutter_uml:
+    path: ../
+
+dev_dependencies:
+  flutter_lints: ">=4.0.0 <7.0.0"

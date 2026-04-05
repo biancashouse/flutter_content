@@ -2,6 +2,7 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 // dart format off
 // ignore_for_file: type=lint
+// ignore_for_file: invalid_use_of_protected_member
 // ignore_for_file: unused_element, unnecessary_cast, override_on_non_overriding_member
 // ignore_for_file: strict_raw_type, inference_failure_on_untyped_parameter
 
@@ -38,11 +39,12 @@ class QuillTargetModelMapper extends ClassMapperBase<QuillTargetModel> {
       Field('iconEnum', _$iconEnum, opt: true);
   static int _$uid(QuillTargetModel v) => v.uid;
   static const Field<QuillTargetModel, int> _f$uid = Field('uid', _$uid);
-  static SizeModel? _$calloutSize(QuillTargetModel v) => v.calloutSize;
+  static SizeModel _$calloutSize(QuillTargetModel v) => v.calloutSize;
   static const Field<QuillTargetModel, SizeModel> _f$calloutSize = Field(
     'calloutSize',
     _$calloutSize,
     opt: true,
+    def: const SizeModel(200, 80),
   );
   static int _$calloutDurationMs(QuillTargetModel v) => v.calloutDurationMs;
   static const Field<QuillTargetModel, int> _f$calloutDurationMs = Field(
@@ -115,12 +117,6 @@ class QuillTargetModelMapper extends ClassMapperBase<QuillTargetModel> {
     opt: true,
     def: false,
   );
-  static int _$hashCode(QuillTargetModel v) => v.hashCode;
-  static const Field<QuillTargetModel, int> _f$hashCode = Field(
-    'hashCode',
-    _$hashCode,
-    mode: FieldMode.member,
-  );
 
   @override
   final MappableFields<QuillTargetModel> fields = const {
@@ -139,7 +135,6 @@ class QuillTargetModelMapper extends ClassMapperBase<QuillTargetModel> {
     #bubbleOrTargetPointerColor: _f$bubbleOrTargetPointerColor,
     #animatePointer: _f$animatePointer,
     #autoPlay: _f$autoPlay,
-    #hashCode: _f$hashCode,
   };
 
   static QuillTargetModel _instantiate(DecodingData data) {
@@ -224,7 +219,7 @@ extension QuillTargetModelValueCopy<$R, $Out>
 
 abstract class QuillTargetModelCopyWith<$R, $In extends QuillTargetModel, $Out>
     implements ClassCopyWith<$R, $In, $Out> {
-  SizeModelCopyWith<$R, SizeModel, SizeModel>? get calloutSize;
+  SizeModelCopyWith<$R, SizeModel, SizeModel> get calloutSize;
   UpTo6ColorsCopyWith<$R, UpTo6Colors, UpTo6Colors>? get calloutFillColors;
   UpTo6ColorsCopyWith<$R, UpTo6Colors, UpTo6Colors>? get calloutBorderColors;
   ColorModelCopyWith<$R, ColorModel, ColorModel>?
@@ -260,8 +255,8 @@ class _QuillTargetModelCopyWithImpl<$R, $Out>
   late final ClassMapperBase<QuillTargetModel> $mapper =
       QuillTargetModelMapper.ensureInitialized();
   @override
-  SizeModelCopyWith<$R, SizeModel, SizeModel>? get calloutSize =>
-      $value.calloutSize?.copyWith.$chain((v) => call(calloutSize: v));
+  SizeModelCopyWith<$R, SizeModel, SizeModel> get calloutSize =>
+      $value.calloutSize.copyWith.$chain((v) => call(calloutSize: v));
   @override
   UpTo6ColorsCopyWith<$R, UpTo6Colors, UpTo6Colors>? get calloutFillColors =>
       $value.calloutFillColors?.copyWith.$chain(
@@ -281,7 +276,7 @@ class _QuillTargetModelCopyWithImpl<$R, $Out>
     Object? iconSize = $none,
     Object? iconEnum = $none,
     int? uid,
-    Object? calloutSize = $none,
+    SizeModel? calloutSize,
     int? calloutDurationMs,
     Object? calloutFillColors = $none,
     Object? calloutBorderColors = $none,
@@ -298,7 +293,7 @@ class _QuillTargetModelCopyWithImpl<$R, $Out>
       if (iconSize != $none) #iconSize: iconSize,
       if (iconEnum != $none) #iconEnum: iconEnum,
       if (uid != null) #uid: uid,
-      if (calloutSize != $none) #calloutSize: calloutSize,
+      if (calloutSize != null) #calloutSize: calloutSize,
       if (calloutDurationMs != null) #calloutDurationMs: calloutDurationMs,
       if (calloutFillColors != $none) #calloutFillColors: calloutFillColors,
       if (calloutBorderColors != $none)

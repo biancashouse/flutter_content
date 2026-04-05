@@ -2,11 +2,12 @@ import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter_content/flutter_content.dart';
 import 'package:flutter_content/src/snippet/snodes/widget/fs_folder_node.dart';
 
+// import '../kroki/domain/models/diagram_type.dart' show DiagramType;
+
 // enum FSAction { undo, redo }
 
 abstract class IModelRepository {
-  Future<void> ensureSnippetInfoCached(
-      {required SnippetName snippetName});
+  Future<void> ensureSnippetInfoCached({required SnippetName snippetName});
 
   // Future<void> migrateCollection();
   // Future<void> copyUsersBetweenProjects();
@@ -14,8 +15,10 @@ abstract class IModelRepository {
   // Future<void> copyFlowchartDocBetweenUsersInSameProject(String fromUserId, String toUserId);
   // Future<void> copyUsersProjects();
 
-  Future<SnippetRootNode?> loadVersionFromFBIntoCache(
-      {required SnippetInfoModel snippetInfo, required VersionId versionId});
+  Future<SnippetRootNode?> loadVersionFromFBIntoCache({
+    required SnippetInfoModel snippetInfo,
+    required VersionId versionId,
+  });
 
   Future<String?> getGcrServerUrl();
 
@@ -47,9 +50,7 @@ abstract class IModelRepository {
     final List<VersionId> tbd,
   );
 
-  Future<void> purgePreviousSnippetVersions(
-      final String snippetName,
-      );
+  Future<void> purgePreviousSnippetVersions(final String snippetName);
 
   Future<void> saveVote({
     required String pollName,
@@ -74,8 +75,10 @@ abstract class IModelRepository {
 
   // Future<void> createAndPopulateRootFSStorageNode();
 
-  Future<FSFolderNode> createAndPopulateFolderTree(
-      {required Reference ref, FSFolderNode? parentNode});
+  Future<FSFolderNode> createAndPopulateFolderTree({
+    required Reference ref,
+    FSFolderNode? parentNode,
+  });
 
   Future<bool> tokenConfirmed(String token);
 }

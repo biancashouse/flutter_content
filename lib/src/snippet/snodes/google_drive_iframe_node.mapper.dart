@@ -2,6 +2,7 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 // dart format off
 // ignore_for_file: type=lint
+// ignore_for_file: invalid_use_of_protected_member
 // ignore_for_file: unused_element, unnecessary_cast, override_on_non_overriding_member
 // ignore_for_file: strict_raw_type, inference_failure_on_untyped_parameter
 
@@ -85,23 +86,6 @@ class GoogleDriveIFrameNodeMapper
       v.nodeGK;
   static const Field<GoogleDriveIFrameNode, GlobalKey<State<StatefulWidget>>>
   _f$nodeGK = Field('nodeGK', _$nodeGK, mode: FieldMode.member);
-  static bool _$canShowTappableNodeWidgetOverlay(GoogleDriveIFrameNode v) =>
-      v.canShowTappableNodeWidgetOverlay;
-  static const Field<GoogleDriveIFrameNode, bool>
-  _f$canShowTappableNodeWidgetOverlay = Field(
-    'canShowTappableNodeWidgetOverlay',
-    _$canShowTappableNodeWidgetOverlay,
-    mode: FieldMode.member,
-  );
-  static GlobalKey<State<StatefulWidget>>? _$nodeWidgetGK(
-    GoogleDriveIFrameNode v,
-  ) => v.nodeWidgetGK;
-  static const Field<GoogleDriveIFrameNode, GlobalKey<State<StatefulWidget>>>
-  _f$nodeWidgetGK = Field(
-    'nodeWidgetGK',
-    _$nodeWidgetGK,
-    mode: FieldMode.member,
-  );
   static Widget? _$savedWidget(GoogleDriveIFrameNode v) => v.savedWidget;
   static const Field<GoogleDriveIFrameNode, Widget> _f$savedWidget = Field(
     'savedWidget',
@@ -121,8 +105,6 @@ class GoogleDriveIFrameNodeMapper
     #isExpanded: _f$isExpanded,
     #hidePropertiesWhileDragging: _f$hidePropertiesWhileDragging,
     #nodeGK: _f$nodeGK,
-    #canShowTappableNodeWidgetOverlay: _f$canShowTappableNodeWidgetOverlay,
-    #nodeWidgetGK: _f$nodeWidgetGK,
     #savedWidget: _f$savedWidget,
   };
 

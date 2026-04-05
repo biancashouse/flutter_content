@@ -2,6 +2,7 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 // dart format off
 // ignore_for_file: type=lint
+// ignore_for_file: invalid_use_of_protected_member
 // ignore_for_file: unused_element, unnecessary_cast, override_on_non_overriding_member
 // ignore_for_file: strict_raw_type, inference_failure_on_untyped_parameter
 
@@ -80,11 +81,12 @@ class HotspotTargetModelMapper extends ClassMapperBase<HotspotTargetModel> {
     _$tcAlignment,
     opt: true,
   );
-  static SizeModel? _$calloutSize(HotspotTargetModel v) => v.calloutSize;
+  static SizeModel _$calloutSize(HotspotTargetModel v) => v.calloutSize;
   static const Field<HotspotTargetModel, SizeModel> _f$calloutSize = Field(
     'calloutSize',
     _$calloutSize,
     opt: true,
+    def: const SizeModel(200, 80),
   );
   static int _$calloutDurationMs(HotspotTargetModel v) => v.calloutDurationMs;
   static const Field<HotspotTargetModel, int> _f$calloutDurationMs = Field(
@@ -160,12 +162,6 @@ class HotspotTargetModelMapper extends ClassMapperBase<HotspotTargetModel> {
   static GlobalKey<State<StatefulWidget>>? _$gk(HotspotTargetModel v) => v.gk;
   static const Field<HotspotTargetModel, GlobalKey<State<StatefulWidget>>>
   _f$gk = Field('gk', _$gk, mode: FieldMode.member);
-  static int _$hashCode(HotspotTargetModel v) => v.hashCode;
-  static const Field<HotspotTargetModel, int> _f$hashCode = Field(
-    'hashCode',
-    _$hashCode,
-    mode: FieldMode.member,
-  );
 
   @override
   final MappableFields<HotspotTargetModel> fields = const {
@@ -191,7 +187,6 @@ class HotspotTargetModelMapper extends ClassMapperBase<HotspotTargetModel> {
     #animatePointer: _f$animatePointer,
     #autoPlay: _f$autoPlay,
     #gk: _f$gk,
-    #hashCode: _f$hashCode,
   };
 
   @override
@@ -296,7 +291,7 @@ abstract class HotspotTargetModelCopyWith<
   OffsetModelCopyWith<$R, OffsetModel, OffsetModel>? get targetCLocalPc;
   OffsetModelCopyWith<$R, OffsetModel, OffsetModel>? get btnCLocalPosPc;
   AlignmentModelCopyWith<$R, AlignmentModel, AlignmentModel>? get tcAlignment;
-  SizeModelCopyWith<$R, SizeModel, SizeModel>? get calloutSize;
+  SizeModelCopyWith<$R, SizeModel, SizeModel> get calloutSize;
   UpTo6ColorsCopyWith<$R, UpTo6Colors, UpTo6Colors>? get calloutFillColors;
   UpTo6ColorsCopyWith<$R, UpTo6Colors, UpTo6Colors>? get calloutBorderColors;
   ColorModelCopyWith<$R, ColorModel, ColorModel>?
@@ -347,8 +342,8 @@ class _HotspotTargetModelCopyWithImpl<$R, $Out>
   AlignmentModelCopyWith<$R, AlignmentModel, AlignmentModel>? get tcAlignment =>
       $value.tcAlignment?.copyWith.$chain((v) => call(tcAlignment: v));
   @override
-  SizeModelCopyWith<$R, SizeModel, SizeModel>? get calloutSize =>
-      $value.calloutSize?.copyWith.$chain((v) => call(calloutSize: v));
+  SizeModelCopyWith<$R, SizeModel, SizeModel> get calloutSize =>
+      $value.calloutSize.copyWith.$chain((v) => call(calloutSize: v));
   @override
   UpTo6ColorsCopyWith<$R, UpTo6Colors, UpTo6Colors>? get calloutFillColors =>
       $value.calloutFillColors?.copyWith.$chain(
@@ -374,7 +369,7 @@ class _HotspotTargetModelCopyWithImpl<$R, $Out>
     bool? showBtn,
     int? uid,
     Object? tcAlignment = $none,
-    Object? calloutSize = $none,
+    SizeModel? calloutSize,
     int? calloutDurationMs,
     Object? calloutFillColors = $none,
     Object? calloutBorderColors = $none,
@@ -397,7 +392,7 @@ class _HotspotTargetModelCopyWithImpl<$R, $Out>
       if (showBtn != null) #showBtn: showBtn,
       if (uid != null) #uid: uid,
       if (tcAlignment != $none) #tcAlignment: tcAlignment,
-      if (calloutSize != $none) #calloutSize: calloutSize,
+      if (calloutSize != null) #calloutSize: calloutSize,
       if (calloutDurationMs != null) #calloutDurationMs: calloutDurationMs,
       if (calloutFillColors != $none) #calloutFillColors: calloutFillColors,
       if (calloutBorderColors != $none)

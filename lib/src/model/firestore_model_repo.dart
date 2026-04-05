@@ -1,7 +1,6 @@
 import 'dart:convert';
 
 import 'package:firebase_storage/firebase_storage.dart';
-import 'package:flutter/material.dart';
 import 'package:flutter_content/flutter_content.dart';
 import 'package:flutter_content/src/snippet/snodes/widget/fs_folder_node.dart';
 
@@ -711,6 +710,7 @@ class FireStoreModelRepository implements IModelRepository {
   DocumentReference get appDocRef => FirebaseFirestore.instance
       .collection('/flutter-content')
       .doc(fco.appName);
+
 
   // @override
   // Future<void> copyCollectionBetweenProjects() async {

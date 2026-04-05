@@ -2,6 +2,7 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 // dart format off
 // ignore_for_file: type=lint
+// ignore_for_file: invalid_use_of_protected_member
 // ignore_for_file: unused_element, unnecessary_cast, override_on_non_overriding_member
 // ignore_for_file: strict_raw_type, inference_failure_on_untyped_parameter
 
@@ -25,19 +26,9 @@ class OffsetModelMapper extends ClassMapperBase<OffsetModel> {
   static const Field<OffsetModel, double> _f$dx = Field('dx', _$dx);
   static double _$dy(OffsetModel v) => v.dy;
   static const Field<OffsetModel, double> _f$dy = Field('dy', _$dy);
-  static Offset _$value(OffsetModel v) => v.value;
-  static const Field<OffsetModel, Offset> _f$value = Field(
-    'value',
-    _$value,
-    mode: FieldMode.member,
-  );
 
   @override
-  final MappableFields<OffsetModel> fields = const {
-    #dx: _f$dx,
-    #dy: _f$dy,
-    #value: _f$value,
-  };
+  final MappableFields<OffsetModel> fields = const {#dx: _f$dx, #dy: _f$dy};
 
   static OffsetModel _instantiate(DecodingData data) {
     return OffsetModel(data.dec(_f$dx), data.dec(_f$dy));
