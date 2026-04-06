@@ -87,7 +87,7 @@ class EditablePageState extends State<EditablePage> {
       nodes = rootNode.findDescendantNodes();
       // print('found ${nodes.length} nodes in snippet $snippetName');
       for (SNode node in nodes) {
-        if (node is! QuillTextNode || node is! MarkdownNode) {
+        if (node is! QuillTextNode && node is! MarkdownNode) {
           Rect? borderRect = node.calcBorderRect();
           if (borderRect != null) {
             // adjust rect if inside a MSV area

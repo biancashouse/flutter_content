@@ -15,10 +15,11 @@ dependencies:
     path: ../../flutter_content
 
 #  window_manager: ^0.5.1
-  firebase_core: any
-  go_router: any
+#  firebase_core: any
+#  go_router: any
 
   webview_flutter_platform_interface: any
+
 dev_dependencies:
   flutter_test:
     sdk: flutter

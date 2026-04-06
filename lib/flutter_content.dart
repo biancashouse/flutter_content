@@ -118,8 +118,13 @@ import 'src/snippet/snode.dart';
 import 'src/snippet/snodes/snippet_root_node.dart';
 import 'src/typedefs.dart';
 
+// make available to apps using this pkg
 export 'package:cloud_firestore/cloud_firestore.dart';
 export 'package:firebase_core/firebase_core.dart';
+export 'package:firebase_auth/firebase_auth.dart';
+export 'package:firebase_storage/firebase_storage.dart';
+export 'package:google_sign_in/google_sign_in.dart';
+export 'package:go_router/go_router.dart';
 
 // re-export callout callout related s.t. apps using this package don't need to include the callouts pkg in pubspec
 export 'package:flutter_callouts/src/widget/double_tappable.dart';

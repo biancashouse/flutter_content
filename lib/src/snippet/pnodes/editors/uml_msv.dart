@@ -36,7 +36,7 @@ class UmlMSVState extends State<UmlMSV> {
           // return WebSvgView(url: diagramUrl);
           return widget.teC.text.startsWith('@startuml')
               ? UmlDiagram.plantuml(source: widget.teC.text)
-              : UmlDiagram.mermaid(source: widget.teC.text);
+              : UmlDiagram.mermaid(source: widget.teC.text, loadingBuilder: (context)=>Text('loading'),);
         },
       ),
     ];

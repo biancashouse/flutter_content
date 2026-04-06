@@ -50,6 +50,13 @@ const sampleMermaid = '''pie title What Voldemort doesn't have?
          "FAMILY" : 3
          "NOSE" : 45
 ''';
+const sampleMermaid2 = '''
+---
+title: You can use plantuml or mermaid to generate your UML
+---
+flowchart LR
+  A --> B
+  ''';
 
 @MappableClass()
 class UMLImageNode extends CL with UMLImageNodeMappable {
@@ -161,13 +168,10 @@ class UMLImageNode extends CL with UMLImageNodeMappable {
       //   );
       // }
 
-      if (diagramText == null) {
-        return Text('enter plantuml or mermaid text...');
-      } else {
-        return diagramText!.startsWith('@startuml')
-            ? UmlDiagram.plantuml(source: diagramText!)
-            : UmlDiagram.mermaid(source: diagramText!);
-      }
+      diagramText ??= sampleMermaid2;
+      return diagramText!.startsWith('@startuml')
+            ? UmlDiagram.plantuml(key:_gk, source: diagramText!)
+            : UmlDiagram.mermaid(key:_gk, source: diagramText!);
     } catch (e) {
       return Error(
         key: _gk,
