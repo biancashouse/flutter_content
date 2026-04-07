@@ -206,9 +206,10 @@ class _TreeAreaState extends State<_TreeArea> {
         },
         child: Material(
           color: Colors.purple.shade200,
-          child: Padding(
+          child: SingleChildScrollView(
+            controller: _scrollController,
             padding: const EdgeInsets.all(8),
-            child: SnippetTreeView(controller: _scrollController),
+            child: const SnippetTreeView(shrinkWrap: true),
           ),
         ),
       ),
