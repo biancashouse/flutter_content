@@ -123,9 +123,10 @@ class _PanelBody extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BlocBuilder<CAPIBloC, CAPIState>(
-      buildWhen: (prev, curr) =>
-          prev.snippetBeingEdited?.selectedNode !=
-          curr.snippetBeingEdited?.selectedNode,
+      // selectedNode is mutated in-place before emit, so reference comparisons
+      // always appear equal. Use force (which _selectNode always increments)
+      // as the actual rebuild signal, same pattern as the BlocListener.
+      buildWhen: (prev, curr) => prev.force != curr.force,
       builder: (context, state) {
         final selectedNode = state.snippetBeingEdited?.selectedNode;
         final pTreeC = selectedNode?.pTreeC(context, {});
