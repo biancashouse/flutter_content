@@ -380,9 +380,6 @@ abstract class SNode extends Node with SNodeMappable {
       // + BORDER,
       initialCalloutPos: OffsetModel.fromOffset(clipped.topLeft),
       //.translate(-BORDER, -BORDER),
-      decorationFillColors: ColorOrGradient.color(
-        Colors.yellow.withValues(alpha: .2),
-      ),
       targetPointerType: TargetPointerType.none(),
       draggable: false,
       followScroll: true,
@@ -394,21 +391,11 @@ abstract class SNode extends Node with SNodeMappable {
     // }
     fco.showOverlay(
       calloutContent: AbsorbPointer(
-        child: Container(
-          width: cc.calloutW,
-          height: cc.calloutH,
-          decoration: DottedDecoration(
-            shape: Shape.box,
-            dash: const <int>[6, 6],
-            borderColor: Colors.black,
-            strokeWidth: 3,
-            fillColor: Colors.transparent,
-          ),
-        ),
+        child: _PulsingOverlay(width: cc.calloutW!, height: cc.calloutH!),
       ),
       calloutConfig: cc,
       wrapInPointerInterceptor: isHtmlElementViewOrPlatformView(),
-      targetGK: this.nodeWidgetGK,
+      targetGK: nodeWidgetGK,
       skipOnScreenCheck: true,
     );
   }
@@ -2604,3 +2591,66 @@ abstract class SNode extends Node with SNodeMappable {
 //
 //   EnumException(this.cause);
 // }
+
+/// Pulsing scale + fade overlay that draws the user's eye to the selected node.
+class _PulsingOverlay extends StatefulWidget {
+  final double width;
+  final double height;
+
+  const _PulsingOverlay({required this.width, required this.height});
+
+  @override
+  State<_PulsingOverlay> createState() => _PulsingOverlayState();
+}
+
+class _PulsingOverlayState extends State<_PulsingOverlay>
+    with SingleTickerProviderStateMixin {
+  late final AnimationController _controller;
+  late final Animation<double> _scale;
+  late final Animation<double> _opacity;
+
+  @override
+  void initState() {
+    super.initState();
+    _controller = AnimationController(
+      vsync: this,
+      duration: const Duration(milliseconds: 900),
+    )..repeat(reverse: true);
+
+    _scale = Tween<double>(begin: 1.0, end: 1.04).animate(
+      CurvedAnimation(parent: _controller, curve: Curves.easeInOut),
+    );
+    _opacity = Tween<double>(begin: 1.0, end: 0.3).animate(
+      CurvedAnimation(parent: _controller, curve: Curves.easeInOut),
+    );
+  }
+
+  @override
+  void dispose() {
+    _controller.dispose();
+    super.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return AnimatedBuilder(
+      animation: _controller,
+      builder: (context, child) => Transform.scale(
+        scale: _scale.value,
+        child: Opacity(
+          opacity: _opacity.value,
+          child: child,
+        ),
+      ),
+      child: Container(
+        width: widget.width,
+        height: widget.height,
+        decoration: BoxDecoration(
+          color: Colors.yellowAccent.withValues(alpha: 0.4),
+          border: Border.all(color: Colors.orange, width: 2),
+          borderRadius: BorderRadius.circular(4),
+        ),
+      ),
+    );
+  }
+}
