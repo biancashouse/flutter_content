@@ -199,13 +199,7 @@ class _TreeAreaState extends State<_TreeArea> {
           color: Colors.purple.shade200,
           child: Padding(
             padding: const EdgeInsets.all(8),
-            child: SingleChildScrollView(
-              controller: _scrollController,
-              child: SizedBox(
-                width: kSidePanelWidth - 20,
-                child: const SnippetTreeView(),
-              ),
-            ),
+            child: SnippetTreeView(controller: _scrollController),
           ),
         ),
       ),

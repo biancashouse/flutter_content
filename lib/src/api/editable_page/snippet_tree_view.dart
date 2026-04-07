@@ -6,7 +6,9 @@ import 'package:flutter_content/src/snippet/fancy_tree/tree_view.dart';
 import 'package:flutter_content/src/snippet/snode_widget.dart';
 
 class SnippetTreeView extends StatelessWidget {
-  const SnippetTreeView({super.key});
+  final ScrollController? controller;
+
+  const SnippetTreeView({super.key, this.controller});
 
   @override
   Widget build(BuildContext context) {
@@ -22,6 +24,7 @@ class SnippetTreeView extends StatelessWidget {
       );
     }
     return TreeView<SNode>(
+      controller: controller,
       treeController: treeC,
       nodeBuilder: (BuildContext context, TreeEntry<SNode> entry) =>
           _treeIndentation(entry, treeC),
