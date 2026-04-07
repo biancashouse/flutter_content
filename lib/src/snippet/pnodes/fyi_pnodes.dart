@@ -23,8 +23,8 @@ class FYIPNode extends PNode {
 
   @override
   Widget toPropertyNodeContents(BuildContext context) {
-    double? width = EditablePage.of(context)?.pNodeTreeAreaMaxWidth;
-    if (width != null) width -= 20;
+    double? width = 300;//EditablePage.of(context)?.pNodeTreeAreaMaxWidth;
+    // if (width != null) width -= 20;
     return SizedBox(
       width: width ?? 230, //height: 200,
       child: ExpansionTile(

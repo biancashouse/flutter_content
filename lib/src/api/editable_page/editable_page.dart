@@ -2,15 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_content/flutter_content.dart';
-import 'package:flutter_content/src/api/editable_page/snippet_properties_tree_view.dart';
-import 'package:flutter_content/src/api/editable_page/snippet_tree_view.dart';
-
-// import 'package:flutter_content/src/api/editable_page/versions_menu_anchor.dart';
+import 'package:flutter_content/src/api/editable_page/snippet_editor_side_panel.dart';
 import 'package:flutter_content/src/api/editable_page/tappable_node_borders.dart';
 import 'package:flutter_content/src/snippet/snode_widget.dart';
 import 'package:flutter_content/src/snippet/snodes/hotspots/widgets/hotspot_target_config_toolbar/hotspot_target_config_toolbar.dart';
-import 'package:go_router/go_router.dart';
-import 'package:multi_split_view/multi_split_view.dart';
 
 class EditablePage extends StatefulWidget {
   final RoutePath routePath;
@@ -40,29 +35,14 @@ class EditablePage extends StatefulWidget {
   State<EditablePage> createState() => EditablePageState();
 }
 
-/// every EditablePage creates a ScrollController (not necc used)
 class EditablePageState extends State<EditablePage> {
-  late MultiSplitViewController msvC;
-
-  // late ScrollController treeViewScrollController;
-  final kDividerThickness = 20.0;
-  double sNodeTreeAreaMaxWidth = 0; // LayoutBuilder will update it
-  double pNodeTreeAreaMaxWidth = 0; // LayoutBuilder will update it
   List<NodeRenderData> borderRects = [];
   bool _needsToPopulateRects = false;
   GlobalKey zoomerGk = GlobalKey();
-  Debouncer debouncer = Debouncer(delayMs: 5);
 
   @override
   void initState() {
-    print("EditablePage initState (${widget.routePath})");
     super.initState();
-
-    msvC = MultiSplitViewController();
-
-    // treeViewScrollController = ScrollController();
-
-    // fco.pageGKs[widget.routePath] = widget.key as GlobalKey;
     fco.currentEditablePagePath = widget.routePath;
   }
 
@@ -90,20 +70,7 @@ class EditablePageState extends State<EditablePage> {
         if (node is! QuillTextNode && node is! MarkdownNode) {
           Rect? borderRect = node.calcBorderRect();
           if (borderRect != null) {
-            // adjust rect if inside a MSV area
-            fco.aSnippetIsBeingEdited
-                ? borderRects.add(
-                    NodeRenderData(
-                      node: node,
-                      rect: borderRect.translate(
-                        -sNodeTreeAreaMaxWidth -
-                            pNodeTreeAreaMaxWidth -
-                            kDividerThickness * 2,
-                        0,
-                      ),
-                    ),
-                  )
-                : borderRects.add(NodeRenderData(node: node, rect: borderRect));
+            borderRects.add(NodeRenderData(node: node, rect: borderRect));
           }
         }
       }
@@ -118,23 +85,23 @@ class EditablePageState extends State<EditablePage> {
   Widget build(BuildContext context) {
     // print('build - borderRects: ${borderRects.length}');
     return BlocConsumer<CAPIBloC, CAPIState>(
-      // only run the listener when in select widget mode or...
-      listenWhen: (prev, curr) {
-        // Listen only when the active snippet mode changes
-        return prev.activeSnippetName != curr.activeSnippetName ||
-            prev.snippetBeingEdited?.selectedNode !=
-                curr.snippetBeingEdited?.selectedNode;
-      },
+      listenWhen: (prev, curr) =>
+          prev.activeSnippetName != curr.activeSnippetName ||
+          (prev.snippetBeingEdited == null) != (curr.snippetBeingEdited == null) ||
+          prev.snippetBeingEdited?.selectedNode !=
+              curr.snippetBeingEdited?.selectedNode,
       listener: (lcontext, state) {
-        if (state.activeSnippetName != null &&
-            state.snippetBeingEdited == null) {
-          // just entered snippetNodeSelection mode
-          print('listener: setting _needsToPopulateRects to true');
-          // Set the flag. Don't schedule any callbacks here.
+        if (state.activeSnippetName != null && state.snippetBeingEdited == null) {
+          // entered node selection mode
           _needsToPopulateRects = true;
+        } else if (state.snippetBeingEdited != null &&
+            state.activeSnippetName == null) {
+          // entered editing mode — populate rects so nodes remain tappable behind panel
+          fco.afterNextBuildDo(() {
+            _needsToPopulateRects = true;
+          });
         } else if (state.snippetBeingEdited?.selectedNode != null) {
-          // update selection widget overlay
-          // skip if currently editing a markdown, quill, or uml
+          // node selected within editing — refresh border rects
           if (fco.anyPresent(['quill-te', 'uml-te', 'markdown-te'])) return;
           fco.dismissAll();
           fco.afterNextBuildDo(() {
@@ -142,111 +109,30 @@ class EditablePageState extends State<EditablePage> {
           });
         }
       },
-      // only rebuild page when entering or exiting snippet editor (msv)
       buildWhen: (previous, current) {
-        if (_needsToPopulateRects) {
-          // // Clear old rects when snippet changes
-          // if (previous.activeSnippetName != null) {
-          //   borderRects.clear();
-          // }
-          return true;
-        }
-        if (previous.activeSnippetName != current.activeSnippetName) {
-          return true;
-        }
-        if (previous.snippetBeingEdited != current.snippetBeingEdited) {
-          return true;
-        }
+        if (_needsToPopulateRects) return true;
+        if (previous.activeSnippetName != current.activeSnippetName) return true;
+        // show/hide side panel
+        if ((previous.snippetBeingEdited == null) !=
+            (current.snippetBeingEdited == null)) return true;
+        // update border rects on selection change
         if (previous.snippetBeingEdited?.selectedNode !=
-            current.snippetBeingEdited?.selectedNode) {
-          print('new node selection');
-          return true;
-        }
+            current.snippetBeingEdited?.selectedNode) return true;
         if ((previous.isSignedIn != current.isSignedIn) &&
-            !fco.canEditContent()) {
-          return true;
-        }
+            !fco.canEditContent()) return true;
         if (current.onlyTargetsWrappers) return false;
         return false;
       },
-      // bool selectWidgetModeChanged =
-      //     previous.snippetNameShowingTappableOverlaysFor !=
-      //     current.snippetNameShowingTappableOverlaysFor;
-      // if (selectWidgetModeChanged) {
-      //   nodeBorderRects = [];
-      //   if (current.snippetNameShowingTappableOverlaysFor != null) {
-      //     // create a dotted rect positioned abs over each node found
-      //     // in the snippet's tree
-      //     if (fco.inSelectWidgetMode) {
-      //       String? snippetName =
-      //           fco.capiBloc.state.snippetNameShowingTappableOverlaysFor;
-      //       if (snippetName != null) {
-      //         var snippetInfo = SnippetInfoModel.cachedSnippetInfo(
-      //           snippetName,
-      //         );
-      //         var snippetChild = snippetInfo
-      //             ?.currentVersionFromCache()
-      //             ?.child;
-      //         // print('root node for tappable overlays is a ${snippetChild.toString()}');
-      //         if (!fco.anyPresent(['quill-te', 'uml-te', 'markdown-te'])) {
-      //           BuildContext? ctx =
-      //               snippetChild?.nodeWidgetGK?.currentContext;
-      //           // print('currentContext is $ctx');
-      //           if (ctx != null) {
-      //             ctx.showSnippetNodeWidgetTappableBorderRects(
-      //               namedSC.name,
-      //               nodeBorderRects,
-      //               NamedScrollController.hScrollOffset(namedSC.name),
-      //               NamedScrollController.vScrollOffset(namedSC.name),
-      //             );
-      //           }
-      //         }
-      //       }
-      //     }
-      //   }
-      //
-      // },
       builder: (BuildContext context, CAPIState state) {
-        print('builder');
         final bloc = context.read<CAPIBloC>();
-
-        Widget
-        builtWidget = NotificationListener<SizeChangedLayoutNotification>(
-          onNotification: (SizeChangedLayoutNotification notification) {
-            // fco.afterMsDelayDo(300, () {
-            //   fco.dismissAll();
-            //   // bloc.add(CAPIEvent.updateTappableRects());
-            // });
-            // This notification fires after the child has been laid out.
-            // if (_needsToPopulateRects) {
-            //   print('SizeChangedLayoutNotification: Populating rects now.');
-            //   // Use a post-frame callback to avoid modifying state during build notification.
-            //   WidgetsBinding.instance.addPostFrameCallback((_) {
-            //     if (mounted) {
-            //       _populateNodeBorderRects(context);
-            //       setState(() {}); // Trigger rebuild to show the new borders
-            //     }
-            //   });
-            //   _needsToPopulateRects = false; // We've done it, reset the flag.
-            // }
-            return true;
+        final builtWidget = GestureDetector(
+          onTap: () {
+            if (bloc.showTappableBorderRects()) {
+              bloc.add(CAPIEvent.exitNodeSelectionMode());
+            }
           },
-          child: SizeChangedLayoutNotifier(
-            child: GestureDetector(
-              onTap: () {
-                if (bloc.showTappableBorderRects()) {
-                  bloc.add(CAPIEvent.exitNodeSelectionMode());
-                }
-              },
-              child: Material(
-                child: bloc.aSnippetIsBeingEdited()
-                    ? _msv()
-                    : _snippetWidgetStack(bloc),
-              ),
-            ),
-          ),
+          child: Material(child: _pageStack(bloc)),
         );
-
         return fco.isAndroid
             ? fco.androidAwareBuild(context, builtWidget)
             : builtWidget;
@@ -327,532 +213,60 @@ class EditablePageState extends State<EditablePage> {
     });
   }
 
-  Widget _msv() {
-    print('_msv');
-    // set up areas
-    List<Area> areas = [];
-    areas.add(
-      Area(
-        builder: (ctx, area) => LayoutBuilder(
-          builder: (_, BoxConstraints constraints) {
-            sNodeTreeAreaMaxWidth = constraints.maxWidth;
-            return _sNodeTreeArea();
-          },
-        ),
-        flex: 1,
-      ),
-    );
-    if (fco.capiBloc.state.snippetBeingEdited?.selectedNode?.pTreeC != null) {
-      areas.add(
-        Area(
-          builder: (ctx, area) => LayoutBuilder(
-            builder: (_, BoxConstraints constraints) {
-              pNodeTreeAreaMaxWidth = constraints.maxWidth;
-              return _propertiesPanel();
-            },
-          ),
-          flex: 1,
-        ),
-      );
-    }
-    areas.add(
-      Area(
-        builder: (ctx, area) => SnippetBuilder(
-          snippetName: fco.capiBloc.state.snippetBeingEdited
-              ?.getRootNode()
-              .name,
-        ),
-        flex: 2,
-      ),
-    );
+  /// Unified page stack for all three modes:
+  /// - Normal: Zoomer(child) only
+  /// - Node selection: SnippetBuilder + TappableNodeBorders
+  /// - Editing: SnippetBuilder + TappableNodeBorders + SnippetEditorSidePanel
+  Widget _pageStack(CAPIBloC bloc) {
+    final showSnippet =
+        bloc.showTappableBorderRects() || bloc.aSnippetIsBeingEdited();
+    final snippetName = bloc.state.activeSnippetName ??
+        bloc.state.snippetBeingEdited?.getRootNode().name;
 
-    msvC.areas = areas;
-
-    // 2 layouts: 1) property tree on right of content area, 2) hidden snode tree, single property above content area
-    var msvt = MultiSplitViewTheme(
-      data: MultiSplitViewThemeData(
-        dividerThickness: kDividerThickness,
-        dividerPainter: DividerPainters.grooved1(
-          backgroundColor: Colors.purple,
-          color: Colors.indigo[100]!,
-          highlightedColor: Colors.indigo[900]!,
-        ),
-      ),
-      child: MultiSplitView(
-        controller: msvC,
-        axis: Axis.horizontal,
-        initialAreas: areas,
-        onDividerDragStart: (_) {
-          // TODO rebuild nodeBorderRects
-          fco.capiBloc.add(CAPIEvent.updateTappableRects());
-        },
-        onDividerDragEnd: (_) {
-          // final rootNode = fco.selectedNode?.rootNodeOfSnippet();
-          // if (rootNode != null) {
-          //   assert(rootNode.isValid());
-          //   fco.saveNewVersion(snippet: rootNode);
-          //   // refreshSelectedNodeWidgetBorderOverlay(rootNode.name);
-          //   // showNodeWidgetOverlays();
-          // }
-        },
-      ),
-    );
-
-    //
-    return Center(child: msvt);
-  }
-
-  Widget _snippetWidgetStack(CAPIBloC bloc) => Stack(
-    children: [
-      if (bloc.showTappableBorderRects())
-        SnippetBuilder(
-          snippetName: bloc.state.activeSnippetName,
-          onLayoutDone: () {
-            // when SnippetBuilder's FutureBuilder finishes.
-            if (_needsToPopulateRects) {
-              fco.showToast(
-                msg: 'tap a node to start editing,\n<Esc> to cancel',
-                removeAfterMs: 5000,
-                bgColor: Colors.purpleAccent.withValues(alpha: .8),
-                textColor: Colors.yellow,
-                width: 240, height: 120
-              );
-              print('SnippetBuilder.onLayoutDone: Populating rects now.');
-              // We are already in a post-frame callback, so it's safe to measure.
-              if (mounted) {
+    return Stack(
+      children: [
+        if (!showSnippet) Zoomer(key: zoomerGk, child: widget.child),
+        if (showSnippet)
+          SnippetBuilder(
+            snippetName: snippetName,
+            onLayoutDone: () {
+              if (_needsToPopulateRects && mounted) {
+                if (bloc.showTappableBorderRects()) {
+                  fco.showToast(
+                    msg: 'tap a node to start editing,\n<Esc> to cancel',
+                    removeAfterMs: 5000,
+                    bgColor: Colors.purpleAccent.withValues(alpha: .8),
+                    textColor: Colors.yellow,
+                    width: 240,
+                    height: 120,
+                  );
+                }
                 setState(() {
                   _populateNodeBorderRects();
                   _needsToPopulateRects = false;
-                }); // Trigger rebuild to show the new borders
+                });
               }
-            }
-          },
-          onScrollF: (ScrollNotification event) {
-            // debouncer.run(() {
-            setState(() {
-              _populateNodeBorderRects();
-            });
-            // });
-          },
-        ),
-      if (bloc.dontShowTappableBorderRects())
-        Zoomer(key: zoomerGk, child: widget.child),
-      if (bloc.showTappableBorderRects() && borderRects.isNotEmpty)
-        TappableNodeBorders(
-          renderData: borderRects,
-          onNodeTapped: (node) {
-            if (bloc.aSnippetIsBeingEdited()) {
-              // When a node is tapped, fire the existing SelectNode event
-              bloc.add(CAPIEvent.selectNode(node: node));
-            } else {
-              if (node is QuillTextNode || node is MarkdownNode) return;
-              _tappedToEditSnippetAndSelectNode(node);
-            }
-          },
-        ),
-      // if (bloc.dontShowTappableBorderRects())
-      //   Align(
-      //     alignment: Alignment.topRight,
-      //     child: Padding(
-      //       padding: EdgeInsets.only(right: fco.canEditContent() ? 68 : 8.0),
-      //       child: fco.NavigationDD(pencilIconColor: Colors.red),
-      //     ),
-      //   ),
-    ],
-  );
-
-  // Widget _viewingPageInSelectWidgetMode() {
-  //   print('_viewingPageInSelectWidgetMode(${nodeBorderRects.length})');
-  //   Widget builtWidget = Material(
-  //     child: Stack(
-  //       fit: StackFit.loose,
-  //       children: [
-  //         _snippetToShowIn(context),
-  //         Stack(children: nodeBorderRects),
-  //       ],
-  //     ),
-  //   );
-  //
-  //   return fco.isAndroid
-  //       ? fco.androidAwareBuild(context, builtWidget)
-  //       : builtWidget;
-  // }
-
-  // Widget _editContentArea(BuildContext areaContext) {
-  //   Widget builtWidget = NotificationListener<SizeChangedLayoutNotification>(
-  //     onNotification: (SizeChangedLayoutNotification notification) {
-  //       // fco.logger.i("FlutterContentApp SizeChangedLayoutNotification}");
-  //       // fco.dismissAll(exceptFeatures: ["FAB"]);
-  //       // refresh tappables
-  //       fco.afterMsDelayDo(300, () {
-  //         // FCO.refreshMQ(context);
-  //         if (fco.inNodeSelectionMode) {
-  //           // EditablePage.removeAllTappableNodeWidgetOverlays();
-  //           fco.dismissAll();
-  //           // show a barrier for any parts of page not being edited
-  //           // showNodeWidgetOverlays();
-  //           // protect iFrames and PlatformViews with an overlay having PointerInterceptor
-  //           // showNodeWidgetOverlays();
-  //           // fco.afterNextBuildDo(() {});
-  //         }
-  //       });
-  //       return true;
-  //     },
-  //     child: SizeChangedLayoutNotifier(
-  //       child: GestureDetector(
-  //         onTap: () {
-  //           // exitEditMode();
-  //           fco.capiBloc.add(CAPIEvent.exitNodeSelectionMode());
-  //           // fco.afterNextBuildDo(() {
-  //           //   fco.afterMsDelayDo(1000, () {
-  //           //     showNodeWidgetOverlays();
-  //           //   });
-  //           // });
-  //         },
-  //         child: Material(
-  //           animateColor: true,
-  //           child: false && fco.aNodeIsSelected
-  //               ? _editContentAreaHighlightingASelectedNode(widgetToShow)
-  //               : widgetToShow,
-  //         ),
-  //       ),
-  //     ),
-  //   );
-  //
-  //   return fco.isAndroid
-  //       ? fco.androidAwareBuild(context, builtWidget)
-  //       : builtWidget;
-  // }
-
-  // Widget _contentWidget(BuildContext ctx) {
-  //   SnippetRootNodeNode? snippetToShow;
-  //
-  //   if (fco.capiBloc.state.showOnlySnippet != null) {
-  //     SnippetName snippetName = fco.capiBloc.state.showOnlySnippet!;
-  //     SnippetInfoModel? snippetInfo = SnippetInfoModel.cachedSnippetInfo(
-  //       snippetName,
-  //     );
-  //     snippetToShow =
-  //         snippetInfo?.currentVersionFromCache() ??
-  //         SnippetRootNode(name: 'placeholder', child: PlaceholderNode());
-  //   } else {
-  //     snippetToShow =
-  //         (fco.snippetBeingEdited?.getRootNode()) ??
-  //         SnippetRootNode(name: 'placeholder', child: PlaceholderNode());
-  //   }
-  //
-  //   return snippetToShow.buildFlutterWidget(ctx, null);
-  // }
-
-  // Widget _editContentAreaHighlightingASelectedNode(widgetToShow) => Stack(
-  //   fit: StackFit.loose,
-  //   children: [
-  //     widgetToShow,
-  //     if (fco.selectedNode != null && mounted)
-  //       // show a cutout barrier for selected snode
-  //       ModalBarrierWithCutout(
-  //         cutoutRect: (fco.selectedNode?.calcBorderRect() ?? Rect.zero)
-  //             .translate(
-  //               -sNodeTreeAreaMaxWidth -
-  //                   pNodeTreeAreaMaxWidth -
-  //                   kDividerThickness * 2,
-  //               0,
-  //             ),
-  //         color: Colors.purple,
-  //         opacity: .75,
-  //       ),
-  //   ],
-  // );
-
-  Widget _sNodeTreeArea() {
-    final bloc = context.read<CAPIBloC>();
-
-    SNode? rootNode = fco.snippetBeingEdited?.treeC.roots.first
-        .rootNodeOfSnippet();
-    if (rootNode is SnippetRootNode) {
-      SnippetName snippetName = rootNode.name;
-      SnippetInfoModel? snippetInfo = fco.appInfo.cachedSnippetInfo(
-        snippetName,
-      );
-      if (snippetInfo != null) {
-        // String title =
-        //     fco.snippetBeingEdited?.getRootNode().name ??
-        //         'snippet name?';
-        //snippetBeingEdited?.treeC.rebuild();
-        return GestureDetector(
-          onTap: () {
-            fco.dismissAll();
-            // if showing markdown editor callout, just dismiss it, but don't remove node selection
-            // if (fco.anyPresent(['md-te'])) {
-            //   fco.dismiss('md-te');
-            //   return;
-            // }
-            bloc.add(CAPIEvent.clearNodeSelection());
-            // removeAllNodeWidgetOverlays();
-            // fco.afterMsDelayDo(1000, () {
-            //   showNodeWidgetOverlays();
-            // });
-            fco.hide("floating-clipboard");
-          },
-          child: Material(
-            child: Scaffold(
-              body: Material(
-                color: Colors.purple.shade200,
-                child: Stack(
-                  children: [
-                    Padding(
-                      padding: const EdgeInsets.all(10),
-                      child: InteractiveViewer(
-                        transformationController: fco.snippetTreeTC,
-                        // trackpadScrollCausesScale: true,
-                        alignment: Alignment.topLeft,
-                        constrained: false,
-                        // onInteractionStart: (_) => snippetBloc.add(const CAPIEvent.clearNodeSelection()),
-                        // onInteractionEnd: (_) => snippetBloc.add(const CAPIEvent.clearNodeSelection()),
-                        child: Builder(
-                          builder: (context) {
-                            // fco.logger.i('SnippetTreeView...');
-                            return SizedBox(
-                              width: 700,
-                              height: 1200,
-                              child: SnippetTreeView(),
-                            );
-                          },
-                        ),
-                      ),
-                    ),
-                    Align(
-                      alignment: Alignment.topRight,
-                      child:
-                          // Row(
-                          //   mainAxisSize: MainAxisSize.min,
-                          //   children: [
-                          //     // IconButton(
-                          //     //   hoverColor: Colors.white30,
-                          //     //   onPressed: () async {},
-                          //     //   icon: VersionsMenuAnchor(snippetInfo: snippetInfo),
-                          //     // ),
-                          Row(
-                            mainAxisSize: MainAxisSize.min,
-                            children: [
-                              _UndoRedoToolbar(),
-                              IconButton(
-                                onPressed: () {
-                                  // SNode.unhighlightSelectedNode();
-                                  // if was editing a callout content snippet, dismiss all callouts
-                                  if (SnippetRootNode.isHotspotCalloutContent(
-                                    snippetName,
-                                  )) {
-                                    fco.dismissAll();
-                                  } else {
-                                    fco.dismiss('selected-node');
-                                    // fco.dismissAll(exceptFeatures: [CalloutConfigToolbar.CID]);
-                                    fco.unhide(HotspotTargetConfigToolbar.CID);
-                                    fco.appInfo.hideClipboard();
-                                  }
-                                  fco.dismissAll();
-                                  fco.capiBloc.add(
-                                    const CAPIEvent.popSnippetEditor(),
-                                  );
-                                  final rootNode = snippetInfo
-                                      .currentVersionInCache();
-                                  if (rootNode != null) {
-                                    // notify possible changes to the quill text (controller)
-                                    final snippetInfo = fco.appInfo
-                                        .cachedSnippetInfo(rootNode.name);
-                                    ValueNotifier<String>? notifier = snippetInfo
-                                        ?.getChangeNotifier();
-                                    notifier?.value = rootNode.toJson();
-                                  }
-                                },
-                                icon: Icon(Icons.close),
-                              ),
-                            ],
-                          ),
-                      // ],
-                      // ),
-                    ),
-                  ],
-                ),
-              ),
-              // SnippetTreePane(snippetInfo, widget.routePath),
-            ),
+            },
+            onScrollF: (_) => setState(_populateNodeBorderRects),
           ),
-        );
-      }
-      return const Offstage();
-    } else {
-      return const Offstage();
-    }
-  }
-
-  Widget _propertiesPanel() {
-    print('_properties panel');
-    return BlocBuilder<CAPIBloC, CAPIState>(
-      // only rebuild when selection changes
-      buildWhen: (previous, current) {
-        if (current.onlyTargetsWrappers) return false;
-        if (previous.snippetBeingEdited?.selectedNode !=
-            current.snippetBeingEdited?.selectedNode) {
-          print('new node selection');
-          return true;
-        }
-        // if (current.snippetBeingEdited?.updatesPending ?? false) {
-        //   return true;
-        // }
-        return false;
-      },
-      builder: (BuildContext context, CAPIState state) {
-        // final bloc = fco.capiBloc; //context.read<CAPIBloC>();
-        bool showingProperties = fco.aNodeIsSelected;
-        // ScrollController? propertiesPaneSC = state
-        //     .snippetBeingEdited
-        //     ?.selectedNode
-        //     ?.propertiesPaneSC();
-        PNodeTreeController? pTreeC = state.snippetBeingEdited?.selectedNode
-            ?.pTreeC(context, {});
-        // pTreeC!.collapseAll();
-        return !showingProperties
-            ? const Offstage()
-            : Scaffold(
-                appBar: AppBar(
-                  backgroundColor: Colors.purple,
-                  title: fco.coloredText(
-                    "Properties (selected node)",
-                    color: Colors.white,
-                  ),
-                ),
-                body: Material(
-                  color: Colors.blue[50],
-                  child: Padding(
-                    padding: const EdgeInsets.all(8.0),
-                    child: InteractiveViewer(
-                      transformationController: fco.propertiesTreeTC,
-                      alignment: Alignment.topLeft,
-                      constrained: false,
-                      child: SizedBox(
-                        width: pNodeTreeAreaMaxWidth,
-                        height: 1000,
-                        child: PropertiesTreeView(
-                          treeC: pTreeC!,
-                          sNode: state.snippetBeingEdited!.selectedNode!,
-                        ),
-                      ),
-                    ),
-                  ),
-                ),
-              );
-      },
+        if (showSnippet && borderRects.isNotEmpty)
+          TappableNodeBorders(
+            renderData: borderRects,
+            onNodeTapped: (node) {
+              if (bloc.aSnippetIsBeingEdited()) {
+                fco.dismiss('pink-overlay');
+                bloc.add(CAPIEvent.selectNode(node: node));
+                fco.afterNextBuildDo(() => SNodeWidget.pointOutSelectedNode());
+              } else {
+                if (node is QuillTextNode || node is MarkdownNode) return;
+                _tappedToEditSnippetAndSelectNode(node);
+              }
+            },
+          ),
+        if (bloc.aSnippetIsBeingEdited()) const SnippetEditorSidePanel(),
+      ],
     );
   }
-
-  // only called with MaterialAppWrapper context
-  // void showNodeWidgetOverlays() {
-  //   return;
-  //   void traverseAndMeasure(BuildContext el) {
-  //     if ((fco.nodesByGK.containsKey(el.widget.key))) {
-  //       GlobalKey gk = el.widget.key as GlobalKey;
-  //       SNode? node = fco.nodesByGK[gk];
-  //       if (node != null) {
-  //         Rect? r = gk.globalPaintBounds(
-  //           skipWidthConstraintWarning: true,
-  //           skipHeightConstraintWarning: true,
-  //         );
-  //         if (r != null) {
-  //           r = fco.restrictRectToScreen(r);
-  //           if (fco.inSelectWidgetMode &&
-  //                   node.canShowTappableNodeWidgetOverlay ||
-  //               node.isHtmlElementViewOrPlatformView()) {
-  //             node.showTappableNodeWidgetOverlay(
-  //               context,
-  //               // whiteBarrier: overlayWithABarrier,
-  //               routePath,
-  //             );
-  //           }
-  //         }
-  //       }
-  //     }
-  //
-  //     el.visitChildElements((innerEl) {
-  //       traverseAndMeasure(innerEl);
-  //     });
-  //   }
-  //
-  //   dismissAllNodeWidgetOverlays();
-  //
-  //   var pageContext = context;
-  //   traverseAndMeasure(pageContext);
-  //   // fco.showingNodeBoundaryOverlays = true;
-  //   // fco.logger.i('traverseAndMeasure(context) finished.');
-  // }
-
-  // static void dismissAllNodeWidgetOverlays() {
-  //   for (GlobalKey nodeWidgetGK in fco.nodesByGK.keys) {
-  //     fco.dismiss('${nodeWidgetGK.hashCode}-pink-overlay');
-  //   }
-  // }
-
-  // when a node is selected, whiten out ALL others
-  // void showUnselectedNonTappableNodeWidgetOverlays() {
-  //   void traverseAndMeasure(BuildContext el) {
-  //     if ((fco.nodesByGK.containsKey(el.widget.key))) {
-  //       GlobalKey gk = el.widget.key as GlobalKey;
-  //       SNode? node = fco.nodesByGK[gk];
-  //       if (node != null &&
-  //           fco.selectedNode != null &&
-  //           fco.selectedNode != node) {
-  //         Rect? r = gk.globalPaintBounds(
-  //           skipWidthConstraintWarning: true,
-  //           skipHeightConstraintWarning: true,
-  //         );
-  //         if (r != null) {
-  //           r = fco.restrictRectToScreen(r);
-  //           node.showNonTappableNodeWidgetOverlay(borderRect: r);
-  //         }
-  //       }
-  //     }
-  //     el.visitChildElements((innerEl) {
-  //       traverseAndMeasure(innerEl);
-  //     });
-  //   }
-  //
-  //   var pageContext = context;
-  //   traverseAndMeasure(pageContext);
-  //   // fco.showingNodeBoundaryOverlays = true;
-  //   // fco.logger.i('traverseAndMeasure(context) finished.');
-  // }
-
-  // only called with MaterialAppWrapper context
-  // void showNodeWidgetOverlaysNeedingInterception() {
-  //   void traverseAndMeasure(BuildContext el, bool overlayWithABarrier) {
-  //     if ((fco.nodesByGK.containsKey(el.widget.key))) {
-  //       GlobalKey gk = el.widget.key as GlobalKey;
-  //       SNode? node = fco.nodesByGK[gk];
-  //       if (node != null && node.isHtmlElementViewOrPlatformView()) {
-  //         Rect? r = gk.globalPaintBounds(
-  //           skipWidthConstraintWarning: true,
-  //           skipHeightConstraintWarning: true,
-  //         );
-  //         if (r != null) {
-  //           r = fco.restrictRectToScreen(r);
-  //           node.showNonTappableNodeWidgetOverlay(
-  //             // selected: false,
-  //             borderRect: r,
-  //             routePath,
-  //           );
-  //         }
-  //       }
-  //     }
-  //     el.visitChildElements((innerEl) {
-  //       traverseAndMeasure(innerEl, false);
-  //     });
-  //   }
-  //
-  //   var pageContext = context;
-  //   traverseAndMeasure(pageContext, true);
-  //   // fco.showingNodeBoundaryOverlays = true;
-  //   // fco.logger.i('traverseAndMeasure(context) finished.');
-  // }
 
   static final String cid_EditorPassword = "editor-password";
 
@@ -1141,45 +555,3 @@ class SelectionCutoutPainter extends CustomPainter {
 
 // First, define this helper class either in the same file or a utility file.
 // This class overrides the default scroll physics for all descendant scrollables.
-// class _ForceNeverScrollableScrollBehavior extends ScrollBehavior {
-//   @override
-//   ScrollPhysics getScrollPhysics(BuildContext context) =>
-//       const NeverScrollableScrollPhysics();
-// }
-
-class _UndoRedoToolbar extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    return BlocBuilder<CAPIBloC, CAPIState>(
-      buildWhen: (prev, curr) => prev.force != curr.force,
-      builder: (context, state) {
-        final undoRedo = state.snippetBeingEdited?.undoRedo;
-        final canUndo = undoRedo?.canUndo ?? false;
-        final canRedo = undoRedo?.canRedo ?? false;
-        return Row(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            IconButton(
-              tooltip: 'Undo (${undoRedo?.undoCount ?? 0})',
-              icon: const Icon(Icons.undo, size: 24),
-              color: Colors.white,
-              disabledColor: Colors.white24,
-              onPressed: canUndo
-                  ? () => fco.capiBloc.add(const CAPIEvent.undo())
-                  : null,
-            ),
-            IconButton(
-              tooltip: 'Redo (${undoRedo?.redoCount ?? 0})',
-              icon: const Icon(Icons.redo, size: 24),
-              color: Colors.white,
-              disabledColor: Colors.white24,
-              onPressed: canRedo
-                  ? () => fco.capiBloc.add(const CAPIEvent.redo())
-                  : null,
-            ),
-          ],
-        );
-      },
-    );
-  }
-}
