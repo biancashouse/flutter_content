@@ -13,6 +13,25 @@ const double kSidePanelWidth = 420.0;
 class SnippetEditorSidePanel extends StatefulWidget {
   const SnippetEditorSidePanel({super.key});
 
+  // only ever one side panel
+  static OverlayEntry? _overlayEntry;
+
+  static void showSidePanelOverlay(BuildContext context) {
+    if (_overlayEntry != null) return;
+    _overlayEntry = OverlayEntry(
+      builder: (_) => BlocProvider.value(
+        value: fco.capiBloc,
+        child: const SnippetEditorSidePanel(),
+      ),
+    );
+    Overlay.of(context).insert(_overlayEntry!);
+  }
+
+  static void hideSidePanelOverlay() {
+    _overlayEntry?.remove();
+    _overlayEntry = null;
+  }
+
   @override
   State<SnippetEditorSidePanel> createState() => _SnippetEditorSidePanelState();
 }

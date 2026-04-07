@@ -39,23 +39,6 @@ class EditablePageState extends State<EditablePage> {
   List<NodeRenderData> borderRects = [];
   bool _needsToPopulateRects = false;
   GlobalKey zoomerGk = GlobalKey();
-  OverlayEntry? _sidePanelEntry;
-
-  void _showSidePanelOverlay() {
-    if (_sidePanelEntry != null) return;
-    _sidePanelEntry = OverlayEntry(
-      builder: (_) => BlocProvider.value(
-        value: fco.capiBloc,
-        child: const SnippetEditorSidePanel(),
-      ),
-    );
-    Overlay.of(context).insert(_sidePanelEntry!);
-  }
-
-  void _hideSidePanelOverlay() {
-    _sidePanelEntry?.remove();
-    _sidePanelEntry = null;
-  }
 
   @override
   void initState() {
@@ -65,7 +48,7 @@ class EditablePageState extends State<EditablePage> {
 
   @override
   void dispose() {
-    _hideSidePanelOverlay();
+    SnippetEditorSidePanel.hideSidePanelOverlay();
     super.dispose();
   }
 
@@ -120,14 +103,14 @@ class EditablePageState extends State<EditablePage> {
         } else if (state.snippetBeingEdited != null &&
             state.activeSnippetName == null) {
           // entered editing mode — show panel overlay and populate rects
-          _showSidePanelOverlay();
+          SnippetEditorSidePanel.showSidePanelOverlay(context);
           fco.afterNextBuildDo(() {
             _needsToPopulateRects = true;
           });
         } else if (state.snippetBeingEdited == null &&
             state.activeSnippetName == null) {
           // left editing mode — remove panel overlay
-          _hideSidePanelOverlay();
+          SnippetEditorSidePanel.hideSidePanelOverlay();
         } else if (state.snippetBeingEdited?.selectedNode != null) {
           // node selected within editing — refresh border rects
           if (fco.anyPresent(['quill-te', 'uml-te', 'markdown-te'])) return;
