@@ -151,29 +151,60 @@ class _PanelBody extends StatelessWidget {
   }
 }
 
-class _TreeArea extends StatelessWidget {
+class _TreeArea extends StatefulWidget {
   const _TreeArea();
 
   @override
+  State<_TreeArea> createState() => _TreeAreaState();
+}
+
+class _TreeAreaState extends State<_TreeArea> {
+  final ScrollController _scrollController = ScrollController();
+
+  @override
+  void dispose() {
+    _scrollController.dispose();
+    super.dispose();
+  }
+
+  void _scrollToSelectedNode(SNode node) {
+    final ctx = node.nodeGK?.currentContext;
+    if (ctx == null) return;
+    fco.afterNextBuildDo(() {
+      Scrollable.ensureVisible(
+        ctx,
+        duration: const Duration(milliseconds: 300),
+        curve: Curves.easeOut,
+        alignment: 0.5,
+      );
+    });
+  }
+
+  @override
   Widget build(BuildContext context) {
-    return GestureDetector(
-      onTap: () {
-        fco.dismissAll();
-        fco.capiBloc.add(CAPIEvent.clearNodeSelection());
-        fco.hide('floating-clipboard');
-      },
-      child: Material(
-        color: Colors.purple.shade200,
-        child: Padding(
-          padding: const EdgeInsets.all(8),
-          child: InteractiveViewer(
-            transformationController: fco.snippetTreeTC,
-            alignment: Alignment.topLeft,
-            constrained: false,
-            child: const SizedBox(
-              width: kSidePanelWidth - 20,
-              height: 1200,
-              child: SnippetTreeView(),
+    return BlocListener<CAPIBloC, CAPIState>(
+      listenWhen: (prev, curr) =>
+          curr.snippetBeingEdited?.selectedNode != null &&
+          prev.snippetBeingEdited?.selectedNode !=
+              curr.snippetBeingEdited?.selectedNode,
+      listener: (_, state) =>
+          _scrollToSelectedNode(state.snippetBeingEdited!.selectedNode!),
+      child: GestureDetector(
+        onTap: () {
+          fco.dismissAll();
+          fco.capiBloc.add(CAPIEvent.clearNodeSelection());
+          fco.hide('floating-clipboard');
+        },
+        child: Material(
+          color: Colors.purple.shade200,
+          child: Padding(
+            padding: const EdgeInsets.all(8),
+            child: SingleChildScrollView(
+              controller: _scrollController,
+              child: SizedBox(
+                width: kSidePanelWidth - 20,
+                child: const SnippetTreeView(),
+              ),
             ),
           ),
         ),

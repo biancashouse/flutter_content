@@ -47,10 +47,7 @@ class SNodeWidget extends StatelessWidget {
       mainAxisSize: MainAxisSize.min,
       children: [
         Container(
-          // key: fco.aNodeIsSelected &&
-          //         fco.selectedNode == entry.node
-          //     ? fco.snippetBeingEdited!.selectedTreeNodeGK
-          //     : null,
+          key: entry.node.nodeGK ??= GlobalKey(),
           margin: EdgeInsets.zero,
           padding: const EdgeInsets.symmetric(horizontal: 4, vertical: 4),
           decoration: entry.node is DirectoryNode || entry.node is FileNode
