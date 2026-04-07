@@ -160,15 +160,18 @@ class _TreeArea extends StatefulWidget {
 
 class _TreeAreaState extends State<_TreeArea> {
   final ScrollController _scrollController = ScrollController();
+  SNode? _lastScrolledNode;
 
   @override
   void initState() {
     super.initState();
-    // Scroll to the already-selected node when the panel first opens.
-    // BlocListener only fires on changes, so we handle the initial state here.
+    // BlocListener only fires on changes, so handle the initial selection here.
     WidgetsBinding.instance.addPostFrameCallback((_) {
       final node = fco.capiBloc.state.snippetBeingEdited?.selectedNode;
-      if (node != null) _scrollToSelectedNode(node);
+      if (node != null) {
+        _lastScrolledNode = node;
+        _scrollToSelectedNode(node);
+      }
     });
   }
 
@@ -179,8 +182,8 @@ class _TreeAreaState extends State<_TreeArea> {
   }
 
   void _scrollToSelectedNode(SNode node) {
-    // Defer to post-frame so layout has settled (e.g. properties panel
-    // appearing changes the tree's available height before we scroll).
+    // Defer to post-frame so layout has settled (properties panel appearing
+    // changes the tree's available height before we scroll).
     WidgetsBinding.instance.addPostFrameCallback((_) {
       if (!mounted) return;
       final ctx = node.nodeGK?.currentContext;
@@ -197,12 +200,17 @@ class _TreeAreaState extends State<_TreeArea> {
   @override
   Widget build(BuildContext context) {
     return BlocListener<CAPIBloC, CAPIState>(
-      listenWhen: (prev, curr) =>
-          curr.snippetBeingEdited?.selectedNode != null &&
-          prev.snippetBeingEdited?.selectedNode !=
-              curr.snippetBeingEdited?.selectedNode,
-      listener: (_, state) =>
-          _scrollToSelectedNode(state.snippetBeingEdited!.selectedNode!),
+      // _selectNode mutates snippetBeingEdited in-place then bumps force,
+      // so selectedNode comparisons see the same mutated value on both sides.
+      // Listen on force instead and guard with our own last-scrolled tracker.
+      listenWhen: (prev, curr) => prev.force != curr.force,
+      listener: (_, state) {
+        final node = state.snippetBeingEdited?.selectedNode;
+        if (node != null && node != _lastScrolledNode) {
+          _lastScrolledNode = node;
+          _scrollToSelectedNode(node);
+        }
+      },
       child: GestureDetector(
         onTap: () {
           fco.dismissAll();
