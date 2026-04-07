@@ -179,14 +179,19 @@ class _TreeAreaState extends State<_TreeArea> {
   }
 
   void _scrollToSelectedNode(SNode node) {
-    final ctx = node.nodeGK?.currentContext;
-    if (ctx == null) return;
-    Scrollable.ensureVisible(
-      ctx,
-      duration: const Duration(milliseconds: 300),
-      curve: Curves.easeOut,
-      alignment: 0.5,
-    );
+    // Defer to post-frame so layout has settled (e.g. properties panel
+    // appearing changes the tree's available height before we scroll).
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      if (!mounted) return;
+      final ctx = node.nodeGK?.currentContext;
+      if (ctx == null) return;
+      Scrollable.ensureVisible(
+        ctx,
+        duration: const Duration(milliseconds: 300),
+        curve: Curves.easeOut,
+        alignment: 0.5,
+      );
+    });
   }
 
   @override
