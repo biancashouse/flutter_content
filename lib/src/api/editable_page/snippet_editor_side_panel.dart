@@ -162,6 +162,17 @@ class _TreeAreaState extends State<_TreeArea> {
   final ScrollController _scrollController = ScrollController();
 
   @override
+  void initState() {
+    super.initState();
+    // Scroll to the already-selected node when the panel first opens.
+    // BlocListener only fires on changes, so we handle the initial state here.
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      final node = fco.capiBloc.state.snippetBeingEdited?.selectedNode;
+      if (node != null) _scrollToSelectedNode(node);
+    });
+  }
+
+  @override
   void dispose() {
     _scrollController.dispose();
     super.dispose();
@@ -170,14 +181,12 @@ class _TreeAreaState extends State<_TreeArea> {
   void _scrollToSelectedNode(SNode node) {
     final ctx = node.nodeGK?.currentContext;
     if (ctx == null) return;
-    fco.afterNextBuildDo(() {
-      Scrollable.ensureVisible(
-        ctx,
-        duration: const Duration(milliseconds: 300),
-        curve: Curves.easeOut,
-        alignment: 0.5,
-      );
-    });
+    Scrollable.ensureVisible(
+      ctx,
+      duration: const Duration(milliseconds: 300),
+      curve: Curves.easeOut,
+      alignment: 0.5,
+    );
   }
 
   @override
