@@ -4,6 +4,7 @@ import 'package:dart_mappable/dart_mappable.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_content/flutter_content.dart';
 import 'package:flutter_content/src/snippet/snode_widget.dart';
+import 'package:flutter_content/src/api/editable_page/snippet_editor_side_panel.dart';
 import 'package:flutter_content/src/snippet/snodes/hotspots/widgets/hotspot_target_config_toolbar/hotspot_target_config_toolbar.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'widget_picker/quick_pick_panel.dart';
@@ -362,14 +363,22 @@ abstract class SNode extends Node with SNodeMappable {
     if (!isSelected) {
       return;
     }
+    // Clip to the visible region (exclude the side panel column).
+    final screenSize = WidgetsBinding.instance.renderView.size;
+    final visibleArea = fco.snippetEditorPanelOnRight
+        ? Rect.fromLTWH(0, 0, screenSize.width - kSidePanelWidth, screenSize.height)
+        : Rect.fromLTWH(kSidePanelWidth, 0, screenSize.width - kSidePanelWidth, screenSize.height);
+    final clipped = borderRect.intersect(visibleArea);
+    if (clipped.isEmpty) return;
+
     // if (this is AppBarNode || this is ScaffoldNode) return;
     CalloutConfig cc = CalloutConfig(
       cId: 'pink-overlay',
-      initialCalloutW: borderRect.width.abs(),
+      initialCalloutW: clipped.width.abs(),
       // + BORDER,
-      initialCalloutH: borderRect.height.abs(),
+      initialCalloutH: clipped.height.abs(),
       // + BORDER,
-      initialCalloutPos: OffsetModel.fromOffset(borderRect.topLeft),
+      initialCalloutPos: OffsetModel.fromOffset(clipped.topLeft),
       //.translate(-BORDER, -BORDER),
       decorationFillColors: ColorOrGradient.color(
         Colors.yellow.withValues(alpha: .2),

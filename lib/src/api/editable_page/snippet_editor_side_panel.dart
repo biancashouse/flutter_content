@@ -9,13 +9,22 @@ const double kSidePanelWidth = 420.0;
 
 /// Self-contained side panel shown over the live page during snippet editing.
 /// The page content remains fully visible behind the panel.
-class SnippetEditorSidePanel extends StatelessWidget {
+class SnippetEditorSidePanel extends StatefulWidget {
   const SnippetEditorSidePanel({super.key});
 
   @override
+  State<SnippetEditorSidePanel> createState() => _SnippetEditorSidePanelState();
+}
+
+class _SnippetEditorSidePanelState extends State<SnippetEditorSidePanel> {
+  bool _isRight = false;
+
+  @override
   Widget build(BuildContext context) {
-    return Align(
-      alignment: Alignment.centerLeft,
+    return AnimatedAlign(
+      alignment: _isRight ? Alignment.centerRight : Alignment.centerLeft,
+      duration: const Duration(milliseconds: 350),
+      curve: Curves.easeInOut,
       child: SizedBox(
         width: kSidePanelWidth,
         height: double.infinity,
@@ -23,7 +32,13 @@ class SnippetEditorSidePanel extends StatelessWidget {
           elevation: 8,
           child: Column(
             children: [
-              _PanelHeader(),
+              _PanelHeader(
+                isRight: _isRight,
+                onFlip: () => setState(() {
+                  _isRight = !_isRight;
+                  fco.snippetEditorPanelOnRight = _isRight;
+                }),
+              ),
               const Expanded(child: _PanelBody()),
             ],
           ),
@@ -34,7 +49,10 @@ class SnippetEditorSidePanel extends StatelessWidget {
 }
 
 class _PanelHeader extends StatelessWidget {
-  const _PanelHeader();
+  final bool isRight;
+  final VoidCallback onFlip;
+
+  const _PanelHeader({required this.isRight, required this.onFlip});
 
   @override
   Widget build(BuildContext context) {
@@ -48,6 +66,15 @@ class _PanelHeader extends StatelessWidget {
       height: 48,
       child: Row(
         children: [
+          if (isRight)
+            IconButton(
+              tooltip: 'Move panel to left',
+              icon: Icon(
+                Icons.arrow_circle_left,
+                color: Colors.white,
+              ),
+              onPressed: onFlip,
+            ),
           Expanded(
             child: fco.coloredText(snippetName, color: Colors.white, fontSize: 13),
           ),
@@ -56,6 +83,15 @@ class _PanelHeader extends StatelessWidget {
             icon: const Icon(Icons.close, color: Colors.white),
             onPressed: () => _close(snippetName, snippetInfo),
           ),
+          if (!isRight)
+            IconButton(
+              tooltip: 'Move panel to right',
+              icon: Icon(
+                Icons.arrow_circle_right,
+                color: Colors.white,
+              ),
+              onPressed: onFlip,
+            ),
         ],
       ),
     );

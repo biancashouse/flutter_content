@@ -254,7 +254,9 @@ class EditablePageState extends State<EditablePage> {
             renderData: borderRects,
             onNodeTapped: (node) {
               if (bloc.aSnippetIsBeingEdited()) {
+                fco.dismiss('pink-overlay');
                 bloc.add(CAPIEvent.selectNode(node: node));
+                fco.afterNextBuildDo(() => SNodeWidget.pointOutSelectedNode());
               } else {
                 if (node is QuillTextNode || node is MarkdownNode) return;
                 _tappedToEditSnippetAndSelectNode(node);

@@ -551,6 +551,8 @@ class FlutterContentMixins
 
   bool get aNodeIsSelected => snippetBeingEdited?.selectedNode != null;
 
+  bool snippetEditorPanelOnRight = false;
+
   //==========================================================================================
   //====  SNIPPET EDITING  ===================================================================
   //==========================================================================================

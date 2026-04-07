@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_content/flutter_content.dart';
 import 'package:flutter_content/src/api/snippet_builder/replace_snippet_with_json_callout.dart';
 import 'package:flutter_content/src/snippet/pnodes/editors/property_callout_button_UML.dart';
@@ -32,6 +33,13 @@ class SNodeWidget extends StatelessWidget {
 
     // bool selected = FCO.capiBloc.selectedNode == entry.node;
 
+    return BlocBuilder<CAPIBloC, CAPIState>(
+      buildWhen: (prev, curr) => prev.force != curr.force,
+      builder: (context, state) => _buildRow(context),
+    );
+  }
+
+  Widget _buildRow(BuildContext context) {
     Color boxColor = fco.snippetBeingEdited!.nodeBeingDeleted == entry.node
         ? Colors.red
         : entry.node is NamedSC ||
