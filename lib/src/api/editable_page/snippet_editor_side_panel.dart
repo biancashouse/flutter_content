@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_content/flutter_content.dart';
 import 'package:flutter_content/src/api/editable_page/snippet_properties_tree_view.dart';
 import 'package:flutter_content/src/api/editable_page/snippet_tree_view.dart';
+import 'package:flutter_content/src/snippet/snode_widget.dart';
 import 'package:flutter_content/src/snippet/snodes/hotspots/widgets/hotspot_target_config_toolbar/hotspot_target_config_toolbar.dart';
 
 const double kSidePanelWidth = 420.0;
@@ -17,7 +18,15 @@ class SnippetEditorSidePanel extends StatefulWidget {
 }
 
 class _SnippetEditorSidePanelState extends State<SnippetEditorSidePanel> {
-  bool _isRight = false;
+  late bool _isRight;
+
+  @override
+  void initState() {
+    super.initState();
+    // Restore the last known panel side so the overlay clip stays correct
+    // across panel close/reopen cycles.
+    _isRight = fco.snippetEditorPanelOnRight;
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -37,6 +46,9 @@ class _SnippetEditorSidePanelState extends State<SnippetEditorSidePanel> {
                 onFlip: () => setState(() {
                   _isRight = !_isRight;
                   fco.snippetEditorPanelOnRight = _isRight;
+                  // Recreate the selected-node overlay with the updated clip region.
+                  fco.dismiss('pink-overlay');
+                  fco.afterNextBuildDo(() => SNodeWidget.pointOutSelectedNode());
                 }),
               ),
               const Expanded(child: _PanelBody()),

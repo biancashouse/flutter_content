@@ -39,11 +39,34 @@ class EditablePageState extends State<EditablePage> {
   List<NodeRenderData> borderRects = [];
   bool _needsToPopulateRects = false;
   GlobalKey zoomerGk = GlobalKey();
+  OverlayEntry? _sidePanelEntry;
+
+  void _showSidePanelOverlay() {
+    if (_sidePanelEntry != null) return;
+    _sidePanelEntry = OverlayEntry(
+      builder: (_) => BlocProvider.value(
+        value: fco.capiBloc,
+        child: const SnippetEditorSidePanel(),
+      ),
+    );
+    Overlay.of(context).insert(_sidePanelEntry!);
+  }
+
+  void _hideSidePanelOverlay() {
+    _sidePanelEntry?.remove();
+    _sidePanelEntry = null;
+  }
 
   @override
   void initState() {
     super.initState();
     fco.currentEditablePagePath = widget.routePath;
+  }
+
+  @override
+  void dispose() {
+    _hideSidePanelOverlay();
+    super.dispose();
   }
 
   // also allow for a selected node
@@ -96,10 +119,15 @@ class EditablePageState extends State<EditablePage> {
           _needsToPopulateRects = true;
         } else if (state.snippetBeingEdited != null &&
             state.activeSnippetName == null) {
-          // entered editing mode — populate rects so nodes remain tappable behind panel
+          // entered editing mode — show panel overlay and populate rects
+          _showSidePanelOverlay();
           fco.afterNextBuildDo(() {
             _needsToPopulateRects = true;
           });
+        } else if (state.snippetBeingEdited == null &&
+            state.activeSnippetName == null) {
+          // left editing mode — remove panel overlay
+          _hideSidePanelOverlay();
         } else if (state.snippetBeingEdited?.selectedNode != null) {
           // node selected within editing — refresh border rects
           if (fco.anyPresent(['quill-te', 'uml-te', 'markdown-te'])) return;
@@ -112,7 +140,6 @@ class EditablePageState extends State<EditablePage> {
       buildWhen: (previous, current) {
         if (_needsToPopulateRects) return true;
         if (previous.activeSnippetName != current.activeSnippetName) return true;
-        // show/hide side panel
         if ((previous.snippetBeingEdited == null) !=
             (current.snippetBeingEdited == null)) return true;
         // update border rects on selection change
@@ -263,7 +290,6 @@ class EditablePageState extends State<EditablePage> {
               }
             },
           ),
-        if (bloc.aSnippetIsBeingEdited()) const SnippetEditorSidePanel(),
       ],
     );
   }

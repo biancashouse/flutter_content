@@ -397,13 +397,13 @@ abstract class SNode extends Node with SNodeMappable {
         child: Container(
           width: cc.calloutW,
           height: cc.calloutH,
-          decoration: DottedDecoration(
-            shape: Shape.box,
-            dash: const <int>[6, 6],
-            borderColor: Colors.black,
-            strokeWidth: 3,
-            fillColor: Colors.transparent,
-          ),
+          // decoration: DottedDecoration(
+          //   shape: Shape.box,
+          //   dash: const <int>[6, 6],
+          //   borderColor: Colors.black,
+          //   strokeWidth: 3,
+          //   fillColor: Colors.transparent,
+          // ),
         ),
       ),
       calloutConfig: cc,

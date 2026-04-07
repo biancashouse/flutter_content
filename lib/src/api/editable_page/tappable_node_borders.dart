@@ -43,12 +43,12 @@ class TappableNodeBorders extends StatelessWidget {
     return Stack(
       children: [
         // This allows scroll gestures to pass through
-        IgnorePointer(
-          child: CustomPaint(
-            size: Size.infinite,
-            painter: _BordersPainter(renderData: renderData),
-          ),
-        ),
+        // IgnorePointer(
+        //   child: CustomPaint(
+        //     size: Size.infinite,
+        //     painter: _BordersPainter(renderData: renderData),
+        //   ),
+        // ),
         // This gesture detector is ONLY for taps
         GestureDetector(
           onTapDown: (details) {
