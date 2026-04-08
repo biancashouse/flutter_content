@@ -69,8 +69,10 @@ class _SnippetMenuAnchorState extends State<SnippetMenuAnchor> {
                         ?.tappedToEditSnippetNode();
                   },
                   onTap: () {
-                    if (fco.anyPresent([], startsWith: 'quill-toolbar-'))
-                      return;
+                    if (fco.anyPresent([], startsWith: 'quill-toolbar-')) {
+                      fco.dismissPartialMatching(startsWith: 'quill-toolbar-');
+                      fco.quillTextToolbarCIDVN.value = null;
+                    }
                     if (controller.isOpen) {
                       controller.close();
                     } else {

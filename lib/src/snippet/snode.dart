@@ -391,7 +391,10 @@ abstract class SNode extends Node with SNodeMappable {
     // }
     fco.showOverlay(
       calloutContent: AbsorbPointer(
-        child: _PulsingOverlay(width: cc.calloutW!, height: cc.calloutH!),
+        child: _PulsingOverlay(
+          width: clipped.width.abs(),
+          height: clipped.height.abs(),
+        ),
       ),
       calloutConfig: cc,
       wrapInPointerInterceptor: isHtmlElementViewOrPlatformView(),

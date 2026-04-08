@@ -20,9 +20,9 @@ final webRoutingConfig = RoutingConfig(
           child: const Page_BH(),
           // provideNamedScrollController: true,
         ),
-        GoRoute(
-            path: 'row-of-2-panels',
-            builder: (BuildContext context, GoRouterState state) => const Page_RowOf2Panels(),
+        EditablePageRoute(
+          path: 'row-of-2-panels',
+          child: const Page_RowOf2Panels(),
         ),
         EditablePageRoute(
           path: 'row-of-2-containers',
@@ -35,13 +35,14 @@ final webRoutingConfig = RoutingConfig(
         GoRoute(
           path: 'flutter-callouts-demo',
           builder: (BuildContext context, GoRouterState state) =>
-          const IntroPage(),
+              const IntroPage(),
         ),
         GoRoute(
           path: 'flutter-content-demo',
           builder: (BuildContext context, GoRouterState state) =>
-          const Placeholder(),
-        ),     // GoRoute(
+              const Placeholder(),
+        ),
+        // GoRoute(
         //   path: '/callout-content-editor',
         //   builder: (BuildContext context, GoRouterState state) =>
         //       CalloutContentEditablePage(

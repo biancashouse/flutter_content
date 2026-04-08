@@ -74,6 +74,7 @@ class QuillTextToolbarState extends State<QuillTextToolbar> {
       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
       crossAxisAlignment: CrossAxisAlignment.center,
       children: [
+        // CircleAvatar(backgroundColor:Colors.purple, minRadius: 20, child: toolbarVFlipIcon()),
         toolbarVFlipIcon(),
         const VerticalDivider(color: Colors.white, width: 2),
 
@@ -130,7 +131,7 @@ class QuillTextToolbarState extends State<QuillTextToolbar> {
         const VerticalDivider(color: Colors.white, width: 2),
         IconButton(
           tooltip: 'close this toolbar',
-          icon: const Icon(Icons.close, color: Colors.white),
+          icon: const Icon(Icons.close, color: Colors.white, size: 48),
           // icon: ValueListenableBuilder(
           //   valueListenable: notifier!,
           //   builder: (context, value, child) {
@@ -145,7 +146,8 @@ class QuillTextToolbarState extends State<QuillTextToolbar> {
               // notify possible changes to the quill text (controller)
               fco.appInfo.cachedSnippetInfo(rootNode.name)?.notifyChange(rootNode);
             }
-            fco.dismiss(widget.parentSNode.quillTextToolbarCID, skipOnDismiss: true);
+            fco.removeParentCallout(context);
+            // fco.dismiss(widget.parentSNode.quillTextToolbarCID, skipOnDismiss: true);
             fco.quillTextToolbarCIDVN.value = null;
           },
         ),
@@ -165,11 +167,15 @@ class QuillTextToolbarState extends State<QuillTextToolbar> {
         controller: widget.controller,
       );
     },
+    tooltip: fco.quillTextToolbarAtTopOfScreen
+        ? 'move toolbar down'
+        : 'move toolbar up',
     icon: Icon(
       fco.quillTextToolbarAtTopOfScreen
           ? Icons.arrow_downward
           : Icons.arrow_upward,
-      color: Colors.white70,
+      color: Colors.white,
+      size: 48,
     ),
   );
 

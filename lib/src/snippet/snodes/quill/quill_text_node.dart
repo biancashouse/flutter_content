@@ -66,7 +66,7 @@ class QuillTextNode extends CL with QuillTextNodeMappable {
     var gk = createNodeWidgetGK();
 
     Widget editor;
-    if (fco.canEditContent() && fco.snippetBeingEdited == null) {
+    if (fco.canEditContent() && fco.snippetBeingEdited == null && !fco.capiBloc.showTappableBorderRects()) {
       editor = Material(
         child: FocusAwareQuillEditor(
           key: gk,

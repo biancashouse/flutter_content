@@ -45,10 +45,10 @@ User <|-- SpecificUser
 @enduml
 ''';
 
-const sampleMermaid = '''pie title What Voldemort doesn't have?
-         "FRIENDS" : 2
-         "FAMILY" : 3
-         "NOSE" : 45
+  const sampleMermaid = '''pie title What Voldemort doesn't have?
+           "FRIENDS" : 2
+           "FAMILY" : 3
+           "NOSE" : 45
 ''';
 const sampleMermaid2 = '''
 ---
