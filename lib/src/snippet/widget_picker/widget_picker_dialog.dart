@@ -178,44 +178,47 @@ class _WidgetPickerDialogState extends State<WidgetPickerDialog> {
         const Divider(height: 1),
         // Results list.
         Expanded(
-          child: ListView.builder(
-            itemCount: items.length,
-            itemBuilder: (context, index) {
-              final item = items[index];
-              if (item is _Header) {
-                return Container(
-                  padding: const EdgeInsets.fromLTRB(12, 8, 12, 4),
-                  color: item.color.withValues(alpha: .18),
-                  child: Text(
-                    item.label,
-                    style: TextStyle(
-                      fontSize: 11,
-                      fontWeight: FontWeight.bold,
-                      color: Colors.grey.shade700,
-                      letterSpacing: 0.8,
+          child: Material(
+            color: Colors.transparent,
+            child: ListView.builder(
+              itemCount: items.length,
+              itemBuilder: (context, index) {
+                final item = items[index];
+                if (item is _Header) {
+                  return Container(
+                    padding: const EdgeInsets.fromLTRB(12, 8, 12, 4),
+                    color: item.color.withValues(alpha: .18),
+                    child: Text(
+                      item.label,
+                      style: TextStyle(
+                        fontSize: 11,
+                        fontWeight: FontWeight.bold,
+                        color: Colors.grey.shade700,
+                        letterSpacing: 0.8,
+                      ),
                     ),
-                  ),
-                );
-              }
-              if (item is _EntryItem) {
-                final e = item.entry;
-                return ListTile(
-                  dense: true,
-                  title: Text(e.label),
-                  trailing: _query.isNotEmpty ? _CategoryBadge(e.category) : null,
-                  onTap: () => _selectType(e.type),
-                );
-              }
-              if (item is _SnippetItem) {
-                return ListTile(
-                  dense: true,
-                  leading: const Icon(Icons.widgets_outlined, size: 16),
-                  title: Text(item.name),
-                  onTap: () => _selectSnippet(item.name),
-                );
-              }
-              return const SizedBox.shrink();
-            },
+                  );
+                }
+                if (item is _EntryItem) {
+                  final e = item.entry;
+                  return ListTile(
+                    dense: true,
+                    title: Text(e.label),
+                    trailing: _query.isNotEmpty ? _CategoryBadge(e.category) : null,
+                    onTap: () => _selectType(e.type),
+                  );
+                }
+                if (item is _SnippetItem) {
+                  return ListTile(
+                    dense: true,
+                    leading: const Icon(Icons.widgets_outlined, size: 16),
+                    title: Text(item.name),
+                    onTap: () => _selectSnippet(item.name),
+                  );
+                }
+                return const SizedBox.shrink();
+              },
+            ),
           ),
         ),
       ],

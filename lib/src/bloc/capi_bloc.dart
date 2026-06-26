@@ -800,6 +800,12 @@ class CAPIBloC extends Bloc<CAPIEvent, CAPIState> {
           parentNode.children.remove(node);
         } else if (parentNode is TextSpanNode) {
           parentNode.children?.remove(node);
+        } else if (parentNode is ListViewNode) {
+          parentNode.children.remove(node);
+        } else if (parentNode is GridViewNode) {
+          parentNode.children.remove(node);
+        } else if (parentNode is CustomScrollViewNode) {
+          parentNode.slivers.remove(node);
         }
       }
     }
