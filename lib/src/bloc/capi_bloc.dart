@@ -824,9 +824,7 @@ class CAPIBloC extends Bloc<CAPIEvent, CAPIState> {
   SNode _typeAsATreeNode(
     Type t,
     SNode? childNode,
-    String notFoundMsg, {
-    SnippetName? snippetName,
-  }) {
+    String notFoundMsg) {
     // in case tabbar specified
     final uniqueTabBarName = DateTime.now().millisecondsSinceEpoch.toString();
     return switch (t) {

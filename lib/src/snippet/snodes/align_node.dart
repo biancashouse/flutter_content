@@ -86,14 +86,6 @@ class AlignNode extends SC with AlignNodeMappable {
     }
   }
 
-  @override
-  String toSource(BuildContext context) {
-    return '';
-    // return '''Align(
-    //   alignment: ${alignmentIndex.toSource()},
-    //   child: ${child?.toSource(context)},
-    // )''';
-  }
 
   // List<Widget> wrapWithCandidates(final BuildContext context, final Node? parentNode, ValueChanged<Type> onPressed) {
   //   List<Type> canWrapWith = [

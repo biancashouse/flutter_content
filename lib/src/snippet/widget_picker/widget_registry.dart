@@ -4,7 +4,7 @@ import 'widget_entry.dart';
 
 const List<WidgetEntry> widgetRegistry = [
   // layout
-  WidgetEntry(label: 'Align', type: AlignNode, category: WidgetCategory.layout),
+  WidgetEntry(label: AlignNode.FLUTTER_TYPE, type: AlignNode, category: WidgetCategory.layout),
   WidgetEntry(label: 'Aspect Ratio', type: AspectRatioNode, category: WidgetCategory.layout),
   WidgetEntry(label: 'Center', type: CenterNode, category: WidgetCategory.layout),
   WidgetEntry(label: 'ConstrainedBox', type: ConstrainedBoxNode, category: WidgetCategory.layout),
