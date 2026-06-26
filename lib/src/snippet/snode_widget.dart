@@ -334,6 +334,11 @@ class SNodeWidget extends StatelessWidget {
     if (selectedNode == null) return;
 
     fco.afterMsDelayDo(1000, () {
+      // Re-check: selection or snippet may have changed during the delay.
+      final current = fco.capiBloc.state.snippetBeingEdited?.selectedNode;
+      if (current != selectedNode) return;
+      if (selectedNode.nodeWidgetGK?.currentContext?.mounted != true) return;
+
       Rect? borderRect = selectedNode.calcBorderRect();
       if (borderRect != null) {
         selectedNode.showSelectedNonTappableNodeWidgetOverlay(

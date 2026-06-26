@@ -824,7 +824,9 @@ class CAPIBloC extends Bloc<CAPIEvent, CAPIState> {
   SNode _typeAsATreeNode(
     Type t,
     SNode? childNode,
-    String notFoundMsg) {
+    String notFoundMsg, {
+    SnippetName? snippetName,
+  }) {
     // in case tabbar specified
     final uniqueTabBarName = DateTime.now().millisecondsSinceEpoch.toString();
     return switch (t) {
@@ -1512,7 +1514,13 @@ class CAPIBloC extends Bloc<CAPIEvent, CAPIState> {
     // fco.modelRepo.saveNewVersionOfSnippet(newSnippet);
     fco.appInfo.cachedSnippetInfo(newSnippet.name)?.notifyChange(newSnippet);
 
-    emit(state.copyWith(force: state.force + 1));
+    // Defer the state emit to the next frame so that newly inserted tree rows
+    // complete layout before any pointer event can hit-test them, avoiding
+    // "Cannot hit test a render box with no size".
+    final capturedState = state;
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      if (!isClosed) emit(capturedState.copyWith(force: capturedState.force + 1));
+    });
   }
 
   void _pasteReplacement(PasteReplacement event, emit) {
