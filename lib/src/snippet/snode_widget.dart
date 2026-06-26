@@ -412,9 +412,8 @@ class SNodeWidget extends StatelessWidget {
         initialCalloutW: 400,
         initialCalloutH:
             node is! NamedSC && node is! NamedMC && node is! NamedPS
-            ? node.parentCanHaveMultipleVerticalChildren()
-                  ? 310
-                  : 210
+            ? (node.parentCanHaveMultipleVerticalChildren() ? 310 : 210) +
+                  ((node.maybeSiblings()?.length ?? 0) > 1 ? 50 : 0)
             : 120,
         initialTargetAlignment: Alignment.centerRight,
         initialCalloutAlignment: Alignment.centerLeft,
@@ -712,6 +711,7 @@ class SNodeWidget extends StatelessWidget {
               ),
             ),
           _editTreeStructureIconButtons(context, node),
+          _moveButtons(context, node),
           const Gap(10),
         ],
       ),
@@ -839,6 +839,67 @@ class SNodeWidget extends StatelessWidget {
         ],
       ),
     );
+  }
+
+  Widget _moveButtons(BuildContext context, SNode node) {
+    final siblings = node.maybeSiblings();
+    if (siblings == null || siblings.length < 2) return const SizedBox.shrink();
+    final i = siblings.indexOf(node);
+    return Padding(
+      padding: const EdgeInsets.only(top: 8),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          IconButton(
+            icon: Icon(
+              Icons.arrow_upward,
+              color: i > 0 ? Colors.white : Colors.white30,
+            ),
+            tooltip: 'Move up',
+            onPressed: i > 0
+                ? () {
+                    final cur = siblings.indexOf(node);
+                    if (cur > 0) _moveNode(node, siblings, cur, cur - 1);
+                  }
+                : null,
+          ),
+          const Text(
+            'position',
+            style: TextStyle(color: Colors.white54, fontSize: 11),
+          ),
+          IconButton(
+            icon: Icon(
+              Icons.arrow_downward,
+              color: i < siblings.length - 1 ? Colors.white : Colors.white30,
+            ),
+            tooltip: 'Move down',
+            onPressed: i < siblings.length - 1
+                ? () {
+                    final cur = siblings.indexOf(node);
+                    if (cur < siblings.length - 1) {
+                      _moveNode(node, siblings, cur, cur + 1);
+                    }
+                  }
+                : null,
+          ),
+        ],
+      ),
+    );
+  }
+
+  void _moveNode(SNode node, List<SNode> siblings, int from, int to) {
+    final sbe = fco.snippetBeingEdited;
+    if (sbe == null) return;
+    try {
+      sbe.undoRedo.pushForUndo(sbe.getRootNode().toJson());
+    } catch (_) {}
+    siblings.removeAt(from);
+    siblings.insert(to, node);
+    sbe.treeC.rebuild();
+    final rootNode = sbe.getRootNode();
+    fco.appInfo.cachedSnippetInfo(rootNode.name)?.notifyChange(rootNode);
+    fco.capiBloc.add(const CAPIEvent.forceRefresh());
+    fco.dismiss('node-actions');
   }
 
   Widget _selectedNodeWidget(BuildContext context, selectedNode) =>
